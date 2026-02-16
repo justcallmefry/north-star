@@ -1,4 +1,6 @@
 import { Montserrat } from "next/font/google";
+import { SiteNav } from "@/components/marketing/site-nav";
+import { SiteFooter } from "@/components/marketing/site-footer";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -12,8 +14,10 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${montserrat.variable} font-montserrat antialiased`}>
+    <div className={`${montserrat.variable} min-h-screen font-montserrat antialiased`}>
+      <SiteNav />
       {children}
+      <SiteFooter />
     </div>
   );
 }

@@ -13,12 +13,21 @@ export function TodayCard({ today }: Props) {
     );
   }
 
-  const { sessionId, promptText, state, hasUserResponded, hasPartnerResponded, canReveal } = today;
+  const { sessionId, promptText, momentText, state, hasUserResponded, hasPartnerResponded, canReveal } = today;
 
   return (
     <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
       <h2 className="text-lg font-semibold">Today</h2>
       <p className="mt-2 text-gray-700 dark:text-gray-300">{promptText}</p>
+
+      {momentText && (
+        <div className="mt-3 rounded-lg border border-gray-100 bg-gray-50/80 px-3 py-2.5 dark:border-gray-600/50 dark:bg-gray-800/50">
+          <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+            Optional moment
+          </p>
+          <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">{momentText}</p>
+        </div>
+      )}
 
       <div className="mt-4 flex flex-wrap gap-3">
         {state === "revealed" && (

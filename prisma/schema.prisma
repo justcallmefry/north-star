@@ -176,13 +176,14 @@ model Invite {
 }
 
 model Prompt {
-  id        String         @id @default(cuid())
-  text      String         @db.Text
-  type      PromptType     // e.g. daily_meeting
-  category  PromptCategory
-  tone      PromptTone?
-  isPremium Boolean        @default(false)
-  active    Boolean        @default(true)
+  id         String         @id @default(cuid())
+  text       String         @db.Text
+  momentText String?        @db.Text // optional "Moment" prompt shown below the daily question
+  type       PromptType     // e.g. daily_meeting
+  category   PromptCategory
+  tone       PromptTone?
+  isPremium  Boolean        @default(false)
+  active     Boolean        @default(true)
 
   dailySessions DailySession[]
 

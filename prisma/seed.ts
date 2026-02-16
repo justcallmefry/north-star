@@ -4,23 +4,24 @@ const prisma = new PrismaClient();
 
 const DAILY_PROMPTS: Array<{
   text: string;
+  momentText?: string | null;
   category: "gratitude" | "communication" | "reflection" | "fun" | "growth" | "other";
   tone?: "light" | "deep" | "playful" | "serious";
 }> = [
   // Gratitude
-  { text: "What's one small thing that made you smile today?", category: "gratitude", tone: "light" },
+  { text: "What's one small thing that made you smile today?", category: "gratitude", tone: "light", momentText: "If you want, tell your partner one thing you appreciate about them today." },
   { text: "What's something you're glad you have in your life right now?", category: "gratitude", tone: "light" },
   { text: "Who or what felt like a gift to you this week?", category: "gratitude", tone: "light" },
-  { text: "What's a moment from today you'd want to remember?", category: "gratitude", tone: "light" },
+  { text: "What's a moment from today you'd want to remember?", category: "gratitude", tone: "light", momentText: "If it feels right, share something that's been on your mind lately." },
   { text: "What's something simple you're thankful for today?", category: "gratitude", tone: "light" },
   { text: "What felt good about today, even if it was small?", category: "gratitude", tone: "light" },
-  { text: "What's one thing about your partner you were glad for recently?", category: "gratitude", tone: "light" },
+  { text: "What's one thing about your partner you were glad for recently?", category: "gratitude", tone: "light", momentText: "If you'd like, name one small way they showed up for you this week." },
   { text: "What's a part of your routine that you actually enjoy?", category: "gratitude", tone: "light" },
   { text: "What surprised you in a good way lately?", category: "gratitude", tone: "light" },
   { text: "What made you feel a little bit lighter today?", category: "gratitude", tone: "light" },
   // Communication (connection)
   { text: "What's something you appreciated about us this week?", category: "communication", tone: "light" },
-  { text: "What's one thing you'd want your partner to know about your day?", category: "communication", tone: "light" },
+  { text: "What's one thing you'd want your partner to know about your day?", category: "communication", tone: "light", momentText: "If it feels right, share something that's been on your mind lately." },
   { text: "What's been on your mind more than you expected lately?", category: "communication", tone: "deep" },
   { text: "What's a moment when you felt really heard this week?", category: "communication", tone: "light" },
   { text: "What do you wish you had more time to talk about together?", category: "communication", tone: "deep" },
@@ -31,7 +32,7 @@ const DAILY_PROMPTS: Array<{
   { text: "What's something you'd want to do more of as a couple?", category: "communication", tone: "light" },
   // Reflection
   { text: "What's one small thing that brought you comfort today?", category: "reflection", tone: "light" },
-  { text: "What's been taking up more of your energy than you expected?", category: "reflection", tone: "deep" },
+  { text: "What's been taking up more of your energy than you expected?", category: "reflection", tone: "deep", momentText: "If you want, share one thing that's felt heavy or light lately." },
   { text: "What's something you've been thinking about that you haven't said yet?", category: "reflection", tone: "deep" },
   { text: "What's one way you've been kind to yourself lately?", category: "reflection", tone: "light" },
   { text: "What's a moment this week when you felt like yourself?", category: "reflection", tone: "light" },
@@ -63,6 +64,7 @@ async function main() {
   await prisma.prompt.createMany({
     data: DAILY_PROMPTS.map((p) => ({
       text: p.text,
+      momentText: p.momentText ?? null,
       type: "daily",
       category: p.category,
       tone: p.tone ?? null,

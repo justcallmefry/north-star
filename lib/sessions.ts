@@ -71,6 +71,7 @@ async function pickPromptForSession(relationshipId: string): Promise<string | nu
 export type GetTodayResult = {
   sessionId: string;
   promptText: string;
+  momentText?: string | null;
   state: "open" | "revealed" | "expired";
   hasUserResponded: boolean;
   hasPartnerResponded: boolean;
@@ -114,6 +115,7 @@ export async function getToday(relationshipId: string): Promise<GetTodayResult |
   }
 
   const promptText = dailySession.prompt?.text ?? "How are you feeling today?";
+  const momentText = dailySession.prompt?.momentText ?? null;
   const hasUserResponded = dailySession.responses.some((r) => r.userId === session.user!.id);
   const partnerIds = memberIds.filter((id) => id !== session.user!.id);
   const hasPartnerResponded =
@@ -129,6 +131,7 @@ export async function getToday(relationshipId: string): Promise<GetTodayResult |
   return {
     sessionId: dailySession.id,
     promptText,
+    momentText,
     state: dailySession.state as "open" | "revealed" | "expired",
     hasUserResponded,
     hasPartnerResponded,
@@ -215,6 +218,7 @@ export type GetSessionResult = {
   relationshipId: string;
   sessionDate: Date;
   promptText: string;
+  momentText?: string | null;
   state: string;
   userResponse: string | null;
   hasUserResponded: boolean;
@@ -259,6 +263,7 @@ export async function getSession(sessionId: string): Promise<GetSessionResult | 
     relationshipId: dailySession.relationshipId,
     sessionDate: dailySession.sessionDate,
     promptText: dailySession.prompt?.text ?? "",
+    momentText: dailySession.prompt?.momentText ?? null,
     state: dailySession.state,
     userResponse: userResponse?.content ?? null,
     hasUserResponded: !!userResponse,

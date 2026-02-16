@@ -1,9 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { submitResponse, revealSession, submitReflection } from "@/lib/sessions";
 import type { GetSessionResult } from "@/lib/sessions";
+
+const AFFIRMATIONS = [
+  "Thanks for showing up for each other.",
+  "Moments like this build trust.",
+  "Small check-ins add up.",
+  "You showed up. That matters.",
+  "Good to connect.",
+];
 
 type Props = { data: GetSessionResult; currentUserId: string };
 
@@ -64,6 +72,10 @@ export function SessionContent({ data, currentUserId }: Props) {
   }
 
   const isRevealed = revealed || data.state === "revealed";
+  const affirmation = useMemo(
+    () => AFFIRMATIONS[Math.floor(Math.random() * AFFIRMATIONS.length)],
+    [data.sessionId]
+  );
   const responsesToShow: (string | null)[] = revealData
     ? revealData.responses.map((r) => r.content ?? null)
     : isRevealed
@@ -78,6 +90,17 @@ export function SessionContent({ data, currentUserId }: Props) {
       <p className="text-center text-xl leading-relaxed text-gray-700 dark:text-gray-300">
         {data.promptText}
       </p>
+
+      {data.momentText && (
+        <div className="mx-auto max-w-xl rounded-lg border border-gray-100 bg-gray-50/80 px-4 py-3 dark:border-gray-600/50 dark:bg-gray-800/50">
+          <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+            Optional moment
+          </p>
+          <p className="mt-1.5 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+            {data.momentText}
+          </p>
+        </div>
+      )}
 
       {!data.hasUserResponded && (
         <form onSubmit={handleSubmit} className="mx-auto max-w-xl space-y-5">
@@ -167,6 +190,9 @@ export function SessionContent({ data, currentUserId }: Props) {
               Reactions: {reflectionsToShow.map((r) => r.reaction).filter(Boolean).join(", ")}
             </p>
           )}
+          <p className="pt-3 text-center text-sm text-gray-500 dark:text-gray-400">
+            {affirmation}
+          </p>
         </div>
       )}
 

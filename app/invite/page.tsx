@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { headers } from "next/headers";
+import { isBuildTime } from "@/lib/build";
 import { getServerAuthSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -19,7 +20,7 @@ const fallback = (
 export default async function InvitePage({ searchParams }: Props) {
   const session = await getServerAuthSession();
   if (!session?.user) {
-    if (process.env.NEXT_PHASE === "phase-production-build") return fallback;
+    if (isBuildTime()) return fallback;
     redirect("/login");
   }
 
@@ -28,13 +29,13 @@ export default async function InvitePage({ searchParams }: Props) {
   const relationships = await getMyActiveRelationships();
 
   if (relationships.length === 0 && !relationshipId) {
-    if (process.env.NEXT_PHASE === "phase-production-build") return fallback;
+    if (isBuildTime()) return fallback;
     redirect("/onboarding");
   }
 
   const rid = relationshipId ?? relationships[0]?.id;
   if (!rid) {
-    if (process.env.NEXT_PHASE === "phase-production-build") return fallback;
+    if (isBuildTime()) return fallback;
     redirect("/onboarding");
   }
 

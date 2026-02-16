@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { isBuildTime } from "@/lib/build";
 import { getServerAuthSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -15,13 +16,13 @@ const fallback = (
 export default async function OnboardingPage() {
   const session = await getServerAuthSession();
   if (!session?.user) {
-    if (process.env.NEXT_PHASE === "phase-production-build") return fallback;
+    if (isBuildTime()) return fallback;
     redirect("/login");
   }
 
   const relationships = await getMyActiveRelationships();
   if (relationships.length > 0) {
-    if (process.env.NEXT_PHASE === "phase-production-build") return fallback;
+    if (isBuildTime()) return fallback;
     redirect("/app"); // already in a relationship
   }
 

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
+import { isBuildTime } from "@/lib/build";
 import { getToday } from "@/lib/sessions";
 import { RelationshipActions } from "./relationship-actions";
 import { TodayCard } from "./today-card";
@@ -61,7 +62,7 @@ export default async function AppPage() {
     </main>
   );
   } catch (err: unknown) {
-    if (process.env.NEXT_PHASE === "phase-production-build") return fallback;
+    if (isBuildTime()) return fallback;
     if (err && typeof err === "object" && "digest" in err && String((err as { digest?: string }).digest).startsWith("NEXT_REDIRECT")) throw err;
     return fallback;
   }

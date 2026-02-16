@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { isBuildTime } from "@/lib/build";
 import { getServerAuthSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +13,7 @@ const fallback = (
 export default async function DashboardPage() {
   const session = await getServerAuthSession();
   if (!session) {
-    if (process.env.NEXT_PHASE === "phase-production-build") return fallback;
+    if (isBuildTime()) return fallback;
     redirect("/login");
   }
 

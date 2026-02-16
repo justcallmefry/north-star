@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "@/lib/auth";
-
-export const dynamic = "force-dynamic";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { getHistory } from "@/lib/sessions";
 import { format } from "date-fns";
+
+export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 10;
 

@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "prisma migrate deploy && cross-env NEXT_PUBLIC_BUILD_PHASE=phase-production-build next build",
+    "build": "cross-env NEXT_PUBLIC_BUILD_PHASE=phase-production-build next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",

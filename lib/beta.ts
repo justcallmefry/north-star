@@ -17,6 +17,11 @@ export async function submitBetaSignup(email: string): Promise<{ ok: boolean; me
     return { ok: true, message: "You're on the list. We'll be in touch when a spot opens." };
   } catch (e) {
     console.error("Beta signup error:", e);
+    const msg = e instanceof Error ? e.message : String(e);
+    // Table might not exist yet if migration hasn't run in production
+    if (msg.includes("does not exist") || msg.includes("Unknown arg") || msg.includes("betaSignup")) {
+      return { ok: false, message: "We're still setting up. Please try again in a few minutes." };
+    }
     return { ok: false, message: "Something went wrong. Please try again." };
   }
 }

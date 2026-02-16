@@ -1,0 +1,319 @@
+// Prisma schema - PostgreSQL
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============== Enums ==============
+
+enum RelationshipStatus {
+  active
+  archived
+}
+
+enum InviteStatus {
+  pending
+  accepted
+  expired
+}
+
+enum PromptType {
+  daily
+  daily_meeting  // legacy
+}
+
+enum PromptCategory {
+  gratitude
+  communication
+  reflection
+  fun
+  growth
+  other
+}
+
+enum PromptTone {
+  light
+  deep
+  playful
+  serious
+}
+
+enum SessionState {
+  open     // waiting for both
+  revealed // both answered; answers visible
+  expired  // optional day cutoff
+}
+
+enum SubscriptionStatus {
+  active
+  canceled
+  past_due
+  trialing
+}
+
+// ============== NextAuth (keep for auth) ==============
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  // App relations
+  relationshipMembers RelationshipMember[]
+  invitesSent        Invite[]             @relation("InviteSender")
+  responses          Response[]
+  reflections        Reflection[]
+  meetingEntries     MeetingEntry[]
+  subscriptions      Subscription[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ============== App models ==============
+
+model Relationship {
+  id     String             @id @default(cuid())
+  name   String?
+  status RelationshipStatus @default(active)
+
+  members       RelationshipMember[]
+  invites       Invite[]
+  dailySessions DailySession[]
+  meetings     Meeting[]
+  streak        Streak?
+  subscriptions Subscription[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+}
+
+model RelationshipMember {
+  id             String   @id @default(cuid())
+  relationshipId String
+  userId         String
+  role           String?  // e.g. "owner", "member"
+  leftAt         DateTime? // null = still member; set when user leaves
+
+  relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  joinedAt   DateTime? @default(now())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([relationshipId, userId])
+  @@index([relationshipId])
+  @@index([userId])
+}
+
+model Invite {
+  id             String      @id @default(cuid())
+  code           String      @unique
+  relationshipId String
+  invitedBy      String
+  email          String?
+  status         InviteStatus @default(pending)
+  expiresAt      DateTime?
+  claimedBy      String?     // userId who used the code
+  claimedAt      DateTime?
+
+  relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  sender       User         @relation("InviteSender", fields: [invitedBy], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([relationshipId])
+  @@index([code])
+}
+
+model Prompt {
+  id        String         @id @default(cuid())
+  text      String         @db.Text
+  type      PromptType     // e.g. daily_meeting
+  category  PromptCategory
+  tone      PromptTone?
+  isPremium Boolean        @default(false)
+  active    Boolean        @default(true)
+
+  dailySessions DailySession[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([type])
+  @@index([active])
+}
+
+model DailySession {
+  id             String        @id @default(cuid())
+  relationshipId String
+  sessionDate    DateTime      @db.Date
+  promptId       String?
+  state          SessionState  @default(open)
+
+  relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  prompt       Prompt?      @relation(fields: [promptId], references: [id], onDelete: SetNull)
+  responses    Response[]
+  reflections  Reflection[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([relationshipId, sessionDate])
+  @@index([relationshipId])
+  @@index([sessionDate])
+}
+
+model Response {
+  id        String  @id @default(cuid())
+  sessionId String
+  userId    String
+  content   String? @db.Text
+
+  session DailySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([sessionId, userId])
+  @@index([sessionId])
+  @@index([userId])
+}
+
+model Reflection {
+  id        String   @id @default(cuid())
+  sessionId String
+  userId    String
+  content   String?  @db.Text
+  reaction  String?
+
+  session DailySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([sessionId, userId])
+  @@index([sessionId])
+  @@index([userId])
+}
+
+model Meeting {
+  id             String   @id @default(cuid())
+  relationshipId String
+  weekKey        String   // ISO week e.g. "2026-W07"
+
+  relationship Relationship   @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  entries      MeetingEntry[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([relationshipId, weekKey])
+  @@index([relationshipId])
+  @@index([weekKey])
+}
+
+model MeetingEntry {
+  id           String  @id @default(cuid())
+  meetingId    String
+  userId       String
+  wins         String? @db.Text
+  stressors    String? @db.Text
+  request      String? @db.Text
+  plan         String? @db.Text
+  appreciation String? @db.Text
+
+  meeting Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([meetingId, userId])
+  @@index([meetingId])
+  @@index([userId])
+}
+
+model Streak {
+  relationshipId     String    @id // one streak per relationship
+  currentCount      Int       @default(0)
+  longestCount      Int       @default(0)
+  lastCompletedDate DateTime? @db.Date
+
+  relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+
+  @@index([lastCompletedDate])
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String
+  relationshipId       String?            // optional: subscription can be per-user or per-relationship
+  stripeSubscriptionId String?            @unique
+  stripeCustomerId     String?
+  status               SubscriptionStatus
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean            @default(false)
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  relationship Relationship? @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([relationshipId])
+  @@index([status])
+}

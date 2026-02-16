@@ -79,6 +79,8 @@ export default async function HistoryPage({ searchParams }: Props) {
     </main>
   );
   } catch (err: unknown) {
+    // During Vercel/Next build there is no session; redirect() would throw and fail "collect page data"
+    if (process.env.NEXT_PHASE === "phase-production-build") return fallback;
     if (err && typeof err === "object" && "digest" in err && String((err as { digest?: string }).digest).startsWith("NEXT_REDIRECT")) throw err;
     return fallback;
   }

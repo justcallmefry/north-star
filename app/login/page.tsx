@@ -20,12 +20,17 @@ export default function LoginPage() {
         callbackUrl: "/app",
       });
       if (res?.error) {
-        setError(typeof res.error === "string" ? res.error : "Something went wrong. Check the terminal for errors.");
+        const msg = typeof res.error === "string" ? res.error : "Something went wrong.";
+        setError(msg === "Configuration" ? "Email is not configured. Set RESEND_API_KEY or EMAIL_SERVER in your deployment." : msg);
+        return;
+      }
+      if (res?.status !== 200) {
+        setError("Sign-in request failed. Check that email is configured (RESEND_API_KEY or EMAIL_SERVER).");
         return;
       }
       setSent(true);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Request failed. Is the database running?";
+      const message = err instanceof Error ? err.message : "Request failed. Check the database and email configuration.";
       setError(message);
     } finally {
       setLoading(false);

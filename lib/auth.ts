@@ -9,11 +9,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "database", maxAge: 30 * 24 * 60 * 60, updateAge: 24 * 60 * 60 },
   pages: { signIn: "/login" },
   providers: [
-    // Only add Nodemailer when configured (e.g. at runtime). Skip during build so "Collecting page data" doesn't throw.
-    ...(process.env.EMAIL_SERVER
+    // Add Nodemailer when email is configured (SMTP or Resend). Skip during build so "Collecting page data" doesn't throw.
+    ...(process.env.EMAIL_SERVER || process.env.RESEND_API_KEY
       ? [
           Nodemailer({
-            server: process.env.EMAIL_SERVER,
+            server: process.env.EMAIL_SERVER ?? { host: "localhost", port: 1, secure: false },
             from: process.env.EMAIL_FROM ?? "noreply@example.com",
             sendVerificationRequest,
           }),

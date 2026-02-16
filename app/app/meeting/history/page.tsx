@@ -51,6 +51,7 @@ export default async function MeetingHistoryPage() {
     </main>
   );
   } catch (err: unknown) {
+    if (process.env.NEXT_PHASE === "phase-production-build") return fallback;
     if (err && typeof err === "object" && "digest" in err && String((err as { digest?: string }).digest).startsWith("NEXT_REDIRECT")) throw err;
     return fallback;
   }

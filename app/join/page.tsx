@@ -7,9 +7,18 @@ import { JoinForm } from "./join-form";
 
 type Props = { searchParams: Promise<{ code?: string }> };
 
+const fallback = (
+  <main className="min-h-screen flex flex-col items-center justify-center p-8">
+    <p className="text-gray-500">Loading…</p>
+  </main>
+);
+
 export default async function JoinPage({ searchParams }: Props) {
   const session = await getServerAuthSession();
-  if (!session?.user) redirect("/login");
+  if (!session?.user) {
+    if (process.env.NEXT_PHASE === "phase-production-build") return fallback;
+    redirect("/login");
+  }
 
   const params = await searchParams;
   const initialCode = params.code ?? "";

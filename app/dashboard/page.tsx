@@ -3,9 +3,18 @@ import { getServerAuthSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
+const fallback = (
+  <main className="min-h-screen p-8">
+    <p className="text-gray-500">Loading…</p>
+  </main>
+);
+
 export default async function DashboardPage() {
   const session = await getServerAuthSession();
-  if (!session) redirect("/login");
+  if (!session) {
+    if (process.env.NEXT_PHASE === "phase-production-build") return fallback;
+    redirect("/login");
+  }
 
   return (
     <main className="min-h-screen p-8">

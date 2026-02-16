@@ -10,18 +10,33 @@ import { InviteContent } from "./invite-content";
 
 type Props = { searchParams: Promise<{ relationshipId?: string; code?: string }> };
 
+const fallback = (
+  <main className="min-h-screen flex flex-col items-center justify-center p-8">
+    <p className="text-gray-500">Loading…</p>
+  </main>
+);
+
 export default async function InvitePage({ searchParams }: Props) {
   const session = await getServerAuthSession();
-  if (!session?.user) redirect("/login");
+  if (!session?.user) {
+    if (process.env.NEXT_PHASE === "phase-production-build") return fallback;
+    redirect("/login");
+  }
 
   const params = await searchParams;
   const relationshipId = params.relationshipId;
   const relationships = await getMyActiveRelationships();
 
-  if (relationships.length === 0 && !relationshipId) redirect("/onboarding");
+  if (relationships.length === 0 && !relationshipId) {
+    if (process.env.NEXT_PHASE === "phase-production-build") return fallback;
+    redirect("/onboarding");
+  }
 
   const rid = relationshipId ?? relationships[0]?.id;
-  if (!rid) redirect("/onboarding");
+  if (!rid) {
+    if (process.env.NEXT_PHASE === "phase-production-build") return fallback;
+    redirect("/onboarding");
+  }
 
   const invite = await getLatestInvite(rid);
   const code = params.code ?? invite?.code ?? null;

@@ -318,3 +318,11 @@ model Subscription {
   @@index([relationshipId])
   @@index([status])
 }
+
+model BetaSignup {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}

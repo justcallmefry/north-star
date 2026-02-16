@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "cross-env NEXT_PUBLIC_BUILD_PHASE=phase-production-build next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
@@ -37,6 +37,7 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "autoprefixer": "^10.4.20",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.18",
     "postcss": "^8.4.49",

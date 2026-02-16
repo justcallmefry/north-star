@@ -6,7 +6,7 @@ export async function submitBetaSignup(email: string): Promise<{ ok: boolean; me
   const trimmed = email.trim().toLowerCase();
   if (!trimmed) return { ok: false, message: "Please enter your email." };
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(trimmed)) return { ok: false, message: "Please enter a valid email." });
+  if (!emailRegex.test(trimmed)) return { ok: false, message: "Please enter a valid email." };
 
   try {
     await prisma.betaSignup.upsert({

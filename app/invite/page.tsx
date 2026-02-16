@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { getServerAuthSession } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { getLatestInvite } from "@/lib/relationships";
 import { InviteContent } from "./invite-content";

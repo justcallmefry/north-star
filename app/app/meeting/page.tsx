@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { getCurrentMeeting, getMeeting } from "@/lib/meetings";
 import { MeetingForm } from "./meeting-form";

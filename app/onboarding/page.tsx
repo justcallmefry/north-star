@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getServerAuthSession } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { CreateRelationshipForm } from "./create-form";
 

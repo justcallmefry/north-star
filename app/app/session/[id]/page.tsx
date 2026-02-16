@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getServerAuthSession } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
 import { getSession } from "@/lib/sessions";
 import { SessionContent } from "./session-content";
 

@@ -1,12 +1,17 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "@/lib/auth";
-
-export const dynamic = "force-dynamic";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { getMeetingHistory } from "@/lib/meetings";
 
+export const dynamic = "force-dynamic";
+
 export default async function MeetingHistoryPage() {
+  const headersList = await headers();
+  if (!headersList.get("cookie")) {
+    return <main className="min-h-screen p-8"><p className="text-gray-500">Loading…</p></main>;
+  }
   const session = await getServerAuthSession();
   if (!session?.user) redirect("/login");
 

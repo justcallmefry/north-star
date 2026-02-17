@@ -1,30 +1,39 @@
+/** Optional env passed from auth so email bundle doesn't rely on process.env (Vercel inlining). */
+export type EmailEnv = { resendApiKey?: string; emailServer?: string; nodeEnv?: string };
+
 /**
  * Sends the magic link email for Auth.js v5 Nodemailer provider.
- * Uses EMAIL_SERVER (SMTP) or RESEND_API_KEY when available.
+ * Uses options (from auth) or EMAIL_SERVER / RESEND_API_KEY when available.
  */
-export async function sendVerificationRequest(params: {
-  identifier: string;
-  url: string;
-  provider: { server?: string | object; from?: string };
-  token?: string;
-  expires?: Date;
-}): Promise<void> {
+export async function sendVerificationRequest(
+  params: {
+    identifier: string;
+    url: string;
+    provider: { server?: string | object; from?: string };
+    token?: string;
+    expires?: Date;
+  },
+  options?: EmailEnv
+): Promise<void> {
   const { identifier, url, provider } = params;
   const { server, from } = provider;
+  const resendKey = options?.resendApiKey ?? process.env["RESEND_API_KEY"];
+  const smtpServer = options?.emailServer ?? process.env["EMAIL_SERVER"];
+  const nodeEnv = options?.nodeEnv ?? process.env["NODE_ENV"];
 
-  if (process.env["RESEND_API_KEY"]) {
-    await sendWithResend(identifier, url, from ?? "noreply@example.com");
+  if (resendKey) {
+    await sendWithResend(identifier, url, from ?? "noreply@example.com", resendKey);
     return;
   }
 
-  // In development with no Resend: log the link so you can sign in without SMTP
-  if (process.env["NODE_ENV"] === "development") {
+  if (nodeEnv === "development") {
     console.log(`[Magic link] ${identifier} -> ${url}`);
     return;
   }
 
-  if (server) {
-    await sendWithNodemailer(identifier, url, server, from ?? "noreply@example.com");
+  const serverToUse = smtpServer ?? server;
+  if (serverToUse) {
+    await sendWithNodemailer(identifier, url, serverToUse, from ?? "noreply@example.com");
     return;
   }
 
@@ -48,10 +57,8 @@ async function sendWithNodemailer(
   });
 }
 
-async function sendWithResend(to: string, url: string, from: string): Promise<void> {
+async function sendWithResend(to: string, url: string, from: string, apiKey: string): Promise<void> {
   const resend = await import("resend");
-  const apiKey = process.env["RESEND_API_KEY"];
-  if (!apiKey) throw new Error("RESEND_API_KEY is not set");
   const client = new resend.Resend(apiKey);
   const { error } = await client.emails.send({
     from: from || "onboarding@resend.dev",

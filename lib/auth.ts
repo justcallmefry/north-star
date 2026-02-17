@@ -9,6 +9,15 @@ function isEmailConfigured(): boolean {
   return !!(process.env["EMAIL_SERVER"] || process.env["RESEND_API_KEY"]);
 }
 
+// Capture env in this module (same bundle as route that logs "RESEND_API_KEY=set") and pass into email so the email chunk doesn't rely on process.env.
+function makeSendVerificationRequest() {
+  const resendApiKey = process.env["RESEND_API_KEY"];
+  const emailServer = process.env["EMAIL_SERVER"];
+  const nodeEnv = process.env["NODE_ENV"];
+  return (params: Parameters<typeof sendVerificationRequest>[0]) =>
+    sendVerificationRequest(params, { resendApiKey, emailServer, nodeEnv });
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma as Parameters<typeof PrismaAdapter>[0]),
   session: { strategy: "database", maxAge: 30 * 24 * 60 * 60, updateAge: 24 * 60 * 60 },
@@ -19,7 +28,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           Nodemailer({
             server: process.env["EMAIL_SERVER"] ?? { host: "localhost", port: 1, secure: false },
             from: process.env["EMAIL_FROM"] ?? "noreply@example.com",
-            sendVerificationRequest,
+            sendVerificationRequest: makeSendVerificationRequest(),
           }),
         ]
       : []),

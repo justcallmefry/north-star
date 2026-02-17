@@ -9,6 +9,7 @@ import {
   Minus,
   EyeOff,
   Shield,
+  Sparkles,
 } from "lucide-react";
 import { BetaForm } from "@/components/marketing/beta-form";
 

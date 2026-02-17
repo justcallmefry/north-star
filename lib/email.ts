@@ -62,8 +62,8 @@ async function sendWithResend(to: string, url: string, from: string): Promise<vo
   if (error) throw new Error(`Resend error: ${JSON.stringify(error)}`);
 }
 
-/** Send beta signup confirmation with link to use the app. */
-export async function sendBetaConfirmation(to: string, appUrl: string): Promise<void> {
+/** Send beta signup confirmation with link to use the app. Returns true if sent, false if skipped (no config). */
+export async function sendBetaConfirmation(to: string, appUrl: string): Promise<boolean> {
   const from = process.env.EMAIL_FROM || "onboarding@resend.dev";
   if (process.env.RESEND_API_KEY) {
     const resend = await import("resend");
@@ -80,11 +80,11 @@ export async function sendBetaConfirmation(to: string, appUrl: string): Promise<
       `,
     });
     if (error) throw new Error(`Resend error: ${JSON.stringify(error)}`);
-    return;
+    return true;
   }
   if (process.env.NODE_ENV === "development") {
     console.log(`[Beta confirmation] ${to} -> sign in at ${appUrl}/login`);
-    return;
+    return false;
   }
   if (process.env.EMAIL_SERVER) {
     const nodemailer = await import("nodemailer");
@@ -96,7 +96,7 @@ export async function sendBetaConfirmation(to: string, appUrl: string): Promise<
       subject: "You're on the North Star beta list",
       html: `<p>You're on the list.</p><p><a href="${signInUrl}">Sign in now</a> to start using the app.</p>`,
     });
-    return;
+    return true;
   }
-  // No email config: skip sending, don't fail signup
+  return false;
 }

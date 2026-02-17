@@ -21,13 +21,22 @@ export async function submitBetaSignup(email: string): Promise<{ ok: boolean; me
       create: { email: trimmed },
       update: {}, // already signed up
     });
+    const appUrl = getAppUrl();
+    let emailSent = false;
+    let emailError: string | null = null;
     try {
-      await sendBetaConfirmation(trimmed, getAppUrl());
+      emailSent = await sendBetaConfirmation(trimmed, appUrl);
     } catch (emailErr) {
       console.error("Beta confirmation email failed:", emailErr);
-      // Don't fail signup if email fails
+      emailError = emailErr instanceof Error ? emailErr.message : String(emailErr);
     }
-    return { ok: true, message: "You're on the list. Check your email for a link to sign in and start using the app." };
+    if (emailSent) {
+      return { ok: true, message: "You're on the list. Check your email for a link to sign in and start using the app." };
+    }
+    if (emailError) {
+      return { ok: true, message: `You're on the list, but the confirmation email couldn't be sent (${emailError}). You can sign in anytime at ${appUrl}/login with this email.` };
+    }
+    return { ok: true, message: `You're on the list. Email isn't set up yet, so no confirmation was sent. You can sign in anytime at ${appUrl}/login with this email.` };
   } catch (e) {
     console.error("Beta signup error:", e);
     const msg = e instanceof Error ? e.message : String(e);

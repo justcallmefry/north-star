@@ -3,6 +3,8 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
+const PRODUCTION_APP_URL = process.env.NEXT_PUBLIC_APP_URL || "";
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -59,6 +61,14 @@ export default function LoginPage() {
     <main className="min-h-screen flex flex-col items-center justify-center p-8">
       <div className="w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6">Sign in to North Star</h1>
+        {PRODUCTION_APP_URL && (
+          <p className="mb-4 text-sm text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md p-3">
+            For a stable sign-in, use the main site:{" "}
+            <a href={`${PRODUCTION_APP_URL}/login`} className="font-medium underline">
+              Sign in on main site
+            </a>
+          </p>
+        )}
         {process.env.NODE_ENV === "development" && (
           <p className="mb-4 text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-md p-3">
             <strong>Dev:</strong> Click &quot;Send magic link&quot; then look in the <strong>terminal</strong> where <code className="bg-amber-100 dark:bg-amber-900/50 px-1 rounded">npm run dev</code> is running for a line starting with <code className="break-all">[Magic link]</code>. Copy that full URL into your browser. (No email is sent until you set up SMTP or Resend.)

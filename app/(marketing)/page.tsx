@@ -27,7 +27,7 @@ export default function MarketingPage() {
 
       {/* Hero */}
       <header className="relative">
-        <div className={`${CONTAINER} pt-10 pb-12 sm:pt-14 sm:pb-16`}>
+        <div className={`${CONTAINER} pt-10 pb-32 sm:pt-16 sm:pb-40`}>
           <div className="flex flex-col items-center text-center md:flex-row md:items-center md:justify-between md:text-left">
             <div className="space-y-4 md:max-w-xl">
               <div className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-slate-200 backdrop-blur-md animate-fade-in-up">
@@ -40,9 +40,9 @@ export default function MarketingPage() {
                 <Image
                   src="/north-star-logo.png"
                   alt="North Star"
-                  width={112}
-                  height={112}
-                  className="h-20 w-20 object-contain sm:h-24 sm:w-24"
+                  width={144}
+                  height={144}
+                  className="h-24 w-24 object-contain sm:h-28 sm:w-28"
                   priority
                 />
               </div>
@@ -76,7 +76,7 @@ export default function MarketingPage() {
             <div className="mt-10 w-full max-w-sm md:mt-0 animate-fade-in-up animate-delay-2">
               <div className="relative mx-auto h-72 w-full max-w-xs sm:h-80">
                 {/* Back phone */}
-                <div className="absolute right-2 top-0 h-full w-40 rotate-6 rounded-3xl border border-white/10 bg-white/5 p-3 shadow-ns-card backdrop-blur-xl sm:w-44">
+                <div className="absolute right-2 top-0 h-full w-40 rotate-6 rounded-3xl border border-white/10 bg-white/5 p-3 shadow-2xl shadow-black/70 backdrop-blur-xl sm:w-44">
                   <div className="h-2 w-16 rounded-full bg-slate-700/60" />
                   <div className="mt-3 space-y-2 text-left">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
@@ -88,7 +88,7 @@ export default function MarketingPage() {
                   </div>
                 </div>
                 {/* Front phone */}
-                <div className="absolute left-0 bottom-0 h-full w-40 -rotate-3 rounded-3xl border border-white/10 bg-white/5 p-3 shadow-ns-card backdrop-blur-xl sm:w-44">
+                <div className="absolute left-0 bottom-0 h-full w-40 -rotate-3 rounded-3xl border border-white/10 bg-white/5 p-3 shadow-2xl shadow-black/70 backdrop-blur-xl sm:w-44">
                   <div className="h-2 w-14 rounded-full bg-slate-700/60" />
                   <div className="mt-3 space-y-3 text-left">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -130,15 +130,12 @@ export default function MarketingPage() {
         </div>
 
         {/* Wall of Love / Testimonials */}
-        <section className="space-y-4 pt-2 sm:space-y-5">
-          <div className="space-y-1">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 sm:text-sm">
-              Choose Love
-            </p>
-            <h2 className="text-xl font-semibold tracking-[-0.03em] text-white sm:text-2xl">
+        <section className="space-y-4 pt-4 sm:space-y-6">
+          <div className="relative z-10 space-y-2 text-center">
+            <h2 className="text-lg font-semibold tracking-[-0.03em] text-slate-100 sm:text-xl">
               Wall of Love
             </h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">
+            <p className="mx-auto max-w-2xl text-xs leading-relaxed text-slate-400 sm:text-sm">
               Real couples using North Star to stay close—without turning their relationship into
               another project.
             </p>

@@ -51,6 +51,17 @@ function createAuthInstance(
       },
     },
     debug: process.env.NODE_ENV === "development",
+    logger: {
+      error(message) {
+        console.error("[auth] error:", typeof message === "string" ? message : message?.message ?? String(message));
+        if (message instanceof Error && message.cause) {
+          const c = message.cause as { err?: Error };
+          if (c?.err?.stack) console.error("[auth] cause stack:", c.err.stack);
+        } else if (message instanceof Error && message.stack) {
+          console.error("[auth] stack:", message.stack);
+        }
+      },
+    },
   });
 }
 

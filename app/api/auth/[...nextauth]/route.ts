@@ -20,8 +20,15 @@ const hasResend = () => !!process.env.RESEND_API_KEY;
 const hasSmtp = () => !!process.env.EMAIL_SERVER;
 
 // Sender defined here so process.env is read in the route chunk (where RESEND_API_KEY is available at runtime).
-function sendVerificationRequestFromRoute(params: Parameters<typeof sendMagicLinkWithKey>[0]) {
-  return sendMagicLinkWithKey(params, process.env.RESEND_API_KEY);
+async function sendVerificationRequestFromRoute(params: Parameters<typeof sendMagicLinkWithKey>[0]) {
+  try {
+    await sendMagicLinkWithKey(params, process.env.RESEND_API_KEY);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    const details = err instanceof Error ? err.stack : undefined;
+    console.error("[auth] Magic link send failed:", message, details ?? "");
+    throw err;
+  }
 }
 
 function getEmailConfig() {

@@ -31,7 +31,8 @@ function LoginForm() {
       });
       if (res?.error) {
         const msg = typeof res.error === "string" ? res.error : "Something went wrong.";
-        setError(msg === "Configuration" ? "Email is not configured. Set RESEND_API_KEY or EMAIL_SERVER in your deployment." : msg);
+        // Surface the actual error from Auth.js instead of always mapping "Configuration"
+        setError(msg);
         return;
       }
       if (res?.status !== 200) {

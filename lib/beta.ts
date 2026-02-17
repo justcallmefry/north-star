@@ -4,8 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { sendBetaConfirmation } from "@/lib/email";
 
 function getAppUrl(): string {
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  if (process.env.NEXT_PUBLIC_APP_URL) return process.env.NEXT_PUBLIC_APP_URL;
+  if (process.env["VERCEL_URL"]) return `https://${process.env["VERCEL_URL"]}`;
+  if (process.env["NEXT_PUBLIC_APP_URL"]) return process.env["NEXT_PUBLIC_APP_URL"];
   return "https://north-star-hazel.vercel.app";
 }
 

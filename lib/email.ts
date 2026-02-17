@@ -12,13 +12,13 @@ export async function sendVerificationRequest(params: {
   const { identifier, url, provider } = params;
   const { server, from } = provider;
 
-  if (process.env.RESEND_API_KEY) {
+  if (process.env["RESEND_API_KEY"]) {
     await sendWithResend(identifier, url, from ?? "noreply@example.com");
     return;
   }
 
   // In development with no Resend: log the link so you can sign in without SMTP
-  if (process.env.NODE_ENV === "development") {
+  if (process.env["NODE_ENV"] === "development") {
     console.log(`[Magic link] ${identifier} -> ${url}`);
     return;
   }
@@ -50,7 +50,7 @@ async function sendWithNodemailer(
 
 async function sendWithResend(to: string, url: string, from: string): Promise<void> {
   const resend = await import("resend");
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = process.env["RESEND_API_KEY"];
   if (!apiKey) throw new Error("RESEND_API_KEY is not set");
   const client = new resend.Resend(apiKey);
   const { error } = await client.emails.send({
@@ -64,10 +64,10 @@ async function sendWithResend(to: string, url: string, from: string): Promise<vo
 
 /** Send beta signup confirmation with link to use the app. Returns true if sent, false if skipped (no config). */
 export async function sendBetaConfirmation(to: string, appUrl: string): Promise<boolean> {
-  const from = process.env.EMAIL_FROM || "onboarding@resend.dev";
-  if (process.env.RESEND_API_KEY) {
+  const from = process.env["EMAIL_FROM"] || "onboarding@resend.dev";
+  if (process.env["RESEND_API_KEY"]) {
     const resend = await import("resend");
-    const client = new resend.Resend(process.env.RESEND_API_KEY);
+    const client = new resend.Resend(process.env["RESEND_API_KEY"]);
     const signInUrl = `${appUrl}/login`;
     const { error } = await client.emails.send({
       from: from,
@@ -82,17 +82,17 @@ export async function sendBetaConfirmation(to: string, appUrl: string): Promise<
     if (error) throw new Error(`Resend error: ${JSON.stringify(error)}`);
     return true;
   }
-  if (process.env.NODE_ENV === "development") {
+  if (process.env["NODE_ENV"] === "development") {
     console.log(`[Beta confirmation] ${to} -> sign in at ${appUrl}/login`);
     return false;
   }
-  if (process.env.EMAIL_SERVER) {
+  if (process.env["EMAIL_SERVER"]) {
     const nodemailer = await import("nodemailer");
-    const transport = nodemailer.default.createTransport(process.env.EMAIL_SERVER);
+    const transport = nodemailer.default.createTransport(process.env["EMAIL_SERVER"]);
     const signInUrl = `${appUrl}/login`;
     await transport.sendMail({
       to,
-      from: process.env.EMAIL_FROM ?? "noreply@example.com",
+      from: process.env["EMAIL_FROM"] ?? "noreply@example.com",
       subject: "You're on the North Star beta list",
       html: `<p>You're on the list.</p><p><a href="${signInUrl}">Sign in now</a> to start using the app.</p>`,
     });

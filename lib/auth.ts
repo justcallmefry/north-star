@@ -4,17 +4,21 @@ import Nodemailer from "next-auth/providers/nodemailer";
 import { prisma } from "@/lib/prisma";
 import { sendVerificationRequest } from "@/lib/email";
 
+// Read at runtime so Next.js doesn't inline env at build time (Vercel build may not have RESEND_API_KEY).
+function isEmailConfigured(): boolean {
+  return !!(process.env["EMAIL_SERVER"] || process.env["RESEND_API_KEY"]);
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma as Parameters<typeof PrismaAdapter>[0]),
   session: { strategy: "database", maxAge: 30 * 24 * 60 * 60, updateAge: 24 * 60 * 60 },
   pages: { signIn: "/login" },
   providers: [
-    // Add Nodemailer when email is configured (SMTP or Resend). Skip during build so "Collecting page data" doesn't throw.
-    ...(process.env.EMAIL_SERVER || process.env.RESEND_API_KEY
+    ...(isEmailConfigured()
       ? [
           Nodemailer({
-            server: process.env.EMAIL_SERVER ?? { host: "localhost", port: 1, secure: false },
-            from: process.env.EMAIL_FROM ?? "noreply@example.com",
+            server: process.env["EMAIL_SERVER"] ?? { host: "localhost", port: 1, secure: false },
+            from: process.env["EMAIL_FROM"] ?? "noreply@example.com",
             sendVerificationRequest,
           }),
         ]

@@ -9,6 +9,7 @@ const PRODUCTION_APP_URL = process.env.NEXT_PUBLIC_APP_URL || "";
 function LoginForm() {
   const searchParams = useSearchParams();
   const emailParam = searchParams.get("email") ?? "";
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/app";
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
@@ -26,7 +27,7 @@ function LoginForm() {
       const res = await signIn("nodemailer", {
         email,
         redirect: false,
-        callbackUrl: "/app",
+        callbackUrl,
       });
       if (res?.error) {
         const msg = typeof res.error === "string" ? res.error : "Something went wrong.";

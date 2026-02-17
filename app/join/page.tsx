@@ -16,13 +16,14 @@ const fallback = (
 
 export default async function JoinPage({ searchParams }: Props) {
   const session = await getServerAuthSession();
-  if (!session?.user) {
-    if (isBuildTime()) return fallback;
-    redirect("/login");
-  }
-
   const params = await searchParams;
   const initialCode = params.code ?? "";
+
+  if (!session?.user) {
+    if (isBuildTime()) return fallback;
+    const callbackUrl = "/join" + (initialCode ? `?code=${encodeURIComponent(initialCode)}` : "");
+    redirect(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);
+  }
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-8">

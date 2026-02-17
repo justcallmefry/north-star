@@ -18,10 +18,7 @@ export async function submitBetaSignup(email: string): Promise<{ ok: boolean; me
   } catch (e) {
     console.error("Beta signup error:", e);
     const msg = e instanceof Error ? e.message : String(e);
-    // Table might not exist yet if migration hasn't run in production
-    if (msg.includes("does not exist") || msg.includes("Unknown arg") || msg.includes("betaSignup")) {
-      return { ok: false, message: "We're still setting up. Please try again in a few minutes." };
-    }
-    return { ok: false, message: "Something went wrong. Please try again." };
+    // Show actual error so we can fix (e.g. table missing, connection, etc.)
+    return { ok: false, message: msg || "Something went wrong. Please try again." };
   }
 }

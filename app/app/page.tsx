@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { ArrowRight, CalendarRange, History, Users } from "lucide-react";
+import { ArrowRight, CalendarRange, History, Sparkles, Users } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { isBuildTime } from "@/lib/build";

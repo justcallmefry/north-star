@@ -74,7 +74,7 @@ export function SessionContent({ data, currentUserId }: Props) {
   const isRevealed = revealed || data.state === "revealed";
   const affirmation = useMemo(
     () => AFFIRMATIONS[Math.floor(Math.random() * AFFIRMATIONS.length)],
-    [data.sessionId]
+    []
   );
   const responsesToShow: (string | null)[] = revealData
     ? revealData.responses.map((r) => r.content ?? null)

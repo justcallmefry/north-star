@@ -5,6 +5,17 @@ import { setEmailEnv } from "@/lib/email-env";
 
 export const dynamic = "force-dynamic";
 
+/** Ensure magic links use the real deployment URL. Vercel sets VERCEL_URL; if AUTH_URL/NEXTAUTH_URL is wrong or a placeholder, override it here so callbacks work. */
+function ensureAuthUrl() {
+  const vercelUrl = process.env.VERCEL_URL;
+  const authUrl = process.env.AUTH_URL ?? process.env.NEXTAUTH_URL ?? "";
+  const isPlaceholder =
+    !authUrl || authUrl.includes("your-main-url") || authUrl.includes("your-app.vercel");
+  if (vercelUrl && isPlaceholder) {
+    process.env.AUTH_URL = `https://${vercelUrl}`;
+  }
+}
+
 const hasResend = () => !!process.env.RESEND_API_KEY;
 const hasSmtp = () => !!process.env.EMAIL_SERVER;
 
@@ -31,6 +42,7 @@ function getEmailConfig() {
 }
 
 export async function GET(req: NextRequest) {
+  ensureAuthUrl();
   const { emailConfigured, resend, smtp, defaultFrom } = getEmailConfig();
   console.log(
     "[auth] Email config: RESEND_API_KEY=" + (resend ? "set" : "missing") + ", EMAIL_SERVER=" + (smtp ? "set" : "missing")
@@ -40,6 +52,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  ensureAuthUrl();
   const { emailConfigured, resend, smtp, defaultFrom } = getEmailConfig();
   console.log(
     "[auth] Email config: RESEND_API_KEY=" + (resend ? "set" : "missing") + ", EMAIL_SERVER=" + (smtp ? "set" : "missing")

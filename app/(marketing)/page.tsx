@@ -27,26 +27,35 @@ export default function MarketingPage() {
 
       {/* Hero */}
       <header className="relative">
-        <div className={`${CONTAINER} pt-10 pb-32 sm:pt-16 sm:pb-40`}>
-          <div className="flex flex-col items-center text-center md:flex-row md:items-center md:justify-between md:text-left">
-            <div className="space-y-4 md:max-w-xl">
+        <div className={`${CONTAINER} pt-10 pb-8 sm:pt-16 sm:pb-12`}>
+          <div className="flex flex-col items-center text-center gap-16 md:flex-row md:items-center md:justify-between md:text-left">
+            {/* Hero text */}
+            <div className="space-y-5 md:max-w-xl">
               <div className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-slate-200 backdrop-blur-md animate-fade-in-up">
                 <span className="inline-flex h-5 w-5 items-center justify-center rounded-md bg-emerald-400/10 text-emerald-300">
                   <Sparkles className="h-3 w-3" />
                 </span>
                 <span>Private daily ritual for couples</span>
               </div>
-              <div className="flex items-center justify-center md:justify-start animate-fade-in-up animate-delay-1">
+              <div className="flex items-center justify-center gap-3 md:justify-start animate-fade-in-up animate-delay-1">
                 <Image
                   src="/north-star-logo.png"
                   alt="North Star"
-                  width={144}
-                  height={144}
-                  className="h-24 w-24 object-contain sm:h-28 sm:w-28"
+                  width={96}
+                  height={96}
+                  className="h-12 w-auto object-contain"
                   priority
                 />
+                <div className="text-left">
+                  <p className="text-xl font-semibold tracking-[-0.05em] text-white sm:text-2xl">
+                    North Star
+                  </p>
+                  <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
+                    Closer. Every day. Choose Love.
+                  </p>
+                </div>
               </div>
-              <h1 className="animate-fade-in-up animate-delay-1 text-4xl font-semibold tracking-[-0.05em] text-white sm:text-5xl md:text-6xl">
+              <h1 className="animate-fade-in-up animate-delay-1 text-4xl font-semibold tracking-[-0.06em] text-white sm:text-5xl md:text-6xl">
                 Reconnect. Every single day.
               </h1>
               <p className="animate-fade-in-up animate-delay-2 text-base leading-relaxed text-slate-200 sm:text-lg">
@@ -73,12 +82,12 @@ export default function MarketingPage() {
               </div>
             </div>
 
-            <div className="mt-10 w-full max-w-sm md:mt-0 animate-fade-in-up animate-delay-2">
-              <div className="relative mx-auto h-72 w-full max-w-xs sm:h-80">
-                {/* Back phone */}
-                <div className="absolute right-2 top-0 h-full w-40 rotate-6 rounded-3xl border border-white/10 bg-white/5 p-3 shadow-2xl shadow-black/70 backdrop-blur-xl sm:w-44">
+            {/* Phone visuals */}
+            <div className="mt-4 w-full max-w-sm md:mt-0 animate-fade-in-up animate-delay-2">
+              <div className="mx-auto flex h-[360px] w-full max-w-xs items-center justify-center gap-4">
+                <div className="flex h-64 w-36 -rotate-6 flex-col justify-between rounded-3xl border border-white/10 bg-white/5 p-3 shadow-2xl shadow-black/70 backdrop-blur-xl sm:h-72 sm:w-40">
                   <div className="h-2 w-16 rounded-full bg-slate-700/60" />
-                  <div className="mt-3 space-y-2 text-left">
+                  <div className="space-y-2 text-left">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
                       Today’s prompt
                     </p>
@@ -87,8 +96,7 @@ export default function MarketingPage() {
                     </p>
                   </div>
                 </div>
-                {/* Front phone */}
-                <div className="absolute left-0 bottom-0 h-full w-40 -rotate-3 rounded-3xl border border-white/10 bg-white/5 p-3 shadow-2xl shadow-black/70 backdrop-blur-xl sm:w-44">
+                <div className="flex h-64 w-36 translate-y-4 rotate-3 flex-col justify-between rounded-3xl border border-white/10 bg-white/5 p-3 shadow-2xl shadow-black/70 backdrop-blur-xl sm:h-72 sm:w-40">
                   <div className="h-2 w-14 rounded-full bg-slate-700/60" />
                   <div className="mt-3 space-y-3 text-left">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -115,7 +123,7 @@ export default function MarketingPage() {
         </div>
       </header>
 
-      <main className={`${CONTAINER} space-y-6 pb-40 sm:space-y-8 sm:pb-32`}>
+      <main className={`${CONTAINER} space-y-6 pb-24 sm:space-y-10 sm:pb-28`}>
         {/* Mobile sticky CTA */}
         <div className="fixed inset-x-0 bottom-0 z-30 px-4 pb-4 pt-2 sm:px-6 md:hidden pointer-events-none">
           <div className="pointer-events-auto mx-auto max-w-md rounded-2xl border border-white/10 bg-black/70 px-4 py-3 shadow-ns-card backdrop-blur-xl">
@@ -130,7 +138,7 @@ export default function MarketingPage() {
         </div>
 
         {/* Wall of Love / Testimonials */}
-        <section className="space-y-4 pt-4 sm:space-y-6">
+        <section className="space-y-4 mt-24 sm:space-y-6">
           <div className="relative z-10 space-y-2 text-center">
             <h2 className="text-lg font-semibold tracking-[-0.03em] text-slate-100 sm:text-xl">
               Wall of Love

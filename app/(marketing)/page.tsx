@@ -115,7 +115,7 @@ export default function MarketingPage() {
         </div>
       </header>
 
-      <main className={`${CONTAINER} space-y-6 pb-14 sm:space-y-8 sm:pb-20`}>
+      <main className={`${CONTAINER} space-y-6 pb-28 sm:space-y-8 sm:pb-24`}>
         {/* Mobile sticky CTA */}
         <div className="fixed inset-x-0 bottom-0 z-30 px-4 pb-4 pt-2 sm:px-6 md:hidden pointer-events-none">
           <div className="pointer-events-auto mx-auto max-w-md rounded-2xl border border-white/10 bg-black/70 px-4 py-3 shadow-ns-card backdrop-blur-xl">

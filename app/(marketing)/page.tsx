@@ -56,12 +56,12 @@ export default function MarketingPage() {
               </div>
             </div>
 
-            {/* Product shot: two phone mockups */}
-            <div className="mt-4 w-full max-w-sm md:mt-0 animate-fade-in-up animate-delay-1">
-              <div className="mx-auto flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-10">
-                {/* Card 1 - You */}
-                <div className="relative z-10 -mb-8 flex aspect-[9/16] w-56 -rotate-6 flex-col justify-between rounded-[2.5rem] border-4 border-slate-800 bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl shadow-blue-500/10 md:mb-0 md:w-64">
-                  <div className="absolute inset-[6px] rounded-[2rem] border border-white/10 bg-gradient-to-b from-slate-900/90 to-slate-800/80 p-4 flex flex-col justify-between">
+            {/* Product shot: two side-by-side phone cards */}
+            <div className="mt-6 w-full max-w-sm md:mt-0 animate-fade-in-up animate-delay-1">
+              <div className="mx-auto flex flex-col items-center gap-4 sm:gap-6 md:flex-row md:justify-center md:gap-8">
+                {/* Card 1 - Me */}
+                <div className="flex aspect-[9/16] w-full max-w-[11.5rem] flex-col justify-between rounded-[2.5rem] border-4 border-slate-800 bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl shadow-blue-500/10">
+                  <div className="m-[5px] flex flex-1 flex-col justify-between rounded-[2rem] border border-white/10 bg-gradient-to-b from-slate-900/90 to-slate-800/80 p-4">
                     <div className="space-y-2">
                       <div className="h-1.5 w-16 rounded-full bg-slate-700/70" />
                       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -77,8 +77,8 @@ export default function MarketingPage() {
                 </div>
 
                 {/* Card 2 - Partner */}
-                <div className="relative z-20 flex aspect-[9/16] w-56 rotate-6 flex-col justify-between rounded-[2.5rem] border-4 border-slate-800 bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl shadow-blue-500/10 md:w-64">
-                  <div className="absolute inset-[6px] rounded-[2rem] border border-white/10 bg-gradient-to-b from-slate-900/90 to-slate-800/80 p-4 flex flex-col justify-between">
+                <div className="flex aspect-[9/16] w-full max-w-[11.5rem] flex-col justify-between rounded-[2.5rem] border-4 border-slate-800 bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl shadow-blue-500/10">
+                  <div className="m-[5px] flex flex-1 flex-col justify-between rounded-[2rem] border border-white/10 bg-gradient-to-b from-slate-900/90 to-slate-800/80 p-4">
                     <div className="space-y-2">
                       <div className="h-1.5 w-14 rounded-full bg-slate-700/70" />
                       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">

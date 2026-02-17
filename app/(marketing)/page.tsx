@@ -37,17 +37,17 @@ export default function MarketingPage() {
                 </span>
                 <span>Private daily ritual for couples</span>
               </div>
-              <div className="flex items-center justify-center gap-3 md:justify-start animate-fade-in-up animate-delay-1">
+              <div className="flex flex-col items-center gap-3 md:items-start animate-fade-in-up animate-delay-1">
                 <Image
                   src="/north-star-logo.png"
                   alt="North Star"
-                  width={96}
-                  height={96}
-                  className="h-12 w-auto object-contain"
+                  width={144}
+                  height={144}
+                  className="h-20 w-auto object-contain sm:h-24"
                   priority
                 />
-                <div className="text-left">
-                  <p className="text-xl font-semibold tracking-[-0.05em] text-white sm:text-2xl">
+                <div className="text-center md:text-left">
+                  <p className="text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
                     North Star
                   </p>
                   <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
@@ -84,18 +84,7 @@ export default function MarketingPage() {
 
             {/* Phone visuals */}
             <div className="mt-4 w-full max-w-sm md:mt-0 animate-fade-in-up animate-delay-2">
-              <div className="mx-auto flex h-[360px] w-full max-w-xs items-center justify-center gap-4">
-                <div className="flex h-64 w-36 -rotate-6 flex-col justify-between rounded-3xl border border-white/10 bg-white/5 p-3 shadow-2xl shadow-black/70 backdrop-blur-xl sm:h-72 sm:w-40">
-                  <div className="h-2 w-16 rounded-full bg-slate-700/60" />
-                  <div className="space-y-2 text-left">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-                      Today’s prompt
-                    </p>
-                    <p className="text-sm leading-relaxed text-slate-50">
-                      “What’s one small thing you appreciated about your partner this week?”
-                    </p>
-                  </div>
-                </div>
+              <div className="mx-auto flex h-[360px] w-full max-w-xs items-center justify-center">
                 <div className="flex h-64 w-36 translate-y-4 rotate-3 flex-col justify-between rounded-3xl border border-white/10 bg-white/5 p-3 shadow-2xl shadow-black/70 backdrop-blur-xl sm:h-72 sm:w-40">
                   <div className="h-2 w-14 rounded-full bg-slate-700/60" />
                   <div className="mt-3 space-y-3 text-left">

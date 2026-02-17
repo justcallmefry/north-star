@@ -3,19 +3,17 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import Nodemailer from "next-auth/providers/nodemailer";
 import { prisma } from "@/lib/prisma";
 import { sendVerificationRequest } from "@/lib/email";
+import { getEmailEnv } from "@/lib/email-env";
 
 // Read at runtime so Next.js doesn't inline env at build time (Vercel build may not have RESEND_API_KEY).
 function isEmailConfigured(): boolean {
   return !!(process.env["EMAIL_SERVER"] || process.env["RESEND_API_KEY"]);
 }
 
-// Capture env in this module (same bundle as route that logs "RESEND_API_KEY=set") and pass into email so the email chunk doesn't rely on process.env.
+// Use getEmailEnv() so we use env set by the route (same request); avoids email chunk's process.env being inlined empty.
 function makeSendVerificationRequest() {
-  const resendApiKey = process.env["RESEND_API_KEY"];
-  const emailServer = process.env["EMAIL_SERVER"];
-  const nodeEnv = process.env["NODE_ENV"];
   return (params: Parameters<typeof sendVerificationRequest>[0]) =>
-    sendVerificationRequest(params, { resendApiKey, emailServer, nodeEnv });
+    sendVerificationRequest(params, getEmailEnv());
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({

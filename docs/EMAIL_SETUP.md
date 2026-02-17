@@ -2,7 +2,11 @@
 
 If the app says it sent an email but you don’t receive it, or you get stuck on the login page, check the following.
 
-## 0. Stuck on login (preview URL / “couldn’t go further”)
+## 0. Magic link 404 / DEPLOYMENT_NOT_FOUND
+
+If the magic link points to `your-main-url.vercel.app` or a wrong URL and you get **404 DEPLOYMENT_NOT_FOUND**: set **`AUTH_URL`** in Vercel to the **exact** URL you use to open the app (e.g. `https://your-actual-app.vercel.app`), then redeploy and request a new magic link. If **`NEXTAUTH_URL`** is set, set it to the same value.
+
+## 0b. Stuck on login (preview URL / “couldn’t go further”)
 
 If you opened a **preview** link (e.g. `…-chris-frys-projects-dcf37fe5.vercel.app`) and get stuck on `/login`:
 

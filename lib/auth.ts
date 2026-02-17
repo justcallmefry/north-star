@@ -1,3 +1,4 @@
+import type { NextRequest } from "next/server";
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Nodemailer from "next-auth/providers/nodemailer";
@@ -55,7 +56,10 @@ export function getHandlers(sendVerificationRequest: (params: VerificationReques
   return authInstance.handlers;
 }
 
-export const handlers = { GET: (req: Request) => getInstance().handlers.GET(req), POST: (req: Request) => getInstance().handlers.POST(req) };
+export const handlers = {
+  GET: (req: NextRequest) => getInstance().handlers.GET(req),
+  POST: (req: NextRequest) => getInstance().handlers.POST(req),
+};
 export const auth = () => getInstance().auth();
 export const signIn = (...args: Parameters<ReturnType<typeof NextAuth>["signIn"]>) => getInstance().signIn(...args);
 export const signOut = (...args: Parameters<ReturnType<typeof NextAuth>["signOut"]>) => getInstance().signOut(...args);

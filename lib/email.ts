@@ -101,7 +101,7 @@ export async function sendBetaConfirmation(to: string, appUrl: string): Promise<
   if (process.env["RESEND_API_KEY"]) {
     const resend = await import("resend");
     const client = new resend.Resend(process.env["RESEND_API_KEY"]);
-    const signInUrl = `${appUrl}/login`;
+    const signInUrl = `${appUrl}/login?email=${encodeURIComponent(to)}`;
     const { error } = await client.emails.send({
       from: from,
       to: [to],

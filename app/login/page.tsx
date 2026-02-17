@@ -1,15 +1,22 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const PRODUCTION_APP_URL = process.env.NEXT_PUBLIC_APP_URL || "";
 
 export default function LoginPage() {
+  const searchParams = useSearchParams();
+  const emailParam = searchParams.get("email") ?? "";
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (emailParam) setEmail(decodeURIComponent(emailParam));
+  }, [emailParam]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

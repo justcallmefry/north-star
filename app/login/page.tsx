@@ -2,11 +2,11 @@
 
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 const PRODUCTION_APP_URL = process.env.NEXT_PUBLIC_APP_URL || "";
 
-export default function LoginPage() {
+function LoginForm() {
   const searchParams = useSearchParams();
   const emailParam = searchParams.get("email") ?? "";
   const [email, setEmail] = useState("");
@@ -111,5 +111,25 @@ export default function LoginPage() {
         </form>
       </div>
     </main>
+  );
+}
+
+function LoginFallback() {
+  return (
+    <main className="min-h-screen flex flex-col items-center justify-center p-8">
+      <div className="w-full max-w-md">
+        <h1 className="text-2xl font-bold mb-6">Sign in to North Star</h1>
+        <div className="animate-pulse rounded-md h-10 bg-gray-200 dark:bg-gray-700 mb-4" />
+        <div className="animate-pulse rounded-md h-10 bg-gray-200 dark:bg-gray-700" />
+      </div>
+    </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<LoginFallback />}>
+      <LoginForm />
+    </Suspense>
   );
 }

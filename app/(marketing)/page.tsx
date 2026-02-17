@@ -86,7 +86,8 @@ export default function MarketingPage() {
                     </div>
                     <div className="mt-3 rounded-2xl bg-slate-900/80 px-3 py-3">
                       <p className="text-sm leading-relaxed text-slate-50">
-                        I felt loved when you made coffee this morning.
+                        I felt loved when you made coffee this morning and left me a little note on
+                        the counter.
                       </p>
                     </div>
                   </div>
@@ -103,7 +104,8 @@ export default function MarketingPage() {
                     </div>
                     <div className="mt-3 rounded-2xl bg-slate-900/80 px-3 py-3">
                       <p className="text-sm leading-relaxed text-slate-50">
-                        I loved our walk after dinner.
+                        I loved our walk after dinner and how we ended up talking about everything
+                        and nothing.
                       </p>
                     </div>
                   </div>

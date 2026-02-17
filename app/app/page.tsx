@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { ArrowRight, CalendarRange, History, Sparkles, Users } from "lucide-react";
+import { ArrowRight, CalendarRange, History, Users } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { isBuildTime } from "@/lib/build";
@@ -166,7 +166,7 @@ export default async function AppPage() {
                   href="/onboarding"
                   className="inline-flex items-center gap-2 rounded-lg bg-sky-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-sm shadow-sky-500/30 transition hover:bg-sky-400"
                 >
-                  <Sparkles className="h-4 w-4" />
+                  <ArrowRight className="h-4 w-4" />
                   Start or join relationship
                 </Link>
               </div>

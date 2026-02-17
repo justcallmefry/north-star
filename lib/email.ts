@@ -69,6 +69,32 @@ async function sendWithResend(to: string, url: string, from: string, apiKey: str
   if (error) throw new Error(`Resend error: ${JSON.stringify(error)}`);
 }
 
+/** Called from the auth API route with process.env.RESEND_API_KEY so the key is read in the route chunk. */
+export type VerificationRequestParams = {
+  identifier: string;
+  url: string;
+  provider: { server?: string | object; from?: string };
+  token?: string;
+  expires?: Date;
+};
+
+export async function sendMagicLinkWithKey(
+  params: VerificationRequestParams,
+  apiKey: string | undefined
+): Promise<void> {
+  const { identifier, url, provider } = params;
+  const from = provider.from ?? "noreply@example.com";
+  if (apiKey) {
+    await sendWithResend(identifier, url, from, apiKey);
+    return;
+  }
+  if (process.env["NODE_ENV"] === "development") {
+    console.log(`[Magic link] ${identifier} -> ${url}`);
+    return;
+  }
+  throw new Error("Email is not configured. Set RESEND_API_KEY or EMAIL_SERVER in your deployment.");
+}
+
 /** Send beta signup confirmation with link to use the app. Returns true if sent, false if skipped (no config). */
 export async function sendBetaConfirmation(to: string, appUrl: string): Promise<boolean> {
   const from = process.env["EMAIL_FROM"] || "onboarding@resend.dev";

@@ -1,16 +1,17 @@
+import { AsyncLocalStorage } from "async_hooks";
+
 /**
- * Request-scoped email env. The API route sets this at the start of each request
- * (where process.env is available) so the email chunk can read it without relying on
- * process.env (which Next may inline at build time in other chunks).
+ * Request-scoped email env. The API route runs the handler inside runWithEmailEnvAsync()
+ * so getEmailEnv() sees the env in the same async context (avoids process.env inlined empty in other chunks).
  */
 export type EmailEnv = { resendApiKey?: string; emailServer?: string; nodeEnv?: string };
 
-let _env: EmailEnv = {};
+const storage = new AsyncLocalStorage<EmailEnv>();
 
-export function setEmailEnv(env: EmailEnv): void {
-  _env = env;
+export async function runWithEmailEnvAsync<T>(env: EmailEnv, fn: () => Promise<T>): Promise<T> {
+  return storage.run(env, fn);
 }
 
 export function getEmailEnv(): EmailEnv {
-  return _env;
+  return storage.getStore() ?? {};
 }

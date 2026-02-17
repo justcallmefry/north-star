@@ -53,7 +53,7 @@ export default function MarketingPage() {
                 The private daily ritual for couples who want to stay close without the noise.
               </p>
               <p className="animate-fade-in-up animate-delay-3 text-sm leading-relaxed text-slate-400 sm:text-base">
-                One shared question, answered in your own words, then revealed together when you&apos;re
+                One shared question, answered in your own words, then revealed together when you’re
                 both ready.
               </p>
               <div className="mt-5 flex w-full flex-col gap-3 sm:mt-7 sm:w-auto sm:flex-row sm:gap-4 animate-fade-in-up animate-delay-3">
@@ -80,10 +80,10 @@ export default function MarketingPage() {
                   <div className="h-2 w-16 rounded-full bg-slate-700/60" />
                   <div className="mt-3 space-y-2 text-left">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-                      Today&apos;s prompt
+                      Today’s prompt
                     </p>
                     <p className="text-sm leading-relaxed text-slate-50">
-                      “What&apos;s one small thing you appreciated about your partner this week?”
+                      “What’s one small thing you appreciated about your partner this week?”
                     </p>
                   </div>
                 </div>
@@ -115,7 +115,7 @@ export default function MarketingPage() {
         </div>
       </header>
 
-      <main className={`${CONTAINER} space-y-6 pb-28 sm:space-y-8 sm:pb-24`}>
+      <main className={`${CONTAINER} space-y-6 pb-40 sm:space-y-8 sm:pb-32`}>
         {/* Mobile sticky CTA */}
         <div className="fixed inset-x-0 bottom-0 z-30 px-4 pb-4 pt-2 sm:px-6 md:hidden pointer-events-none">
           <div className="pointer-events-auto mx-auto max-w-md rounded-2xl border border-white/10 bg-black/70 px-4 py-3 shadow-ns-card backdrop-blur-xl">
@@ -149,7 +149,7 @@ export default function MarketingPage() {
             {[
               {
                 quote:
-                  "I’ll be honest, I didn&apos;t want to do this at first. I thought it was just another chore. But I realized how important it was to my wife, so I gave it a shot. After a couple of times, I realized it was actually super easy—took 30 seconds—and now I look forward to it every day.",
+                  "I’ll be honest, I didn’t want to do this at first. I thought it was just another chore. But I realized how important it was to my wife, so I gave it a shot. After a couple of times, I realized it was actually super easy—took 30 seconds—and now I look forward to it every day.",
                 author: "— Mark T., married 7 years",
               },
               {
@@ -159,7 +159,7 @@ export default function MarketingPage() {
               },
               {
                 quote:
-                  "I love that I don&apos;t have to come up with conversation starters anymore. The daily prompt does the heavy lifting for us.",
+                  "I love that I don’t have to come up with conversation starters anymore. The daily prompt does the heavy lifting for us.",
                 author: "— David P.",
               },
             ].map(({ quote, author }) => (
@@ -179,7 +179,7 @@ export default function MarketingPage() {
           <div className="mt-4 hidden gap-4 md:grid md:grid-cols-3 lg:gap-6">
             <figure className="col-span-2 row-span-2 rounded-2xl border border-white/10 bg-white/5 p-5 text-left shadow-ns-card backdrop-blur-xl">
               <p className="text-sm leading-relaxed text-slate-100 md:text-base">
-                I’ll be honest, I didn&apos;t want to do this at first. I thought it was just another
+                I’ll be honest, I didn’t want to do this at first. I thought it was just another
                 chore. But I realized how important it was to my wife, so I gave it a shot. After a
                 couple of times, I realized it was actually super easy—took 30 seconds—and now I
                 look forward to it every day.
@@ -199,7 +199,7 @@ export default function MarketingPage() {
             </figure>
             <figure className="rounded-2xl border border-white/10 bg-white/5 p-5 text-left shadow-ns-card backdrop-blur-xl">
               <p className="text-sm leading-relaxed text-slate-100 md:text-base">
-                I love that I don&apos;t have to come up with conversation starters anymore. The daily
+                I love that I don’t have to come up with conversation starters anymore. The daily
                 prompt does the heavy lifting for us.
               </p>
               <figcaption className="mt-4 text-xs font-medium text-slate-400 md:text-sm">
@@ -308,7 +308,7 @@ export default function MarketingPage() {
         {/* Who it's for */}
         <section className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-ns-card backdrop-blur-xl sm:p-6 md:p-7">
           <h2 className="text-xl font-semibold tracking-[-0.03em] text-white sm:text-2xl">
-            Who it&apos;s for
+            Who it’s for
           </h2>
           <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm leading-7 text-slate-100 sm:text-base">
             {[
@@ -330,7 +330,7 @@ export default function MarketingPage() {
               Private beta
             </h2>
             <p className="mt-1.5 text-sm leading-7 text-slate-200 sm:text-base">
-              We&apos;re letting in a small group of couples first. Leave your email and we&apos;ll
+              We’re letting in a small group of couples first. Leave your email and we’ll
               send you an invite when a spot opens.
             </p>
             <BetaForm />

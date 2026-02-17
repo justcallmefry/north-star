@@ -7,28 +7,37 @@ import { sendVerificationRequest } from "@/lib/email";
 import { getEmailEnv } from "@/lib/email-env";
 import type { VerificationRequestParams } from "@/lib/email";
 
-// Read at runtime so Next.js doesn't inline env at build time.
-function isEmailConfigured(): boolean {
-  return !!(process.env["EMAIL_SERVER"] || process.env["RESEND_API_KEY"]);
-}
-
 function defaultSendVerificationRequest(params: VerificationRequestParams) {
   return sendVerificationRequest(params, getEmailEnv());
 }
 
 let authInstance: ReturnType<typeof NextAuth> | null = null;
 
-function createAuthInstance(sendVerificationRequest: (params: VerificationRequestParams) => Promise<void>): ReturnType<typeof NextAuth> {
+export type AuthHandlerOptions = {
+  /** Pass true when RESEND_API_KEY or EMAIL_SERVER is set (e.g. from the API route) so the email provider is registered even if env is inlined at build time. */
+  emailConfigured?: boolean;
+  /** Sender address for magic-link emails when using Resend without EMAIL_FROM (e.g. "onboarding@resend.dev"). Set from the route so it works on Vercel. */
+  defaultFrom?: string;
+};
+
+function createAuthInstance(
+  sendVerificationRequest: (params: VerificationRequestParams) => Promise<void>,
+  options?: AuthHandlerOptions
+): ReturnType<typeof NextAuth> {
+  const emailConfigured =
+    options?.emailConfigured ?? !!(process.env["EMAIL_SERVER"] || process.env["RESEND_API_KEY"]);
+  const from =
+    process.env["EMAIL_FROM"] ?? options?.defaultFrom ?? "noreply@example.com";
   return NextAuth({
     adapter: PrismaAdapter(prisma as Parameters<typeof PrismaAdapter>[0]),
     session: { strategy: "database", maxAge: 30 * 24 * 60 * 60, updateAge: 24 * 60 * 60 },
     pages: { signIn: "/login" },
     providers: [
-      ...(isEmailConfigured()
+      ...(emailConfigured
         ? [
             Nodemailer({
               server: process.env["EMAIL_SERVER"] ?? { host: "localhost", port: 1, secure: false },
-              from: process.env["EMAIL_FROM"] ?? "noreply@example.com",
+              from,
               sendVerificationRequest,
             }),
           ]
@@ -46,13 +55,16 @@ function createAuthInstance(sendVerificationRequest: (params: VerificationReques
 }
 
 function getInstance(): ReturnType<typeof NextAuth> {
-  if (!authInstance) authInstance = createAuthInstance(defaultSendVerificationRequest);
+  if (!authInstance) authInstance = createAuthInstance(defaultSendVerificationRequest, undefined);
   return authInstance;
 }
 
-/** Call from the auth API route with a sender that reads process.env in the route chunk. */
-export function getHandlers(sendVerificationRequest: (params: VerificationRequestParams) => Promise<void>) {
-  authInstance = createAuthInstance(sendVerificationRequest);
+/** Call from the auth API route with a sender that reads process.env in the route chunk. Pass emailConfigured so the provider is registered on Vercel (avoids build-time env inlining). */
+export function getHandlers(
+  sendVerificationRequest: (params: VerificationRequestParams) => Promise<void>,
+  options?: AuthHandlerOptions
+) {
+  authInstance = createAuthInstance(sendVerificationRequest, options);
   return authInstance.handlers;
 }
 

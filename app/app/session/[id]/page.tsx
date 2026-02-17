@@ -17,14 +17,13 @@ export default async function SessionPage({ params }: Props) {
   if (!data) notFound();
 
   return (
-    <main className="min-h-screen p-8">
-      <p className="mb-4">
-        <Link href="/app" className="text-sm text-indigo-600 underline dark:text-indigo-400">
-          ← Back to app
+    <div className="space-y-4">
+      <p>
+        <Link href="/app" className="text-sm font-medium text-sky-300 hover:text-sky-200">
+          ← Back to today
         </Link>
       </p>
-      <h1 className="text-2xl font-bold">Session</h1>
       <SessionContent data={data} currentUserId={session.user.id} />
-    </main>
+    </div>
   );
 }

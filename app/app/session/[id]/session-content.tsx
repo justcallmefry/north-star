@@ -87,16 +87,16 @@ export function SessionContent({ data, currentUserId }: Props) {
 
   return (
     <div className="space-y-8">
-      <p className="text-center text-xl leading-relaxed text-gray-700 dark:text-gray-300">
+      <p className="text-center text-xl leading-relaxed text-slate-50 sm:text-2xl">
         {data.promptText}
       </p>
 
       {data.momentText && (
-        <div className="mx-auto max-w-xl rounded-lg border border-gray-100 bg-gray-50/80 px-4 py-3 dark:border-gray-600/50 dark:bg-gray-800/50">
-          <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+        <div className="mx-auto max-w-xl rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
             Optional moment
           </p>
-          <p className="mt-1.5 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+          <p className="mt-1.5 text-base leading-relaxed text-slate-200 sm:text-lg">
             {data.momentText}
           </p>
         </div>
@@ -109,21 +109,21 @@ export function SessionContent({ data, currentUserId }: Props) {
             onChange={(e) => setText(e.target.value)}
             placeholder="Your answer..."
             rows={5}
-            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 leading-relaxed text-gray-800 placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500"
+            className="w-full rounded-2xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-base leading-relaxed text-slate-50 placeholder:text-slate-500 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
             required
           />
-          <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-center text-sm text-slate-400 sm:text-base">
             Your answer stays private until your partner responds.
           </p>
           <div className="flex flex-col items-center gap-3">
             <button
               type="submit"
               disabled={!!loading}
-              className="rounded-full bg-gray-900 px-6 py-3 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
+              className="rounded-lg bg-emerald-500 px-6 py-3 text-base font-semibold text-emerald-950 shadow-sm shadow-emerald-500/30 hover:bg-emerald-400 disabled:opacity-50"
             >
               {loading === "submit" ? "Saving…" : "Save my answer"}
             </button>
-            <p className="text-xs text-gray-400 dark:text-gray-500">
+            <p className="text-xs text-slate-400 sm:text-sm">
               {responseCount} of 2 responses for today.
             </p>
           </div>
@@ -131,7 +131,7 @@ export function SessionContent({ data, currentUserId }: Props) {
       )}
 
       {data.hasUserResponded && (
-        <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-center text-sm text-slate-400 sm:text-base">
           {data.canReveal
             ? "2 of 2 responses for today."
             : "You're 1 of 2 responses for today."}
@@ -139,31 +139,31 @@ export function SessionContent({ data, currentUserId }: Props) {
       )}
 
       {data.hasUserResponded && data.state === "open" && !data.canReveal && (
-        <p className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-amber-800 dark:border-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+        <p className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-200 sm:text-base">
           Waiting on your partner to answer. You can reveal once both have responded.
         </p>
       )}
 
       {data.hasUserResponded && data.state === "open" && data.canReveal && !isRevealed && (
         <div>
-          <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">Both of you have answered.</p>
-          <button
-            type="button"
-            onClick={handleReveal}
-            disabled={!!loading}
-            className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 disabled:opacity-50"
-          >
+          <p className="mb-2 text-sm text-slate-300 sm:text-base">Both of you have answered.</p>
+            <button
+              type="button"
+              onClick={handleReveal}
+              disabled={!!loading}
+              className="rounded-lg bg-sky-500 px-5 py-2 text-base font-semibold text-slate-950 shadow-sm shadow-sky-500/30 hover:bg-sky-400 disabled:opacity-50"
+            >
             {loading === "reveal" ? "Revealing…" : "Reveal answers"}
           </button>
         </div>
       )}
 
       {isRevealed && (
-        <div className="space-y-4 rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800/50">
-          <h3 className="font-semibold">Answers</h3>
+        <div className="space-y-4 rounded-2xl border border-slate-800 bg-slate-950/90 p-4">
+          <h3 className="text-base font-semibold text-slate-50 sm:text-lg">Answers</h3>
           <ul className="space-y-2">
             {responsesToShow.map((content, i) => (
-              <li key={i} className="rounded-lg bg-white p-3 dark:bg-gray-800">
+              <li key={i} className="rounded-xl border border-slate-800 bg-slate-900/80 p-3 text-base text-slate-100 sm:text-lg">
                 {content ?? "—"}
               </li>
             ))}
@@ -174,30 +174,30 @@ export function SessionContent({ data, currentUserId }: Props) {
               value={reaction}
               onChange={(e) => setReaction(e.target.value)}
               placeholder="Quick reaction (e.g. 💕)"
-              className="rounded border border-gray-300 px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+              className="rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-1.5 text-sm text-slate-100 placeholder:text-slate-500"
             />
             <button
               type="button"
               onClick={handleReaction}
               disabled={!!loading || !reaction.trim()}
-              className="rounded bg-gray-800 px-3 py-1 text-sm text-white hover:bg-gray-700 disabled:opacity-50 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+              className="rounded-lg bg-emerald-500 px-4 py-1.5 text-sm font-semibold text-emerald-950 shadow-sm shadow-emerald-500/30 hover:bg-emerald-400 disabled:opacity-50"
             >
               {loading === "reaction" ? "Saving…" : "Add reaction"}
             </button>
           </div>
           {reflectionsToShow.length > 0 && (
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-slate-400 sm:text-base">
               Reactions: {reflectionsToShow.map((r) => r.reaction).filter(Boolean).join(", ")}
             </p>
           )}
-          <p className="pt-3 text-center text-sm text-gray-500 dark:text-gray-400">
+          <p className="pt-3 text-center text-sm text-slate-400 sm:text-base">
             {affirmation}
           </p>
         </div>
       )}
 
       {error && (
-        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+        <p className="text-sm text-red-400 sm:text-base">{error}</p>
       )}
     </div>
   );

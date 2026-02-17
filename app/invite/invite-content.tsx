@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Copy, RefreshCw } from "lucide-react";
 import { createInvite } from "@/lib/relationships";
 
 type Props = {
@@ -14,6 +15,7 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
   const [code, setCode] = useState(initialCode);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const shareUrl = code ? `${origin}/join?code=${encodeURIComponent(code)}` : "";
 
@@ -23,6 +25,7 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
     try {
       const { code: newCode } = await createInvite(relationshipId);
       setCode(newCode);
+      setCopied(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create invite");
     } finally {
@@ -30,22 +33,34 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
     }
   }
 
+  async function handleCopy() {
+    if (!shareUrl) return;
+    setError(null);
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setError("Could not copy link. You can still select and copy it manually.");
+    }
+  }
+
   if (!code) {
     return (
-      <div className="space-y-4">
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          No active invite. Create one below.
+      <div className="space-y-4 rounded-xl border border-slate-800 bg-slate-950/80 p-4 sm:p-5">
+        <p className="text-sm text-slate-300">
+          No active invite yet. Create one and send it to your partner so they can join.
         </p>
         <button
           type="button"
           onClick={handleNewCode}
           disabled={loading}
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+          className="w-full rounded-lg bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-emerald-950 shadow-sm shadow-emerald-500/30 hover:bg-emerald-400 disabled:opacity-50"
         >
           {loading ? "Creating…" : "Generate invite code"}
         </button>
         {error && (
-          <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+          <p className="text-sm text-red-400">{error}</p>
         )}
       </div>
     );
@@ -54,33 +69,57 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
   return (
     <div className="space-y-4">
       {relationshipName && (
-        <p className="text-sm text-gray-500">Relationship: {relationshipName}</p>
+        <p className="text-sm text-slate-400">
+          Relationship: <span className="font-medium text-slate-100">{relationshipName}</span>
+        </p>
       )}
-      <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-center">
-        <p className="text-sm text-gray-500 mb-1">Code</p>
-        <p className="text-2xl font-mono font-bold tracking-wider">{code}</p>
+
+      <div className="rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-4 text-center sm:px-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+          Invite code
+        </p>
+        <p className="mt-2 text-3xl font-mono font-bold tracking-[0.3em] text-slate-50 sm:text-4xl">
+          {code}
+        </p>
       </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Share link</label>
+
+      <div className="space-y-2 rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-4 sm:px-5">
+        <label className="block text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+          Share link
+        </label>
         <input
           readOnly
           value={shareUrl}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-800 text-sm"
+          className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500"
         />
-        <p className="mt-1 text-xs text-gray-500">
-          Copy and send this link to your partner. Code expires in 7 days.
-        </p>
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-slate-400 sm:max-w-xs">
+            Tap **Copy link** and paste it into a text or email. The code expires in 7 days.
+          </p>
+          <button
+            type="button"
+            onClick={handleCopy}
+            disabled={!shareUrl}
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-sky-500 px-4 py-2 text-xs font-semibold text-slate-950 shadow-sm shadow-sky-500/30 hover:bg-sky-400 disabled:opacity-60"
+          >
+            <Copy className="h-4 w-4" />
+            {copied ? "Copied" : "Copy link"}
+          </button>
+        </div>
       </div>
+
       <button
         type="button"
         onClick={handleNewCode}
         disabled={loading}
-        className="w-full py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-950/80 px-4 py-2 text-xs font-medium text-slate-200 hover:border-slate-500 hover:bg-slate-900 disabled:opacity-50"
       >
+        <RefreshCw className="h-4 w-4" />
         {loading ? "Creating…" : "Generate new code"}
       </button>
+
       {error && (
-        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+        <p className="text-sm text-red-400">{error}</p>
       )}
     </div>
   );

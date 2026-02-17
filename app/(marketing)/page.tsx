@@ -156,10 +156,12 @@ export default function MarketingPage() {
             ].map(({ step, title, body, icon: Icon, bg }) => (
               <div
                 key={step}
-                className="rounded-xl border border-slate-100 bg-slate-50/50 p-4"
+                className="rounded-xl border border-slate-100 bg-slate-50/50 p-4 text-center sm:text-left sm:flex sm:flex-col sm:items-start"
               >
-                <div className={`flex h-12 w-12 items-center justify-center rounded-lg sm:h-14 sm:w-14 ${bg}`}>
-                  <Icon className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={1.5} />
+                <div
+                  className={`mx-auto flex h-14 w-14 items-center justify-center rounded-xl sm:mx-0 sm:h-16 sm:w-16 ${bg}`}
+                >
+                  <Icon className="h-8 w-8 sm:h-9 sm:w-9" strokeWidth={1.5} />
                 </div>
                 <p className="mt-3 text-base font-medium text-slate-900 sm:text-lg">{title}</p>
                 <p className="mt-1 text-base leading-7 text-slate-800 sm:text-lg">{body}</p>
@@ -180,7 +182,7 @@ export default function MarketingPage() {
               "Anyone tired of social apps and gamification",
             ].map((item) => (
               <li key={item} className="flex items-center gap-3">
-                <Minus className="h-6 w-6 shrink-0 text-amber-500" strokeWidth={2} />
+                <Heart className="h-6 w-6 shrink-0 text-rose-500" strokeWidth={2} />
                 {item}
               </li>
             ))}

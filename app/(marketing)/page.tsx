@@ -30,6 +30,21 @@ export default function MarketingPage() {
           <div className="flex flex-col items-center text-center gap-16 md:flex-row md:items-center md:justify-between md:text-left">
             {/* Hero text */}
             <div className="space-y-5 md:max-w-xl">
+              {/* Logo + tagline */}
+              <div className="flex items-center justify-center gap-3 md:justify-start">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-emerald-400/40 bg-emerald-400/10">
+                  <Sparkles className="h-6 w-6 text-emerald-300" strokeWidth={1.7} />
+                </div>
+                <div className="flex flex-col items-start">
+                  <span className="text-base font-semibold tracking-[-0.04em] text-white sm:text-lg">
+                    North Star
+                  </span>
+                  <span className="text-xs font-medium text-slate-300 sm:text-sm">
+                    Closer. Every day. Choose Love.
+                  </span>
+                </div>
+              </div>
+
               <h1 className="animate-fade-in-up text-4xl font-semibold tracking-[-0.06em] text-white sm:text-5xl md:text-6xl">
                 Closer. Every day.
               </h1>
@@ -57,11 +72,11 @@ export default function MarketingPage() {
               </div>
             </div>
 
-            {/* Product shot: two side-by-side phone cards */}
-            <div className="mt-6 w-full max-w-sm md:mt-0 animate-fade-in-up animate-delay-1">
-              <div className="mx-auto flex flex-col items-center gap-4 sm:gap-6 md:flex-row md:justify-center md:gap-8">
+            {/* Product shot: two phone cards side by side */}
+            <div className="mt-8 w-full md:mt-0 animate-fade-in-up animate-delay-1">
+              <div className="mx-auto flex w-full items-center justify-center gap-4 sm:gap-6">
                 {/* Card 1 - Me */}
-                <div className="flex aspect-[9/16] w-full max-w-[11.5rem] flex-col justify-between rounded-[2.5rem] border-4 border-slate-800 bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl shadow-blue-500/10">
+                <div className="flex aspect-[9/16] w-[44%] max-w-[11.5rem] flex-col justify-between rounded-[2.5rem] border-4 border-slate-800 bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl shadow-blue-500/10">
                   <div className="m-[5px] flex flex-1 flex-col justify-between rounded-[2rem] border border-white/10 bg-gradient-to-b from-slate-900/90 to-slate-800/80 p-4">
                     <div className="space-y-2">
                       <div className="h-1.5 w-16 rounded-full bg-slate-700/70" />
@@ -78,7 +93,7 @@ export default function MarketingPage() {
                 </div>
 
                 {/* Card 2 - Partner */}
-                <div className="flex aspect-[9/16] w-full max-w-[11.5rem] flex-col justify-between rounded-[2.5rem] border-4 border-slate-800 bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl shadow-blue-500/10">
+                <div className="flex aspect-[9/16] w-[44%] max-w-[11.5rem] flex-col justify-between rounded-[2.5rem] border-4 border-slate-800 bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl shadow-blue-500/10">
                   <div className="m-[5px] flex flex-1 flex-col justify-between rounded-[2rem] border border-white/10 bg-gradient-to-b from-slate-900/90 to-slate-800/80 p-4">
                     <div className="space-y-2">
                       <div className="h-1.5 w-14 rounded-full bg-slate-700/70" />
@@ -148,7 +163,7 @@ export default function MarketingPage() {
                 key={author}
                 className="min-w-[82%] snap-start rounded-2xl border border-white/10 bg-white/5 p-4 text-left shadow-ns-card backdrop-blur-xl"
               >
-                <p className="text-sm leading-relaxed text-slate-100">{quote}</p>
+                <p className="text-base leading-relaxed text-slate-100">{quote}</p>
                 <figcaption className="mt-3 text-xs font-medium text-slate-400">
                   {author}
                 </figcaption>
@@ -159,7 +174,7 @@ export default function MarketingPage() {
           {/* Desktop: masonry-style grid */}
           <div className="mt-4 hidden gap-4 md:grid md:grid-cols-3 lg:gap-6">
             <figure className="col-span-2 row-span-2 rounded-2xl border border-white/10 bg-white/5 p-5 text-left shadow-ns-card backdrop-blur-xl">
-              <p className="text-sm leading-relaxed text-slate-100 md:text-base">
+              <p className="text-base leading-relaxed text-slate-100 md:text-lg">
                 I’ll be honest, I didn’t want to do this at first. I thought it was just another
                 chore. But I realized how important it was to my wife, so I gave it a shot. After a
                 couple of times, I realized it was actually super easy—took 30 seconds—and now I
@@ -170,7 +185,7 @@ export default function MarketingPage() {
               </figcaption>
             </figure>
             <figure className="rounded-2xl border border-white/10 bg-white/5 p-5 text-left shadow-ns-card backdrop-blur-xl">
-              <p className="text-sm leading-relaxed text-slate-100 md:text-base">
+              <p className="text-base leading-relaxed text-slate-100 md:text-lg">
                 We tried counseling, we tried date nights, but this is the only thing that has
                 actually kept us consistent. It’s low pressure but high impact.
               </p>
@@ -179,7 +194,7 @@ export default function MarketingPage() {
               </figcaption>
             </figure>
             <figure className="rounded-2xl border border-white/10 bg-white/5 p-5 text-left shadow-ns-card backdrop-blur-xl">
-              <p className="text-sm leading-relaxed text-slate-100 md:text-base">
+              <p className="text-base leading-relaxed text-slate-100 md:text-lg">
                 I love that I don’t have to come up with conversation starters anymore. The daily
                 prompt does the heavy lifting for us.
               </p>

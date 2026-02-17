@@ -1,8 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import {
   Compass,
-  Sparkles,
   Heart,
   Lock,
   ShieldCheck,
@@ -31,37 +29,13 @@ export default function MarketingPage() {
           <div className="flex flex-col items-center text-center gap-16 md:flex-row md:items-center md:justify-between md:text-left">
             {/* Hero text */}
             <div className="space-y-5 md:max-w-xl">
-              <div className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-slate-200 backdrop-blur-md animate-fade-in-up">
-                <span className="inline-flex h-5 w-5 items-center justify-center rounded-md bg-emerald-400/10 text-emerald-300">
-                  <Sparkles className="h-3 w-3" />
-                </span>
-                <span>Private daily ritual for couples</span>
-              </div>
-              <div className="flex flex-col items-center gap-3 md:items-start animate-fade-in-up animate-delay-1">
-                <Image
-                  src="/north-star-logo.png"
-                  alt="North Star"
-                  width={144}
-                  height={144}
-                  className="h-20 w-auto object-contain sm:h-24"
-                  priority
-                />
-                <div className="text-center md:text-left">
-                  <p className="text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
-                    North Star
-                  </p>
-                  <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
-                    Closer. Every day. Choose Love.
-                  </p>
-                </div>
-              </div>
-              <h1 className="animate-fade-in-up animate-delay-1 text-4xl font-semibold tracking-[-0.06em] text-white sm:text-5xl md:text-6xl">
-                Reconnect. Every single day.
+              <h1 className="animate-fade-in-up text-4xl font-semibold tracking-[-0.06em] text-white sm:text-5xl md:text-6xl">
+                Closer. Every day.
               </h1>
-              <p className="animate-fade-in-up animate-delay-2 text-base leading-relaxed text-slate-200 sm:text-lg">
-                The private daily ritual for couples who want to stay close without the noise.
+              <p className="animate-fade-in-up animate-delay-1 text-base leading-relaxed text-slate-200 sm:text-lg">
+                The daily ritual for couples to stay connected.
               </p>
-              <p className="animate-fade-in-up animate-delay-3 text-sm leading-relaxed text-slate-400 sm:text-base">
+              <p className="animate-fade-in-up animate-delay-2 text-sm leading-relaxed text-slate-400 sm:text-base">
                 One shared question, answered in your own words, then revealed together when you’re
                 both ready.
               </p>
@@ -82,26 +56,38 @@ export default function MarketingPage() {
               </div>
             </div>
 
-            {/* Phone visuals */}
-            <div className="mt-4 w-full max-w-sm md:mt-0 animate-fade-in-up animate-delay-2">
-              <div className="mx-auto flex h-[360px] w-full max-w-xs items-center justify-center">
-                <div className="flex h-64 w-36 translate-y-4 rotate-3 flex-col justify-between rounded-3xl border border-white/10 bg-white/5 p-3 shadow-2xl shadow-black/70 backdrop-blur-xl sm:h-72 sm:w-40">
-                  <div className="h-2 w-14 rounded-full bg-slate-700/60" />
-                  <div className="mt-3 space-y-3 text-left">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                      Connection moment
-                    </p>
-                    <div className="space-y-1 rounded-2xl bg-slate-900/70 p-3">
-                      <p className="text-[11px] text-slate-400">You</p>
-                      <p className="text-sm leading-relaxed text-slate-50">
-                        “When you brought me coffee before my meeting. It made me feel really
-                        supported.”
+            {/* Product shot: two phone mockups */}
+            <div className="mt-4 w-full max-w-sm md:mt-0 animate-fade-in-up animate-delay-1">
+              <div className="mx-auto flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-10">
+                {/* Card 1 - You */}
+                <div className="relative z-10 -mb-8 flex aspect-[9/16] w-56 -rotate-6 flex-col justify-between rounded-[2.5rem] border-4 border-slate-800 bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl shadow-blue-500/10 md:mb-0 md:w-64">
+                  <div className="absolute inset-[6px] rounded-[2rem] border border-white/10 bg-gradient-to-b from-slate-900/90 to-slate-800/80 p-4 flex flex-col justify-between">
+                    <div className="space-y-2">
+                      <div className="h-1.5 w-16 rounded-full bg-slate-700/70" />
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                        Me
                       </p>
                     </div>
-                    <div className="space-y-1 rounded-2xl bg-slate-900/40 p-3">
-                      <p className="text-[11px] text-slate-400">Partner</p>
+                    <div className="mt-3 rounded-2xl bg-slate-900/80 px-3 py-3">
                       <p className="text-sm leading-relaxed text-slate-50">
-                        “When we took a walk after dinner instead of watching TV.”
+                        I felt loved when you made coffee this morning.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Card 2 - Partner */}
+                <div className="relative z-20 flex aspect-[9/16] w-56 rotate-6 flex-col justify-between rounded-[2.5rem] border-4 border-slate-800 bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl shadow-blue-500/10 md:w-64">
+                  <div className="absolute inset-[6px] rounded-[2rem] border border-white/10 bg-gradient-to-b from-slate-900/90 to-slate-800/80 p-4 flex flex-col justify-between">
+                    <div className="space-y-2">
+                      <div className="h-1.5 w-14 rounded-full bg-slate-700/70" />
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
+                        Partner
+                      </p>
+                    </div>
+                    <div className="mt-3 rounded-2xl bg-slate-900/80 px-3 py-3">
+                      <p className="text-sm leading-relaxed text-slate-50">
+                        I loved our walk after dinner.
                       </p>
                     </div>
                   </div>

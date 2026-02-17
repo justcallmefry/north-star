@@ -149,7 +149,7 @@ export default function MarketingPage() {
             {[
               {
                 quote:
-                  "I’ll be honest, I didn't want to do this at first. I thought it was just another chore. But I realized how important it was to my wife, so I gave it a shot. After a couple of times, I realized it was actually super easy—took 30 seconds—and now I look forward to it every day.",
+                  "I’ll be honest, I didn&apos;t want to do this at first. I thought it was just another chore. But I realized how important it was to my wife, so I gave it a shot. After a couple of times, I realized it was actually super easy—took 30 seconds—and now I look forward to it every day.",
                 author: "— Mark T., married 7 years",
               },
               {
@@ -159,7 +159,7 @@ export default function MarketingPage() {
               },
               {
                 quote:
-                  "I love that I don't have to come up with conversation starters anymore. The daily prompt does the heavy lifting for us.",
+                  "I love that I don&apos;t have to come up with conversation starters anymore. The daily prompt does the heavy lifting for us.",
                 author: "— David P.",
               },
             ].map(({ quote, author }) => (
@@ -179,7 +179,7 @@ export default function MarketingPage() {
           <div className="mt-4 hidden gap-4 md:grid md:grid-cols-3 lg:gap-6">
             <figure className="col-span-2 row-span-2 rounded-2xl border border-white/10 bg-white/5 p-5 text-left shadow-ns-card backdrop-blur-xl">
               <p className="text-sm leading-relaxed text-slate-100 md:text-base">
-                I’ll be honest, I didn't want to do this at first. I thought it was just another
+                I’ll be honest, I didn&apos;t want to do this at first. I thought it was just another
                 chore. But I realized how important it was to my wife, so I gave it a shot. After a
                 couple of times, I realized it was actually super easy—took 30 seconds—and now I
                 look forward to it every day.

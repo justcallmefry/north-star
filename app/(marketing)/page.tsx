@@ -199,7 +199,7 @@ export default function MarketingPage() {
             </figure>
             <figure className="rounded-2xl border border-white/10 bg-white/5 p-5 text-left shadow-ns-card backdrop-blur-xl">
               <p className="text-sm leading-relaxed text-slate-100 md:text-base">
-                I love that I don't have to come up with conversation starters anymore. The daily
+                I love that I don&apos;t have to come up with conversation starters anymore. The daily
                 prompt does the heavy lifting for us.
               </p>
               <figcaption className="mt-4 text-xs font-medium text-slate-400 md:text-sm">

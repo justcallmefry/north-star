@@ -15,9 +15,33 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+const appUrl =
+  typeof process.env.NEXT_PUBLIC_APP_URL === "string" && process.env.NEXT_PUBLIC_APP_URL
+    ? process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")
+    : undefined;
+
 export const metadata: Metadata = {
   title: "North Star",
-  description: "Next.js 14+ App with Tailwind, Prisma, NextAuth, Stripe",
+  description: "One question a day. Answer together with your partner.",
+  metadataBase: appUrl ? new URL(appUrl) : undefined,
+  icons: {
+    icon: "/north-star-logo.png",
+    apple: "/north-star-logo.png",
+  },
+  openGraph: {
+    title: "North Star",
+    description: "One question a day. Answer together with your partner.",
+    ...(appUrl && {
+      url: appUrl,
+      siteName: "North Star",
+      images: [{ url: "/north-star-logo.png", width: 512, height: 512, alt: "North Star" }],
+    }),
+  },
+  twitter: {
+    card: "summary",
+    title: "North Star",
+    description: "One question a day. Answer together with your partner.",
+  },
 };
 
 export default function RootLayout({

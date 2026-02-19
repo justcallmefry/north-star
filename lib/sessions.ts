@@ -226,6 +226,12 @@ export type GetSessionResult = {
   canReveal: boolean;
   partnerResponse?: string | null;
   reflections?: { userId: string; content: string | null; reaction: string | null }[];
+  /** Display name for current user (for "Chris' response") */
+  currentUserName?: string | null;
+  currentUserImage?: string | null;
+  /** Partner display name and icon */
+  partnerName?: string | null;
+  partnerImage?: string | null;
 };
 
 export async function getSession(sessionId: string): Promise<GetSessionResult | null> {
@@ -279,6 +285,17 @@ export async function getSession(sessionId: string): Promise<GetSessionResult | 
       content: r.content,
       reaction: r.reaction,
     }));
+    const userIds = [session.user!.id, ...(partner ? [partner.userId] : [])];
+    const users = await prisma.user.findMany({
+      where: { id: { in: userIds } },
+      select: { id: true, name: true, image: true },
+    });
+    const currentUser = users.find((u) => u.id === session.user!.id);
+    const partnerUser = users.find((u) => u.id !== session.user!.id);
+    result.currentUserName = currentUser?.name ?? null;
+    result.currentUserImage = currentUser?.image ?? null;
+    result.partnerName = partnerUser?.name ?? null;
+    result.partnerImage = partnerUser?.image ?? null;
   }
 
   return result;
@@ -288,7 +305,7 @@ export type HistoryItem = {
   sessionId: string;
   sessionDate: Date;
   promptText: string;
-  responses: { content: string | null }[];
+  responses: { userId: string; content: string | null; userName: string | null; userImage: string | null }[];
   reflections: { content: string | null; reaction: string | null }[];
 };
 
@@ -309,7 +326,7 @@ export async function getHistory(
     ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
     include: {
       prompt: true,
-      responses: { select: { content: true } },
+      responses: { select: { userId: true, content: true } },
       reflections: { select: { content: true, reaction: true } },
     },
   });
@@ -318,11 +335,29 @@ export async function getHistory(
   const list = hasMore ? sessions.slice(0, take) : sessions;
   const nextCursor = hasMore ? list[list.length - 1].id : null;
 
+  const allUserIds = [...new Set(list.flatMap((s) => s.responses.map((r) => r.userId)))];
+  const users =
+    allUserIds.length > 0
+      ? await prisma.user.findMany({
+          where: { id: { in: allUserIds } },
+          select: { id: true, name: true, image: true },
+        })
+      : [];
+  const userMap = new Map(users.map((u) => [u.id, { name: u.name, image: u.image }]));
+
   const items: HistoryItem[] = list.map((s) => ({
     sessionId: s.id,
     sessionDate: s.sessionDate,
     promptText: s.prompt?.text ?? "",
-    responses: s.responses.map((r) => ({ content: r.content })),
+    responses: s.responses.map((r) => {
+      const u = userMap.get(r.userId);
+      return {
+        userId: r.userId,
+        content: r.content,
+        userName: u?.name ?? null,
+        userImage: u?.image ?? null,
+      };
+    }),
     reflections: s.reflections.map((r) => ({ content: r.content, reaction: r.reaction })),
   }));
 

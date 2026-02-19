@@ -16,9 +16,9 @@ let authInstance: ReturnType<typeof NextAuth> | null = null;
 export type AuthHandlerOptions = {
   /** Pass true when RESEND_API_KEY or EMAIL_SERVER is set (e.g. from the API route) so the email provider is registered even if env is inlined at build time. */
   emailConfigured?: boolean;
-  /** Sender address for magic-link emails when using Resend without EMAIL_FROM (e.g. "onboarding@resend.dev"). Set from the route so it works on Vercel. */
-  defaultFrom?: string;
-};
+  /** Sender address for magic-link emails. Set from the route so Vercel env (e.g. EMAIL_FROM) is used at runtime. Falls back to "onboarding@resend.dev" when using Resend and no custom from. */
+  from?: string;
+}
 
 function createAuthInstance(
   sendVerificationRequest: (params: VerificationRequestParams) => Promise<void>,
@@ -27,7 +27,7 @@ function createAuthInstance(
   const emailConfigured =
     options?.emailConfigured ?? !!(process.env["EMAIL_SERVER"] || process.env["RESEND_API_KEY"]);
   const from =
-    process.env["EMAIL_FROM"] ?? options?.defaultFrom ?? "noreply@example.com";
+    options?.from ?? process.env["EMAIL_FROM"] ?? "noreply@example.com";
   return NextAuth({
     adapter: PrismaAdapter(prisma as Parameters<typeof PrismaAdapter>[0]),
     session: { strategy: "database", maxAge: 30 * 24 * 60 * 60, updateAge: 24 * 60 * 60 },

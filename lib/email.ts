@@ -193,7 +193,18 @@ async function sendWithResend(to: string, url: string, from: string, apiKey: str
     subject: "Sign in to North Star",
     html: buildMagicLinkHtml(to, url, logoUrl || url),
   });
-  if (error) throw new Error(`Resend error: ${JSON.stringify(error)}`);
+  if (error) {
+    const msg = typeof error === "object" && error !== null && "message" in error ? String((error as { message?: string }).message) : JSON.stringify(error);
+    const isDomainRestriction =
+      (typeof error === "object" && error !== null && "statusCode" in error && (error as { statusCode?: number }).statusCode === 403) ||
+      /verify a domain|only send.*your own email/i.test(msg);
+    if (isDomainRestriction) {
+      throw new Error(
+        "RESEND_DOMAIN_REQUIRED: To send sign-in links to other people, verify a domain at resend.com/domains and set EMAIL_FROM to an address on that domain."
+      );
+    }
+    throw new Error(`Resend error: ${JSON.stringify(error)}`);
+  }
 }
 
 /** Called from the auth API route with process.env.RESEND_API_KEY so the key is read in the route chunk. */

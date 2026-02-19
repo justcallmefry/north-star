@@ -32,9 +32,14 @@ function LoginForm() {
       });
       if (res?.error) {
         const msg = typeof res.error === "string" ? res.error : "Something went wrong.";
-        // Show a friendly message instead of low-level Auth.js errors
         console.error("[login] magic link error:", msg);
-        setError("We couldn’t send the magic link. Please try again in a moment.");
+        if (msg.includes("RESEND_DOMAIN_REQUIRED") || msg.includes("verify a domain")) {
+          setError(
+            "We can’t send sign-in links to this email yet. The app needs a verified domain in Resend to send to anyone besides the account owner. Ask the person who set up the app to verify a domain at resend.com/domains and set EMAIL_FROM."
+          );
+        } else {
+          setError("We couldn’t send the magic link. Please try again in a moment.");
+        }
         return;
       }
       if (res?.status !== 200) {
@@ -52,10 +57,10 @@ function LoginForm() {
 
   if (sent) {
     return (
-      <main className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center px-4 py-8 sm:px-6">
-        <div className="w-full max-w-md space-y-5 rounded-2xl border border-slate-800 bg-slate-950/90 px-5 py-6 shadow-[0_24px_80px_rgba(15,23,42,0.9)]">
+      <main className="min-h-screen bg-white text-slate-900 flex flex-col items-center justify-center px-4 py-8 sm:px-6">
+        <div className="w-full max-w-md space-y-5 rounded-2xl border border-pink-100 bg-white px-5 py-6 shadow-lg shadow-pink-100/80">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900/80 ring-1 ring-slate-700/80">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-pink-100 ring-1 ring-pink-200">
               <Image
                 src="/north-star-logo.png"
                 alt="North Star"
@@ -66,7 +71,7 @@ function LoginForm() {
               />
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-pink-500">
                 Magic link sent
               </p>
               <p className="text-sm text-slate-200">
@@ -74,7 +79,7 @@ function LoginForm() {
               </p>
             </div>
           </div>
-          <p className="text-sm text-slate-100 sm:text-base">
+          <p className="text-sm text-slate-700 sm:text-base">
             We sent a sign-in link to <strong>{email}</strong>. Click the link to sign in.
           </p>
           {process.env.NODE_ENV === "development" && (
@@ -88,10 +93,10 @@ function LoginForm() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center px-4 py-8 sm:px-6">
-      <div className="w-full max-w-md space-y-5 rounded-2xl border border-slate-800 bg-slate-950/90 px-5 py-6 shadow-[0_24px_80px_rgba(15,23,42,0.9)]">
+      <main className="min-h-screen bg-white text-slate-900 flex flex-col items-center justify-center px-4 py-8 sm:px-6">
+        <div className="w-full max-w-md space-y-5 rounded-2xl border border-pink-100 bg-white px-5 py-6 shadow-lg shadow-pink-100/80">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900/80 ring-1 ring-slate-700/80">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-pink-100 ring-1 ring-pink-200">
             <Image
               src="/north-star-logo.png"
               alt="North Star"
@@ -102,16 +107,16 @@ function LoginForm() {
             />
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-pink-500">
               Sign in
             </p>
-            <p className="text-sm text-slate-200">
+            <p className="text-sm text-slate-700">
               Get a one-time magic link by email.
             </p>
           </div>
         </div>
         {PRODUCTION_APP_URL && (
-          <p className="mb-4 text-sm text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md p-3">
+          <p className="mb-4 text-sm text-slate-700 bg-slate-50 border border-slate-200 rounded-md p-3">
             For a stable sign-in, use the main site:{" "}
             <a href={`${PRODUCTION_APP_URL}/login`} className="font-medium underline">
               Sign in on main site
@@ -156,8 +161,8 @@ function LoginFallback() {
     <main className="min-h-screen flex flex-col items-center justify-center p-8">
       <div className="w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6">Sign in to North Star</h1>
-        <div className="animate-pulse rounded-md h-10 bg-gray-200 dark:bg-gray-700 mb-4" />
-        <div className="animate-pulse rounded-md h-10 bg-gray-200 dark:bg-gray-700" />
+              <div className="animate-pulse rounded-md h-10 bg-gray-200 mb-4" />
+              <div className="animate-pulse rounded-md h-10 bg-gray-200" />
       </div>
     </main>
   );

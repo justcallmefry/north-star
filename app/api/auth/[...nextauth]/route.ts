@@ -42,28 +42,32 @@ function getEmailConfig() {
       nodeEnv: process.env.NODE_ENV,
     });
   }
-  // Use Resend's free sender when using Resend and no custom EMAIL_FROM is set
-  const defaultFrom =
-    resend && !process.env.EMAIL_FROM ? "onboarding@resend.dev" : undefined;
-  return { emailConfigured, resend, smtp, defaultFrom };
+  // Use route's process.env so Vercel EMAIL_FROM is used at runtime (required for Resend to send to non-owner emails)
+  const from =
+    process.env.EMAIL_FROM ?? (resend ? "onboarding@resend.dev" : undefined) ?? "noreply@example.com";
+  return { emailConfigured, resend, smtp, from };
 }
 
 export async function GET(req: NextRequest) {
   ensureAuthUrl();
-  const { emailConfigured, resend, smtp, defaultFrom } = getEmailConfig();
+  const { emailConfigured, resend, smtp, from } = getEmailConfig();
   console.log(
-    "[auth] Email config: RESEND_API_KEY=" + (resend ? "set" : "missing") + ", EMAIL_SERVER=" + (smtp ? "set" : "missing")
+    "[auth] Email config: RESEND_API_KEY=" + (resend ? "set" : "missing") +
+    ", EMAIL_SERVER=" + (smtp ? "set" : "missing") +
+    ", EMAIL_FROM=" + (process.env.EMAIL_FROM ? process.env.EMAIL_FROM : "not set (using " + from + ")")
   );
-  const handlers = getHandlers(sendVerificationRequestFromRoute, { emailConfigured, defaultFrom });
+  const handlers = getHandlers(sendVerificationRequestFromRoute, { emailConfigured, from });
   return handlers.GET(req);
 }
 
 export async function POST(req: NextRequest) {
   ensureAuthUrl();
-  const { emailConfigured, resend, smtp, defaultFrom } = getEmailConfig();
+  const { emailConfigured, resend, smtp, from } = getEmailConfig();
   console.log(
-    "[auth] Email config: RESEND_API_KEY=" + (resend ? "set" : "missing") + ", EMAIL_SERVER=" + (smtp ? "set" : "missing")
+    "[auth] Email config: RESEND_API_KEY=" + (resend ? "set" : "missing") +
+    ", EMAIL_SERVER=" + (smtp ? "set" : "missing") +
+    ", EMAIL_FROM=" + (process.env.EMAIL_FROM ? process.env.EMAIL_FROM : "not set (using " + from + ")")
   );
-  const handlers = getHandlers(sendVerificationRequestFromRoute, { emailConfigured, defaultFrom });
+  const handlers = getHandlers(sendVerificationRequestFromRoute, { emailConfigured, from });
   return handlers.POST(req);
 }

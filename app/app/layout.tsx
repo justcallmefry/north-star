@@ -9,8 +9,8 @@ export default function AppSegmentLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-white text-slate-900">
-      <div className="mx-auto flex min-h-screen max-w-6xl gap-6 px-4 pb-24 pt-6 sm:px-6 lg:px-8">
+    <div className="min-h-screen overflow-x-hidden bg-white text-slate-900">
+      <div className="mx-auto flex min-h-screen max-w-6xl gap-6 overflow-x-hidden px-4 pb-24 pt-6 sm:px-6 lg:px-8">
         {/* Left rail / app frame (desktop/tablet) — star icon only, no wordmark */}
         <aside className="hidden w-64 flex-col justify-between rounded-2xl border border-pink-100 bg-pink-50 p-5 shadow-lg shadow-pink-100/80 md:flex">
           <div className="space-y-6">

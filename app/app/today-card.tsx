@@ -7,7 +7,7 @@ type Props = { today: GetTodayResult | null };
 export function TodayCard({ today }: Props) {
   if (!today) {
     return (
-      <section className="rounded-2xl border border-pink-100 bg-white p-5 shadow-md shadow-pink-100/80">
+      <section className="ns-card">
         <div className="inline-flex items-center gap-2 rounded-lg bg-pink-50 px-3 py-1">
           <span className="h-1.5 w-1.5 rounded-full bg-pink-400" />
           <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-pink-600 sm:text-sm">
@@ -24,7 +24,7 @@ export function TodayCard({ today }: Props) {
   const { sessionId, promptText, momentText, state, hasUserResponded, hasPartnerResponded, canReveal } = today;
 
   return (
-    <section className="rounded-2xl border border-pink-100 bg-white p-5 shadow-md shadow-pink-100/80">
+    <section className="ns-card animate-calm-fade-in">
       <div className="flex items-center justify-between gap-3">
         <div className="inline-flex items-center gap-2 rounded-lg bg-pink-50 px-3 py-1">
           <span className="h-1.5 w-1.5 rounded-full bg-pink-400" />
@@ -38,7 +38,7 @@ export function TodayCard({ today }: Props) {
       </p>
 
       {momentText && (
-        <div className="mt-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5">
+        <div className="ns-card-inner mt-3 px-3 py-2.5">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-600 sm:text-[13px]">
             Optional moment
           </p>
@@ -52,7 +52,7 @@ export function TodayCard({ today }: Props) {
         {state === "revealed" && (
           <Link
             href={`/app/session/${sessionId}`}
-            className="inline-flex items-center rounded-lg bg-slate-100 px-4 py-2 text-base font-semibold text-slate-950 hover:bg-white"
+            className="ns-btn-secondary"
           >
             View today&apos;s session
           </Link>
@@ -60,29 +60,28 @@ export function TodayCard({ today }: Props) {
         {state === "open" && !hasUserResponded && (
           <Link
             href={`/app/session/${sessionId}`}
-            className="inline-flex items-center rounded-lg bg-emerald-500 px-4 py-2 text-base font-semibold text-emerald-950 shadow-sm shadow-emerald-500/30 hover:bg-emerald-400"
+            className="ns-btn-primary"
           >
             Answer today&apos;s question
           </Link>
         )}
         {state === "open" && hasUserResponded && !canReveal && (
-          <>
-            <span className="inline-flex items-center rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-lg text-emerald-800">
+          <div className="space-y-4">
+            <p className="text-center text-sm text-slate-500 leading-relaxed max-w-md mx-auto">
               Your answer is saved. We&apos;ll reveal when your partner replies.
-            </span>
-            <Link
-              href={`/app/session/${sessionId}`}
-              className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-4 py-2 text-base font-medium text-slate-700 shadow-sm hover:border-pink-100 hover:bg-pink-50"
-            >
-              View my answer
-            </Link>
-            <NotifyPartnerButton sessionId={sessionId} size="sm" />
-          </>
+            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <Link href={`/app/session/${sessionId}`} className="ns-btn-primary">
+                View my answer
+              </Link>
+              <NotifyPartnerButton sessionId={sessionId} variant="secondary" />
+            </div>
+          </div>
         )}
         {state === "open" && canReveal && (
           <Link
             href={`/app/session/${sessionId}`}
-            className="inline-flex items-center rounded-lg bg-sky-500 px-4 py-2 text-base font-semibold text-slate-950 shadow-sm shadow-sky-500/30 hover:bg-sky-400"
+            className="ns-btn-primary"
           >
             Reveal answers
           </Link>

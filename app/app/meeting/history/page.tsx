@@ -1,15 +1,32 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { format, parse, startOfWeek, endOfWeek } from "date-fns";
+import { format, addDays } from "date-fns";
 import { CalendarRange } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { isBuildTime } from "@/lib/build";
-import { getMeetingHistory } from "@/lib/meetings";
+import { getMeetingHistory, getCurrentMeeting } from "@/lib/meetings";
 
 export const dynamic = "force-dynamic";
 
 const fallback = <main className="min-h-screen p-8"><p className="text-gray-500">Loading…</p></main>;
+
+/** Parse "2026-W08" (ISO week) and return "Week of February 16–22, 2026". */
+function formatWeekLabel(weekKey: string): string {
+  const match = weekKey.match(/^(\d{4})-W(\d{1,2})$/);
+  if (!match) return weekKey;
+  const year = parseInt(match[1], 10);
+  const weekNum = parseInt(match[2], 10);
+  // Jan 4 is always in ISO week 1 of its year; find its Monday
+  const jan4 = new Date(year, 0, 4);
+  const dayOfWeek = jan4.getDay(); // 0 Sun .. 6 Sat
+  const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  const week1Monday = new Date(jan4);
+  week1Monday.setDate(jan4.getDate() - daysToMonday);
+  const weekStart = addDays(week1Monday, (weekNum - 1) * 7);
+  const weekEnd = addDays(weekStart, 6);
+  return `Week of ${format(weekStart, "MMMM d")}–${format(weekEnd, "d, yyyy")}`;
+}
 
 export default async function MeetingHistoryPage() {
   try {
@@ -21,18 +38,7 @@ export default async function MeetingHistoryPage() {
     if (!relationshipId) redirect("/app");
 
     const items = await getMeetingHistory(relationshipId);
-
-    const formatWeekLabel = (weekKey: string) => {
-      try {
-        // weekKey like "2026-W08" → approximate date in that ISO week
-        const base = parse(weekKey, "yyyy-'W'II", new Date());
-        const weekStart = startOfWeek(base, { weekStartsOn: 0 });
-        const weekEnd = endOfWeek(base, { weekStartsOn: 0 });
-        return `Week of ${format(weekStart, "MMMM d")}–${format(weekEnd, "d, yyyy")}`;
-      } catch {
-        return weekKey;
-      }
-    };
+    const current = await getCurrentMeeting(relationshipId);
 
     return (
     <main className="min-h-screen bg-white p-6 sm:p-8">
@@ -42,30 +48,42 @@ export default async function MeetingHistoryPage() {
             <CalendarRange className="h-3.5 w-3.5" />
           </span>
           <span className="text-xs font-semibold uppercase tracking-[0.18em] text-pink-600">
-            Meeting History
+            Past Weeks
           </span>
         </div>
-        <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Meeting History</h1>
+        <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Past Weeks</h1>
         <p className="mt-1 text-sm text-slate-600 sm:text-base">Past weeks, latest first.</p>
       </header>
 
-      <ul className="mt-6 space-y-3">
+      <ul className="mt-6 ns-stack-tight">
         {items.length === 0 ? (
-          <li className="text-sm text-slate-500">No past meetings yet.</li>
+          <li>
+            <Link
+              href="/app/meeting"
+              className="ns-card block transition hover:border-pink-200"
+            >
+              <p className="font-medium text-slate-900">
+                {current ? formatWeekLabel(current.weekKey) : "This week"}
+              </p>
+              <p className="mt-1 text-sm text-slate-500">
+                Go to Our Week to add your notes.
+              </p>
+            </Link>
+          </li>
         ) : (
           items.map((item) => (
             <li key={item.meetingId}>
               <Link
                 href={`/app/meeting/${item.meetingId}`}
-                className="block rounded-xl border border-slate-200 bg-white p-4 transition hover:bg-slate-50"
+                className="ns-card block transition hover:border-pink-200"
               >
-                <span className="font-medium text-slate-900">
+                <p className="font-medium text-slate-900">
                   {formatWeekLabel(item.weekKey)}
-                </span>
-                <span className="ml-2 text-sm text-slate-500">
-                  {item.hasUserSubmitted ? "You submitted" : "Not submitted"} ·{" "}
-                  {item.canViewPartner ? "Both visible" : "Partner not yet"}
-                </span>
+                </p>
+                <p className="mt-1 text-sm text-slate-500">
+                  {item.hasUserSubmitted ? "You added notes" : "No notes yet"} ·{" "}
+                  {item.canViewPartner ? "You both added notes" : "Partner hasn't added yet"}
+                </p>
               </Link>
             </li>
           ))

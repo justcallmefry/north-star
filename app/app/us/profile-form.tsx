@@ -83,7 +83,7 @@ export function ProfileForm({ currentName, currentAvatar }: Props) {
       <button
         type="submit"
         disabled={saving}
-        className="mt-2 inline-flex items-center justify-center rounded-lg bg-pink-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-pink-300/60 hover:bg-pink-400 disabled:opacity-50"
+        className="ns-btn-primary mt-2 !text-sm"
       >
         {saving ? "Saving…" : "Save profile"}
       </button>

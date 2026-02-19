@@ -19,8 +19,10 @@ export default async function MeetingByIdPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-white p-6 sm:p-8">
-      <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Weekly meeting</h1>
-      <p className="mt-1 text-sm text-slate-600 sm:text-base">Week of {data.weekKey}</p>
+      <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Our Week</h1>
+      <p className="mt-1 text-sm text-slate-600 sm:text-base">
+        A shared place to capture this week as it unfolds. Week of {data.weekKey}
+      </p>
 
       <div className="mt-6">
         <MeetingView
@@ -30,11 +32,10 @@ export default async function MeetingByIdPage({ params }: Props) {
         />
       </div>
 
-      <section className="mt-8 space-y-4 rounded-2xl border border-pink-100 bg-white p-5 shadow-md shadow-pink-100/80">
-        <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">Edit your entry</h2>
-        <p className="text-sm text-slate-700 sm:text-base">
-          Add or tweak your notes for this week—even after it&apos;s over—so your history stays
-          honest and complete.
+      <section className="ns-card ns-stack-tight mt-8">
+        <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">Add to Our Week</h2>
+        <p className="text-sm text-slate-600 sm:text-base">
+          Optional prompts. Add or edit anytime.
         </p>
         <div className="mt-4">
           <MeetingForm meetingId={data.meetingId} initial={data.ownEntry} />

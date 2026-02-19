@@ -3,11 +3,19 @@
 type Props = {
   sessionId: string;
   size?: "sm" | "md";
+  /** Use "secondary" when shown next to a primary action (e.g. View my answer) so hierarchy is clear */
+  variant?: "primary" | "secondary";
+  /** "reveal" = we both answered, nudge to reveal; default = waiting for partner to answer */
+  messageType?: "your_turn" | "reveal";
 };
 
-export function NotifyPartnerButton({ sessionId, size = "md" }: Props) {
-  const baseText =
-    "Hey love 💗 I just answered our North Star question of the day. Tap to answer yours so we can reveal it together:";
+const MESSAGES = {
+  your_turn: "I answered today's question. It's your turn. I'm excited to see what you say.",
+  reveal: "I answered the question. We both did – come reveal so we can see what we said.",
+} as const;
+
+export function NotifyPartnerButton({ sessionId, size = "md", variant = "primary", messageType = "your_turn" }: Props) {
+  const baseText = MESSAGES[messageType];
 
   const appUrl =
     process.env.NEXT_PUBLIC_APP_URL ??
@@ -17,14 +25,12 @@ export function NotifyPartnerButton({ sessionId, size = "md" }: Props) {
     `${baseText} ${appUrl ? `${appUrl}/app/session/${sessionId}` : ""}`.trim()
   )}`;
 
-  const className =
-    size === "sm"
-      ? "inline-flex items-center justify-center rounded-lg bg-pink-500 px-3 py-1.5 text-sm font-semibold text-white shadow-sm shadow-pink-300/60 hover:bg-pink-400"
-      : "inline-flex items-center justify-center rounded-lg bg-pink-500 px-4 py-2.5 text-base font-semibold text-white shadow-sm shadow-pink-300/60 hover:bg-pink-400";
+  const baseClass = variant === "secondary" ? "ns-btn-secondary" : "ns-btn-primary";
+  const className = size === "sm" ? `${baseClass} !px-3 !py-1.5 text-sm` : baseClass;
 
   return (
     <a href={href} className={className}>
-      Notify them
+      Notify
     </a>
   );
 }

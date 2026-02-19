@@ -6,8 +6,7 @@ type Props = {
 };
 
 export function NotifyPartnerMeetingButton({ meetingId, size = "md" }: Props) {
-  const baseText =
-    "Hey love 💗 I just added notes to our North Star weekly check-in. Tap to read them or add yours:";
+  const baseText = "I updated Our Week. Please feel free to add your thoughts.";
 
   const appUrl =
     process.env.NEXT_PUBLIC_APP_URL ??
@@ -17,14 +16,11 @@ export function NotifyPartnerMeetingButton({ meetingId, size = "md" }: Props) {
     `${baseText} ${appUrl ? `${appUrl}/app/meeting/${meetingId}` : ""}`.trim()
   )}`;
 
-  const className =
-    size === "sm"
-      ? "inline-flex items-center justify-center rounded-lg bg-pink-500 px-3 py-1.5 text-sm font-semibold text-white shadow-sm shadow-pink-300/60 hover:bg-pink-400"
-      : "inline-flex items-center justify-center rounded-lg bg-pink-500 px-4 py-2.5 text-base font-semibold text-white shadow-sm shadow-pink-300/60 hover:bg-pink-400";
+  const className = size === "sm" ? "ns-btn-primary !px-3 !py-1.5 text-sm" : "ns-btn-primary";
 
   return (
     <a href={href} className={className}>
-      Notify them
+      Notify
     </a>
   );
 }

@@ -40,7 +40,7 @@ export default function MarketingPage() {
                     North Star
                   </span>
                   <span className="text-xs font-medium text-slate-300 sm:text-sm">
-                    Closer. Every day. Choose Love.
+                    Closer. Every day.
                   </span>
                 </div>
               </div>
@@ -49,11 +49,11 @@ export default function MarketingPage() {
                 Closer. Every day.
               </h1>
               <p className="animate-fade-in-up animate-delay-1 text-base leading-relaxed text-slate-200 sm:text-lg">
-                The daily ritual for couples to stay connected.
+                One question a day. Answer privately, reveal together.
               </p>
               <p className="animate-fade-in-up animate-delay-2 text-sm leading-relaxed text-slate-400 sm:text-base">
-                One shared question, answered in your own words, then revealed together when you’re
-                both ready.
+                Same question for you both. Answer on your own. Reveal when you’re
+                both done.
               </p>
               <div className="mt-5 flex w-full flex-col gap-3 sm:mt-7 sm:w-auto sm:flex-row sm:gap-4 animate-fade-in-up animate-delay-3">
                 <Link
@@ -215,8 +215,8 @@ export default function MarketingPage() {
               Why North Star
             </h2>
             <p className="mt-2.5 max-w-2xl text-sm leading-7 text-slate-200 sm:text-base">
-              North Star is built for couples who want a simple, intentional way to stay close. No
-              algorithms, no gamification—just you and your partner, one prompt at a time.
+              North Star is for couples who want a simple way to stay in sync. No algorithms, no
+              gamification—just you and your partner, one prompt at a time.
             </p>
             <ul className="mt-3 space-y-2">
               {[
@@ -282,7 +282,7 @@ export default function MarketingPage() {
               {
                 step: "3",
                 title: "Reveal together",
-                body: "When you've both responded, unlock the moment and read each other's answers side by side.",
+                body: "When you've both responded, read each other's answers side by side.",
                 icon: Compass,
                 bg: "bg-blue-100 text-blue-600",
               },
@@ -310,7 +310,7 @@ export default function MarketingPage() {
           </h2>
           <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm leading-7 text-slate-100 sm:text-base">
             {[
-              "Couples who want a low-pressure daily ritual",
+              "Couples who want a low-pressure daily habit",
               "Partners who value privacy",
               "Anyone tired of social apps and gamification",
             ].map((item) => (

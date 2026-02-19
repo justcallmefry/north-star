@@ -1,11 +1,11 @@
 import Link from "next/link";
-import Image from "next/image";
 import { redirect } from "next/navigation";
-import { ArrowRight, CalendarRange, History, Users } from "lucide-react";
+import { ArrowRight, CalendarRange, History, Sparkles } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { isBuildTime } from "@/lib/build";
 import { getToday } from "@/lib/sessions";
+import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { RelationshipActions } from "./relationship-actions";
 import { TodayCard } from "./today-card";
 
@@ -24,53 +24,41 @@ export default async function AppPage() {
     const displayName = session.user.name ?? session.user.email;
 
     return (
-      <main className="flex h-full flex-col gap-6">
-        {/* Header */}
-        <header className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-pink-50 ring-1 ring-pink-200 shadow-md shadow-pink-100/80">
-              <Image
-                src="/north-star-logo.png"
-                alt="North Star"
-                width={32}
-                height={32}
-                className="h-7 w-7 object-contain"
-                priority
-              />
+      <main className="flex h-full flex-col ns-stack">
+        {/* Header — star icon only (no wordmark), tagline as calm emotional anchor */}
+        <header className="flex items-center justify-between gap-4 py-1">
+          <div className="flex items-center gap-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-pink-50/80 ring-1 ring-pink-200/80" aria-hidden>
+              <Sparkles className="h-5 w-5 text-pink-500" strokeWidth={1.7} />
             </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-pink-500 sm:text-sm">
-                North Star
-              </p>
-              <p className="text-base font-medium text-slate-900 sm:text-lg">
-                One question a day. Answer together.
-              </p>
-            </div>
+            <p className="text-base text-slate-600 sm:text-lg">
+              One question a day. Answer together.
+            </p>
           </div>
           <div className="hidden flex-col items-end text-xs text-slate-400 sm:flex">
             <span className="text-slate-500">Signed in as</span>
-            <span className="mt-0.5 max-w-[180px] truncate text-sm font-medium text-slate-100">
+            <span className="mt-0.5 max-w-[180px] truncate text-sm font-medium text-slate-600">
               {displayName}
             </span>
           </div>
         </header>
 
         {relationships.length > 0 ? (
-          <div className="flex-1 space-y-6">
+          <div className="ns-stack flex-1 animate-fade-in-ease">
             {/* Today + quick actions */}
-            <section className="space-y-4">
+            <section className="ns-stack-tight">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
-                    Today&apos;s connection
+                    Today
                   </h1>
                   <p className="mt-1 text-sm text-slate-600 sm:text-base">
-                    Take a minute to respond. Your answer stays private until you both reveal.
+                    Answer honestly. You can edit until you both reveal.
                   </p>
                 </div>
                 <Link
                   href="/app/history"
-                  className="hidden items-center gap-1.5 rounded-lg border border-pink-100 bg-white px-3 py-1 text-sm font-medium text-slate-700 shadow-sm hover:border-pink-200 hover:bg-pink-50 sm:inline-flex"
+                  className="ns-btn-secondary hidden sm:inline-flex"
                 >
                   <History className="h-3.5 w-3.5" />
                   History
@@ -79,35 +67,42 @@ export default async function AppPage() {
 
               <TodayCard today={today} />
 
-              <Link
-                href="/app/meeting"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-pink-500 px-4 py-3 text-base font-semibold text-white shadow-sm shadow-pink-300/60 transition hover:bg-pink-400"
-              >
-                <CalendarRange className="h-4 w-4" />
-                Weekly meeting
-              </Link>
+              <div className="space-y-1.5">
+                <Link
+                  href="/app/meeting"
+                  className="ns-btn-secondary w-full !py-2"
+                >
+                  <CalendarRange className="h-4 w-4" />
+                  Our Week
+                </Link>
+                <p className="text-center text-sm text-slate-500 leading-relaxed">
+                  A shared place to capture this week as it unfolds.
+                </p>
+              </div>
             </section>
           </div>
         ) : (
           <section className="mt-4 flex flex-1 items-center justify-center">
-            <div className="max-w-md rounded-2xl border border-pink-100 bg-white px-5 py-6 text-center shadow-md shadow-pink-100/80 sm:px-7 sm:py-8">
+            <div className="ns-card max-w-md text-center">
+              <div className="flex justify-center">
+                <EmptyTogetherIllustration className="w-28 h-28 sm:w-32 sm:h-32" />
+              </div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-pink-500 sm:text-sm">
-                Welcome to North Star
+                Welcome
               </p>
               <p className="mt-3 text-xl font-semibold text-slate-900 sm:text-2xl">
-                Start your shared ritual
+                Create or join
               </p>
               <p className="mt-2 text-sm text-slate-600 sm:text-base">
-                Create or join a relationship to get your first daily question. You can invite your
-                partner any time.
+                Create or join to get your first question. Invite your partner when you&apos;re ready.
               </p>
               <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                 <Link
                   href="/onboarding"
-                  className="inline-flex items-center gap-2 rounded-lg bg-pink-500 px-5 py-3 text-base font-semibold text-white shadow-sm shadow-pink-300/60 transition hover:bg-pink-400"
+                  className="ns-btn-primary"
                 >
                   <ArrowRight className="h-4 w-4" />
-                  Start or join relationship
+                  Create or join
                 </Link>
               </div>
             </div>

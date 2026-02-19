@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { VALIDATION_ACK_MAX_LENGTH, VALIDATION_ALLOWED_EMOJIS } from "@/lib/validation-constants";
 
 /** Today's date at midnight UTC (date only, no time). */
 function todayUTC(): Date {
@@ -305,8 +306,15 @@ export type HistoryItem = {
   sessionId: string;
   sessionDate: Date;
   promptText: string;
-  responses: { userId: string; content: string | null; userName: string | null; userImage: string | null }[];
-  reflections: { content: string | null; reaction: string | null }[];
+  responses: {
+    id: string;
+    userId: string;
+    content: string | null;
+    userName: string | null;
+    userImage: string | null;
+    validation: { reactions: string | null; acknowledgment: string | null } | null;
+  }[];
+  reflections: { userId: string; content: string | null; reaction: string | null }[];
 };
 
 export async function getHistory(
@@ -319,54 +327,79 @@ export async function getHistory(
 
   await requireActiveMember(session.user.id, relationshipId);
 
-  const sessions = await prisma.dailySession.findMany({
-    where: { relationshipId, state: "revealed" },
-    orderBy: { sessionDate: "desc" },
+  const baseOpts = {
+    where: { relationshipId, state: "revealed" } as const,
+    orderBy: { sessionDate: "desc" as const } as const,
     take: take + 1,
     ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
-    include: {
-      prompt: true,
-      responses: { select: { userId: true, content: true } },
-      reflections: { select: { content: true, reaction: true } },
-    },
-  });
+  };
 
-  const hasMore = sessions.length > take;
-  const list = hasMore ? sessions.slice(0, take) : sessions;
-  const nextCursor = hasMore ? list[list.length - 1].id : null;
+  type Row = { id: string; userId: string; content: string | null; validations?: { userId: string; reactions: string | null; acknowledgment: string | null }[] };
+  let list: { id: string; sessionDate: Date; prompt: { text: string | null } | null; responses: Row[]; reflections: { userId: string; content: string | null; reaction: string | null }[] }[];
 
-  const allUserIds: string[] = [];
-  for (const s of list) {
-    for (const r of s.responses) {
-      if (!allUserIds.includes(r.userId)) {
-        allUserIds.push(r.userId);
-      }
-    }
+  try {
+    const sessions = await prisma.dailySession.findMany({
+      ...baseOpts,
+      include: {
+        prompt: true,
+        responses: {
+          select: {
+            id: true,
+            userId: true,
+            content: true,
+            validations: { select: { userId: true, reactions: true, acknowledgment: true } },
+          },
+        },
+        reflections: { select: { userId: true, content: true, reaction: true } },
+      },
+    });
+    list = sessions as typeof list;
+  } catch {
+    const sessions = await prisma.dailySession.findMany({
+      ...baseOpts,
+      include: {
+        prompt: true,
+        responses: { select: { id: true, userId: true, content: true } },
+        reflections: { select: { userId: true, content: true, reaction: true } },
+      },
+    });
+    list = sessions.map((s) => ({ ...s, responses: s.responses.map((r) => ({ ...r, validations: [] })) })) as typeof list;
   }
 
+  const hasMore = list.length > take;
+  const listSliced = hasMore ? list.slice(0, take) : list;
+  const nextCursor = hasMore ? listSliced[listSliced.length - 1].id : null;
+
+  const allUserIds: string[] = [];
+  for (const s of listSliced) {
+    for (const r of s.responses) {
+      if (!allUserIds.includes(r.userId)) allUserIds.push(r.userId);
+    }
+  }
   const users =
     allUserIds.length > 0
-      ? await prisma.user.findMany({
-          where: { id: { in: allUserIds } },
-          select: { id: true, name: true, image: true },
-        })
+      ? await prisma.user.findMany({ where: { id: { in: allUserIds } }, select: { id: true, name: true, image: true } })
       : [];
   const userMap = new Map(users.map((u) => [u.id, { name: u.name, image: u.image }]));
 
-  const items: HistoryItem[] = list.map((s) => ({
+  const items: HistoryItem[] = listSliced.map((s) => ({
     sessionId: s.id,
     sessionDate: s.sessionDate,
     promptText: s.prompt?.text ?? "",
     responses: s.responses.map((r) => {
       const u = userMap.get(r.userId);
+      const validations = r.validations ?? [];
+      const partnerVal = validations.find((v) => v.userId !== r.userId) ?? null;
       return {
+        id: r.id,
         userId: r.userId,
         content: r.content,
         userName: u?.name ?? null,
         userImage: u?.image ?? null,
+        validation: partnerVal ? { reactions: partnerVal.reactions, acknowledgment: partnerVal.acknowledgment } : null,
       };
     }),
-    reflections: s.reflections.map((r) => ({ content: r.content, reaction: r.reaction })),
+    reflections: s.reflections.map((r) => ({ userId: r.userId, content: r.content, reaction: r.reaction })),
   }));
 
   return { items, nextCursor };
@@ -399,5 +432,60 @@ export async function submitReflection(
           content: content ?? null,
         },
       }));
+  revalidatePath(`/app/session/${sessionId}`);
+}
+
+/** Ensure response exists, session is revealed, and current user is the partner (not the author). Returns sessionId for revalidate. */
+async function requireResponseForValidation(responseId: string, currentUserId: string) {
+  const response = await prisma.response.findUnique({
+    where: { id: responseId },
+    include: { session: { select: { id: true, relationshipId: true, state: true } } },
+  });
+  if (!response) throw new Error("Response not found");
+  if (response.session.state !== "revealed") throw new Error("Validation is available after reveal.");
+  if (response.userId === currentUserId) throw new Error("You can only validate your partner's response.");
+  await requireActiveMember(currentUserId, response.session.relationshipId);
+  return { sessionId: response.session.id };
+}
+
+export async function setReactions(responseId: string, emojiList: string[]) {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) throw new Error("Not signed in");
+
+  if (emojiList.length > 2) throw new Error("Maximum 2 reactions allowed.");
+  const allowed = new Set<string>(VALIDATION_ALLOWED_EMOJIS);
+  for (const emoji of emojiList) {
+    if (!allowed.has(emoji)) throw new Error("Invalid reaction.");
+  }
+  const reactionsValue = emojiList.length > 0 ? emojiList.join("") : null;
+
+  const { sessionId } = await requireResponseForValidation(responseId, session.user.id);
+
+  await prisma.responseValidation.upsert({
+    where: { responseId_userId: { responseId, userId: session.user.id } },
+    create: { responseId, userId: session.user.id, reactions: reactionsValue, acknowledgment: null },
+    update: { reactions: reactionsValue },
+  });
+
+  revalidatePath("/app/history");
+  revalidatePath(`/app/session/${sessionId}`);
+}
+
+export async function setAcknowledgment(responseId: string, text: string) {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) throw new Error("Not signed in");
+
+  if (text.length > VALIDATION_ACK_MAX_LENGTH) throw new Error("Acknowledgment must be 100 characters or less.");
+  const acknowledgmentValue = text.trim().length > 0 ? text.trim() : null;
+
+  const { sessionId } = await requireResponseForValidation(responseId, session.user.id);
+
+  await prisma.responseValidation.upsert({
+    where: { responseId_userId: { responseId, userId: session.user.id } },
+    create: { responseId, userId: session.user.id, reactions: null, acknowledgment: acknowledgmentValue },
+    update: { acknowledgment: acknowledgmentValue },
+  });
+
+  revalidatePath("/app/history");
   revalidatePath(`/app/session/${sessionId}`);
 }

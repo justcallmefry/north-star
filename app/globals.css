@@ -45,3 +45,85 @@ body {
 .animate-delay-3 {
   animation-delay: 320ms;
 }
+
+/* Calm moments: fade + slight vertical ease only, no bounce/scale */
+@keyframes calm-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-calm-fade-in {
+  opacity: 0;
+  animation: calm-fade-in 800ms ease-out forwards;
+}
+
+.animate-calm-delay-1 {
+  animation-delay: 180ms;
+}
+
+.animate-calm-delay-2 {
+  animation-delay: 320ms;
+}
+
+.animate-calm-delay-header {
+  animation-delay: 400ms;
+}
+
+/* Quick, gentle screen fade — no bounce/scale, just ease (e.g. home) */
+@keyframes fade-in-ease {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-ease {
+  opacity: 0;
+  animation: fade-in-ease 280ms ease-out forwards;
+}
+
+/* Loading: gentle spin so it’s obvious the app is working */
+@keyframes loading-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-loading-spin {
+  animation: loading-spin 0.9s linear infinite;
+}
+
+/* One visual anchor: card, buttons, spacing. No logos/gradients. Repetition = confidence. */
+@layer components {
+  .ns-card {
+    @apply rounded-2xl border border-pink-100 bg-white p-5 shadow-md shadow-pink-100/80;
+  }
+  .ns-card-inner {
+    @apply rounded-xl border border-slate-200 bg-slate-50 p-3;
+  }
+  .ns-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-pink-500 px-4 py-2.5 text-center text-base font-semibold uppercase tracking-wide text-white shadow-sm shadow-pink-300/60 transition hover:bg-pink-400 disabled:opacity-50;
+  }
+  .ns-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-pink-100 bg-white px-4 py-2 text-center text-base font-medium uppercase tracking-wide text-slate-700 shadow-sm hover:border-pink-200 hover:bg-pink-50 disabled:opacity-50;
+  }
+  .ns-stack {
+    @apply space-y-6;
+  }
+  .ns-stack-tight {
+    @apply space-y-4;
+  }
+}

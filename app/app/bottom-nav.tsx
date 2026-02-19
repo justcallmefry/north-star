@@ -2,21 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, CalendarRange, History, User } from "lucide-react";
+import { Home, CalendarRange, History, User, ClipboardList } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/app", label: "Today", icon: Home },
   { href: "/app/history", label: "Responses", icon: History },
-  { href: "/app/meeting", label: "Weekly", icon: CalendarRange },
-  { href: "/app/meeting/history", label: "Meetings", icon: History },
+  { href: "/app/meeting", label: "Our Week", icon: CalendarRange },
+  { href: "/app/meeting/history", label: "Past Weeks", icon: ClipboardList },
   { href: "/app/us", label: "Profile", icon: User },
 ] as const;
 
 export function BottomNav() {
   const pathname = usePathname();
 
-  // Hide nav on larger screens where the left rail is visible
-  // and on non-app routes (just in case)
   if (!pathname.startsWith("/app")) return null;
 
   return (
@@ -35,16 +33,17 @@ export function BottomNav() {
             <Link
               key={href}
               href={href}
-              className={`flex flex-1 flex-col items-center gap-0.5 text-[11px] font-medium ${
-                isActive ? "text-pink-600" : "text-slate-400"
+              prefetch={true}
+              className={`flex flex-1 flex-col items-center gap-0.5 text-[11px] font-medium transition-opacity active:opacity-70 ${
+                isActive ? "text-pink-600" : "text-slate-600"
               }`}
             >
               <span
-                className={`flex h-9 w-9 items-center justify-center rounded-full border text-xs ${
-                  isActive ? "border-pink-200 bg-pink-50" : "border-slate-100 bg-white"
+                className={`flex h-9 w-9 items-center justify-center rounded-full border text-xs transition-colors ${
+                  isActive ? "border-pink-200 bg-pink-50" : "border-slate-200 bg-slate-50"
                 }`}
               >
-                <Icon className={isActive ? "h-4 w-4" : "h-4 w-4 text-slate-400"} />
+                <Icon className={`h-4 w-4 ${isActive ? "text-pink-600" : "text-slate-600"}`} />
               </span>
               <span>{label}</span>
             </Link>
@@ -54,4 +53,3 @@ export function BottomNav() {
     </nav>
   );
 }
-

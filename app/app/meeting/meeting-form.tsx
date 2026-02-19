@@ -9,14 +9,14 @@ const SECTIONS = [
   {
     key: "wins" as const,
     label: "Wins",
-    description: "What went well this week—for you, for your partner, or between you two?",
-    placeholder: "Moments that felt good, things you appreciated, small or big wins…",
+    description: "What went well.",
+    placeholder: "Big or small.",
   },
   {
     key: "stressors" as const,
     label: "Stressors",
-    description: "What felt heavy, stressful, or draining this week?",
-    placeholder: "Work, family, health, or anything that weighed on you…",
+    description: "What felt heavy or draining.",
+    placeholder: "Work, family, or anything on your mind.",
   },
   {
     key: "request" as const,
@@ -27,14 +27,14 @@ const SECTIONS = [
   {
     key: "plan" as const,
     label: "Plan",
-    description: "Anything you want to agree on together for the coming week.",
-    placeholder: "Shared plans, boundaries, or check-ins that would help…",
+    description: "Plans or boundaries for the week.",
+    placeholder: "Whatever you want to align on.",
   },
   {
     key: "appreciation" as const,
     label: "Appreciation",
-    description: "Something you’re grateful for about your partner right now.",
-    placeholder: "A moment, a habit, or something you don’t want to take for granted…",
+    description: "One thing you’ value about your partner right now.",
+    placeholder: "A habit, a gesture, or something you don’t want to take for granted.",
   },
 ] as const;
 
@@ -96,9 +96,9 @@ export function MeetingForm({ meetingId, initial }: Props) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-lg bg-pink-500 px-5 py-3 text-base font-semibold text-white shadow-sm shadow-pink-300/60 hover:bg-pink-400 disabled:opacity-50 sm:text-lg"
+        className="ns-btn-primary w-full"
       >
-        {loading ? "Saving…" : "Save weekly check-in"}
+        {loading ? "Saving…" : "Save notes"}
       </button>
       {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
     </form>

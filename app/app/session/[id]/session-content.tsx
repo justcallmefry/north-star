@@ -1,18 +1,14 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { submitResponse, revealSession, submitReflection } from "@/lib/sessions";
 import type { GetSessionResult } from "@/lib/sessions";
+import { MomentIllustration } from "@/components/illustrations";
 import { NotifyPartnerButton } from "../../notify-partner-button";
 
-const AFFIRMATIONS = [
-  "Thanks for showing up for each other.",
-  "Moments like this build trust.",
-  "Small check-ins add up.",
-  "You showed up. That matters.",
-  "Good to connect.",
-];
+const AFTER_REVEAL_PAUSE_MS = 1000;
+const AFTER_REVEAL_LINE = "You showed up for each other today.";
 
 type Props = { data: GetSessionResult; currentUserId: string };
 
@@ -23,6 +19,7 @@ export function SessionContent({ data, currentUserId }: Props) {
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [revealed, setRevealed] = useState(false);
+  const [afterRevealReady, setAfterRevealReady] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const recognitionRef = useRef<any | null>(null);
   const [revealData, setRevealData] = useState<{
@@ -65,10 +62,11 @@ export function SessionContent({ data, currentUserId }: Props) {
     setError(null);
     setLoading("reaction");
     try {
-      await submitReflection(data.sessionId, reaction.trim());
+      await submitReflection(data.sessionId, undefined, reaction.trim());
+      setReaction("");
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save reaction");
+      setError(err instanceof Error ? err.message : "Failed to save");
     } finally {
       setLoading(null);
     }
@@ -144,10 +142,12 @@ export function SessionContent({ data, currentUserId }: Props) {
   }
 
   const isRevealed = revealed || data.state === "revealed";
-  const affirmation = useMemo(
-    () => AFFIRMATIONS[Math.floor(Math.random() * AFFIRMATIONS.length)],
-    []
-  );
+
+  useEffect(() => {
+    if (!isRevealed) return;
+    const t = setTimeout(() => setAfterRevealReady(true), AFTER_REVEAL_PAUSE_MS);
+    return () => clearTimeout(t);
+  }, [isRevealed]);
 
   const responsesToShow = useMemo(() => {
     if (!isRevealed) return [];
@@ -208,7 +208,7 @@ export function SessionContent({ data, currentUserId }: Props) {
       </p>
 
       {data.momentText && (
-        <div className="mx-auto max-w-xl rounded-xl border border-pink-100 bg-white px-4 py-3 shadow-sm shadow-pink-100/80">
+        <div className="ns-card mx-auto max-w-xl">
           <p className="text-xs font-semibold uppercase tracking-wide text-pink-500 sm:text-sm">
             Optional moment
           </p>
@@ -249,7 +249,7 @@ export function SessionContent({ data, currentUserId }: Props) {
             <button
               type="submit"
               disabled={!!loading}
-              className="rounded-lg bg-pink-500 px-7 py-3.5 text-lg font-semibold text-white shadow-sm shadow-pink-300/60 hover:bg-pink-400 disabled:opacity-50"
+              className="ns-btn-primary text-lg"
             >
               {loading === "submit"
                 ? "Saving…"
@@ -284,19 +284,28 @@ export function SessionContent({ data, currentUserId }: Props) {
       {data.hasUserResponded && data.state === "open" && data.canReveal && !isRevealed && (
         <div>
           <p className="mb-2 text-base text-slate-700 sm:text-lg">Both of you have answered.</p>
-            <button
-              type="button"
-              onClick={handleReveal}
-              disabled={!!loading}
-              className="rounded-lg bg-pink-500 px-6 py-2.5 text-lg font-semibold text-white shadow-sm shadow-pink-300/60 hover:bg-pink-400 disabled:opacity-50"
-            >
+          <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={handleReveal}
+            disabled={!!loading}
+            className="ns-btn-primary text-lg"
+          >
             {loading === "reveal" ? "Revealing…" : "Reveal answers"}
           </button>
+          <NotifyPartnerButton sessionId={data.sessionId} messageType="reveal" size="sm" />
+          </div>
         </div>
       )}
 
-      {isRevealed && (
-        <div className="space-y-5 rounded-2xl border border-pink-100 bg-white p-4 shadow-md shadow-pink-100/80">
+      {isRevealed && !afterRevealReady && (
+        <div className="flex min-h-[12rem] items-center justify-center" aria-hidden="true">
+          <p className="text-slate-400 text-lg">—</p>
+        </div>
+      )}
+
+      {isRevealed && afterRevealReady && (
+        <div className="animate-calm-fade-in ns-card ns-stack-tight">
           <h3 className="text-lg font-semibold text-slate-900 sm:text-xl">Answers</h3>
 
           <div className="space-y-4">
@@ -312,37 +321,58 @@ export function SessionContent({ data, currentUserId }: Props) {
                     {resp.title}
                   </span>
                 </div>
-                <p className="rounded-2xl border border-slate-100 bg-slate-50 p-3 text-lg leading-relaxed text-slate-900 sm:text-xl">
+                <p className="ns-card-inner p-3 text-lg leading-relaxed text-slate-900 sm:text-xl">
                   {resp.content ?? "—"}
                 </p>
               </div>
             ))}
           </div>
-          <div className="flex flex-wrap gap-2">
-            <input
-              type="text"
+
+          <div className="flex flex-col items-center gap-3">
+            <MomentIllustration className="w-20 h-20 sm:w-24 sm:h-24" />
+            <p className="text-center text-base text-slate-600 sm:text-lg">
+              {AFTER_REVEAL_LINE}
+            </p>
+          </div>
+
+          <div className="space-y-3 border-t border-pink-100 pt-5">
+            <label htmlFor="session-response" className="block text-sm font-medium text-slate-700">
+              Send a response back
+            </label>
+            <textarea
+              id="session-response"
               value={reaction}
               onChange={(e) => setReaction(e.target.value)}
-              placeholder="Quick reaction (e.g. 💕)"
-              className="rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-base text-slate-900 placeholder:text-slate-500"
+              placeholder="A short note or emoji for your partner…"
+              rows={3}
+              className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-base text-slate-900 placeholder:text-slate-500 focus:border-pink-400 focus:outline-none focus:ring-1 focus:ring-pink-300"
             />
             <button
               type="button"
               onClick={handleReaction}
               disabled={!!loading || !reaction.trim()}
-              className="rounded-lg bg-pink-500 px-5 py-2.5 text-base font-semibold text-white shadow-sm shadow-pink-300/60 hover:bg-pink-400 disabled:opacity-50"
+              className="ns-btn-primary"
             >
-              {loading === "reaction" ? "Saving…" : "Add reaction"}
+              {loading === "reaction" ? "Saving…" : "Send response"}
             </button>
           </div>
           {reflectionsToShow.length > 0 && (
-            <p className="text-base text-slate-700 sm:text-lg">
-              Reactions: {reflectionsToShow.map((r) => r.reaction).filter(Boolean).join(", ")}
-            </p>
+            <div className="space-y-2 pt-2">
+              {reflectionsToShow.map((r) => {
+                const text = r.content || r.reaction;
+                if (!text) return null;
+                const isMe = r.userId === currentUserId;
+                return (
+                  <p key={r.userId} className="text-base text-slate-700 sm:text-lg">
+                    <span className="font-medium text-slate-900">
+                      {isMe ? "My response: " : "Their response: "}
+                    </span>
+                    {text}
+                  </p>
+                );
+              })}
+            </div>
           )}
-          <p className="pt-3 text-center text-base text-slate-700 sm:text-lg">
-            {affirmation}
-          </p>
         </div>
       )}
 

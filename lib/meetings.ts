@@ -170,8 +170,6 @@ export async function getMeeting(meetingId: string): Promise<GetMeetingResult | 
     partnerIds.length > 0 &&
     partnerIds.every((id) => meeting.entries.some((e) => e.userId === id));
   const exactlyTwo = memberIds.length === 2;
-  const canViewPartner = exactlyTwo && !!userEntry && hasPartnerSubmitted;
-
   const toEntryData = (e: { wins: string | null; stressors: string | null; request: string | null; plan: string | null; appreciation: string | null }): MeetingEntryData => ({
     wins: e.wins ?? null,
     stressors: e.stressors ?? null,
@@ -180,14 +178,16 @@ export async function getMeeting(meetingId: string): Promise<GetMeetingResult | 
     appreciation: e.appreciation ?? null,
   });
 
-  const partnerEntry = meeting.entries.find((e) => e.userId !== session.user!.id);
+  const partnerEntryRow = meeting.entries.find((e) => e.userId !== session.user!.id);
+  const partnerEntry = partnerEntryRow ? toEntryData(partnerEntryRow) : null;
+  const canViewPartner = exactlyTwo && !!partnerEntryRow;
 
   return {
     meetingId: meeting.id,
     relationshipId: meeting.relationshipId,
     weekKey: meeting.weekKey,
     ownEntry: userEntry ? toEntryData(userEntry) : null,
-    partnerEntry: canViewPartner && partnerEntry ? toEntryData(partnerEntry) : null,
+    partnerEntry,
     canViewPartner,
     hasUserSubmitted: !!userEntry,
     hasPartnerSubmitted: partnerIds.length === 0 ? false : hasPartnerSubmitted,

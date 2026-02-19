@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { RelationshipActions } from "../relationship-actions";
@@ -17,7 +18,7 @@ export default async function UsPage() {
   const currentAvatar = (session.user.image as string | null) ?? "";
 
   return (
-    <main className="flex h-full flex-col gap-6">
+    <main className="flex h-full flex-col ns-stack">
       <header className="space-y-1">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-pink-500 sm:text-sm">
           Profile
@@ -26,12 +27,12 @@ export default async function UsPage() {
           You & your relationship
         </h1>
         <p className="mt-1 text-sm text-slate-600 sm:text-base">
-          Update how you show up in North Star and adjust the details of your connection.
+          Update your name and icon. Manage your relationship.
         </p>
       </header>
 
-      <section className="space-y-4">
-        <div className="rounded-2xl border border-pink-100 bg-white px-4 py-4 shadow-md shadow-pink-100/80 sm:px-5 sm:py-5">
+      <section className="ns-stack-tight">
+        <div className="ns-card">
           <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
             Your profile
           </h2>
@@ -57,8 +58,7 @@ export default async function UsPage() {
                   {primary.name ?? "Your relationship"}
                 </p>
                 <p className="text-sm text-slate-600 sm:text-base">
-                  Invite your partner, see your connection status, and update how this relationship
-                  works for the two of you.
+                  Invite your partner, see status, manage or leave the relationship.
                 </p>
               </div>
               <div className="hidden shrink-0 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 sm:inline-flex">
@@ -69,13 +69,13 @@ export default async function UsPage() {
             <div className="mt-4 flex flex-wrap gap-2">
               <Link
                 href="/invite"
-                className="inline-flex items-center gap-2 rounded-lg bg-pink-500 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-pink-300/60 hover:bg-pink-400"
+                className="ns-btn-primary"
               >
                 Invite partner
               </Link>
               <Link
                 href="/app/us/relationship"
-                className="inline-flex items-center gap-2 rounded-lg border border-pink-100 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:border-pink-200 hover:bg-pink-50"
+                className="ns-btn-secondary"
               >
                 Manage relationship
               </Link>
@@ -88,7 +88,10 @@ export default async function UsPage() {
         </section>
       ) : (
         <section className="mt-4 flex flex-1 items-center justify-center">
-          <div className="max-w-md rounded-2xl border border-pink-100 bg-white px-5 py-6 text-center shadow-md shadow-pink-100/80 sm:px-7 sm:py-8">
+          <div className="ns-card max-w-md text-center">
+            <div className="flex justify-center">
+              <EmptyTogetherIllustration className="w-28 h-28 sm:w-32 sm:h-32" />
+            </div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 sm:text-sm">
               Welcome
             </p>
@@ -96,7 +99,7 @@ export default async function UsPage() {
               Set up your relationship
             </p>
             <p className="mt-2 text-sm text-slate-600 sm:text-base">
-              Create or join a relationship to start your shared ritual.
+              Create or join a relationship to get your first question.
             </p>
           </div>
         </section>

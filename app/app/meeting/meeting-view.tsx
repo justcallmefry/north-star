@@ -16,11 +16,11 @@ type Props = {
 
 export function MeetingView({ ownEntry, partnerEntry, canViewPartner }: Props) {
   return (
-    <div className="space-y-6">
+    <div className="ns-stack">
       <div className="grid gap-6 md:grid-cols-2">
-        <section className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
-          <h3 className="mb-3 text-base font-semibold text-slate-900 sm:text-lg">Your entry</h3>
-          {ownEntry ? (
+        <section className="ns-card">
+          <h3 className="mb-3 text-base font-semibold text-slate-900 sm:text-lg">My notes</h3>
+          {ownEntry && Object.values(ownEntry).some(Boolean) ? (
             <ul className="space-y-3">
               {SECTIONS.map(({ key, label }) => (
                 <li key={key}>
@@ -28,19 +28,19 @@ export function MeetingView({ ownEntry, partnerEntry, canViewPartner }: Props) {
                     {label}
                   </span>
                   <p className="mt-0.5 text-sm text-slate-700 sm:text-base">
-                    {ownEntry[key] ?? "-"}
+                    {ownEntry[key] ?? "—"}
                   </p>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-slate-500">Not submitted yet.</p>
+            <p className="text-sm text-slate-500">Nothing here yet.</p>
           )}
         </section>
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
-          <h3 className="mb-3 text-base font-semibold text-slate-900 sm:text-lg">Partner entry</h3>
-          {canViewPartner && partnerEntry ? (
+        <section className="ns-card">
+          <h3 className="mb-3 text-base font-semibold text-slate-900 sm:text-lg">Partner&apos;s notes</h3>
+          {canViewPartner && partnerEntry && Object.values(partnerEntry).some(Boolean) ? (
             <ul className="space-y-3">
               {SECTIONS.map(({ key, label }) => (
                 <li key={key}>
@@ -48,15 +48,13 @@ export function MeetingView({ ownEntry, partnerEntry, canViewPartner }: Props) {
                     {label}
                   </span>
                   <p className="mt-0.5 text-sm text-slate-700 sm:text-base">
-                    {partnerEntry[key] ?? "-"}
+                    {partnerEntry[key] ?? "—"}
                   </p>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-slate-500">
-              {canViewPartner ? "-" : "Visible once you and your partner have both submitted."}
-            </p>
+            <p className="text-sm text-slate-500">Your partner&apos;s notes will appear here as they add to them.</p>
           )}
         </section>
       </div>

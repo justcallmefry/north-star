@@ -58,7 +58,7 @@ function buildMagicLinkHtml(to: string, url: string, logoUrl: string): string {
             Welcome back to North Star
           </h1>
           <p style="margin:0;font-size:14px;line-height:1.6;color:#cbd5f5;">
-            We sent a one-time sign-in link for <strong style="color:#e5e7eb;">${safeEmail}</strong>. It helps keep your shared ritual private and secure.
+            We sent a one-time sign-in link for <strong style="color:#e5e7eb;">${safeEmail}</strong>. Your sign-in is private and secure.
           </p>
         </td>
       </tr>
@@ -83,7 +83,7 @@ function buildMagicLinkHtml(to: string, url: string, logoUrl: string): string {
       <tr>
         <td style="padding:20px 20px 0 20px;">
           <p style="margin:0;font-size:12px;line-height:1.6;color:#6b7280;">
-            You&apos;re building a small, steady habit of checking in. One question a day, at your own pace.
+            One question a day. Your pace.
           </p>
         </td>
       </tr>
@@ -113,7 +113,7 @@ function buildBetaWelcomeHtml(to: string, appUrl: string): { subject: string; ht
             You&apos;re in the North Star beta
           </h1>
           <p style="margin:0 0 6px 0;font-size:14px;line-height:1.6;color:#cbd5f5;">
-            Thanks for joining us. North Star is a simple, private ritual to help you and your partner stay close—one question at a time.
+            Thanks for joining us. North Star is a simple way to stay in sync—one question a day.
           </p>
           <p style="margin:0;font-size:13px;line-height:1.6;color:#9ca3af;">
             This invite was sent to <strong style="color:#e5e7eb;">${safeEmail}</strong>.
@@ -124,7 +124,7 @@ function buildBetaWelcomeHtml(to: string, appUrl: string): { subject: string; ht
         <td style="padding:20px 20px 8px 20px;">
           <a href="${signInUrl}"
              style="display:inline-block;padding:11px 22px;border-radius:10px;background:#22c55e;color:#022c22;font-size:14px;font-weight:600;text-decoration:none;text-align:center;box-shadow:0 10px 30px rgba(34,197,94,0.35);">
-            Start your first check-in
+            Sign in and answer today's question
           </a>
         </td>
       </tr>
@@ -141,7 +141,7 @@ function buildBetaWelcomeHtml(to: string, appUrl: string): { subject: string; ht
       <tr>
         <td style="padding:20px 20px 0 20px;">
           <p style="margin:0;font-size:12px;line-height:1.6;color:#6b7280;">
-            You&apos;ll get one shared question a day. Answer privately, then reveal together when you&apos;re both ready.
+            One question a day. Answer privately, reveal together when you&apos;re both ready.
           </p>
         </td>
       </tr>

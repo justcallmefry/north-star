@@ -33,94 +33,50 @@ export default async function MeetingPage() {
     const weekEnd = endOfWeek(today, { weekStartsOn: 0 });
     const weekLabel = `${format(weekStart, "MMMM d")}–${format(weekEnd, "d, yyyy")}`;
     return (
-      <div className="space-y-6">
-        <header className="space-y-2">
+      <div className="ns-stack">
+        <header className="animate-calm-fade-in space-y-2">
           <div className="inline-flex items-center gap-2 rounded-full bg-pink-50 px-3 py-1 ring-1 ring-pink-200">
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-pink-500">
               <CalendarRange className="h-3.5 w-3.5" />
             </span>
             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-pink-600">
-              Weekly Meeting
+              Our Week
             </span>
           </div>
-          <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Weekly Meeting</h1>
-          <p className="flex items-start gap-2 text-base text-slate-700 sm:text-lg">
+          <p className="flex items-start gap-2 text-sm text-slate-600 sm:text-base">
             <span className="mt-0.5 text-pink-500">
               <Sparkles className="h-4 w-4" />
             </span>
             <span>
-              A short weekly check‑in to talk about what&apos;s working, what&apos;s hard, and what you
-              each need. Add highlights, lowlights, and little moments as the week unfolds.
+              A shared snapshot of the week. Add when you like—highs, lows, or anything you want to remember.
             </span>
           </p>
           <p className="text-sm text-slate-500 sm:text-base">Week of {weekLabel}</p>
         </header>
 
-        <div className="space-y-5">
-          {!current.hasUserSubmitted && (
-            <section className="rounded-2xl border border-pink-100 bg-white p-4 sm:p-5 shadow-md shadow-pink-100/80">
-              <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">Fill out this week</h2>
-              <p className="mt-2 text-sm text-slate-600 sm:text-base">
-                You each fill this out on your own. Come back during the week to jot down highs,
-                lows, and the moments and events you shared—date nights, time with friends or
-                family, anything you want to remember. When you meet, you&apos;ll have both entries
-                side-by-side.
-              </p>
-              <div className="mt-4">
-                <MeetingForm meetingId={current.meetingId} />
-              </div>
-            </section>
-          )}
+        <div className="ns-stack-tight animate-calm-fade-in animate-calm-delay-header">
+          <section className="ns-card">
+            <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">This week so far</h2>
+            <p className="mt-1 text-sm text-slate-600">A read-only snapshot. You can add or edit your notes below.</p>
+            <div className="mt-4">
+              <MeetingView
+                ownEntry={meetingData?.ownEntry ?? null}
+                partnerEntry={meetingData?.partnerEntry ?? null}
+                canViewPartner={current.canViewPartner}
+              />
+            </div>
+          </section>
 
-          {current.hasUserSubmitted && !current.canViewPartner && (
-            <div className="space-y-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800 sm:text-base">
-              <p>
-                Your entry is saved. Your partner&apos;s entry will appear once they submit. You can
-                nudge them to fill in their side.
-              </p>
+          <section className="ns-card">
+            <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Add to Our Week</h2>
+            <p className="mt-1 text-sm text-slate-600">Optional prompts. Write a little or a lot—whatever feels right.</p>
+            <div className="mt-4">
+              <MeetingForm meetingId={current.meetingId} initial={meetingData?.ownEntry ?? null} />
+            </div>
+            <div className="mt-4 pt-3 border-t border-pink-100">
               <NotifyPartnerMeetingButton meetingId={current.meetingId} size="sm" />
             </div>
-          )}
-
-          {current.hasUserSubmitted && (
-            <section className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
-              <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">View meeting</h2>
-              <p className="mt-2 text-sm text-slate-600 sm:text-base">
-                When both of you have submitted, you&apos;ll see your answers side-by-side.
-              </p>
-              <div className="mt-4">
-                <MeetingView
-                  ownEntry={meetingData?.ownEntry ?? null}
-                  partnerEntry={meetingData?.partnerEntry ?? null}
-                  canViewPartner={current.canViewPartner}
-                />
-              </div>
-              <p className="mt-4 text-sm">
-                <Link
-                  href={`/app/meeting/${current.meetingId}`}
-                  className="text-sky-300 underline hover:text-sky-200"
-                >
-                  Open full view
-                </Link>
-              </p>
-            </section>
-          )}
-
-          {current.hasUserSubmitted && (
-            <section className="rounded-2xl border border-pink-100 bg-white p-4 sm:p-5 shadow-md shadow-pink-100/80">
-              <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">Update your entry</h2>
-              <p className="mt-2 text-sm text-slate-600 sm:text-base">
-                Drop in high points, low points, and events anytime during or after the week if
-                something changed or you didn&apos;t get a chance to write earlier.
-              </p>
-              <div className="mt-3">
-                <MeetingForm
-                  meetingId={current.meetingId}
-                  initial={meetingData?.ownEntry ?? null}
-                />
-              </div>
-            </section>
-          )}
+          </section>
 
           <p>
             <Link

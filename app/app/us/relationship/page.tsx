@@ -15,7 +15,7 @@ export default async function ManageRelationshipPage() {
   if (!primary) redirect("/app/us");
 
   return (
-    <main className="flex h-full flex-col gap-6">
+    <main className="flex h-full flex-col ns-stack">
       <header className="space-y-1">
         <Link
           href="/app/us"
@@ -31,7 +31,7 @@ export default async function ManageRelationshipPage() {
         </p>
       </header>
 
-      <section className="rounded-2xl border border-pink-100 bg-white px-4 py-4 shadow-md shadow-pink-100/80 sm:px-5 sm:py-5">
+      <section className="ns-card">
         <div className="flex items-center justify-between gap-3">
           <div className="space-y-2">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-sm">
@@ -41,7 +41,7 @@ export default async function ManageRelationshipPage() {
               {primary.name ?? "Your relationship"}
             </p>
             <p className="text-sm text-slate-600 sm:text-base">
-              Invite your partner, see your connection status, and manage this relationship.
+              Invite your partner, see status, manage or leave.
             </p>
           </div>
           <div className="hidden shrink-0 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 sm:inline-flex">
@@ -52,7 +52,7 @@ export default async function ManageRelationshipPage() {
         <div className="mt-4 flex flex-wrap gap-2">
           <Link
             href="/invite"
-            className="inline-flex items-center gap-2 rounded-lg bg-pink-500 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-pink-300/60 hover:bg-pink-400"
+            className="ns-btn-primary"
           >
             Invite partner
           </Link>

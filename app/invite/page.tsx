@@ -70,7 +70,7 @@ export default async function InvitePage({ searchParams }: Props) {
                   Invite your partner
                 </p>
                 <p className="text-sm text-slate-300">
-                  Share a link so they can join your ritual.
+                  Share the link so they can join.
                 </p>
               </div>
             </div>

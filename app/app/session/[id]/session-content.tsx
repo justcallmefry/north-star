@@ -138,15 +138,16 @@ export function SessionContent({ data, currentUserId }: Props) {
     () => AFFIRMATIONS[Math.floor(Math.random() * AFFIRMATIONS.length)],
     []
   );
-  const myTitle = "My response";
-  const partnerTitle = data.partnerName
-    ? `${data.partnerName.trim()}${data.partnerName.trim().endsWith("s") ? "'" : "'s"} response`
-    : "Their response";
-  const myIcon = (data.currentUserImage as string) || "💗";
-  const partnerIcon = (data.partnerImage as string) || "💜";
 
   const responsesToShow = useMemo(() => {
     if (!isRevealed) return [];
+
+    const myTitle = "My response";
+    const partnerTitle = data.partnerName
+      ? `${data.partnerName.trim()}${data.partnerName.trim().endsWith("s") ? "'" : "'s"} response`
+      : "Their response";
+    const myIcon = (data.currentUserImage as string) || "💗";
+    const partnerIcon = (data.partnerImage as string) || "💜";
 
     if (revealData) {
       const mine = revealData.responses.find((r) => r.userId === currentUserId) ?? null;
@@ -185,20 +186,7 @@ export function SessionContent({ data, currentUserId }: Props) {
         content: data.partnerResponse ?? null,
       },
     ];
-  }, [
-    isRevealed,
-    revealData,
-    data.userResponse,
-    data.partnerResponse,
-    data.partnerName,
-    data.currentUserImage,
-    data.partnerImage,
-    currentUserId,
-    myTitle,
-    partnerTitle,
-    myIcon,
-    partnerIcon,
-  ]);
+  }, [isRevealed, revealData, data.userResponse, data.partnerResponse, data.partnerName, data.currentUserImage, data.partnerImage, currentUserId]);
   const reflectionsToShow = revealData?.reflections ?? data.reflections ?? [];
 
   const responseCount = (data.hasUserResponded ? 1 : 0) + (data.hasPartnerResponded ? 1 : 0);

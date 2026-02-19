@@ -335,7 +335,15 @@ export async function getHistory(
   const list = hasMore ? sessions.slice(0, take) : sessions;
   const nextCursor = hasMore ? list[list.length - 1].id : null;
 
-  const allUserIds = [...new Set(list.flatMap((s) => s.responses.map((r) => r.userId)))];
+  const allUserIds: string[] = [];
+  for (const s of list) {
+    for (const r of s.responses) {
+      if (!allUserIds.includes(r.userId)) {
+        allUserIds.push(r.userId);
+      }
+    }
+  }
+
   const users =
     allUserIds.length > 0
       ? await prisma.user.findMany({

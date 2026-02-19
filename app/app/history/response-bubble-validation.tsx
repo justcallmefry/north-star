@@ -160,7 +160,7 @@ export function ResponseBubbleValidation({
                 React
               </button>
               {popoverOpen && (
-                <div className="absolute left-0 top-full z-10 mt-1 flex gap-1 rounded-lg border border-slate-200 bg-white px-2 py-2 shadow-sm">
+                <div className="absolute left-0 top-full z-10 mt-1 flex gap-1">
                   {VALIDATION_ALLOWED_EMOJIS.map((emoji) => (
                     <button
                       key={emoji}

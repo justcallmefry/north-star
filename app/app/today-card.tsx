@@ -33,7 +33,7 @@ export function TodayCard({ today }: Props) {
           </h2>
         </div>
       </div>
-      <p className="mt-3 font-display text-2xl leading-snug text-slate-900 sm:text-3xl">
+      <p className="mt-3 text-2xl font-semibold leading-snug text-slate-900 sm:text-3xl">
         {promptText}
       </p>
 

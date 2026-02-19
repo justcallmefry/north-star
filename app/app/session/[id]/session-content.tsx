@@ -76,25 +76,35 @@ export function SessionContent({ data, currentUserId }: Props) {
 
   function ensureRecognition() {
     if (typeof window === "undefined") return null;
-    // Some browsers expose webkitSpeechRecognition instead of SpeechRecognition
     const SpeechRecognition =
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) return null;
     if (!recognitionRef.current) {
       const recognition = new SpeechRecognition();
       recognition.lang = "en-US";
+      recognition.continuous = true;
       recognition.interimResults = false;
       recognition.maxAlternatives = 1;
       recognition.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript as string;
-        setText((prev) =>
-          prev
-            ? `${prev}${prev.endsWith(" ") ? "" : " "}${transcript.trim()}`
-            : transcript.trim()
-        );
+        const results = event.results;
+        if (!results || results.length === 0) return;
+        let transcript = "";
+        for (let i = 0; i < results.length; i++) {
+          const result = results[i];
+          if (result.isFinal && result[0]) {
+            transcript += (result[0].transcript ?? "") + (i < results.length - 1 ? " " : "");
+          }
+        }
+        if (transcript.trim()) {
+          setText((prev) =>
+            prev ? `${prev}${prev.endsWith(" ") ? "" : " "}${transcript.trim()}` : transcript.trim()
+          );
+        }
       };
-      recognition.onerror = () => {
-        setError("We couldn’t hear you clearly. You can try again or type instead.");
+      recognition.onerror = (event: any) => {
+        if (event.error !== "aborted" && event.error !== "no-speech") {
+          setError("We couldn't hear you clearly. You can try again or type instead.");
+        }
         setIsRecording(false);
       };
       recognition.onend = () => {
@@ -193,7 +203,7 @@ export function SessionContent({ data, currentUserId }: Props) {
 
   return (
     <div className="space-y-10">
-      <p className="font-display text-center text-3xl leading-relaxed text-slate-900 sm:text-4xl">
+      <p className="text-center text-3xl font-semibold leading-relaxed text-slate-900 sm:text-4xl">
         {data.promptText}
       </p>
 

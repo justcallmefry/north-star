@@ -5,9 +5,13 @@
 html {
   font-size: 17px;
   overflow-x: hidden;
-  /* Prevent horizontal pull on mobile */
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+  /* Prevent any horizontal overscroll/bounce on mobile */
+  overscroll-behavior-x: none;
+  width: 100%;
+  max-width: 100vw;
+  position: relative;
 }
 
 @media (min-width: 768px) {
@@ -22,8 +26,10 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   max-width: 100vw;
-  /* Lock vertical-only scroll on touch (reduces horizontal jitter) */
+  width: 100%;
   touch-action: pan-y;
+  overscroll-behavior-x: none;
+  overflow-y: auto;
 }
 
 @keyframes fade-in-up {

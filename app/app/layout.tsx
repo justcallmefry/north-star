@@ -9,9 +9,9 @@ export default function AppSegmentLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen min-h-[100dvh] w-full max-w-[100vw] flex-col overflow-x-hidden bg-white text-slate-900 md:min-h-screen">
-      {/* Scrollable area only (keeps bottom nav fixed at viewport bottom on mobile) */}
-      <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto md:min-h-screen">
+    <div className="flex min-h-screen min-h-[100dvh] w-full max-w-[100vw] flex-col overflow-x-hidden overflow-y-auto bg-white text-slate-900 md:min-h-screen" style={{ overscrollBehaviorX: "none" }}>
+      {/* Scrollable content; pb clears fixed bottom nav on mobile only */}
+      <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto pb-24 md:min-h-screen md:pb-6" style={{ overscrollBehaviorX: "none" }}>
         <div className="mx-auto flex w-full min-w-0 max-w-6xl flex-1 gap-6 px-4 pt-6 pb-6 sm:px-6 lg:px-8 md:pb-6 md:pt-6">
           {/* Left rail / app frame (desktop/tablet) — star icon only, no wordmark */}
           <aside className="hidden w-64 flex-shrink-0 flex-col justify-between rounded-2xl border border-pink-100 bg-pink-50 p-5 shadow-lg shadow-pink-100/80 md:flex">

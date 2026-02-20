@@ -1,8 +1,10 @@
 import type { NextRequest } from "next/server";
 import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import Credentials from "next-auth/providers/credentials";
 import Nodemailer from "next-auth/providers/nodemailer";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
+import { verifyPassword } from "@/lib/password";
 import { sendVerificationRequest } from "@/lib/email";
 import { getEmailEnv } from "@/lib/email-env";
 import type { VerificationRequestParams } from "@/lib/email";
@@ -33,6 +35,21 @@ function createAuthInstance(
     session: { strategy: "database", maxAge: 30 * 24 * 60 * 60, updateAge: 24 * 60 * 60 },
     pages: { signIn: "/login" },
     providers: [
+      Credentials({
+        credentials: {
+          email: { label: "Email", type: "email" },
+          password: { label: "Password", type: "password" },
+        },
+        async authorize(credentials) {
+          if (!credentials?.email || typeof credentials.email !== "string") return null;
+          if (!credentials?.password || typeof credentials.password !== "string") return null;
+          const email = credentials.email.trim().toLowerCase();
+          const user = await prisma.user.findUnique({ where: { email } });
+          if (!user?.password) return null;
+          if (!verifyPassword(credentials.password, user.password)) return null;
+          return { id: user.id, email: user.email ?? undefined, name: user.name ?? undefined, image: user.image ?? undefined };
+        },
+      }),
       ...(emailConfigured
         ? [
             Nodemailer({

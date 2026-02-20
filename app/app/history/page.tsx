@@ -100,6 +100,29 @@ export default async function HistoryPage({ searchParams }: Props) {
                     );
                   })}
                 </div>
+
+                {item.reflections.length > 0 && (
+                  <div className="mt-4 border-t border-slate-100 pt-4">
+                    <p className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400 mb-2">
+                      Our responses back
+                    </p>
+                    <div className="space-y-2">
+                      {item.reflections.map((ref) => {
+                        const text = ref.content || ref.reaction;
+                        if (!text) return null;
+                        const isMe = ref.userId === currentUserId;
+                        return (
+                          <p key={ref.userId} className="text-sm text-slate-600">
+                            <span className="font-medium text-slate-700">
+                              {isMe ? "You: " : "Them: "}
+                            </span>
+                            {text}
+                          </p>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </li>
             ))
           )}

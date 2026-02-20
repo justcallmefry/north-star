@@ -67,6 +67,7 @@ model User {
   emailVerified DateTime?
   name          String?
   image         String?
+  password      String?   // hashed; set when user signs up with email+password
   accounts      Account[]
   sessions      Session[]
 

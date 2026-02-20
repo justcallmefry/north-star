@@ -4,10 +4,9 @@ import { ArrowRight, CalendarRange, History, Sparkles } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { isBuildTime } from "@/lib/build";
-import { getToday } from "@/lib/sessions";
 import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { RelationshipActions } from "./relationship-actions";
-import { TodayCard } from "./today-card";
+import { TodaySection } from "./today-section";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +19,6 @@ export default async function AppPage() {
 
     const relationships = await getMyActiveRelationships();
     const relationshipId = relationships[0]?.id ?? null;
-    const today = relationshipId ? await getToday(relationshipId) : null;
     const displayName = session.user.name ?? session.user.email;
 
     return (
@@ -65,7 +63,7 @@ export default async function AppPage() {
                 </Link>
               </div>
 
-              <TodayCard today={today} />
+              <TodaySection relationshipId={relationshipId!} />
 
               <div className="space-y-1.5">
                 <Link
@@ -98,11 +96,11 @@ export default async function AppPage() {
               </p>
               <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                 <Link
-                  href="/onboarding"
+                  href="/app/pair"
                   className="ns-btn-primary"
                 >
                   <ArrowRight className="h-4 w-4" />
-                  Create or join
+                  Pair with partner
                 </Link>
               </div>
             </div>

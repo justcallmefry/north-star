@@ -79,7 +79,17 @@ export type GetTodayResult = {
   canReveal: boolean;
 };
 
-export async function getToday(relationshipId: string): Promise<GetTodayResult | null> {
+/**
+ * Get today's session for a relationship.
+ * @param relationshipId - Relationship to get session for.
+ * @param localDateStr - Optional "YYYY-MM-DD" from the user's local timezone (e.g. from the browser).
+ *   When provided, "today" is this date (midnight UTC for that calendar day), so the new question
+ *   appears at midnight in their local area. When omitted, uses midnight UTC.
+ */
+export async function getToday(
+  relationshipId: string,
+  localDateStr?: string
+): Promise<GetTodayResult | null> {
   const session = await getServerAuthSession();
   if (!session?.user?.id) throw new Error("Not signed in");
 
@@ -88,18 +98,25 @@ export async function getToday(relationshipId: string): Promise<GetTodayResult |
   if (memberIds.length === 0) return null;
   const exactlyTwo = memberIds.length === 2;
 
-  const today = todayUTC();
-  let dailySession = await prisma.dailySession.findUnique({
-    where: {
-      relationshipId_sessionDate: { relationshipId, sessionDate: today },
-    },
+  // Use local date when provided (midnight in their area = this calendar day in UTC for lookup).
+  const today =
+    localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr)
+      ? new Date(localDateStr + "T00:00:00.000Z")
+      : todayUTC();
+
+  // Don't advance to a new question until the current one is done (revealed or expired).
+  // So if the most recent session is still open, show that; otherwise use/create today's.
+  const latestSession = await prisma.dailySession.findFirst({
+    where: { relationshipId },
+    orderBy: { sessionDate: "desc" },
     include: {
       prompt: true,
       responses: { select: { userId: true, content: true } },
     },
   });
 
-  if (!dailySession) {
+  let dailySession: typeof latestSession;
+  if (!latestSession) {
     const promptId = await pickPromptForSession(relationshipId);
     dailySession = await prisma.dailySession.create({
       data: {
@@ -113,6 +130,35 @@ export async function getToday(relationshipId: string): Promise<GetTodayResult |
         responses: { select: { userId: true, content: true } },
       },
     });
+  } else if (latestSession.state === "open" || latestSession.state === "expired") {
+    // Still on this question until both answer and reveal (or it's expired)
+    dailySession = latestSession;
+  } else {
+    // Latest is revealed — show today's session, creating if needed
+    dailySession = await prisma.dailySession.findUnique({
+      where: {
+        relationshipId_sessionDate: { relationshipId, sessionDate: today },
+      },
+      include: {
+        prompt: true,
+        responses: { select: { userId: true, content: true } },
+      },
+    });
+    if (!dailySession) {
+      const promptId = await pickPromptForSession(relationshipId);
+      dailySession = await prisma.dailySession.create({
+        data: {
+          relationshipId,
+          sessionDate: today,
+          promptId,
+          state: "open",
+        },
+        include: {
+          prompt: true,
+          responses: { select: { userId: true, content: true } },
+        },
+      });
+    }
   }
 
   const promptText = dailySession.prompt?.text ?? "How are you feeling today?";

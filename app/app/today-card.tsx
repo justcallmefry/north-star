@@ -60,7 +60,7 @@ export function TodayCard({ today }: Props) {
         {state === "open" && !hasUserResponded && (
           <Link
             href={`/app/session/${sessionId}`}
-            className="ns-btn-primary"
+            className="ns-btn-primary block w-full text-center py-3.5"
           >
             Answer today&apos;s question
           </Link>
@@ -79,12 +79,17 @@ export function TodayCard({ today }: Props) {
           </div>
         )}
         {state === "open" && canReveal && (
-          <Link
-            href={`/app/session/${sessionId}`}
-            className="ns-btn-primary"
-          >
-            Reveal answers
-          </Link>
+          <div className="space-y-2">
+            <Link
+              href={`/app/session/${sessionId}`}
+              className="ns-btn-primary block w-full text-center py-3.5"
+            >
+              Reveal answers
+            </Link>
+            <p className="text-center text-sm text-slate-500">
+              Next question tomorrow.
+            </p>
+          </div>
         )}
         {state === "expired" && (
           <span className="text-base text-slate-400">This session has expired.</span>

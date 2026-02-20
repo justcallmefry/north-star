@@ -3,8 +3,10 @@ import { redirect } from "next/navigation";
 import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
+import { prisma } from "@/lib/prisma";
 import { RelationshipActions } from "../relationship-actions";
 import { ProfileForm } from "./profile-form";
+import { PasswordForm } from "./password-form";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +18,12 @@ export default async function UsPage() {
   const primary = relationships[0] ?? null;
   const currentName = session.user.name ?? "";
   const currentAvatar = (session.user.image as string | null) ?? "";
+
+  const userRow = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { password: true },
+  });
+  const hasPassword = !!userRow?.password;
 
   return (
     <main className="flex h-full flex-col ns-stack">
@@ -43,6 +51,21 @@ export default async function UsPage() {
           </p>
 
           <ProfileForm currentName={currentName} currentAvatar={currentAvatar} />
+        </div>
+
+        <div className="ns-card mt-6">
+          <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
+            Sign-in
+          </h2>
+          <p className="mt-1 text-lg font-semibold text-slate-900 sm:text-xl">
+            {hasPassword ? "Change password" : "Set a password"}
+          </p>
+          <p className="mt-1 text-sm text-slate-600 sm:text-base">
+            {hasPassword
+              ? "Use a password to sign in with email next time."
+              : "You signed in with a magic link. Set a password to use email + password on the login page."}
+          </p>
+          <PasswordForm hasPassword={hasPassword} />
         </div>
       </section>
 
@@ -99,8 +122,14 @@ export default async function UsPage() {
               Set up your relationship
             </p>
             <p className="mt-2 text-sm text-slate-600 sm:text-base">
-              Create or join a relationship to get your first question.
+              Get an invite code to text your partner, or enter the code they sent you.
             </p>
+            <Link
+              href="/app/pair"
+              className="ns-btn-primary mt-5 inline-flex"
+            >
+              Pair with partner
+            </Link>
           </div>
         </section>
       )}

@@ -4,7 +4,6 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { submitResponse, revealSession, submitReflection } from "@/lib/sessions";
 import type { GetSessionResult } from "@/lib/sessions";
-import { MomentIllustration } from "@/components/illustrations";
 import { NotifyPartnerButton } from "../../notify-partner-button";
 
 const AFTER_REVEAL_PAUSE_MS = 1000;
@@ -328,12 +327,9 @@ export function SessionContent({ data, currentUserId }: Props) {
             ))}
           </div>
 
-          <div className="flex flex-col items-center gap-3">
-            <MomentIllustration className="w-20 h-20 sm:w-24 sm:h-24" />
-            <p className="text-center text-base text-slate-600 sm:text-lg">
-              {AFTER_REVEAL_LINE}
-            </p>
-          </div>
+          <p className="text-center text-base text-slate-600 sm:text-lg">
+            {AFTER_REVEAL_LINE}
+          </p>
 
           <div className="space-y-3 border-t border-pink-100 pt-5">
             <label htmlFor="session-response" className="block text-sm font-medium text-slate-700">

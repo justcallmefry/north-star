@@ -1,8 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, RefreshCw } from "lucide-react";
+import { Copy, RefreshCw, Share2 } from "lucide-react";
 import { createInvite } from "@/lib/relationships";
+
+function formatCode(code: string): string {
+  const clean = code.replace(/[\s-]/g, "").slice(0, 12);
+  if (clean.length <= 4) return clean;
+  if (clean.length <= 8) return `${clean.slice(0, 4)}-${clean.slice(4)}`;
+  return `${clean.slice(0, 4)}-${clean.slice(4, 8)}-${clean.slice(8)}`;
+}
 
 type Props = {
   relationshipId: string;
@@ -41,26 +48,52 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      setError("Could not copy link. You can still select and copy it manually.");
+      await navigator.clipboard.writeText(code ?? "");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }
+
+  async function handleShare() {
+    if (!code || !shareUrl) return;
+    setError(null);
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "Join me on North Star",
+          text: "Use this link to pair with me on North Star:",
+          url: shareUrl,
+        });
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
+    } catch (err) {
+      if ((err as Error).name !== "AbortError") {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
     }
   }
 
   if (!code) {
     return (
-      <div className="space-y-4 rounded-xl border border-slate-800 bg-slate-950/80 p-4 sm:p-5">
-        <p className="text-sm text-slate-300">
-          No active invite yet. Create one and send it to your partner so they can join.
+      <div className="rounded-2xl border border-pink-100 bg-pink-50/50 p-5 shadow-md shadow-pink-100/60 sm:p-6">
+        <p className="text-sm text-slate-600">
+          Generate a code to text or share with your partner.
         </p>
         <button
           type="button"
           onClick={handleNewCode}
           disabled={loading}
-          className="w-full rounded-lg bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-emerald-950 shadow-sm shadow-emerald-500/30 hover:bg-emerald-400 disabled:opacity-50"
+          className="ns-btn-primary mt-4 w-full py-3 disabled:opacity-50"
         >
-          {loading ? "Creating…" : "Generate invite code"}
+          {loading ? "Creating…" : "Get my invite code"}
         </button>
         {error && (
-          <p className="text-sm text-red-400">{error}</p>
+          <p className="mt-3 text-sm text-red-600">{error}</p>
         )}
       </div>
     );
@@ -69,57 +102,53 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
   return (
     <div className="space-y-4">
       {relationshipName && (
-        <p className="text-sm text-slate-400">
-          Relationship: <span className="font-medium text-slate-100">{relationshipName}</span>
+        <p className="text-sm text-slate-500">
+          Relationship: <span className="font-medium text-slate-700">{relationshipName}</span>
         </p>
       )}
 
-      <div className="rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-4 text-center sm:px-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-          Invite code
+      <div className="rounded-2xl border border-pink-100 bg-pink-50/50 p-5 shadow-md shadow-pink-100/60 sm:p-6">
+        <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
+          Your code
         </p>
-        <p className="mt-2 text-3xl font-mono font-bold tracking-[0.3em] text-slate-50 sm:text-4xl">
-          {code}
+        <p className="mt-2 text-xl font-mono font-semibold tracking-wide text-slate-900 sm:text-2xl">
+          {formatCode(code)}
         </p>
-      </div>
-
-      <div className="space-y-2 rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-4 sm:px-5">
-        <label className="block text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-          Share link
-        </label>
-        <input
-          readOnly
-          value={shareUrl}
-          className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500"
-        />
-        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-slate-400 sm:max-w-xs">
-            Tap **Copy link** and paste it into a text or email. The code expires in 7 days.
-          </p>
+        <div className="mt-4 flex flex-wrap gap-2">
           <button
             type="button"
             onClick={handleCopy}
-            disabled={!shareUrl}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-sky-500 px-4 py-2 text-xs font-semibold text-slate-950 shadow-sm shadow-sky-500/30 hover:bg-sky-400 disabled:opacity-60"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-pink-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-pink-50"
           >
             <Copy className="h-4 w-4" />
-            {copied ? "Copied" : "Copy link"}
+            {copied ? "Copied" : "Tap to copy link"}
+          </button>
+          <button
+            type="button"
+            onClick={handleShare}
+            className="ns-btn-primary inline-flex items-center gap-2 py-2"
+          >
+            <Share2 className="h-4 w-4" />
+            Share your invite code
           </button>
         </div>
+        <p className="mt-3 text-xs text-slate-500">
+          Link expires in 7 days. Partner can open the link or enter the code on the pair screen.
+        </p>
       </div>
 
       <button
         type="button"
         onClick={handleNewCode}
         disabled={loading}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-950/80 px-4 py-2 text-xs font-medium text-slate-200 hover:border-slate-500 hover:bg-slate-900 disabled:opacity-50"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
       >
         <RefreshCw className="h-4 w-4" />
         {loading ? "Creating…" : "Generate new code"}
       </button>
 
       {error && (
-        <p className="text-sm text-red-400">{error}</p>
+        <p className="text-sm text-red-600">{error}</p>
       )}
     </div>
   );

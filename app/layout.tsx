@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { ApplePwaMeta } from "./apple-pwa-meta";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,8 +27,8 @@ export const metadata: Metadata = {
   metadataBase: appUrl ? new URL(appUrl) : undefined,
   manifest: "/manifest.json",
   icons: {
-    icon: "/north-star-logo.png",
-    apple: "/north-star-logo.png",
+    icon: "/north-star-app-logo-512.png",
+    apple: "/north-star-app-logo-512.png",
   },
   openGraph: {
     title: "North Star",
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     ...(appUrl && {
       url: appUrl,
       siteName: "North Star",
-      images: [{ url: "/north-star-logo.png", width: 512, height: 512, alt: "North Star" }],
+      images: [{ url: "/north-star-app-logo-512.png", width: 512, height: 512, alt: "North Star" }],
     }),
   },
   twitter: {
@@ -43,6 +44,13 @@ export const metadata: Metadata = {
     title: "North Star",
     description: "One question a day. Answer together with your partner.",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ec4899",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -53,6 +61,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white text-slate-900 overflow-x-hidden max-w-[100vw]`}>
+        <ApplePwaMeta />
         <Providers>{children}</Providers>
       </body>
     </html>

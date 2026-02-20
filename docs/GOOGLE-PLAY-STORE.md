@@ -21,7 +21,7 @@ Your app is treated as a **Progressive Web App**. You need:
 |-------------|------------------|
 | **HTTPS** | ✅ Use your Vercel URL (e.g. `https://your-app.vercel.app`). |
 | **Web App Manifest** | ✅ Served at `/manifest.json` (see `public/manifest.json`). Linked from the root layout. |
-| **Icons** | Use at least 192×192 and 512×512 (you have `/north-star-logo.png`; ensure those sizes exist or add them). |
+| **Icons** | Use at least 192×192 and 512×512 (you have `/north-star-app-logo.png`; ensure those sizes exist or add them). |
 | **Start URL** | Typically `https://your-domain.com/` or `/welcome`. |
 
 Optional but recommended:

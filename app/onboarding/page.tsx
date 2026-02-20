@@ -34,7 +34,7 @@ export default async function OnboardingPage() {
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900/80 ring-1 ring-slate-700/80">
               <Image
-                src="/north-star-logo.png"
+                src="/north-star-app-logo.png"
                 alt="North Star"
                 width={28}
                 height={28}

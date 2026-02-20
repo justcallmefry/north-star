@@ -95,7 +95,7 @@ function buildMagicLinkHtml(to: string, url: string, logoUrl: string): string {
 function buildBetaWelcomeHtml(to: string, appUrl: string): { subject: string; html: string } {
   const safeEmail = to.replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const signInUrl = `${appUrl}/login?email=${encodeURIComponent(to)}`;
-  const logoUrl = `${appUrl.replace(/\/$/, "")}/north-star-logo.png`;
+  const logoUrl = `${appUrl.replace(/\/$/, "")}/north-star-app-logo.png`;
   const subject = "Welcome to the North Star beta";
   const html = `
   <div style="margin:0;padding:32px 16px;background-color:#020617;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;color:#e5e7eb;">
@@ -166,7 +166,7 @@ async function sendWithNodemailer(
       return "";
     }
   })();
-  const logoUrl = origin ? `${origin}/north-star-logo.png` : "";
+  const logoUrl = origin ? `${origin}/north-star-app-logo.png` : "";
   await transport.sendMail({
     to,
     from,
@@ -186,7 +186,7 @@ async function sendWithResend(to: string, url: string, from: string, apiKey: str
       return "";
     }
   })();
-  const logoUrl = origin ? `${origin}/north-star-logo.png` : "";
+  const logoUrl = origin ? `${origin}/north-star-app-logo.png` : "";
   const { error } = await client.emails.send({
     from: from || "onboarding@resend.dev",
     to: [to],

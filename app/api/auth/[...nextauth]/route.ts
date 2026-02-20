@@ -5,14 +5,27 @@ import { setEmailEnv } from "@/lib/email-env";
 
 export const dynamic = "force-dynamic";
 
-/** Ensure magic links use the real deployment URL. Vercel sets VERCEL_URL; if AUTH_URL/NEXTAUTH_URL is wrong or a placeholder, override it here so callbacks work. */
-function ensureAuthUrl() {
+/** Ensure redirects use the URL you're actually on. On localhost we use the request host so port 3000 vs 3003 doesn't matter. On Vercel we use VERCEL_URL when env is a placeholder. */
+function ensureAuthUrl(req: NextRequest) {
+  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "";
+  const proto = req.headers.get("x-forwarded-proto") ?? (host.includes("localhost") ? "http" : "https");
+  const requestOrigin = host ? `${proto}://${host}` : "";
+
+  // Localhost: always use the port the user is actually visiting so callbacks stay on the same port
+  if (host && (host.startsWith("localhost") || host.startsWith("127.0.0.1"))) {
+    process.env.AUTH_URL = requestOrigin;
+    process.env.NEXTAUTH_URL = requestOrigin;
+    process.env.AUTH_TRUST_HOST = "true";
+    return;
+  }
+
   const vercelUrl = process.env.VERCEL_URL;
   const authUrl = process.env.AUTH_URL ?? process.env.NEXTAUTH_URL ?? "";
   const isPlaceholder =
     !authUrl || authUrl.includes("your-main-url") || authUrl.includes("your-app.vercel");
   if (vercelUrl && isPlaceholder) {
     process.env.AUTH_URL = `https://${vercelUrl}`;
+    process.env.NEXTAUTH_URL = `https://${vercelUrl}`;
   }
 }
 
@@ -49,7 +62,7 @@ function getEmailConfig() {
 }
 
 export async function GET(req: NextRequest) {
-  ensureAuthUrl();
+  ensureAuthUrl(req);
   const { emailConfigured, resend, smtp, from } = getEmailConfig();
   console.log(
     "[auth] Email config: RESEND_API_KEY=" + (resend ? "set" : "missing") +
@@ -61,7 +74,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  ensureAuthUrl();
+  ensureAuthUrl(req);
   const { emailConfigured, resend, smtp, from } = getEmailConfig();
   console.log(
     "[auth] Email config: RESEND_API_KEY=" + (resend ? "set" : "missing") +

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
@@ -17,7 +18,16 @@ export default async function SignupPage() {
 
   return (
     <main className="min-h-screen bg-white text-slate-900 flex flex-col">
-      <header className="flex items-center px-4 py-4 sm:px-6">
+      <header className="flex items-center justify-between px-4 py-4 sm:px-6">
+        <div className="relative h-9 w-9 shrink-0" aria-hidden>
+          <Image
+            src="/north-star-app-logo.png"
+            alt=""
+            width={36}
+            height={36}
+            className="object-contain"
+          />
+        </div>
         <Link
           href="/welcome"
           className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-pink-200 rounded-lg py-2 -ml-2"

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { format, startOfWeek, endOfWeek } from "date-fns";
-import { CalendarRange, Sparkles } from "lucide-react";
+import Image from "next/image";
+import { CalendarRange } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { isBuildTime } from "@/lib/build";
@@ -44,8 +45,14 @@ export default async function MeetingPage() {
             </span>
           </div>
           <p className="flex items-start gap-2 text-sm text-slate-600 sm:text-base">
-            <span className="mt-0.5 text-pink-500">
-              <Sparkles className="h-4 w-4" />
+            <span className="relative mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center">
+              <Image
+                src="/north-star-app-logo.png"
+                alt=""
+                width={20}
+                height={20}
+                className="object-contain"
+              />
             </span>
             <span>
               A shared snapshot of the week. Add when you like—highs, lows, or anything you want to remember.

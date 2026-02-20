@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { headers } from "next/headers";
@@ -50,7 +51,16 @@ export default async function InvitePage({ searchParams }: Props) {
 
   return (
     <main className="min-h-screen bg-white text-slate-900 flex flex-col px-4 py-6 sm:px-6">
-      <header className="flex items-center justify-end">
+      <header className="flex items-center justify-between">
+        <div className="relative h-9 w-9 shrink-0" aria-hidden>
+          <Image
+            src="/north-star-app-logo.png"
+            alt=""
+            width={36}
+            height={36}
+            className="object-contain"
+          />
+        </div>
         <Link
           href="/app"
           className="text-sm font-medium text-slate-600 hover:text-slate-900"

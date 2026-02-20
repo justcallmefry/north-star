@@ -34,6 +34,7 @@ function createAuthInstance(
     adapter: PrismaAdapter(prisma as Parameters<typeof PrismaAdapter>[0]),
     session: { strategy: "database", maxAge: 30 * 24 * 60 * 60, updateAge: 24 * 60 * 60 },
     pages: { signIn: "/login" },
+    trustHost: true,
     providers: [
       Credentials({
         credentials: {

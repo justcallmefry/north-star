@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-react";
+import Image from "next/image";
 import { BottomNav } from "./bottom-nav";
 
 export const dynamic = "force-dynamic";
@@ -9,14 +9,22 @@ export default function AppSegmentLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen overflow-x-hidden bg-white text-slate-900">
-      <div className="mx-auto flex min-h-screen max-w-6xl gap-6 overflow-x-hidden px-4 pb-24 pt-6 sm:px-6 lg:px-8">
-        {/* Left rail / app frame (desktop/tablet) — star icon only, no wordmark */}
-        <aside className="hidden w-64 flex-col justify-between rounded-2xl border border-pink-100 bg-pink-50 p-5 shadow-lg shadow-pink-100/80 md:flex">
+    <div className="flex min-h-screen min-h-[100dvh] w-full max-w-[100vw] flex-col overflow-x-hidden bg-white text-slate-900 md:min-h-screen">
+      {/* Scrollable area only (keeps bottom nav fixed at viewport bottom on mobile) */}
+      <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto md:min-h-screen">
+        <div className="mx-auto flex w-full min-w-0 max-w-6xl flex-1 gap-6 px-4 pt-6 pb-6 sm:px-6 lg:px-8 md:pb-6 md:pt-6">
+          {/* Left rail / app frame (desktop/tablet) — star icon only, no wordmark */}
+          <aside className="hidden w-64 flex-shrink-0 flex-col justify-between rounded-2xl border border-pink-100 bg-pink-50 p-5 shadow-lg shadow-pink-100/80 md:flex">
           <div className="space-y-6">
             <div>
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/80 ring-1 ring-pink-200/80">
-                <Sparkles className="h-5 w-5 text-pink-500" strokeWidth={1.7} />
+              <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/80 ring-1 ring-pink-200/80">
+                <Image
+                  src="/north-star-app-logo.png"
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="object-contain"
+                />
               </div>
               <p className="mt-3 text-xl font-semibold text-slate-900">
                 One question a day
@@ -38,13 +46,14 @@ export default function AppSegmentLayout({
           </div>
         </aside>
 
-        {/* Main app surface */}
-        <main className="ns-card relative flex-1 border-slate-200 px-4 py-5 shadow-lg sm:px-6 md:py-6">
-          {children}
-        </main>
+          {/* Main app surface */}
+          <main className="ns-card relative min-w-0 flex-1 border-slate-200 px-4 py-5 shadow-lg sm:px-6 md:py-6">
+            {children}
+          </main>
+        </div>
       </div>
 
-      {/* Mobile bottom navigation */}
+      {/* Mobile bottom navigation — in flow so it stays at bottom; no content scrolls under it */}
       <BottomNav />
     </div>
   );

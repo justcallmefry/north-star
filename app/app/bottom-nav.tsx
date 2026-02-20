@@ -19,10 +19,10 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-pink-100 bg-white/95 backdrop-blur-md md:hidden"
+      className="flex-shrink-0 border-t border-pink-100 bg-white/95 backdrop-blur-md md:hidden"
       style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2.5">
+      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-2.5">
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
           const isActive =
             href === "/app"

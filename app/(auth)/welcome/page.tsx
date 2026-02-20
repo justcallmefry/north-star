@@ -1,6 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
 import { redirect } from "next/navigation";
-import { Sparkles } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
 import { isBuildTime } from "@/lib/build";
 import { WelcomeCarousel } from "./welcome-carousel";
@@ -16,13 +16,17 @@ export default async function WelcomePage() {
 
   return (
     <main className="min-h-screen bg-white text-slate-900 flex flex-col">
-      {/* Top row: star icon left, Log in right */}
+      {/* Top row: logo left, Log in right */}
       <header className="flex items-center justify-between px-4 py-4 sm:px-6">
-        <div
-          className="flex h-10 w-10 items-center justify-center rounded-xl bg-pink-50 ring-1 ring-pink-200/80"
-          aria-hidden
-        >
-          <Sparkles className="h-5 w-5 text-pink-500" strokeWidth={1.7} />
+        <div className="relative h-10 w-10 shrink-0" aria-hidden>
+          <Image
+            src="/north-star-app-logo.png"
+            alt=""
+            width={40}
+            height={40}
+            className="object-contain"
+            priority
+          />
         </div>
         <Link
           href="/login"

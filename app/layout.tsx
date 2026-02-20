@@ -24,6 +24,7 @@ export const metadata: Metadata = {
   title: "North Star",
   description: "One question a day. Answer together with your partner.",
   metadataBase: appUrl ? new URL(appUrl) : undefined,
+  manifest: "/manifest.json",
   icons: {
     icon: "/north-star-logo.png",
     apple: "/north-star-logo.png",
@@ -51,7 +52,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white text-slate-900`}>
+      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white text-slate-900 overflow-x-hidden max-w-[100vw]`}>
         <Providers>{children}</Providers>
       </body>
     </html>

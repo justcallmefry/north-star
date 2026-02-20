@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { RelationshipActions } from "../relationship-actions";
 import { ProfileForm } from "./profile-form";
 import { PasswordForm } from "./password-form";
+import { SignOutButton } from "./sign-out-button";
 
 export const dynamic = "force-dynamic";
 
@@ -66,6 +67,7 @@ export default async function UsPage() {
               : "You signed in with a magic link. Set a password to use email + password on the login page."}
           </p>
           <PasswordForm hasPassword={hasPassword} />
+          <SignOutButton />
         </div>
       </section>
 

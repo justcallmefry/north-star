@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { Sparkles } from "lucide-react";
+import Image from "next/image";
 
 const SLIDES = [
   {
@@ -39,14 +39,20 @@ export function WelcomeCarousel() {
 
   return (
     <div className="flex flex-col items-center w-full">
-      {/* Illustration placeholder: soft card with icon */}
+      {/* North Star logo */}
       <div
-        className="flex h-40 w-full max-w-xs items-center justify-center rounded-2xl border border-pink-100 bg-pink-50/50 shadow-md shadow-pink-100/60 sm:h-48"
+        className="flex h-40 w-full max-w-xs items-center justify-center rounded-2xl border border-pink-100 bg-white/80 shadow-md shadow-pink-100/60 sm:h-48"
         aria-hidden
       >
-        <span className="flex h-20 w-20 items-center justify-center rounded-full bg-white/90 text-pink-400 shadow-sm ring-1 ring-pink-100 sm:h-24 sm:w-24">
-          <Sparkles className="h-10 w-10 sm:h-12 sm:w-12" strokeWidth={1.5} />
-        </span>
+        <div className="relative h-28 w-28 sm:h-32 sm:w-32">
+          <Image
+            src="/north-star-app-logo.png"
+            alt=""
+            fill
+            className="object-contain"
+            sizes="(max-width: 640px) 112px, 128px"
+          />
+        </div>
       </div>
 
       {/* Headline + subtext */}

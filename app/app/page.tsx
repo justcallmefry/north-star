@@ -1,6 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import { redirect } from "next/navigation";
-import { ArrowRight, CalendarRange, History, Sparkles } from "lucide-react";
+import { ArrowRight, CalendarRange, History } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { isBuildTime } from "@/lib/build";
@@ -26,8 +27,14 @@ export default async function AppPage() {
         {/* Header — star icon only (no wordmark), tagline as calm emotional anchor */}
         <header className="flex items-center justify-between gap-4 py-1">
           <div className="flex items-center gap-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-pink-50/80 ring-1 ring-pink-200/80" aria-hidden>
-              <Sparkles className="h-5 w-5 text-pink-500" strokeWidth={1.7} />
+            <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-pink-50/80 ring-1 ring-pink-200/80" aria-hidden>
+              <Image
+                src="/north-star-app-logo.png"
+                alt=""
+                width={40}
+                height={40}
+                className="object-contain"
+              />
             </div>
             <p className="text-base text-slate-600 sm:text-lg">
               One question a day. Answer together.

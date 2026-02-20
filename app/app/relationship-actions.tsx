@@ -48,7 +48,7 @@ export function RelationshipActions({ relationshipId }: Props) {
         disabled={!!loading}
         className="ns-btn-secondary !py-1.5 !px-3 text-sm"
       >
-        {loading === "leave" ? "Leaving…" : "Leave"}
+        {loading === "leave" ? "Leaving…" : "Leave relationship"}
       </button>
       <button
         type="button"
@@ -56,7 +56,7 @@ export function RelationshipActions({ relationshipId }: Props) {
         disabled={!!loading}
         className="ns-btn-secondary !py-1.5 !px-3 text-sm"
       >
-        {loading === "archive" ? "Archiving…" : "Archive"}
+        {loading === "archive" ? "Archiving…" : "Archive relationship"}
       </button>
       {error && (
         <p className="text-sm text-red-600 dark:text-red-400 self-center">{error}</p>

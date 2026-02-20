@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "@/lib/auth";
@@ -21,7 +22,16 @@ export default async function PairPage() {
 
   return (
     <div className="flex flex-col">
-      <header className="flex items-center justify-end gap-4 pb-4">
+      <header className="flex items-center justify-between gap-4 pb-4">
+        <div className="relative h-9 w-9 shrink-0" aria-hidden>
+          <Image
+            src="/north-star-app-logo.png"
+            alt=""
+            width={36}
+            height={36}
+            className="object-contain"
+          />
+        </div>
         <Link
           href="/app"
           className="text-sm font-medium text-slate-600 hover:text-slate-900"

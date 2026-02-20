@@ -69,10 +69,14 @@ export default async function HistoryPage({ searchParams }: Props) {
                 <div className="mt-3 grid gap-3 sm:grid-cols-2">
                   {item.responses.map((r) => {
                     const isMe = r.userId === currentUserId;
+                    const possessive = (name: string) =>
+                      `${name.trim()}${name.trim().endsWith("s") ? "'" : "'s"}`;
                     const title = isMe
-                      ? "My response"
+                      ? (session.user.name
+                          ? `${possessive(session.user.name)} response`
+                          : "My response")
                       : r.userName
-                        ? `${r.userName.trim()}${r.userName.trim().endsWith("s") ? "'" : "'s"} response`
+                        ? `${possessive(r.userName)} response`
                         : "Their response";
                     const icon =
                       (r.userImage as string) || (isMe ? HEART_FALLBACKS[0] : HEART_FALLBACKS[1]);
@@ -110,12 +114,16 @@ export default async function HistoryPage({ searchParams }: Props) {
                       {item.reflections.map((ref) => {
                         const text = ref.content || ref.reaction;
                         if (!text) return null;
-                        const isMe = ref.userId === currentUserId;
+                        const refName =
+                          item.responses.find((r) => r.userId === ref.userId)?.userName ?? null;
+                        const label = refName
+                          ? `${refName.trim()}: `
+                          : ref.userId === currentUserId
+                            ? "You: "
+                            : "Them: ";
                         return (
                           <p key={ref.userId} className="text-sm text-slate-600">
-                            <span className="font-medium text-slate-700">
-                              {isMe ? "You: " : "Them: "}
-                            </span>
+                            <span className="font-medium text-slate-700">{label}</span>
                             {text}
                           </p>
                         );

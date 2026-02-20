@@ -151,9 +151,13 @@ export function SessionContent({ data, currentUserId }: Props) {
   const responsesToShow = useMemo(() => {
     if (!isRevealed) return [];
 
-    const myTitle = "My response";
+    const possessive = (name: string) =>
+      `${name.trim()}${name.trim().endsWith("s") ? "'" : "'s"}`;
+    const myTitle = data.currentUserName
+      ? `${possessive(data.currentUserName)} response`
+      : "My response";
     const partnerTitle = data.partnerName
-      ? `${data.partnerName.trim()}${data.partnerName.trim().endsWith("s") ? "'" : "'s"} response`
+      ? `${possessive(data.partnerName)} response`
       : "Their response";
     const myIcon = (data.currentUserImage as string) || "💗";
     const partnerIcon = (data.partnerImage as string) || "💜";
@@ -361,7 +365,9 @@ export function SessionContent({ data, currentUserId }: Props) {
                 return (
                   <p key={r.userId} className="text-base text-slate-700 sm:text-lg">
                     <span className="font-medium text-slate-900">
-                      {isMe ? "My response: " : "Their response: "}
+                      {isMe
+                        ? `${data.currentUserName ? `${data.currentUserName.trim()}: ` : "My response: "}`
+                        : `${data.partnerName ? `${data.partnerName.trim()}: ` : "Their response: "}`}
                     </span>
                     {text}
                   </p>

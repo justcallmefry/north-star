@@ -8,7 +8,12 @@ import { WelcomeCarousel } from "./welcome-carousel";
 export const dynamic = "force-dynamic";
 
 export default async function WelcomePage() {
-  const session = await getServerAuthSession();
+  let session = null;
+  try {
+    session = await getServerAuthSession();
+  } catch {
+    // If auth/DB fails (e.g. serverless cold start), still show welcome so the site isn't broken
+  }
   if (session?.user) {
     if (!isBuildTime()) redirect("/app");
     return null;

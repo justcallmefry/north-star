@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
-import { getHandlers } from "@/lib/auth";
+import { NextResponse } from "next/server";
+import { getHandlers, handlers } from "@/lib/auth";
 import { sendMagicLinkWithKey } from "@/lib/email";
 import { setEmailEnv } from "@/lib/email-env";
 
@@ -32,7 +33,6 @@ function ensureAuthUrl(req: NextRequest) {
 const hasResend = () => !!process.env.RESEND_API_KEY;
 const hasSmtp = () => !!process.env.EMAIL_SERVER;
 
-// Sender defined here so process.env is read in the route chunk (where RESEND_API_KEY is available at runtime).
 async function sendVerificationRequestFromRoute(params: Parameters<typeof sendMagicLinkWithKey>[0]) {
   try {
     await sendMagicLinkWithKey(params, process.env.RESEND_API_KEY);
@@ -55,32 +55,66 @@ function getEmailConfig() {
       nodeEnv: process.env.NODE_ENV,
     });
   }
-  // Use route's process.env so Vercel EMAIL_FROM is used at runtime (required for Resend to send to non-owner emails)
   const from =
     process.env.EMAIL_FROM ?? (resend ? "onboarding@resend.dev" : undefined) ?? "noreply@example.com";
   return { emailConfigured, resend, smtp, from };
 }
 
+/** Initialize the shared auth instance with route config (email, etc.) then use the same handlers so session cookie is set and read by the same instance. */
+export function initAuthWithRouteConfig() {
+  const { emailConfigured, from } = getEmailConfig();
+  getHandlers(sendVerificationRequestFromRoute, { emailConfigured, from });
+}
+
+/** Collect all Set-Cookie header values (Headers can have multiple). */
+function getAllSetCookies(res: Response): string[] {
+  const getSetCookie = (res.headers as Headers & { getSetCookie?(): string[] }).getSetCookie;
+  if (typeof getSetCookie === "function") {
+    const list = getSetCookie.call(res.headers);
+    if (list?.length) return list;
+  }
+  const single = res.headers.get("set-cookie");
+  return single ? [single] : [];
+}
+
+/** Forward Auth response and ensure all Set-Cookie headers are sent (Next.js can drop multiples otherwise). */
+function forwardAuthResponse(res: Response): NextResponse {
+  const status = res.status;
+  const location = res.headers.get("location");
+  const setCookies = getAllSetCookies(res);
+
+  let nextRes: NextResponse;
+  if (status >= 300 && status < 400 && location && setCookies.length > 0) {
+    // Return 200 + HTML with meta refresh so the browser stores Set-Cookie before navigating.
+    // If we return 302, some browsers follow the redirect before persisting the cookie, so GET /app has no session.
+    const html = `<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=${location.replace(/"/g, "&quot;")}"></head><body>Signing you in…</body></html>`;
+    nextRes = new NextResponse(html, {
+      status: 200,
+      headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
+    });
+  } else if (status >= 300 && status < 400 && location) {
+    nextRes = NextResponse.redirect(location, status);
+  } else {
+    const headers = new Headers(res.headers);
+    headers.delete("set-cookie");
+    nextRes = new NextResponse(res.body, { status, statusText: res.statusText, headers });
+  }
+  for (const c of setCookies) {
+    nextRes.headers.append("set-cookie", c);
+  }
+  return nextRes;
+}
+
 export async function GET(req: NextRequest) {
   ensureAuthUrl(req);
-  const { emailConfigured, resend, smtp, from } = getEmailConfig();
-  console.log(
-    "[auth] Email config: RESEND_API_KEY=" + (resend ? "set" : "missing") +
-    ", EMAIL_SERVER=" + (smtp ? "set" : "missing") +
-    ", EMAIL_FROM=" + (process.env.EMAIL_FROM ? process.env.EMAIL_FROM : "not set (using " + from + ")")
-  );
-  const handlers = getHandlers(sendVerificationRequestFromRoute, { emailConfigured, from });
-  return handlers.GET(req);
+  initAuthWithRouteConfig();
+  const res = await handlers.GET(req);
+  return forwardAuthResponse(res);
 }
 
 export async function POST(req: NextRequest) {
   ensureAuthUrl(req);
-  const { emailConfigured, resend, smtp, from } = getEmailConfig();
-  console.log(
-    "[auth] Email config: RESEND_API_KEY=" + (resend ? "set" : "missing") +
-    ", EMAIL_SERVER=" + (smtp ? "set" : "missing") +
-    ", EMAIL_FROM=" + (process.env.EMAIL_FROM ? process.env.EMAIL_FROM : "not set (using " + from + ")")
-  );
-  const handlers = getHandlers(sendVerificationRequestFromRoute, { emailConfigured, from });
-  return handlers.POST(req);
+  initAuthWithRouteConfig();
+  const res = await handlers.POST(req);
+  return forwardAuthResponse(res);
 }

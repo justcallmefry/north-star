@@ -77,6 +77,8 @@ model User {
   responses          Response[]
   reflections        Reflection[]
   responseValidations ResponseValidation[]
+  quizParticipations      QuizParticipation[]
+  agreementParticipations AgreementParticipation[]
   meetingEntries     MeetingEntry[]
   subscriptions      Subscription[]
 
@@ -128,6 +130,8 @@ model Relationship {
   members       RelationshipMember[]
   invites       Invite[]
   dailySessions DailySession[]
+  quizSessions       QuizSession[]
+  agreementSessions  AgreementSession[]
   meetings     Meeting[]
   streak        Streak?
   subscriptions Subscription[]
@@ -344,4 +348,86 @@ model BetaSignup {
   createdAt DateTime @default(now())
 
   @@index([email])
+}
+
+// ============== Daily quiz (guess your partner) ==============
+
+enum QuizState {
+  open     // waiting for both to submit
+  revealed // both submitted; answers and score visible
+}
+
+model QuizSession {
+  id             String    @id @default(cuid())
+  relationshipId String
+  sessionDate    DateTime  @db.Date
+  state          QuizState @default(open)
+
+  relationship Relationship        @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  participations QuizParticipation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([relationshipId, sessionDate])
+  @@index([relationshipId])
+  @@index([sessionDate])
+}
+
+model QuizParticipation {
+  id            String   @id @default(cuid())
+  quizSessionId String
+  userId        String
+  answerIndices String   @db.Text // JSON array of 5 ints, e.g. "[0,2,1,3,0]"
+  guessIndices  String   @db.Text // JSON array of 5 ints (guess for partner)
+
+  quizSession QuizSession @relation(fields: [quizSessionId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([quizSessionId, userId])
+  @@index([quizSessionId])
+  @@index([userId])
+}
+
+enum AgreementState {
+  open
+  revealed
+}
+
+model AgreementSession {
+  id             String    @id @default(cuid())
+  relationshipId String
+  sessionDate    DateTime  @db.Date
+  state          AgreementState @default(open)
+
+  relationship Relationship              @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  participations AgreementParticipation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([relationshipId, sessionDate])
+  @@index([relationshipId])
+  @@index([sessionDate])
+}
+
+model AgreementParticipation {
+  id            String   @id @default(cuid())
+  agreementSessionId String
+  userId        String
+  answerIndices String   @db.Text
+  guessIndices  String   @db.Text
+
+  agreementSession AgreementSession @relation(fields: [agreementSessionId], references: [id], onDelete: Cascade)
+  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([agreementSessionId, userId])
+  @@index([agreementSessionId])
+  @@index([userId])
 }

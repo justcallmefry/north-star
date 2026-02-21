@@ -19,7 +19,10 @@ export default async function SessionPage({ params }: Props) {
   return (
     <div className="space-y-4">
       <p>
-        <Link href="/app" className="text-sm font-medium text-sky-300 hover:text-sky-200">
+        <Link
+          href="/app"
+          className="text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-pink-200 rounded"
+        >
           ← Back to today
         </Link>
       </p>

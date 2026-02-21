@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { isBuildTime } from "@/lib/build";
+import { AppGate } from "../app-gate";
 import { PairContent } from "./pair-content";
 
 export const dynamic = "force-dynamic";
@@ -11,8 +12,8 @@ export const dynamic = "force-dynamic";
 export default async function PairPage() {
   const session = await getServerAuthSession();
   if (!session?.user) {
-    if (!isBuildTime()) redirect("/login?callbackUrl=" + encodeURIComponent("/app/pair"));
-    return null;
+    if (isBuildTime()) return null;
+    return <AppGate callbackUrl="/app/pair" />;
   }
 
   const relationships = await getMyActiveRelationships();

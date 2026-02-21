@@ -3,13 +3,14 @@
 import { useEffect } from "react";
 
 /**
- * Injects iOS PWA meta tags into document.head. Next.js metadata doesn't expose
- * apple-mobile-web-app-capable or apple-mobile-web-app-status-bar-style, so we
- * add them client-side for "Add to Home Screen" behavior and status bar styling.
+ * Injects PWA meta tags into document.head. Next.js metadata doesn't expose
+ * these, so we add them client-side for "Add to Home Screen" and status bar styling.
+ * Use mobile-web-app-capable (standard) and keep apple-* for Safari.
  */
 export function ApplePwaMeta() {
   useEffect(() => {
     const tags = [
+      { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "default" },
     ];

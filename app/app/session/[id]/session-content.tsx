@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Mic } from "lucide-react";
 import { submitResponse, revealSession, submitReflection } from "@/lib/sessions";
 import type { GetSessionResult } from "@/lib/sessions";
 import { NotifyPartnerButton } from "../../notify-partner-button";
@@ -236,10 +237,12 @@ export function SessionContent({ data, currentUserId }: Props) {
               <button
                 type="button"
                 onClick={isRecording ? handleStopVoice : handleStartVoice}
-                className="inline-flex items-center gap-1 rounded-full border border-pink-200 bg-pink-50 px-3 py-1 text-xs font-medium text-pink-700 shadow-sm hover:border-pink-300 hover:bg-pink-100"
+                className="inline-flex items-center gap-2.5 rounded-full border border-slate-200 bg-slate-800 px-4 py-2.5 text-base font-medium text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-pink-300 focus:ring-offset-2"
               >
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10">
+                  <Mic className="h-4 w-4 text-white" aria-hidden />
+                </span>
                 <span>{isRecording ? "Stop listening" : "Speak answer"}</span>
-                <span aria-hidden="true">🎤</span>
               </button>
             </div>
           </div>

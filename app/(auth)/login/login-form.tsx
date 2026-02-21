@@ -2,56 +2,71 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { getCsrfToken, signIn, useSession } from "next-auth/react";
 import { Suspense, useEffect, useState } from "react";
 
 const PRODUCTION_APP_URL = process.env.NEXT_PUBLIC_APP_URL || "";
 
 function LoginFormInner() {
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const { status } = useSession();
   const emailParam = searchParams.get("email") ?? "";
   const callbackUrl = searchParams.get("callbackUrl") ?? "/app";
   const sentParam = searchParams.get("sent") === "1";
   const errorParam = searchParams.get("error") === "1";
+  const authError = searchParams.get("error"); // NextAuth error (e.g. CredentialsSignin)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [csrfToken, setCsrfToken] = useState<string>("");
   const [magicLoading, setMagicLoading] = useState(false);
   const [sent, setSent] = useState(sentParam);
-  const [error, setError] = useState<string | null>(
-    errorParam ? "We couldn't send the sign-in link. Try again below." : null
-  );
+  const [error, setError] = useState<string | null>(() => {
+    if (errorParam) return "We couldn't send the sign-in link. Try again below.";
+    if (authError) return "Invalid email or password.";
+    return null;
+  });
+
+  // If we landed on login but the client has a session (e.g. after a race with prefetch), send them to the app.
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    const target =
+      callbackUrl.startsWith("http") ? callbackUrl : `${window.location.origin}${callbackUrl.startsWith("/") ? "" : "/"}${callbackUrl}`;
+    router.replace(target);
+  }, [status, callbackUrl, router]);
 
   useEffect(() => {
     if (emailParam) setEmail(decodeURIComponent(emailParam));
   }, [emailParam]);
 
-  async function handleCredentialsSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  useEffect(() => {
+    getCsrfToken().then((token) => setCsrfToken(token ?? ""));
+  }, []);
+
+  const credentialsReady = csrfToken !== "";
+
+  // Let form do a full-page POST so the browser gets Set-Cookie and then does a full-page GET /app (via meta refresh).
+  // That way the cookie is sent with GET /app. (Server-action redirect was doing client-side nav, so cookie wasn’t sent.)
+  function handleCredentialsSubmit(e: React.FormEvent<HTMLFormElement>) {
     setError(null);
-    setLoading(true);
-    try {
-      const res = await signIn("credentials", {
-        email: email.trim(),
-        password,
-        callbackUrl,
-        redirect: false,
-      });
-      if (res?.error) {
-        setError("Invalid email or password.");
-        setLoading(false);
-        return;
-      }
-      if (res?.ok && res?.url) {
-        window.location.href = res.url;
-        return;
-      }
-      setLoading(false);
-    } catch {
-      setError("Something went wrong. Try again.");
-      setLoading(false);
+    if (!email.trim() || !password) {
+      e.preventDefault();
+      return;
     }
+    if (!credentialsReady) {
+      e.preventDefault();
+      setError("Loading…");
+      return;
+    }
+  }
+
+  if (status === "authenticated") {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 text-slate-600">
+        <p className="text-sm">Taking you to the app…</p>
+      </div>
+    );
   }
 
   async function handleMagicSubmit(e: React.FormEvent) {
@@ -144,7 +159,14 @@ function LoginFormInner() {
         </p>
       )}
 
-      <form onSubmit={handleCredentialsSubmit} className="space-y-4">
+      <form
+        action="/api/auth/callback/credentials"
+        method="post"
+        onSubmit={handleCredentialsSubmit}
+        className="space-y-4"
+      >
+        <input type="hidden" name="csrfToken" value={csrfToken} />
+        <input type="hidden" name="callbackUrl" value={callbackUrl} />
         <div>
           <label htmlFor="login-email" className="block text-sm font-medium text-slate-700 mb-1">
             Email
@@ -170,6 +192,7 @@ function LoginFormInner() {
             name="password"
             type="password"
             autoComplete="current-password"
+            required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200/60"
@@ -183,10 +206,10 @@ function LoginFormInner() {
         )}
         <button
           type="submit"
-          disabled={loading || !email.trim() || !password}
+          disabled={!credentialsReady || !email.trim() || !password}
           className="ns-btn-primary block w-full py-3.5 disabled:opacity-50"
         >
-          {loading ? "Signing in…" : "Sign in"}
+          {credentialsReady ? "Sign in" : "Loading…"}
         </button>
       </form>
 

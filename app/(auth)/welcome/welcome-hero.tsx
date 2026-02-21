@@ -22,16 +22,16 @@ export function WelcomeHero() {
 
       {/* Logo */}
       <div
-        className="mt-4 flex h-32 w-32 items-center justify-center rounded-2xl border border-pink-100 bg-white/90 shadow-sm ring-1 ring-pink-50 sm:h-40 sm:w-40"
+        className="mt-4 flex h-40 w-40 items-center justify-center rounded-2xl border border-pink-100 bg-white/90 shadow-sm ring-1 ring-pink-50 sm:h-52 sm:w-52"
         aria-hidden
       >
-        <div className="relative h-[7.5rem] w-[7.5rem] sm:h-36 sm:w-36">
+        <div className="relative h-36 w-36 sm:h-44 sm:w-44">
           <Image
             src="/north-star-app-logo.png"
             alt=""
             fill
             className="object-contain"
-            sizes="(max-width: 640px) 120px, 144px"
+            sizes="(max-width: 640px) 144px, 176px"
           />
         </div>
       </div>
@@ -43,7 +43,8 @@ export function WelcomeHero() {
         <span className="mt-1 block">Reveal together.</span>
       </h1>
       <p className="mt-2 text-center text-base text-slate-600 sm:text-lg">
-        Less friction. More connection—built for real life.
+        Connect daily, effortlessly. Reflect positively. Grow stronger
+        together.
       </p>
 
       {/* Proof / benefits card */}

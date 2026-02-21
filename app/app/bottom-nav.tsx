@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, CalendarRange, History, User, ClipboardList } from "lucide-react";
+import { Home, CalendarRange, History, User, HelpCircle, Scale } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/app", label: "Today", icon: Home },
+  { href: "/app/quiz", label: "Quiz", icon: HelpCircle },
+  { href: "/app/agreement", label: "Agreement", icon: Scale },
   { href: "/app/history", label: "Responses", icon: History },
   { href: "/app/meeting", label: "Our Week", icon: CalendarRange },
-  { href: "/app/meeting/history", label: "Past Weeks", icon: ClipboardList },
   { href: "/app/us", label: "Profile", icon: User },
 ] as const;
 
@@ -19,7 +20,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-pink-100 bg-white/95 backdrop-blur-md md:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-pink-200 bg-slate-100/98 backdrop-blur-md md:hidden"
       style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
     >
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-2.5">

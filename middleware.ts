@@ -1,32 +1,14 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// Auth.js v5 session cookie (dev: authjs.session-token; prod HTTPS: __Secure-authjs.session-token)
-const SESSION_COOKIE_NAMES = ["authjs.session-token", "__Secure-authjs.session-token"];
-
-const protectedPrefixes = ["/app", "/dashboard", "/account", "/onboarding", "/invite", "/join"];
-
-function isProtected(pathname: string): boolean {
-  return protectedPrefixes.some((p) => pathname === p || pathname.startsWith(`${p}/`));
-}
-
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  if (!isProtected(pathname)) return NextResponse.next();
-
-  const hasSession = SESSION_COOKIE_NAMES.some(
-    (name) => request.cookies.get(name)?.value
-  );
-  if (!hasSession) {
-    const login = new URL("/login", request.url);
-    const callbackUrl = pathname + (request.nextUrl.search || "");
-    login.searchParams.set("callbackUrl", callbackUrl);
-    return NextResponse.redirect(login);
-  }
-
+// Auth for /app (and similar) is enforced in server components via getServerAuthSession()
+// and redirect(). We do not protect those routes here because the Auth.js session cookie
+// is read by the Node server (with the database adapter), not in Edge middleware.
+// Protecting here caused logged-in users to be sent to /login when visiting /app.
+export function middleware(_request: NextRequest) {
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/app/:path*", "/dashboard/:path*", "/account/:path*", "/onboarding", "/onboarding/:path*", "/invite/:path*", "/join", "/join/:path*"],
+  matcher: [],
 };

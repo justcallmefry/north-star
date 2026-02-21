@@ -1,8 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import { getServerAuthSession } from "@/lib/auth";
 import { Providers } from "./providers";
 import { ApplePwaMeta } from "./apple-pwa-meta";
+
+export const dynamic = "force-dynamic";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -53,16 +56,17 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerAuthSession();
   return (
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white text-slate-900 overflow-x-hidden max-w-[100vw]`}>
         <ApplePwaMeta />
-        <Providers>{children}</Providers>
+        <Providers session={session}>{children}</Providers>
       </body>
     </html>
   );

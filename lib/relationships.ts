@@ -174,18 +174,23 @@ export async function archiveRelationship(relationshipId: string) {
   revalidatePath("/invite");
 }
 
-/** List relationships where the user is an active member (for UI). */
-export async function getMyActiveRelationships() {
-  const session = await getServerAuthSession();
-  if (!session?.user?.id) return [];
-
+/** List relationships where the given user is an active member (for API/route handlers that already have userId). */
+export async function getActiveRelationshipsForUser(userId: string) {
   const members = await prisma.relationshipMember.findMany({
-    where: { userId: session.user.id, leftAt: null },
+    where: { userId, leftAt: null },
     include: {
       relationship: true,
     },
   });
   return members.map((m) => m.relationship);
+}
+
+/** List relationships where the user is an active member (for UI). */
+export async function getMyActiveRelationships() {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) return [];
+
+  return getActiveRelationshipsForUser(session.user.id);
 }
 
 /** Get latest pending invite for a relationship (for share link). */

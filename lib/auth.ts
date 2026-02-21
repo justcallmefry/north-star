@@ -1,4 +1,5 @@
-import type { NextRequest } from "next/server";
+import { NextRequest } from "next/server";
+import { cookies, headers } from "next/headers";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Nodemailer from "next-auth/providers/nodemailer";
@@ -30,11 +31,26 @@ function createAuthInstance(
     options?.emailConfigured ?? !!(process.env["EMAIL_SERVER"] || process.env["RESEND_API_KEY"]);
   const from =
     options?.from ?? process.env["EMAIL_FROM"] ?? "noreply@example.com";
+  const authUrl = process.env.AUTH_URL ?? process.env.NEXTAUTH_URL ?? "";
+  const isHttp =
+    process.env.NODE_ENV === "development" ||
+    (typeof authUrl === "string" && authUrl.startsWith("http://"));
   return NextAuth({
     adapter: PrismaAdapter(prisma as Parameters<typeof PrismaAdapter>[0]),
-    session: { strategy: "database", maxAge: 30 * 24 * 60 * 60, updateAge: 24 * 60 * 60 },
+    // Credentials provider only ever writes a JWT to the cookie (Auth.js has no DB session for credentials).
+    // So we must use JWT strategy or session lookup fails and login appears broken.
+    session: { strategy: "jwt", maxAge: 30 * 24 * 60 * 60, updateAge: 24 * 60 * 60 },
     pages: { signIn: "/login" },
     trustHost: true,
+    useSecureCookies: !isHttp,
+    cookies: {
+      sessionToken: {
+        options: {
+          path: "/",
+          sameSite: "lax",
+        },
+      },
+    },
     providers: [
       Credentials({
         credentials: {
@@ -62,10 +78,26 @@ function createAuthInstance(
         : []),
     ],
     callbacks: {
+      session({ session, token }) {
+        // JWT strategy puts user id in token.sub; app expects session.user.id
+        if (session.user) session.user.id = (token.sub as string) ?? session.user.id;
+        return session;
+      },
       authorized({ auth: session, request: { nextUrl } }) {
         const isLoggedIn = !!session?.user;
         if (nextUrl.pathname.startsWith("/app")) return isLoggedIn;
         return true;
+      },
+      redirect({ url, baseUrl }) {
+        // Respect callbackUrl from the client so sign-in actually sends users to /app (or wherever they came from)
+        const parsed = url.startsWith("http") ? new URL(url) : new URL(url, baseUrl);
+        const callbackUrl = parsed.searchParams.get("callbackUrl");
+        if (callbackUrl) {
+          const target = callbackUrl.startsWith("http") ? callbackUrl : new URL(callbackUrl, baseUrl).href;
+          if (target.startsWith(baseUrl)) return target;
+        }
+        if (parsed.origin === new URL(baseUrl).origin && parsed.pathname !== "/login") return parsed.href;
+        return `${baseUrl}/app`;
       },
     },
     debug: process.env.NODE_ENV === "development",
@@ -105,9 +137,90 @@ export const auth = () => getInstance().auth();
 export const signIn = (...args: Parameters<ReturnType<typeof NextAuth>["signIn"]>) => getInstance().signIn(...args);
 export const signOut = (...args: Parameters<ReturnType<typeof NextAuth>["signOut"]>) => getInstance().signOut(...args);
 
+const baseUrl = () =>
+  process.env.AUTH_URL ?? process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+
+/** Build request origin from current request headers so session lookup uses the same host as the browser (fixes post-login redirect when AUTH_URL is not set in RSC). */
+async function getRequestOrigin(): Promise<string> {
+  try {
+    const h = await headers();
+    const host = h.get("x-forwarded-host") ?? h.get("host") ?? "";
+    if (host) {
+      const proto = h.get("x-forwarded-proto") ?? (host.includes("localhost") || host.startsWith("127.0.0.1") ? "http" : "https");
+      return `${proto}://${host}`;
+    }
+  } catch {
+    // headers() can throw in some edge/streaming contexts
+  }
+  return baseUrl();
+}
+
+async function getSessionWithCookieHeader(cookieHeader: string, sessionOrigin?: string) {
+  const origin = sessionOrigin ?? baseUrl();
+  const host = new URL(origin).host;
+  // Match auth route: set AUTH_URL and trust host so session resolution works like /api/auth/session.
+  const prevAuthUrl = process.env.AUTH_URL;
+  const prevNextAuthUrl = process.env.NEXTAUTH_URL;
+  const prevTrustHost = process.env.AUTH_TRUST_HOST;
+  process.env.AUTH_URL = origin;
+  process.env.NEXTAUTH_URL = origin;
+  if (host && (host.startsWith("localhost") || host.startsWith("127.0.0.1"))) {
+    process.env.AUTH_TRUST_HOST = "true";
+  }
+  try {
+    const req = new NextRequest(new URL(`${origin}/api/auth/session`), {
+      headers: {
+        ...(cookieHeader ? { cookie: cookieHeader } : {}),
+        host,
+        "x-forwarded-host": host,
+        "x-forwarded-proto": origin.startsWith("https") ? "https" : "http",
+      },
+    });
+    const res = await getInstance().handlers.GET(req);
+    if (!res.ok) {
+      if (process.env.NODE_ENV === "development") {
+        const body = await res.text();
+        console.warn("[auth] getSessionWithCookieHeader: handler returned", res.status, res.statusText, "body length:", body.length, "preview:", body.slice(0, 120));
+      }
+      return null;
+    }
+    const data = await res.json();
+    return data as Awaited<ReturnType<typeof auth>> | null;
+  } finally {
+    if (prevAuthUrl !== undefined) process.env.AUTH_URL = prevAuthUrl;
+    else delete process.env.AUTH_URL;
+    if (prevNextAuthUrl !== undefined) process.env.NEXTAUTH_URL = prevNextAuthUrl;
+    else delete process.env.NEXTAUTH_URL;
+    if (prevTrustHost !== undefined) process.env.AUTH_TRUST_HOST = prevTrustHost;
+    else delete process.env.AUTH_TRUST_HOST;
+  }
+}
+
+/**
+ * Get session from an incoming Request (e.g. in Route Handlers).
+ * Uses the request's Cookie header and URL origin so the session lookup matches the request.
+ */
+export async function getSessionFromRequest(request: Request) {
+  const cookieHeader = request.headers.get("cookie") ?? "";
+  const origin = new URL(request.url).origin;
+  return getSessionWithCookieHeader(cookieHeader, origin);
+}
+
 /**
  * Get the current session on the server (Auth.js v5).
+ * Uses cookies() so the session is read from the same request cookies the RSC has.
+ * Builds the session URL from the current request host so redirect-after-login works when AUTH_URL is not set in this invocation.
  */
 export async function getServerAuthSession() {
-  return auth();
+  const origin = await getRequestOrigin();
+  // So session resolution uses the same origin as the request (fixes login redirect loop when AUTH_URL was unset or wrong).
+  if (!process.env.AUTH_URL) process.env.AUTH_URL = origin;
+  if (!process.env.NEXTAUTH_URL) process.env.NEXTAUTH_URL = origin;
+
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore
+    .getAll()
+    .map((c) => `${c.name}=${c.value}`)
+    .join("; ");
+  return getSessionWithCookieHeader(cookieHeader, origin);
 }

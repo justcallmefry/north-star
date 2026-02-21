@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { format, startOfWeek, endOfWeek } from "date-fns";
 import Image from "next/image";
-import { CalendarRange } from "lucide-react";
+import { CalendarRange, ClipboardList } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { isBuildTime } from "@/lib/build";
@@ -85,14 +85,13 @@ export default async function MeetingPage() {
             </div>
           </section>
 
-          <p>
-            <Link
-              href="/app/meeting/history"
-              className="text-sm font-medium text-pink-600 underline hover:text-pink-500"
-            >
-              Past weeks
-            </Link>
-          </p>
+          <Link
+            href="/app/meeting/history"
+            className="ns-btn-secondary inline-flex w-full justify-center gap-2 sm:w-auto"
+          >
+            <ClipboardList className="h-4 w-4" />
+            Past weeks
+          </Link>
         </div>
       </div>
     );

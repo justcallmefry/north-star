@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { QuizForTodayResult, QuizQuestion } from "@/lib/quiz";
 import { submitQuiz } from "@/lib/quiz";
+import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
 
 type Props = {
   relationshipId: string;
@@ -84,9 +85,12 @@ export function QuizClient({ relationshipId, initialData, sessionUserName }: Pro
         <p className="text-sm text-slate-500">
           We&apos;ll show scores once you&apos;ve both answered.
         </p>
-        <Link href="/app" className="ns-btn-secondary inline-flex">
-          Back to today
-        </Link>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <NotifyPartnerQuizButton variant="quiz" size="sm" />
+          <Link href="/app" className="ns-btn-secondary inline-flex">
+            Back to today
+          </Link>
+        </div>
       </div>
     );
   }
@@ -239,24 +243,37 @@ function QuizRevealView({
   const myName = sessionUserName ?? "You";
   const partnerName = reveal.partnerName ?? "Partner";
 
+  const roundPct = 5 > 0 ? Math.round((reveal.myScore / 5) * 100) : 0;
+  const overallPct = reveal.overallTotal > 0 ? Math.round((reveal.overallMyScore / reveal.overallTotal) * 100) : 0;
+
   return (
     <div className="space-y-6">
-      <div className="ns-card flex flex-wrap items-center justify-center gap-6 py-6">
-        <div className="text-center">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            Your score
-          </p>
-          <p className="text-3xl font-bold text-pink-600">{reveal.myScore}/5</p>
-          <p className="text-sm text-slate-600">correct guesses</p>
+      <div className="ns-card space-y-4 py-6">
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 border-b border-pink-100 pb-4">
+          <div className="text-center">
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">This round</p>
+            <p className="text-2xl font-bold text-pink-600">{reveal.myScore}/5</p>
+            <p className="text-sm font-medium text-slate-600">{roundPct}%</p>
+          </div>
+          <div className="text-center">
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Overall</p>
+            <p className="text-2xl font-bold text-pink-600">{reveal.overallMyScore}/{reveal.overallTotal}</p>
+            <p className="text-sm font-medium text-slate-600">{overallPct}%</p>
+          </div>
         </div>
-        <div className="text-center">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            {partnerName}&apos;s score
-          </p>
-          <p className="text-3xl font-bold text-violet-600">
-            {reveal.partnerScore}/5
-          </p>
-          <p className="text-sm text-slate-600">correct guesses</p>
+        <div className="flex flex-wrap items-center justify-center gap-6">
+          <div className="text-center">
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Your score</p>
+            <p className="text-xl font-bold text-pink-600">{reveal.myScore}/5</p>
+            <p className="text-xs text-slate-600">correct guesses</p>
+          </div>
+          <div className="text-center">
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+              {partnerName}&apos;s score
+            </p>
+            <p className="text-xl font-bold text-violet-600">{reveal.partnerScore}/5</p>
+            <p className="text-xs text-slate-600">correct guesses</p>
+          </div>
         </div>
       </div>
 

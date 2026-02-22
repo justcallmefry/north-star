@@ -26,5 +26,7 @@ export type AgreementForTodayResult = {
     partnerAnswers: number[];
     partnerGuesses: number[];
     partnerName: string | null;
+    overallMyScore: number;
+    overallTotal: number;
   };
 };

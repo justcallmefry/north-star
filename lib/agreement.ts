@@ -136,6 +136,23 @@ export async function getAgreementForToday(
       if (myGuesses[i] === partnerAnswers[i]) myScore++;
       if (partnerGuesses[i] === myAnswers[i]) partnerScore++;
     }
+
+    const allRevealed = await prisma.agreementSession.findMany({
+      where: { relationshipId, state: "revealed" },
+      include: { participations: true },
+    });
+    let overallMyScore = 0;
+    for (const s of allRevealed) {
+      const myP = s.participations.find((p) => p.userId === session.user!.id);
+      const partnerP = s.participations.find((p) => p.userId !== session.user!.id);
+      if (myP && partnerP) {
+        const myG = parseIndices(myP.guessIndices);
+        const pAns = parseIndices(partnerP.answerIndices);
+        for (let i = 0; i < 5; i++) if (myG[i] === pAns[i]) overallMyScore++;
+      }
+    }
+    const overallTotal = 5 * allRevealed.length;
+
     result.reveal = {
       myScore,
       partnerScore,
@@ -144,6 +161,8 @@ export async function getAgreementForToday(
       partnerAnswers,
       partnerGuesses,
       partnerName: partner?.name ?? null,
+      overallMyScore,
+      overallTotal,
     };
   }
 

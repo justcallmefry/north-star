@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getServerAuthSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -10,7 +10,7 @@ type Props = { params: Promise<{ id: string }> };
 
 export default async function SessionPage({ params }: Props) {
   const session = await getServerAuthSession();
-  if (!session?.user) return notFound();
+  if (!session?.user) redirect("/welcome");
 
   const { id } = await params;
   const data = await getSession(id);

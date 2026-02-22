@@ -9,9 +9,9 @@ export default function AppSegmentLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen min-h-[100dvh] w-full max-w-[100vw] flex-col overflow-x-hidden overflow-y-auto md:min-h-screen" style={{ backgroundColor: "#18181B", overscrollBehaviorX: "none" }}>
-      {/* Scrollable content; pb clears fixed bottom nav on mobile only */}
-      <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto pb-24 md:min-h-screen md:pb-6" style={{ overscrollBehaviorX: "none" }}>
+    <div className="flex h-screen h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden md:min-h-screen" style={{ backgroundColor: "#18181B", overscrollBehaviorX: "none" }}>
+      {/* Only this area scrolls so fixed bottom nav stays viewport-locked on mobile */}
+      <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto pb-24 md:min-h-0 md:pb-6" style={{ overscrollBehaviorX: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
         <div className="mx-auto flex w-full min-w-0 max-w-6xl flex-1 gap-6 px-4 pt-6 pb-6 sm:px-6 lg:px-8 md:pb-6 md:pt-6">
           {/* Left rail / app frame (desktop/tablet) — star icon only, no wordmark */}
           <aside className="hidden w-64 flex-shrink-0 flex-col justify-between rounded-2xl border border-white/10 p-5 shadow-lg md:flex" style={{ backgroundColor: "#18181B" }}>
@@ -53,7 +53,7 @@ export default function AppSegmentLayout({
         </div>
       </div>
 
-      {/* Mobile bottom navigation — in flow so it stays at bottom; no content scrolls under it */}
+      {/* Mobile bottom navigation — fixed to viewport; only the content area above scrolls */}
       <BottomNav />
     </div>
   );

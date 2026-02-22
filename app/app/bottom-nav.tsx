@@ -21,7 +21,12 @@ export function BottomNav() {
   return (
     <nav
       className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 md:hidden"
-      style={{ backgroundColor: "#27272a", paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
+      style={{
+        backgroundColor: "#27272a",
+        paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))",
+        transform: "translateZ(0)",
+        WebkitTransform: "translateZ(0)",
+      }}
     >
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-2.5">
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {

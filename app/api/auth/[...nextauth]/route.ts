@@ -61,7 +61,7 @@ function getEmailConfig() {
 }
 
 /** Initialize the shared auth instance with route config (email, etc.) then use the same handlers so session cookie is set and read by the same instance. */
-export function initAuthWithRouteConfig() {
+function initAuthWithRouteConfig() {
   const { emailConfigured, from } = getEmailConfig();
   getHandlers(sendVerificationRequestFromRoute, { emailConfigured, from });
 }

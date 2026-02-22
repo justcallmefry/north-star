@@ -200,7 +200,7 @@ export function SessionContent({ data, currentUserId }: Props) {
         content: data.partnerResponse ?? null,
       },
     ];
-  }, [isRevealed, revealData, data.userResponse, data.partnerResponse, data.partnerName, data.currentUserImage, data.partnerImage, currentUserId]);
+  }, [isRevealed, revealData, data.userResponse, data.partnerResponse, data.partnerName, data.currentUserName, data.currentUserImage, data.partnerImage, currentUserId]);
   const reflectionsToShow = revealData?.reflections ?? data.reflections ?? [];
 
   const responseCount = (data.hasUserResponded ? 1 : 0) + (data.hasPartnerResponded ? 1 : 0);

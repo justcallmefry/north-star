@@ -80,7 +80,7 @@ export async function getQuizForToday(
     dayIndex = getQuizDayIndex(today);
     questions = getQuizQuestions(dayIndex);
 
-    quizSession = await prisma.quizSession.findUnique({
+    let session = await prisma.quizSession.findUnique({
       where: {
         relationshipId_sessionDate: { relationshipId, sessionDate: today },
       },
@@ -91,8 +91,8 @@ export async function getQuizForToday(
       },
     });
 
-    if (!quizSession) {
-      quizSession = await prisma.quizSession.create({
+    if (!session) {
+      session = await prisma.quizSession.create({
         data: {
           relationshipId,
           sessionDate: today,
@@ -105,6 +105,7 @@ export async function getQuizForToday(
         },
       });
     }
+    quizSession = session;
   }
 
   const myPart = quizSession.participations.find(
@@ -221,14 +222,14 @@ export async function submitQuiz(
   if (latestSession && latestSession.state === "open") {
     quizSession = latestSession;
   } else {
-    quizSession = await prisma.quizSession.findUnique({
+    let s = await prisma.quizSession.findUnique({
       where: {
         relationshipId_sessionDate: { relationshipId, sessionDate: today },
       },
       include: { participations: true },
     });
-    if (!quizSession) {
-      quizSession = await prisma.quizSession.create({
+    if (!s) {
+      s = await prisma.quizSession.create({
         data: {
           relationshipId,
           sessionDate: today,
@@ -237,6 +238,7 @@ export async function submitQuiz(
         include: { participations: true },
       });
     }
+    quizSession = s;
   }
 
   const payload = JSON.stringify(answerIndices);

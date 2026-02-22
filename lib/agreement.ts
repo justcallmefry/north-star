@@ -49,7 +49,7 @@ export async function getAgreementForToday(
     dayIndex = getAgreementDayIndex(today);
     questions = getAgreementQuestions(dayIndex);
 
-    agreementSession = await prisma.agreementSession.findUnique({
+    let session = await prisma.agreementSession.findUnique({
       where: {
         relationshipId_sessionDate: { relationshipId, sessionDate: today },
       },
@@ -60,8 +60,8 @@ export async function getAgreementForToday(
       },
     });
 
-    if (!agreementSession) {
-      agreementSession = await prisma.agreementSession.create({
+    if (!session) {
+      session = await prisma.agreementSession.create({
         data: {
           relationshipId,
           sessionDate: today,
@@ -74,6 +74,7 @@ export async function getAgreementForToday(
         },
       });
     }
+    agreementSession = session;
   }
 
   const myPart = agreementSession.participations.find(

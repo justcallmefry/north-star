@@ -201,14 +201,14 @@ export async function submitAgreement(
   if (latestSession && latestSession.state === "open") {
     agreementSession = latestSession;
   } else {
-    agreementSession = await prisma.agreementSession.findUnique({
+    let s = await prisma.agreementSession.findUnique({
       where: {
         relationshipId_sessionDate: { relationshipId, sessionDate: today },
       },
       include: { participations: true },
     });
-    if (!agreementSession) {
-      agreementSession = await prisma.agreementSession.create({
+    if (!s) {
+      s = await prisma.agreementSession.create({
         data: {
           relationshipId,
           sessionDate: today,
@@ -217,6 +217,7 @@ export async function submitAgreement(
         include: { participations: true },
       });
     }
+    agreementSession = s;
   }
 
   const payload = JSON.stringify(answerIndices);

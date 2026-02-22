@@ -20,7 +20,7 @@ export default async function LoginPage({
     return null;
   }
 
-  const params = typeof searchParams?.then === "function" ? await searchParams : searchParams ?? {};
+  const params = searchParams instanceof Promise ? await searchParams : searchParams ?? {};
   const debug = params.debug;
 
   return (

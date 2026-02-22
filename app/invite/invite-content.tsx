@@ -80,7 +80,7 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
 
   if (!code) {
     return (
-      <div className="rounded-2xl border border-pink-100 bg-pink-50/50 p-5 shadow-md shadow-pink-100/60 sm:p-6">
+      <div className="ns-shadow-glow rounded-2xl border border-pink-100/80 bg-gradient-to-b from-white/90 to-pink-50/60 p-5 sm:p-6">
         <p className="text-sm text-slate-600">
           Generate a code to text or share with your partner.
         </p>
@@ -107,7 +107,7 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
         </p>
       )}
 
-      <div className="rounded-2xl border border-pink-100 bg-pink-50/50 p-5 shadow-md shadow-pink-100/60 sm:p-6">
+      <div className="ns-shadow-glow rounded-2xl border border-pink-100/80 bg-gradient-to-b from-white/90 to-pink-50/60 p-5 sm:p-6">
         <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
           Your code
         </p>

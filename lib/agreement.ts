@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { Prisma } from "@/generated/prisma";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import type { AgreementForTodayResult, AgreementQuestion } from "@/lib/agreement-shared";
@@ -14,25 +15,27 @@ async function requireActiveMember(userId: string, relationshipId: string) {
   return member;
 }
 
-function toDateOnly(d: Date): Date {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+/** Today at midnight UTC — one agreement per UTC day, consistent across servers and timezones. */
+function todayUTC(): Date {
+  const now = new Date();
+  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
 }
 
 export async function getAgreementForToday(
   relationshipId: string
 ): Promise<AgreementForTodayResult | null> {
-  const session = await getServerAuthSession();
-  if (!session?.user?.id) return null;
-  await requireActiveMember(session.user.id, relationshipId);
+  const authSession = await getServerAuthSession();
+  if (!authSession?.user?.id) return null;
+  await requireActiveMember(authSession.user.id, relationshipId);
 
-  const today = toDateOnly(new Date());
+  const today = todayUTC();
 
   const latestSession = await prisma.agreementSession.findFirst({
     where: { relationshipId },
     orderBy: { sessionDate: "desc" },
     include: {
       participations: {
-        include: { user: { select: { id: true, name: true } } },
+        include: { user: { select: { id: true, name: true, image: true } } },
       },
     },
   });
@@ -55,42 +58,58 @@ export async function getAgreementForToday(
       },
       include: {
         participations: {
-          include: { user: { select: { id: true, name: true } } },
+          include: { user: { select: { id: true, name: true, image: true } } },
         },
       },
     });
 
     if (!session) {
-      session = await prisma.agreementSession.create({
-        data: {
-          relationshipId,
-          sessionDate: today,
-          state: "open",
-        },
-        include: {
-          participations: {
-            include: { user: { select: { id: true, name: true } } },
+      try {
+        session = await prisma.agreementSession.create({
+          data: {
+            relationshipId,
+            sessionDate: today,
+            state: "open",
           },
-        },
-      });
+          include: {
+            participations: {
+              include: { user: { select: { id: true, name: true, image: true } } },
+            },
+          },
+        });
+      } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
+          session = await prisma.agreementSession.findUnique({
+            where: {
+              relationshipId_sessionDate: { relationshipId, sessionDate: today },
+            },
+            include: {
+              participations: {
+                include: { user: { select: { id: true, name: true, image: true } } },
+              },
+            },
+          });
+        }
+        if (!session) throw e;
+      }
     }
     agreementSession = session;
   }
 
   const myPart = agreementSession.participations.find(
-    (p) => p.userId === session.user!.id
+    (p) => p.userId === authSession.user!.id
   );
   const partnerPart = agreementSession.participations.find(
-    (p) => p.userId !== session.user!.id
+    (p) => p.userId !== authSession.user!.id
   );
   const partner = agreementSession.participations.find(
-    (p) => p.userId !== session.user!.id
+    (p) => p.userId !== authSession.user!.id
   )?.user;
 
   const otherMember = await prisma.relationshipMember.findFirst({
     where: {
       relationshipId,
-      userId: { not: session.user!.id },
+      userId: { not: authSession.user!.id },
       leftAt: null,
     },
     include: { user: { select: { name: true } } },
@@ -120,6 +139,8 @@ export async function getAgreementForToday(
       : null,
     partnerSubmitted: !!partnerPart,
     partnerName,
+    myImage: (authSession.user as { image?: string | null }).image ?? null,
+    partnerImage: partner?.image ?? null,
   };
 
   if (
@@ -143,13 +164,19 @@ export async function getAgreementForToday(
       include: { participations: true },
     });
     let overallMyScore = 0;
+    let overallPartnerScore = 0;
     for (const s of allRevealed) {
-      const myP = s.participations.find((p) => p.userId === session.user!.id);
-      const partnerP = s.participations.find((p) => p.userId !== session.user!.id);
+      const myP = s.participations.find((p) => p.userId === authSession.user!.id);
+      const partnerP = s.participations.find((p) => p.userId !== authSession.user!.id);
       if (myP && partnerP) {
         const myG = parseIndices(myP.guessIndices);
         const pAns = parseIndices(partnerP.answerIndices);
-        for (let i = 0; i < 5; i++) if (myG[i] === pAns[i]) overallMyScore++;
+        const partnerG = parseIndices(partnerP.guessIndices);
+        const myAns = parseIndices(myP.answerIndices);
+        for (let i = 0; i < 5; i++) {
+          if (myG[i] === pAns[i]) overallMyScore++;
+          if (partnerG[i] === myAns[i]) overallPartnerScore++;
+        }
       }
     }
     const overallTotal = 5 * allRevealed.length;
@@ -163,6 +190,7 @@ export async function getAgreementForToday(
       partnerGuesses,
       partnerName: partner?.name ?? null,
       overallMyScore,
+      overallPartnerScore,
       overallTotal,
     };
   }
@@ -189,7 +217,7 @@ export async function submitAgreement(
 
   await requireActiveMember(session.user.id, relationshipId);
 
-  const today = toDateOnly(new Date());
+  const today = todayUTC();
 
   const latestSession = await prisma.agreementSession.findFirst({
     where: { relationshipId },
@@ -208,14 +236,26 @@ export async function submitAgreement(
       include: { participations: true },
     });
     if (!s) {
-      s = await prisma.agreementSession.create({
-        data: {
-          relationshipId,
-          sessionDate: today,
-          state: "open",
-        },
-        include: { participations: true },
-      });
+      try {
+        s = await prisma.agreementSession.create({
+          data: {
+            relationshipId,
+            sessionDate: today,
+            state: "open",
+          },
+          include: { participations: true },
+        });
+      } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
+          s = await prisma.agreementSession.findUnique({
+            where: {
+              relationshipId_sessionDate: { relationshipId, sessionDate: today },
+            },
+            include: { participations: true },
+          });
+        }
+        if (!s) throw e;
+      }
     }
     agreementSession = s;
   }

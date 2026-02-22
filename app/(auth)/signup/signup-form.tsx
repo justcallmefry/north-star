@@ -110,7 +110,7 @@ export function SignupForm() {
           <button
             type="submit"
             disabled={!canSubmitStep2 || loading}
-            className="ns-btn-primary block w-full py-3.5 text-center disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-pink-500"
+            className="ns-btn-primary block w-full py-3.5 text-center disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <span className="inline-flex items-center gap-2">
@@ -190,7 +190,7 @@ export function SignupForm() {
         <button
           type="submit"
           disabled={!canSubmitStep1}
-          className="ns-btn-primary block w-full py-3.5 text-center disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-pink-500"
+          className="ns-btn-primary block w-full py-3.5 text-center disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Next
         </button>

@@ -12,9 +12,9 @@ const BENEFITS = [
 export function WelcomeHero() {
   return (
     <div className="flex flex-col items-center w-full max-w-md mx-auto">
-      {/* 3 MIN / DAY badge */}
+      {/* 3 MIN / DAY badge — gradient for depth */}
       <span
-        className="inline-flex items-center rounded-full bg-pink-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-pink-600 ring-1 ring-pink-100"
+        className="inline-flex items-center rounded-full bg-gradient-to-r from-pink-50 to-rose-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-pink-600 ring-1 ring-pink-100/80"
         aria-hidden
       >
         3 min / day
@@ -22,7 +22,8 @@ export function WelcomeHero() {
 
       {/* Logo */}
       <div
-        className="mt-4 flex h-40 w-40 items-center justify-center rounded-2xl border border-pink-100 bg-white/90 shadow-sm ring-1 ring-pink-50 sm:h-52 sm:w-52"
+        className="mt-4 flex h-40 w-40 items-center justify-center rounded-2xl border border-pink-100/80 bg-white/90 ring-1 ring-pink-50/80 sm:h-52 sm:w-52"
+        style={{ boxShadow: "0 4px 12px -2px rgb(251 207 232 / 0.25), 0 2px 6px -2px rgb(251 207 232 / 0.15)" }}
         aria-hidden
       >
         <div className="relative h-36 w-36 sm:h-44 sm:w-44">
@@ -47,12 +48,15 @@ export function WelcomeHero() {
         together.
       </p>
 
-      {/* Proof / benefits card */}
-      <div className="mt-5 w-full rounded-2xl border border-pink-100 bg-white/80 px-4 py-3.5 shadow-sm ring-1 ring-pink-50/80 sm:px-5 sm:py-4">
+      {/* Proof / benefits card — gradient + glowy pink shadow */}
+      <div
+        className="mt-5 w-full rounded-2xl border border-pink-100/80 bg-gradient-to-b from-white/95 to-pink-50/60 px-4 py-3.5 ring-1 ring-pink-50/80 sm:px-5 sm:py-4"
+        style={{ boxShadow: "0 4px 12px -2px rgb(251 207 232 / 0.22), 0 2px 6px -2px rgb(251 207 232 / 0.12)" }}
+      >
         <ul className="space-y-3">
           {BENEFITS.map(({ icon: Icon, text }) => (
             <li key={text} className="flex items-start gap-3">
-              <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-pink-50 text-pink-600 ring-1 ring-pink-100">
+              <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-pink-50 to-rose-100 text-pink-600 ring-1 ring-pink-100/80">
                 <Icon className="h-3.5 w-3.5" strokeWidth={2} />
               </span>
               <span className="text-sm text-slate-700 sm:text-base">{text}</span>
@@ -67,7 +71,7 @@ export function WelcomeHero() {
       </p>
       <Link
         href="/signup"
-        className="ns-btn-primary mt-3 block w-full py-3.5 text-center text-base"
+        className="ns-btn-accent mt-3 block w-full py-3.5 text-center text-base"
       >
         Sign up with email
       </Link>

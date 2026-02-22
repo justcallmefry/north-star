@@ -14,12 +14,12 @@ export function loadQuizDays(): QuizDayContent[] {
   return quizDaysCache;
 }
 
-/** Day of year 1–366 mapped to quiz day index 1–30 (cycles). */
+/** Day of year 1–366 mapped to quiz day index 1–30 (cycles). Uses UTC so "one quiz per day" is consistent. */
 export function getQuizDayIndex(date: Date): number {
-  const start = new Date(date.getFullYear(), 0, 0);
-  const diff = date.getTime() - start.getTime();
+  const start = new Date(Date.UTC(date.getUTCFullYear(), 0, 0));
+  const end = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
   const oneDay = 24 * 60 * 60 * 1000;
-  const dayOfYear = Math.floor(diff / oneDay);
+  const dayOfYear = Math.floor((end.getTime() - start.getTime()) / oneDay);
   return (dayOfYear % 30) + 1;
 }
 

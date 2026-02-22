@@ -318,8 +318,12 @@ export function SessionContent({ data, currentUserId }: Props) {
             {responsesToShow.map((resp) => (
               <div key={resp.key} className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-base">
-                    {resp.icon}
+                  <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-base">
+                    {typeof resp.icon === "string" && resp.icon.trim().startsWith("http") ? (
+                      <img src={resp.icon.trim()} alt="" className="absolute inset-0 h-full w-full object-cover" width={32} height={32} />
+                    ) : (
+                      resp.icon
+                    )}
                   </span>
                   <span
                     className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] ${resp.bubbleClass}`}

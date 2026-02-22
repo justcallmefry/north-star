@@ -35,6 +35,8 @@ export default async function AgreementPage() {
         relationshipId={relationshipId}
         initialData={agreement}
         sessionUserName={session.user.name ?? null}
+        sessionUserImage={(session.user as { image?: string | null }).image ?? null}
+        partnerImage={agreement.partnerImage ?? null}
       />
     </div>
   );

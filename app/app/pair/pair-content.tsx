@@ -98,7 +98,7 @@ export function PairContent() {
   return (
     <>
       {/* Card 1: I want to invite my partner */}
-      <section className="rounded-2xl border border-pink-100 bg-pink-50/50 p-5 shadow-md shadow-pink-100/60 sm:p-6">
+      <section className="ns-shadow-glow rounded-2xl border border-pink-100/80 bg-gradient-to-b from-white/90 to-pink-50/60 p-5 sm:p-6">
         <h2 className="text-lg font-semibold text-slate-900">
           I want to invite my partner
         </h2>

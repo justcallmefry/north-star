@@ -5,11 +5,9 @@ export default function nextConfig(phase) {
       // Expose build phase so pages can avoid redirect() during "Collecting page data" on Vercel
       NEXT_PUBLIC_BUILD_PHASE: phase ?? process.env.NEXT_PHASE ?? "",
     },
-    experimental: {
-      // Include Prisma engine in serverless bundle (Vercel uses rhel-openssl-3.0.x)
-      outputFileTracingIncludes: {
-        "/**": ["./generated/prisma/**", "./node_modules/.prisma/client/**"],
-      },
+    // Include Prisma engine in serverless bundle (Vercel uses rhel-openssl-3.0.x)
+    outputFileTracingIncludes: {
+      "/**": ["./generated/prisma/**", "./node_modules/.prisma/client/**"],
     },
   };
 }

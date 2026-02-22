@@ -108,8 +108,12 @@ export function ResponseBubbleValidation({
     return (
       <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-base">
-            {icon}
+          <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-base">
+            {typeof icon === "string" && icon.trim().startsWith("http") ? (
+              <img src={icon.trim()} alt="" className="absolute inset-0 h-full w-full object-cover" width={32} height={32} />
+            ) : (
+              icon
+            )}
           </span>
           <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-900 ${bubbleClass}`}>
             {title}
@@ -125,8 +129,12 @@ export function ResponseBubbleValidation({
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2">
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-base">
-          {icon}
+        <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-base">
+          {typeof icon === "string" && icon.trim().startsWith("http") ? (
+            <img src={icon.trim()} alt="" className="absolute inset-0 h-full w-full object-cover" width={32} height={32} />
+          ) : (
+            icon
+          )}
         </span>
         <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-900 ${bubbleClass}`}>
           {title}

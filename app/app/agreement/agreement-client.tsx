@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Check, Trophy, X } from "lucide-react";
 import type { AgreementForTodayResult, AgreementQuestion } from "@/lib/agreement-shared";
 import { AGREEMENT_OPTIONS } from "@/lib/agreement-shared";
 import { submitAgreement } from "@/lib/agreement";
@@ -12,6 +13,8 @@ type Props = {
   relationshipId: string;
   initialData: AgreementForTodayResult;
   sessionUserName: string | null;
+  sessionUserImage: string | null;
+  partnerImage: string | null;
 };
 
 const OPTIONS = [...AGREEMENT_OPTIONS];
@@ -21,6 +24,8 @@ export function AgreementClient({
   relationshipId,
   initialData,
   sessionUserName,
+  sessionUserImage,
+  partnerImage,
 }: Props) {
   const router = useRouter();
   const [data, setData] = useState(initialData);
@@ -82,6 +87,8 @@ export function AgreementClient({
         questions={data.questions}
         reveal={data.reveal}
         sessionUserName={sessionUserName}
+        sessionUserImage={sessionUserImage}
+        partnerImage={partnerImage}
       />
     );
   }
@@ -254,53 +261,119 @@ function AgreementQuestionBlock({
   );
 }
 
+function ProfileImageOrStar({ imageUrl, star }: { imageUrl: string | null; star: string }) {
+  const isUrl = typeof imageUrl === "string" && imageUrl.trim().startsWith("http");
+  if (isUrl) {
+    return (
+      <span className="relative block h-8 w-8 shrink-0 overflow-hidden rounded-full bg-slate-100 ring-1 ring-slate-200">
+        <img src={imageUrl.trim()} alt="" className="absolute inset-0 h-full w-full object-cover" width={32} height={32} />
+      </span>
+    );
+  }
+  return <span className="text-2xl leading-none" aria-hidden>{star}</span>;
+}
+
 function AgreementRevealView({
   questions,
   reveal,
   sessionUserName,
+  sessionUserImage,
+  partnerImage,
 }: {
   questions: AgreementQuestion[];
   reveal: NonNullable<AgreementForTodayResult["reveal"]>;
   sessionUserName: string | null;
+  sessionUserImage: string | null;
+  partnerImage: string | null;
 }) {
   const myName = sessionUserName ?? "You";
   const partnerName = reveal.partnerName ?? "Partner";
   const options = [...AGREEMENT_OPTIONS];
 
-  const roundPct = 5 > 0 ? Math.round((reveal.myScore / 5) * 100) : 0;
-  const overallPct = reveal.overallTotal > 0 ? Math.round((reveal.overallMyScore / reveal.overallTotal) * 100) : 0;
+  const overallMyPct = reveal.overallTotal > 0 ? Math.round((reveal.overallMyScore / reveal.overallTotal) * 100) : 0;
+  const overallPartnerPct = reveal.overallTotal > 0 ? Math.round((reveal.overallPartnerScore / reveal.overallTotal) * 100) : 0;
+
+  const iAmWinning = reveal.overallMyScore > reveal.overallPartnerScore;
+  const theyAreWinning = reveal.overallPartnerScore > reveal.overallMyScore;
+  const isTie = reveal.overallMyScore === reveal.overallPartnerScore;
 
   return (
     <div className="space-y-6">
-      <div className="ns-card space-y-4 py-6">
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 border-b border-violet-100 pb-4">
-          <div className="text-center">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">This round</p>
+      {/* Today's scores side by side with name + emoji, then overall with trophy / loser emoji */}
+      <div className="ns-card space-y-3 py-4">
+        <p className="text-center text-xs font-medium uppercase tracking-wide text-slate-700 pb-1">Today</p>
+        <div className="grid grid-cols-2 gap-3 text-center">
+          <div>
+            <div className="flex justify-center">
+              <ProfileImageOrStar imageUrl={sessionUserImage} star="⭐" />
+            </div>
+            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{myName}</p>
             <p className="text-2xl font-bold text-pink-600">{reveal.myScore}/5</p>
-            <p className="text-sm font-medium text-slate-600">{roundPct}%</p>
           </div>
-          <div className="text-center">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Overall</p>
-            <p className="text-2xl font-bold text-pink-600">{reveal.overallMyScore}/{reveal.overallTotal}</p>
-            <p className="text-sm font-medium text-slate-600">{overallPct}%</p>
+          <div>
+            <div className="flex justify-center">
+              <ProfileImageOrStar imageUrl={partnerImage} star="🌟" />
+            </div>
+            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{partnerName}</p>
+            <p className="text-2xl font-bold text-violet-600">{reveal.partnerScore}/5</p>
           </div>
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-6">
-          <div className="text-center">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Your score</p>
-            <p className="text-xl font-bold text-pink-600">{reveal.myScore}/5</p>
-            <p className="text-xs text-slate-600">correct guesses</p>
+        <div className="border-t border-violet-100 pt-3">
+          <p className="text-center text-xs font-medium uppercase tracking-wide text-slate-700 pb-2">Overall</p>
+          <div className="grid grid-cols-2 gap-3 text-center">
+          <div>
+            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{myName}</p>
+            {iAmWinning ? (
+              <div className="mt-2 flex flex-col items-center gap-1">
+                <Trophy className="h-10 w-10 text-amber-500" strokeWidth={1.5} aria-hidden />
+                <p className="text-xl font-bold text-slate-800">{reveal.overallMyScore}/{reveal.overallTotal}</p>
+                <p className="text-sm text-slate-600">{overallMyPct}%</p>
+                <p className="text-sm font-medium text-amber-600">Leading</p>
+              </div>
+            ) : isTie ? (
+              <div className="mt-2 flex flex-col items-center gap-1">
+                <Trophy className="h-8 w-8 text-slate-400" strokeWidth={1.5} aria-hidden />
+                <p className="text-xl font-bold text-slate-800">{reveal.overallMyScore}/{reveal.overallTotal}</p>
+                <p className="text-sm text-slate-600">{overallMyPct}%</p>
+                <p className="text-sm text-slate-500">Tied</p>
+              </div>
+            ) : (
+              <div className="mt-2 flex flex-col items-center gap-1">
+                <span className="text-3xl leading-none" aria-hidden>🤪</span>
+                <p className="text-xl font-bold text-slate-800">{reveal.overallMyScore}/{reveal.overallTotal}</p>
+                <p className="text-sm text-slate-600">{overallMyPct}%</p>
+              </div>
+            )}
           </div>
-          <div className="text-center">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-              {partnerName}&apos;s score
-            </p>
-            <p className="text-xl font-bold text-violet-600">{reveal.partnerScore}/5</p>
-            <p className="text-xs text-slate-600">correct guesses</p>
+          <div>
+            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{partnerName}</p>
+            {theyAreWinning ? (
+              <div className="mt-2 flex flex-col items-center gap-1">
+                <Trophy className="h-10 w-10 text-amber-500" strokeWidth={1.5} aria-hidden />
+                <p className="text-xl font-bold text-slate-800">{reveal.overallPartnerScore}/{reveal.overallTotal}</p>
+                <p className="text-sm text-slate-600">{overallPartnerPct}%</p>
+                <p className="text-sm font-medium text-amber-600">Leading</p>
+              </div>
+            ) : isTie ? (
+              <div className="mt-2 flex flex-col items-center gap-1">
+                <Trophy className="h-8 w-8 text-slate-400" strokeWidth={1.5} aria-hidden />
+                <p className="text-xl font-bold text-slate-800">{reveal.overallPartnerScore}/{reveal.overallTotal}</p>
+                <p className="text-sm text-slate-600">{overallPartnerPct}%</p>
+                <p className="text-sm text-slate-500">Tied</p>
+              </div>
+            ) : (
+              <div className="mt-2 flex flex-col items-center gap-1">
+                <span className="text-3xl leading-none" aria-hidden>🤪</span>
+                <p className="text-xl font-bold text-slate-800">{reveal.overallPartnerScore}/{reveal.overallTotal}</p>
+                <p className="text-sm text-slate-600">{overallPartnerPct}%</p>
+              </div>
+            )}
+          </div>
           </div>
         </div>
       </div>
 
+      {/* Answers in two columns with green/red and bigger icons */}
       <div className="space-y-4">
         {questions.map((q, i) => {
           const myAns = reveal.myAnswers[i];
@@ -311,49 +384,72 @@ function AgreementRevealView({
           const theyGotRight = partnerGuess === myAns;
 
           return (
-            <div
-              key={i}
-              className={
-                i % 2 === 1
-                  ? "rounded-2xl border-2 border-slate-300 bg-slate-200 p-5 shadow-md space-y-3"
-                  : "ns-card space-y-3"
-              }
-            >
+            <div key={i} className="ns-card space-y-3">
               <p className="font-semibold text-slate-900">{q.text}</p>
-              <div className="grid gap-2 text-sm sm:grid-cols-2">
-                <div className="space-y-1 rounded-lg border border-pink-100 bg-pink-50/50 p-3">
-                  <p className="font-medium text-pink-800">{myName}</p>
-                  <p className="text-slate-700">
-                    Picked:{" "}
-                    <span className="font-medium text-slate-900">
-                      {options[myAns]}
-                    </span>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div
+                  className={`rounded-xl border p-4 ${
+                    theyGotRight
+                      ? "border-emerald-300 bg-emerald-50"
+                      : "border-red-200 bg-red-50/70"
+                  }`}
+                >
+                  <div className="flex justify-center">
+                    <ProfileImageOrStar imageUrl={sessionUserImage} star="⭐" />
+                  </div>
+                  <p className="mt-1 font-medium text-pink-800">{myName}</p>
+                  <p className="text-sm text-slate-700">
+                    Picked: <span className="font-medium text-slate-900">{options[myAns]}</span>
                   </p>
-                  <p className="text-slate-600">
+                  <p className="mt-2 text-sm text-slate-600">
                     {partnerName} guessed: {options[partnerGuess]}
+                  </p>
+                  <div className="mt-2 flex items-center gap-1.5">
                     {theyGotRight ? (
-                      <span className="ml-1 text-violet-600">✓</span>
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white" aria-label="Correct">
+                        <Check className="h-5 w-5" strokeWidth={2.5} />
+                      </span>
                     ) : (
-                      <span className="ml-1 text-slate-400">✗</span>
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-red-400 text-white" aria-label="Missed">
+                        <X className="h-5 w-5" strokeWidth={2.5} />
+                      </span>
                     )}
-                  </p>
-                </div>
-                <div className="space-y-1 rounded-lg border border-violet-100 bg-violet-50/50 p-3">
-                  <p className="font-medium text-violet-800">{partnerName}</p>
-                  <p className="text-slate-700">
-                    Picked:{" "}
-                    <span className="font-medium text-slate-900">
-                      {options[partnerAns]}
+                    <span className="text-sm font-medium text-slate-700">
+                      {theyGotRight ? "Correct" : "Missed"}
                     </span>
+                  </div>
+                </div>
+                <div
+                  className={`rounded-xl border p-4 ${
+                    iGotRight
+                      ? "border-emerald-300 bg-emerald-50"
+                      : "border-red-200 bg-red-50/70"
+                  }`}
+                >
+                  <div className="flex justify-center">
+                    <ProfileImageOrStar imageUrl={partnerImage} star="🌟" />
+                  </div>
+                  <p className="mt-1 font-medium text-violet-800">{partnerName}</p>
+                  <p className="text-sm text-slate-700">
+                    Picked: <span className="font-medium text-slate-900">{options[partnerAns]}</span>
                   </p>
-                  <p className="text-slate-600">
+                  <p className="mt-2 text-sm text-slate-600">
                     You guessed: {options[myGuess]}
-                    {iGotRight ? (
-                      <span className="ml-1 text-pink-600">✓</span>
-                    ) : (
-                      <span className="ml-1 text-slate-400">✗</span>
-                    )}
                   </p>
+                  <div className="mt-2 flex items-center gap-1.5">
+                    {iGotRight ? (
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white" aria-label="Correct">
+                        <Check className="h-5 w-5" strokeWidth={2.5} />
+                      </span>
+                    ) : (
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-red-400 text-white" aria-label="Missed">
+                        <X className="h-5 w-5" strokeWidth={2.5} />
+                      </span>
+                    )}
+                    <span className="text-sm font-medium text-slate-700">
+                      {iGotRight ? "Correct" : "Missed"}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

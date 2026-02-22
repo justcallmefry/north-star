@@ -12,8 +12,8 @@ export const dynamic = "force-dynamic";
 export default function WelcomePage() {
   return (
     <RedirectIfAuthenticated>
-      {/* Subtle gradient: white to very light pink at bottom for premium feel */}
-      <main className="min-h-screen flex flex-col bg-gradient-to-b from-white to-pink-50/30 text-slate-900">
+      {/* Gradient: white → soft pink → deeper rose for depth */}
+      <main className="min-h-screen flex flex-col bg-gradient-to-b from-white via-pink-50/40 to-rose-100/50 text-slate-900">
         {/* Header: logo + app name left, Log in right */}
         <header className="flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
           <div className="flex items-center gap-2">

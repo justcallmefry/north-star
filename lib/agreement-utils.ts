@@ -15,11 +15,12 @@ export function loadAgreementDays(): AgreementDayContent[] {
   return agreementDaysCache;
 }
 
+/** Day of year 1–366 (UTC) mapped to agreement day index 1–30 (cycles). Uses UTC for consistency with session dates. */
 export function getAgreementDayIndex(date: Date): number {
-  const start = new Date(date.getFullYear(), 0, 0);
-  const diff = date.getTime() - start.getTime();
+  const start = new Date(Date.UTC(date.getUTCFullYear(), 0, 0));
+  const end = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
   const oneDay = 24 * 60 * 60 * 1000;
-  const dayOfYear = Math.floor(diff / oneDay);
+  const dayOfYear = Math.floor((end.getTime() - start.getTime()) / oneDay);
   return (dayOfYear % 30) + 1;
 }
 

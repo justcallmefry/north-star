@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { Prisma } from "@/generated/prisma";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import type { QuizQuestion } from "@/lib/quiz-utils";
@@ -16,8 +17,10 @@ async function requireActiveMember(userId: string, relationshipId: string) {
   return member;
 }
 
-function toDateOnly(d: Date): Date {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+/** Today at midnight UTC — one quiz per UTC day, consistent across servers and timezones. */
+function todayUTC(): Date {
+  const now = new Date();
+  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
 }
 
 export type QuizForTodayResult = {
@@ -30,6 +33,10 @@ export type QuizForTodayResult = {
   partnerSubmitted: boolean;
   /** Partner's display name when available (from relationship or participations) */
   partnerName: string | null;
+  /** Current user's profile image URL (for reveal UI) */
+  myImage: string | null;
+  /** Partner's profile image URL (for reveal UI) */
+  partnerImage: string | null;
   /** When revealed: my score (correct guesses), partner score, both participations for UI, and overall totals */
   reveal?: {
     myScore: number;
@@ -41,6 +48,8 @@ export type QuizForTodayResult = {
     partnerName: string | null;
     /** Sum of your score across all revealed sessions */
     overallMyScore: number;
+    /** Sum of partner's score across all revealed sessions */
+    overallPartnerScore: number;
     /** Total possible (5 per session × number of revealed sessions) */
     overallTotal: number;
   };
@@ -53,7 +62,7 @@ export async function getQuizForToday(
   if (!session?.user?.id) return null;
   await requireActiveMember(session.user.id, relationshipId);
 
-  const today = toDateOnly(new Date());
+  const today = todayUTC();
 
   // Option A: Same quiz until both complete. Use the latest session if it's still open.
   const latestSession = await prisma.quizSession.findFirst({
@@ -61,7 +70,7 @@ export async function getQuizForToday(
     orderBy: { sessionDate: "desc" },
     include: {
       participations: {
-        include: { user: { select: { id: true, name: true } } },
+        include: { user: { select: { id: true, name: true, image: true } } },
       },
     },
   });
@@ -76,7 +85,7 @@ export async function getQuizForToday(
     dayIndex = getQuizDayIndex(quizSession.sessionDate);
     questions = getQuizQuestions(dayIndex);
   } else {
-    // No session yet, or previous one is revealed — get or create today's quiz
+    // No session yet, or previous one is revealed — get or create today's quiz (one per UTC day)
     dayIndex = getQuizDayIndex(today);
     questions = getQuizQuestions(dayIndex);
 
@@ -86,24 +95,40 @@ export async function getQuizForToday(
       },
       include: {
         participations: {
-          include: { user: { select: { id: true, name: true } } },
+          include: { user: { select: { id: true, name: true, image: true } } },
         },
       },
     });
 
     if (!session) {
-      session = await prisma.quizSession.create({
-        data: {
-          relationshipId,
-          sessionDate: today,
-          state: "open",
-        },
-        include: {
-          participations: {
-            include: { user: { select: { id: true, name: true } } },
+      try {
+        session = await prisma.quizSession.create({
+          data: {
+            relationshipId,
+            sessionDate: today,
+            state: "open",
           },
-        },
-      });
+          include: {
+            participations: {
+              include: { user: { select: { id: true, name: true, image: true } } },
+            },
+          },
+        });
+      } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
+          session = await prisma.quizSession.findUnique({
+            where: {
+              relationshipId_sessionDate: { relationshipId, sessionDate: today },
+            },
+            include: {
+              participations: {
+                include: { user: { select: { id: true, name: true, image: true } } },
+              },
+            },
+          });
+        }
+        if (!session) throw e;
+      }
     }
     quizSession = session;
   }
@@ -151,6 +176,8 @@ export async function getQuizForToday(
       : null,
     partnerSubmitted: !!partnerPart,
     partnerName,
+    myImage: (session.user as { image?: string | null }).image ?? null,
+    partnerImage: partner?.image ?? null,
   };
 
   if (quizSession.state === "revealed" && myPart && partnerPart) {
@@ -170,13 +197,19 @@ export async function getQuizForToday(
       include: { participations: true },
     });
     let overallMyScore = 0;
+    let overallPartnerScore = 0;
     for (const s of allRevealed) {
       const myP = s.participations.find((p) => p.userId === session.user!.id);
       const partnerP = s.participations.find((p) => p.userId !== session.user!.id);
       if (myP && partnerP) {
         const myG = parseIndices(myP.guessIndices);
         const pAns = parseIndices(partnerP.answerIndices);
-        for (let i = 0; i < 5; i++) if (myG[i] === pAns[i]) overallMyScore++;
+        const partnerG = parseIndices(partnerP.guessIndices);
+        const myAns = parseIndices(myP.answerIndices);
+        for (let i = 0; i < 5; i++) {
+          if (myG[i] === pAns[i]) overallMyScore++;
+          if (partnerG[i] === myAns[i]) overallPartnerScore++;
+        }
       }
     }
     const overallTotal = 5 * allRevealed.length;
@@ -190,6 +223,7 @@ export async function getQuizForToday(
       partnerGuesses,
       partnerName: partner?.name ?? null,
       overallMyScore,
+      overallPartnerScore,
       overallTotal,
     };
   }
@@ -209,7 +243,7 @@ export async function submitQuiz(
 
   await requireActiveMember(session.user.id, relationshipId);
 
-  const today = toDateOnly(new Date());
+  const today = todayUTC();
 
   // Same logic as getQuizForToday: submit to the open session if one exists, else today's
   const latestSession = await prisma.quizSession.findFirst({
@@ -229,14 +263,26 @@ export async function submitQuiz(
       include: { participations: true },
     });
     if (!s) {
-      s = await prisma.quizSession.create({
-        data: {
-          relationshipId,
-          sessionDate: today,
-          state: "open",
-        },
-        include: { participations: true },
-      });
+      try {
+        s = await prisma.quizSession.create({
+          data: {
+            relationshipId,
+            sessionDate: today,
+            state: "open",
+          },
+          include: { participations: true },
+        });
+      } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
+          s = await prisma.quizSession.findUnique({
+            where: {
+              relationshipId_sessionDate: { relationshipId, sessionDate: today },
+            },
+            include: { participations: true },
+          });
+        }
+        if (!s) throw e;
+      }
     }
     quizSession = s;
   }

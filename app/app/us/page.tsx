@@ -47,7 +47,7 @@ export default async function UsPage() {
           </h2>
           <p className="mt-1 text-lg font-semibold text-slate-900 sm:text-xl">How you appear</p>
           <p className="mt-1 text-sm text-slate-600 sm:text-base">
-            Change your display name and pick the icon that represents you. Your email stays the
+            Change your display name, photo (JPG or PNG, max 2MB), or pick an icon. Your email stays the
             same for sign-in.
           </p>
 
@@ -73,7 +73,7 @@ export default async function UsPage() {
 
       {primary ? (
         <section className="space-y-4">
-          <div className="rounded-2xl border border-pink-100 bg-white px-4 py-4 shadow-md shadow-pink-100/80 sm:px-5 sm:py-5">
+          <div className="ns-shadow-glow rounded-2xl border border-pink-100/80 bg-white px-4 py-4 sm:px-5 sm:py-5">
             <div className="flex items-center justify-between gap-3">
               <div className="space-y-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-sm">

@@ -35,6 +35,8 @@ export default async function QuizPage() {
         relationshipId={relationshipId}
         initialData={quiz}
         sessionUserName={session.user.name ?? null}
+        sessionUserImage={(session.user as { image?: string | null }).image ?? null}
+        partnerImage={quiz.partnerImage ?? null}
       />
     </div>
   );

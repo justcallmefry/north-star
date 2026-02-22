@@ -106,7 +106,7 @@ function LoginFormInner() {
 
   if (sent) {
     return (
-      <div className="rounded-2xl border border-pink-100 bg-white px-5 py-6 shadow-lg shadow-pink-100/80">
+      <div className="ns-shadow-glow rounded-2xl border border-pink-100/80 bg-white px-5 py-6">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-pink-100 ring-1 ring-pink-200">
             <Image

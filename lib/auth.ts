@@ -78,9 +78,24 @@ function createAuthInstance(
         : []),
     ],
     callbacks: {
-      session({ session, token }) {
+      jwt({ token, user }) {
+        if (user) {
+          token.id = user.id;
+          token.image = (user as { image?: string | null }).image ?? undefined;
+        }
+        return token;
+      },
+      async session({ session, token }) {
         // JWT strategy puts user id in token.sub; app expects session.user.id
-        if (session.user) session.user.id = (token.sub as string) ?? session.user.id;
+        if (session.user) {
+          session.user.id = (token.sub as string) ?? session.user.id;
+          // Prefer image from token (set at login); refresh from DB so profile updates show without re-login
+          const dbUser = token.sub
+            ? await prisma.user.findUnique({ where: { id: token.sub }, select: { image: true } })
+            : null;
+          (session.user as { image?: string | null }).image =
+            dbUser?.image ?? (token.image as string | undefined) ?? null;
+        }
         return session;
       },
       authorized({ auth: session, request: { nextUrl } }) {

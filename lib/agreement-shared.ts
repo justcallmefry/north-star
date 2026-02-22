@@ -18,6 +18,8 @@ export type AgreementForTodayResult = {
   myParticipation: { answerIndices: number[]; guessIndices: number[] } | null;
   partnerSubmitted: boolean;
   partnerName: string | null;
+  myImage: string | null;
+  partnerImage: string | null;
   reveal?: {
     myScore: number;
     partnerScore: number;
@@ -27,6 +29,7 @@ export type AgreementForTodayResult = {
     partnerGuesses: number[];
     partnerName: string | null;
     overallMyScore: number;
+    overallPartnerScore: number;
     overallTotal: number;
   };
 };

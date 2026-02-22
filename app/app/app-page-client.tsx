@@ -8,7 +8,7 @@ import { TodaySection } from "./today-section";
 
 export type Relationship = { id: string; name: string | null; status: string };
 export type AppPageInitialData = {
-  session: { user: { id: string; email?: string | null; name?: string | null } };
+  session: { user: { id: string; email?: string | null; name?: string | null; image?: string | null } };
   relationships: Relationship[];
 };
 
@@ -37,7 +37,21 @@ export function AppPageClient({ initialData }: Props) {
           </p>
         </div>
         <div className="hidden flex-col items-end text-xs text-slate-400 sm:flex">
-          <span className="text-slate-500">Signed in as</span>
+          <span className="flex items-center gap-2">
+            {session.user.image && (session.user.image.startsWith("http://") || session.user.image.startsWith("https://")) ? (
+              <span className="relative block h-6 w-6 shrink-0 overflow-hidden rounded-full bg-slate-200 ring-1 ring-slate-200">
+                <Image
+                  src={session.user.image}
+                  alt=""
+                  fill
+                  className="object-cover"
+                  sizes="24px"
+                  unoptimized={session.user.image.includes("blob.vercel-storage.com")}
+                />
+              </span>
+            ) : null}
+            <span className="text-slate-500">Signed in as</span>
+          </span>
           <span className="mt-0.5 max-w-[180px] truncate text-sm font-medium text-slate-600">
             {displayName}
           </span>
@@ -47,15 +61,7 @@ export function AppPageClient({ initialData }: Props) {
       {relationships.length > 0 ? (
         <div className="ns-stack flex-1 animate-fade-in-ease">
           <section className="ns-stack-tight">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
-                  Today
-                </h1>
-                <p className="mt-1 text-sm text-slate-600 sm:text-base">
-                  Answer honestly. You can edit until you both reveal.
-                </p>
-              </div>
+            <div className="flex justify-end">
               <Link
                 href="/app/history"
                 className="ns-btn-secondary hidden sm:inline-flex"

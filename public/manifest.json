@@ -7,11 +7,11 @@
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff",
-  "theme_color": "#ec4899",
+  "theme_color": "#2b8cbe",
   "icons": [
-    { "src": "/north-star-app-logo-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "/north-star-app-logo-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
-    { "src": "/north-star-app-logo-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/north-star-app-logo-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" }
+    { "src": "/aligned-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/aligned-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/aligned-icon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/aligned-icon.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" }
   ]
 }

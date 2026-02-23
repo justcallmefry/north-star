@@ -30,8 +30,8 @@ export const metadata: Metadata = {
   metadataBase: appUrl ? new URL(appUrl) : undefined,
   manifest: "/manifest.json",
   icons: {
-    icon: "/north-star-app-logo-512.png",
-    apple: "/north-star-app-logo-512.png",
+    icon: "/aligned-icon.png",
+    apple: "/aligned-icon.png",
   },
   openGraph: {
     title: "North Star",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     ...(appUrl && {
       url: appUrl,
       siteName: "North Star",
-      images: [{ url: "/north-star-app-logo-512.png", width: 512, height: 512, alt: "North Star" }],
+      images: [{ url: "/aligned-icon.png", width: 512, height: 512, alt: "North Star" }],
     }),
   },
   twitter: {

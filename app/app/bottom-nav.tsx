@@ -55,7 +55,7 @@ export function BottomNav() {
                 <Icon className="h-5 w-5" strokeWidth={2.5} />
               </span>
               <span
-                className={`text-xs font-bold leading-tight text-center truncate w-full ${
+                className={`text-[10px] font-bold leading-tight text-center truncate w-full ${
                   isActive ? "text-white" : "text-white/90"
                 }`}
               >

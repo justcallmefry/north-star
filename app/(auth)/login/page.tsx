@@ -33,7 +33,7 @@ export default async function LoginPage({
       <header className="flex items-center justify-between px-4 py-4 sm:px-6">
         <div className="relative h-9 w-9 shrink-0" aria-hidden>
           <Image
-            src="/north-star-app-logo.png"
+            src="/aligned-icon.png"
             alt=""
             width={36}
             height={36}
@@ -42,7 +42,7 @@ export default async function LoginPage({
         </div>
         <Link
           href="/welcome"
-          className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-pink-200 rounded-lg py-2 -ml-2"
+          className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-200 rounded-lg py-2 -ml-2"
           aria-label="Back to welcome"
         >
           <ChevronLeft className="h-5 w-5" strokeWidth={2} />

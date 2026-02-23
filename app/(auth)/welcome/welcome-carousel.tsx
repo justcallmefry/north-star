@@ -41,12 +41,12 @@ export function WelcomeCarousel() {
     <div className="flex flex-col items-center w-full">
       {/* North Star logo */}
       <div
-        className="ns-shadow-glow flex h-40 w-full max-w-xs items-center justify-center rounded-2xl border border-pink-100/80 bg-gradient-to-b from-white/95 to-pink-50/40 sm:h-48"
+        className="ns-shadow-glow flex h-40 w-full max-w-xs items-center justify-center rounded-2xl border border-brand-100/80 bg-gradient-to-b from-white/95 to-brand-50/40 sm:h-48"
         aria-hidden
       >
         <div className="relative h-28 w-28 sm:h-32 sm:w-32">
           <Image
-            src="/north-star-app-logo.png"
+            src="/aligned-icon.png"
             alt=""
             fill
             className="object-contain"
@@ -75,8 +75,8 @@ export function WelcomeCarousel() {
             onClick={() => goTo(i)}
             className={`h-2 rounded-full transition-all ${
               i === index
-                ? "w-6 bg-pink-500"
-                : "w-2 bg-pink-200 hover:bg-pink-300"
+                ? "w-6 bg-brand-500"
+                : "w-2 bg-brand-200 hover:bg-brand-300"
             }`}
           />
         ))}

@@ -130,7 +130,7 @@ export function QuizClient({ relationshipId, initialData, sessionUserName, sessi
         </p>
       )}
       {!allAnswered && (
-        <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2" role="alert">
+        <p className="text-sm text-brand-700 bg-brand-50 border border-brand-200 rounded-lg px-3 py-2" role="alert">
           {submitAttempted && incompleteQuestionNumbers.length > 0 ? (
             <>Complete your answer and guess for question{incompleteQuestionNumbers.length > 1 ? "s" : ""} {incompleteQuestionNumbers.join(", ")} to submit.</>
           ) : (
@@ -175,13 +175,14 @@ function QuestionBlock({
   onAnswerChange: (v: number) => void;
   onGuessChange: (v: number) => void;
 }) {
+  const bgClass = index % 2 === 0 ? "bg-brand-50/50" : "bg-green-50/50";
   return (
     <div
-      className={`ns-card space-y-4 ${showIncompleteHint ? "ring-2 ring-amber-400 ring-offset-2" : ""}`}
+      className={`ns-card space-y-4 rounded-2xl ${bgClass} ${showIncompleteHint ? "ring-2 ring-brand-400 ring-offset-2" : ""}`}
       id={showIncompleteHint ? `quiz-q-${index + 1}` : undefined}
     >
       {showIncompleteHint && (
-        <p className="text-sm text-amber-700 font-medium" role="alert">
+        <p className="text-sm text-brand-700 font-medium" role="alert">
           Pick your answer and your guess for this question.
         </p>
       )}
@@ -201,8 +202,8 @@ function QuestionBlock({
                 onClick={() => onAnswerChange(j)}
                 className={`rounded-xl border px-3 py-2 text-sm font-medium transition-colors ${
                   answerIndex === j
-                    ? "border-pink-400 bg-pink-50 text-pink-800"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-pink-200 hover:bg-pink-50/50"
+                    ? "border-brand-400 bg-brand-50 text-brand-800"
+                    : "border-slate-200 bg-white text-slate-700 hover:border-brand-200 hover:bg-brand-50/50"
                 }`}
               >
                 {opt}
@@ -212,7 +213,7 @@ function QuestionBlock({
         </div>
         <div>
           <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">
-            Your guess for partner
+            {guessLabel}
           </p>
           <div className="flex flex-wrap gap-2">
             {question.options.map((opt, j) => (
@@ -282,7 +283,7 @@ function QuizRevealView({
               <ProfileImageOrStar imageUrl={sessionUserImage} star="⭐" />
             </div>
             <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{myName}</p>
-            <p className="text-2xl font-bold text-pink-600">{reveal.myScore}/5</p>
+            <p className="text-2xl font-bold text-brand-600">{reveal.myScore}/5</p>
           </div>
           <div>
             <div className="flex justify-center">
@@ -292,7 +293,7 @@ function QuizRevealView({
             <p className="text-2xl font-bold text-violet-600">{reveal.partnerScore}/5</p>
           </div>
         </div>
-        <div className="border-t border-pink-100 pt-3">
+        <div className="border-t border-brand-100 pt-3">
           <p className="text-center text-xs font-medium uppercase tracking-wide text-slate-700 pb-2">Overall</p>
           <div className="grid grid-cols-2 gap-3 text-center">
           <div>
@@ -371,7 +372,7 @@ function QuizRevealView({
                   <div className="flex justify-center">
                     <ProfileImageOrStar imageUrl={sessionUserImage} star="⭐" />
                   </div>
-                  <p className="mt-1 font-medium text-pink-800">{myName}</p>
+                  <p className="mt-1 font-medium text-brand-800">{myName}</p>
                   <p className="text-sm text-slate-700">
                     Picked: <span className="font-medium text-slate-900">{q.options[myAns]}</span>
                   </p>

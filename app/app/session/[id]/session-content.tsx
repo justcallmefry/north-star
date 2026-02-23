@@ -171,7 +171,7 @@ export function SessionContent({ data, currentUserId }: Props) {
           key: "me",
           title: myTitle,
           icon: myIcon,
-          bubbleClass: "border-pink-200 bg-pink-50 text-slate-900",
+          bubbleClass: "border-brand-200 bg-brand-50 text-slate-900",
           content: mine?.content ?? null,
         },
         {
@@ -189,7 +189,7 @@ export function SessionContent({ data, currentUserId }: Props) {
         key: "me",
         title: myTitle,
         icon: myIcon,
-        bubbleClass: "border-pink-200 bg-pink-50 text-slate-900",
+        bubbleClass: "border-brand-200 bg-brand-50 text-slate-900",
         content: data.userResponse ?? null,
       },
       {
@@ -213,7 +213,7 @@ export function SessionContent({ data, currentUserId }: Props) {
 
       {data.momentText && (
         <div className="ns-card mx-auto max-w-xl">
-          <p className="text-xs font-semibold uppercase tracking-wide text-pink-500 sm:text-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-brand-500 sm:text-sm">
             Optional moment
           </p>
           <p className="mt-1.5 text-base leading-relaxed text-slate-700 sm:text-lg">
@@ -230,14 +230,14 @@ export function SessionContent({ data, currentUserId }: Props) {
               onChange={(e) => setText(e.target.value)}
               placeholder="Your answer..."
               rows={5}
-              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-4 text-lg leading-relaxed text-slate-900 placeholder:text-slate-500 focus:border-pink-400 focus:outline-none focus:ring-1 focus:ring-pink-300"
+              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-4 text-lg leading-relaxed text-slate-900 placeholder:text-slate-500 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300"
               required
             />
             <div className="flex justify-end">
               <button
                 type="button"
                 onClick={isRecording ? handleStopVoice : handleStartVoice}
-                className="inline-flex items-center gap-2.5 rounded-full border border-slate-200 bg-slate-800 px-4 py-2.5 text-base font-medium text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-pink-300 focus:ring-offset-2"
+                className="inline-flex items-center gap-2.5 rounded-full border border-slate-200 bg-slate-800 px-4 py-2.5 text-base font-medium text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-300 focus:ring-offset-2"
               >
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10">
                   <Mic className="h-4 w-4 text-white" aria-hidden />
@@ -342,7 +342,7 @@ export function SessionContent({ data, currentUserId }: Props) {
             {AFTER_REVEAL_LINE}
           </p>
 
-          <div className="space-y-3 border-t border-pink-100 pt-5">
+          <div className="space-y-3 border-t border-brand-100 pt-5">
             <label htmlFor="session-response" className="block text-sm font-medium text-slate-700">
               Send a response back
             </label>
@@ -352,7 +352,7 @@ export function SessionContent({ data, currentUserId }: Props) {
               onChange={(e) => setReaction(e.target.value)}
               placeholder="A short note or emoji for your partner…"
               rows={3}
-              className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-base text-slate-900 placeholder:text-slate-500 focus:border-pink-400 focus:outline-none focus:ring-1 focus:ring-pink-300"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-base text-slate-900 placeholder:text-slate-500 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300"
             />
             <button
               type="button"

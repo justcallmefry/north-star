@@ -106,11 +106,11 @@ function LoginFormInner() {
 
   if (sent) {
     return (
-      <div className="ns-shadow-glow rounded-2xl border border-pink-100/80 bg-white px-5 py-6">
+      <div className="ns-shadow-glow rounded-2xl border border-brand-100/80 bg-white px-5 py-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-pink-100 ring-1 ring-pink-200">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 ring-1 ring-brand-200">
             <Image
-              src="/north-star-app-logo.png"
+              src="/aligned-icon.png"
               alt="North Star"
               width={28}
               height={28}
@@ -119,7 +119,7 @@ function LoginFormInner() {
             />
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-pink-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-500">
               Magic link sent
             </p>
             <p className="text-sm text-slate-600">
@@ -179,7 +179,7 @@ function LoginFormInner() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200/60"
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-brand-300 focus:outline-none focus:ring-2 focus:ring-brand-200/60"
             placeholder="you@example.com"
           />
         </div>
@@ -195,7 +195,7 @@ function LoginFormInner() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200/60"
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-brand-300 focus:outline-none focus:ring-2 focus:ring-brand-200/60"
             placeholder="Your password"
           />
         </div>
@@ -237,7 +237,7 @@ function LoginFormInner() {
 
       <p className="text-center text-sm text-slate-500">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="font-medium text-pink-600 hover:text-pink-700 underline">
+        <Link href="/signup" className="font-medium text-brand-600 hover:text-brand-700 underline">
           Sign up
         </Link>
       </p>

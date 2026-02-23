@@ -149,7 +149,7 @@ export function AgreementClient({
       )}
       {!allAnswered && (
         <p
-          className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-700"
+          className="rounded-lg border border-brand-200 bg-brand-50 px-3 py-2 text-sm text-brand-700"
           role="alert"
         >
           {submitAttempted && incompleteQuestionNumbers.length > 0 ? (
@@ -200,13 +200,14 @@ function AgreementQuestionBlock({
   onAnswerChange: (v: number) => void;
   onGuessChange: (v: number) => void;
 }) {
+  const bgClass = index % 2 === 0 ? "bg-brand-50/50" : "bg-green-50/50";
   return (
     <div
-      className={`ns-card space-y-4 ${showIncompleteHint ? "ring-2 ring-amber-400 ring-offset-2" : ""}`}
+      className={`ns-card space-y-4 rounded-2xl ${bgClass} ${showIncompleteHint ? "ring-2 ring-brand-400 ring-offset-2" : ""}`}
       id={showIncompleteHint ? `agreement-q-${index + 1}` : undefined}
     >
       {showIncompleteHint && (
-        <p className="text-sm font-medium text-amber-700" role="alert">
+        <p className="text-sm font-medium text-brand-700" role="alert">
           Pick your answer and your guess for this statement.
         </p>
       )}
@@ -226,8 +227,8 @@ function AgreementQuestionBlock({
                 onClick={() => onAnswerChange(j)}
                 className={`rounded-xl border px-3 py-2 text-sm font-medium transition-colors ${
                   answerIndex === j
-                    ? "border-pink-400 bg-pink-50 text-pink-800"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-pink-200 hover:bg-pink-50/50"
+                    ? "border-brand-400 bg-brand-50 text-brand-800"
+                    : "border-slate-200 bg-white text-slate-700 hover:border-brand-200 hover:bg-brand-50/50"
                 }`}
               >
                 {opt}
@@ -308,7 +309,7 @@ function AgreementRevealView({
               <ProfileImageOrStar imageUrl={sessionUserImage} star="⭐" />
             </div>
             <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{myName}</p>
-            <p className="text-2xl font-bold text-pink-600">{reveal.myScore}/5</p>
+            <p className="text-2xl font-bold text-brand-600">{reveal.myScore}/5</p>
           </div>
           <div>
             <div className="flex justify-center">
@@ -397,7 +398,7 @@ function AgreementRevealView({
                   <div className="flex justify-center">
                     <ProfileImageOrStar imageUrl={sessionUserImage} star="⭐" />
                   </div>
-                  <p className="mt-1 font-medium text-pink-800">{myName}</p>
+                  <p className="mt-1 font-medium text-brand-800">{myName}</p>
                   <p className="text-sm text-slate-700">
                     Picked: <span className="font-medium text-slate-900">{options[myAns]}</span>
                   </p>

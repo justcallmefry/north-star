@@ -122,7 +122,7 @@ export default function PrivacyPage() {
               For privacy questions, requests, or to exercise your rights, contact us at{" "}
               <a
                 href="mailto:privacy@northstar.app"
-                className="text-pink-600 hover:text-pink-700 underline underline-offset-2"
+                className="text-brand-600 hover:text-brand-700 underline underline-offset-2"
               >
                 privacy@northstar.app
               </a>

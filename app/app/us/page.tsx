@@ -29,7 +29,7 @@ export default async function UsPage() {
   return (
     <main className="flex h-full flex-col ns-stack">
       <header className="space-y-1">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-pink-500 sm:text-sm">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-500 sm:text-sm">
           Profile
         </p>
         <h1 className="font-display text-2xl font-semibold text-slate-900 sm:text-3xl">
@@ -73,7 +73,7 @@ export default async function UsPage() {
 
       {primary ? (
         <section className="space-y-4">
-          <div className="ns-shadow-glow rounded-2xl border border-pink-100/80 bg-white px-4 py-4 sm:px-5 sm:py-5">
+          <div className="ns-shadow-glow rounded-2xl border border-brand-100/80 bg-white px-4 py-4 sm:px-5 sm:py-5">
             <div className="flex items-center justify-between gap-3">
               <div className="space-y-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-sm">
@@ -106,7 +106,7 @@ export default async function UsPage() {
               </Link>
             </div>
 
-            <div className="mt-4 border-t border-pink-100 pt-3">
+            <div className="mt-4 border-t border-brand-100 pt-3">
               <RelationshipActions relationshipId={primary.id} />
             </div>
           </div>

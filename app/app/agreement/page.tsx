@@ -21,7 +21,7 @@ export default async function AgreementPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col items-center text-center">
-        <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-400 to-indigo-500 text-white shadow-lg shadow-violet-200/80 ring-2 ring-white ring-offset-2">
+        <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-lg shadow-brand-200/80 ring-2 ring-white ring-offset-2">
           <Scale className="h-8 w-8" strokeWidth={2} />
         </div>
         <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">

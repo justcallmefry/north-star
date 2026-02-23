@@ -70,7 +70,7 @@ export function PasswordForm({ hasPassword }: Props) {
               autoComplete="current-password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 pr-10 text-base text-slate-900 focus:border-pink-400 focus:outline-none focus:ring-1 focus:ring-pink-300"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 pr-10 text-base text-slate-900 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300"
             />
             <button
               type="button"
@@ -98,7 +98,7 @@ export function PasswordForm({ hasPassword }: Props) {
             autoComplete={hasPassword ? "new-password" : "off"}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 pr-10 text-base text-slate-900 focus:border-pink-400 focus:outline-none focus:ring-1 focus:ring-pink-300"
+            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 pr-10 text-base text-slate-900 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300"
             placeholder="At least 8 characters"
           />
           <button
@@ -125,7 +125,7 @@ export function PasswordForm({ hasPassword }: Props) {
           autoComplete="new-password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 focus:border-pink-400 focus:outline-none focus:ring-1 focus:ring-pink-300"
+          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300"
         />
       </div>
 

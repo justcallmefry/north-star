@@ -25,6 +25,7 @@ type Props = {
   responseId: string;
   content: string | null;
   title: string;
+  titleTextClass?: string;
   icon: React.ReactNode;
   bubbleClass: string;
   validation: ResponseValidationData | null;
@@ -38,6 +39,7 @@ export function ResponseBubbleValidation({
   responseId,
   content,
   title,
+  titleTextClass = "text-slate-900",
   icon,
   bubbleClass,
   validation,
@@ -115,7 +117,7 @@ export function ResponseBubbleValidation({
               icon
             )}
           </span>
-          <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-900 ${bubbleClass}`}>
+          <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] ${titleTextClass} ${bubbleClass}`}>
             {title}
           </span>
         </div>
@@ -136,7 +138,7 @@ export function ResponseBubbleValidation({
             icon
           )}
         </span>
-        <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-900 ${bubbleClass}`}>
+        <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] ${titleTextClass} ${bubbleClass}`}>
           {title}
         </span>
       </div>
@@ -175,7 +177,7 @@ export function ResponseBubbleValidation({
                       type="button"
                       onClick={() => handleReactionSelect(emoji)}
                       className={`rounded p-1.5 text-xl transition hover:bg-slate-100 ${
-                        currentReactions.includes(emoji) ? "bg-pink-50 ring-1 ring-pink-200" : ""
+                        currentReactions.includes(emoji) ? "bg-brand-50 ring-1 ring-brand-200" : ""
                       }`}
                       aria-pressed={currentReactions.includes(emoji)}
                     >
@@ -202,7 +204,7 @@ export function ResponseBubbleValidation({
                   onChange={(e) => setAckText(e.target.value.slice(0, VALIDATION_ACK_MAX_LENGTH))}
                   placeholder="Acknowledgment (max 100 characters)"
                   maxLength={VALIDATION_ACK_MAX_LENGTH}
-                  className="min-w-[12rem] flex-1 rounded border border-slate-200 px-2 py-1.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-pink-300 focus:outline-none focus:ring-1 focus:ring-pink-200"
+                  className="min-w-[12rem] flex-1 rounded border border-slate-200 px-2 py-1.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-300 focus:outline-none focus:ring-1 focus:ring-brand-200"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
@@ -218,7 +220,7 @@ export function ResponseBubbleValidation({
                   type="button"
                   onClick={handleAckSubmit}
                   disabled={!!loading}
-                  className="text-xs font-medium text-pink-600 hover:text-pink-700"
+                  className="text-xs font-medium text-brand-600 hover:text-brand-700"
                 >
                   {loading === "ack" ? "Saving…" : "Save"}
                 </button>

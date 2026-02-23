@@ -43,11 +43,11 @@ export default async function MeetingHistoryPage() {
     return (
     <main className="min-h-screen bg-white p-6 sm:p-8">
       <header className="space-y-2">
-        <div className="inline-flex items-center gap-2 rounded-full bg-pink-50 px-3 py-1 ring-1 ring-pink-200">
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-pink-500">
+        <div className="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 ring-1 ring-brand-200">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-brand-500">
             <CalendarRange className="h-3.5 w-3.5" />
           </span>
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-pink-600">
+          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
             Past Weeks
           </span>
         </div>
@@ -60,7 +60,7 @@ export default async function MeetingHistoryPage() {
           <li>
             <Link
               href="/app/meeting"
-              className="ns-card block transition hover:border-pink-200"
+              className="ns-card block transition hover:border-brand-200"
             >
               <p className="font-medium text-slate-900">
                 {current ? formatWeekLabel(current.weekKey) : "This week"}
@@ -75,7 +75,7 @@ export default async function MeetingHistoryPage() {
             <li key={item.meetingId}>
               <Link
                 href={`/app/meeting/${item.meetingId}`}
-                className="ns-card block transition hover:border-pink-200"
+                className="ns-card block transition hover:border-brand-200"
               >
                 <p className="font-medium text-slate-900">
                   {formatWeekLabel(item.weekKey)}

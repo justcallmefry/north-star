@@ -19,7 +19,7 @@ export default async function ManageRelationshipPage() {
       <header className="space-y-1">
         <Link
           href="/app/us"
-          className="text-sm font-medium text-pink-600 underline hover:text-pink-500"
+          className="text-sm font-medium text-brand-600 underline hover:text-brand-500"
         >
           ← Back to Profile
         </Link>
@@ -58,7 +58,7 @@ export default async function ManageRelationshipPage() {
           </Link>
         </div>
 
-        <div className="mt-4 border-t border-pink-100 pt-3">
+        <div className="mt-4 border-t border-brand-100 pt-3">
           <RelationshipActions relationshipId={primary.id} />
         </div>
       </section>

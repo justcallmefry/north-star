@@ -61,7 +61,7 @@ export default function TermsPage() {
             <h2 className="text-lg font-semibold text-slate-900">5. Your Content and Privacy</h2>
             <p>
               You keep ownership of the content you submit (e.g., answers, notes). You grant us the limited rights we need to operate the Service (e.g., to store, display, and share your content with your partner as you choose). Our use of personal data is described in our{" "}
-              <Link href="/privacy" className="text-pink-600 hover:text-pink-700 underline underline-offset-2">
+              <Link href="/privacy" className="text-brand-600 hover:text-brand-700 underline underline-offset-2">
                 Privacy Policy
               </Link>
               .
@@ -123,7 +123,7 @@ export default function TermsPage() {
               For questions about these Terms, contact us at{" "}
               <a
                 href="mailto:legal@northstar.app"
-                className="text-pink-600 hover:text-pink-700 underline underline-offset-2"
+                className="text-brand-600 hover:text-brand-700 underline underline-offset-2"
               >
                 legal@northstar.app
               </a>

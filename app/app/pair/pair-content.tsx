@@ -98,7 +98,7 @@ export function PairContent() {
   return (
     <>
       {/* Card 1: I want to invite my partner */}
-      <section className="ns-shadow-glow rounded-2xl border border-pink-100/80 bg-gradient-to-b from-white/90 to-pink-50/60 p-5 sm:p-6">
+      <section className="ns-shadow-glow rounded-2xl border border-brand-100/80 bg-gradient-to-b from-white/90 to-brand-50/60 p-5 sm:p-6">
         <h2 className="text-lg font-semibold text-slate-900">
           I want to invite my partner
         </h2>
@@ -128,7 +128,7 @@ export function PairContent() {
               <button
                 type="button"
                 onClick={handleCopy}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-pink-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-pink-50"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-brand-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-brand-50"
               >
                 <Copy className="h-4 w-4" />
                 {copied ? "Copied" : "Tap to copy"}
@@ -148,7 +148,7 @@ export function PairContent() {
 
       {/* Or */}
       <div className="flex justify-center">
-        <span className="flex h-9 w-9 items-center justify-center rounded-full border border-pink-200 bg-white text-sm font-medium text-slate-500">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-200 bg-white text-sm font-medium text-slate-500">
           or
         </span>
       </div>
@@ -174,7 +174,7 @@ export function PairContent() {
               placeholder="e.g. Abc1-2XyZ-3456"
               value={partnerCode}
               onChange={(e) => setPartnerCode(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base font-mono text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200/60"
+              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base font-mono text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-brand-300 focus:outline-none focus:ring-2 focus:ring-brand-200/60"
             />
           </div>
           <button

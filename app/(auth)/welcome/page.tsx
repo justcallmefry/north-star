@@ -12,14 +12,14 @@ export const dynamic = "force-dynamic";
 export default function WelcomePage() {
   return (
     <RedirectIfAuthenticated>
-      {/* Gradient: white → soft pink → deeper rose for depth */}
-      <main className="min-h-screen flex flex-col bg-gradient-to-b from-white via-pink-50/40 to-rose-100/50 text-slate-900">
+      {/* Gradient: white → soft blue for depth */}
+      <main className="min-h-screen flex flex-col bg-gradient-to-b from-white via-brand-50/40 to-brand-100/50 text-slate-900">
         {/* Header: logo + app name left, Log in right */}
         <header className="flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
           <div className="flex items-center gap-2">
             <div className="relative h-9 w-9 shrink-0 sm:h-10 sm:w-10" aria-hidden>
               <Image
-                src="/north-star-app-logo.png"
+                src="/aligned-icon.png"
                 alt=""
                 width={40}
                 height={40}
@@ -28,13 +28,10 @@ export default function WelcomePage() {
               />
             </div>
             <span className="font-display text-lg font-medium text-slate-800 sm:text-xl">
-              North Star
+              Aligned: Connecting Couples
             </span>
           </div>
-          <Link
-            href="/login"
-            className="text-sm font-medium text-slate-700 hover:text-slate-900 underline underline-offset-2"
-          >
+          <Link href="/login" className="ns-btn-secondary !py-2 text-sm">
             Log in
           </Link>
         </header>

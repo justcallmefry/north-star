@@ -88,7 +88,7 @@ export function MeetingForm({ meetingId, initial }: Props) {
             value={fields[key]}
             onChange={(e) => setFields((p) => ({ ...p, [key]: e.target.value }))}
             rows={3}
-            className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-base text-slate-900 placeholder:text-slate-400 focus:border-pink-400 focus:outline-none focus:ring-1 focus:ring-pink-300 sm:text-lg"
+            className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-base text-slate-900 placeholder:text-slate-400 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300 sm:text-lg"
             placeholder={placeholder}
           />
         </div>

@@ -36,18 +36,18 @@ export default async function MeetingPage() {
     return (
       <div className="ns-stack">
         <header className="animate-calm-fade-in space-y-2">
-          <div className="inline-flex items-center gap-2 rounded-full bg-pink-50 px-3 py-1 ring-1 ring-pink-200">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-pink-500">
+          <div className="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 ring-1 ring-brand-200">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-brand-500">
               <CalendarRange className="h-3.5 w-3.5" />
             </span>
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-pink-600">
+            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
               Our Week
             </span>
           </div>
           <p className="flex items-start gap-2 text-sm text-slate-600 sm:text-base">
             <span className="relative mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center">
               <Image
-                src="/north-star-app-logo.png"
+                src="/aligned-icon.png"
                 alt=""
                 width={20}
                 height={20}
@@ -80,7 +80,7 @@ export default async function MeetingPage() {
             <div className="mt-4">
               <MeetingForm meetingId={current.meetingId} initial={meetingData?.ownEntry ?? null} />
             </div>
-            <div className="mt-4 pt-3 border-t border-pink-100">
+            <div className="mt-4 pt-3 border-t border-brand-100">
               <NotifyPartnerMeetingButton meetingId={current.meetingId} size="sm" />
             </div>
           </section>

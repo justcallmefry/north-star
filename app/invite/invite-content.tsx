@@ -80,7 +80,7 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
 
   if (!code) {
     return (
-      <div className="ns-shadow-glow rounded-2xl border border-pink-100/80 bg-gradient-to-b from-white/90 to-pink-50/60 p-5 sm:p-6">
+      <div className="ns-shadow-glow rounded-2xl border border-brand-100/80 bg-gradient-to-b from-white/90 to-brand-50/60 p-5 sm:p-6">
         <p className="text-sm text-slate-600">
           Generate a code to text or share with your partner.
         </p>
@@ -107,7 +107,7 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
         </p>
       )}
 
-      <div className="ns-shadow-glow rounded-2xl border border-pink-100/80 bg-gradient-to-b from-white/90 to-pink-50/60 p-5 sm:p-6">
+      <div className="ns-shadow-glow rounded-2xl border border-brand-100/80 bg-gradient-to-b from-white/90 to-brand-50/60 p-5 sm:p-6">
         <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
           Your code
         </p>
@@ -118,7 +118,7 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
           <button
             type="button"
             onClick={handleCopy}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-pink-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-pink-50"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-brand-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-brand-50"
           >
             <Copy className="h-4 w-4" />
             {copied ? "Copied" : "Tap to copy link"}

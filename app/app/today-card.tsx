@@ -8,9 +8,9 @@ export function TodayCard({ today }: Props) {
   if (!today) {
     return (
       <section className="ns-card">
-        <div className="inline-flex items-center gap-2 rounded-lg bg-pink-50 px-3 py-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-pink-400" />
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-pink-600 sm:text-sm">
+        <div className="inline-flex items-center gap-2 rounded-lg bg-brand-50 px-3 py-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-brand-400" />
+          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600 sm:text-sm">
             Today
           </h2>
         </div>
@@ -26,9 +26,9 @@ export function TodayCard({ today }: Props) {
   return (
     <section className="ns-card animate-calm-fade-in">
       <div className="flex items-center justify-between gap-3">
-        <div className="inline-flex items-center gap-2 rounded-lg bg-pink-50 px-3 py-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-pink-400" />
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-pink-600 sm:text-sm">
+        <div className="inline-flex items-center gap-2 rounded-lg bg-brand-50 px-3 py-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-brand-400" />
+          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600 sm:text-sm">
             Today
           </h2>
         </div>

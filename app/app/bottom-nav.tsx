@@ -22,13 +22,13 @@ export function BottomNav() {
     <nav
       className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 md:hidden"
       style={{
-        backgroundColor: "#27272a",
+        backgroundColor: "#4ea8c5",
         paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))",
         transform: "translateZ(0)",
         WebkitTransform: "translateZ(0)",
       }}
     >
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-2.5">
+      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-2 py-3">
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
           const isActive =
             href === "/app"
@@ -43,18 +43,24 @@ export function BottomNav() {
               key={href}
               href={href}
               prefetch={true}
-              className={`flex flex-1 flex-col items-center gap-0.5 text-[11px] font-medium transition-opacity active:opacity-70 ${
-                isActive ? "text-white" : "text-white/70"
+              className={`relative flex flex-1 flex-col items-center gap-1 min-w-0 px-1 py-1 rounded-lg transition-colors active:opacity-80 ${
+                isActive ? "bg-white/25" : ""
               }`}
             >
               <span
-                className={`flex h-9 w-9 items-center justify-center rounded-full border text-xs transition-colors ${
-                  isActive ? "border-white/30 bg-white/20" : "border-white/20 bg-white/5"
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors ${
+                  isActive ? "bg-white text-[#4ea8c5]" : "bg-white/20 text-white"
                 }`}
               >
-                <Icon className={`h-4 w-4 ${isActive ? "text-white" : "text-white/70"}`} />
+                <Icon className="h-5 w-5" strokeWidth={2.5} />
               </span>
-              <span>{label}</span>
+              <span
+                className={`text-[10px] font-bold leading-tight text-center truncate w-full ${
+                  isActive ? "text-white" : "text-white/90"
+                }`}
+              >
+                {label}
+              </span>
             </Link>
           );
         })}

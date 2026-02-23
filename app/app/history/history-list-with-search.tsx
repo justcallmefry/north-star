@@ -78,7 +78,7 @@ export function HistoryListWithSearch({
               placeholder="Search by word or phrase…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-base text-slate-900 placeholder:text-slate-400 focus:border-pink-400 focus:outline-none focus:ring-1 focus:ring-pink-300"
+              className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-base text-slate-900 placeholder:text-slate-400 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300"
             />
           </div>
           {hasQuery && (
@@ -134,8 +134,9 @@ export function HistoryListWithSearch({
                   const icon =
                     (r.userImage as string) || (isMe ? HEART_FALLBACKS[0] : HEART_FALLBACKS[1]);
                   const bubbleClass = isMe
-                    ? "border-pink-200 bg-pink-50"
-                    : "border-violet-100 bg-violet-50";
+                    ? "border-brand-200 bg-brand-50"
+                    : "border-green-200 bg-green-50";
+                  const titleTextClass = isMe ? "text-brand-800" : "text-green-800";
                   const hasPartnerResponse = item.responses.length >= 2;
 
                   return (
@@ -147,6 +148,7 @@ export function HistoryListWithSearch({
                         responseId={r.id}
                         content={r.content}
                         title={title}
+                        titleTextClass={titleTextClass}
                         icon={icon}
                         bubbleClass={bubbleClass}
                         validation={r.validation}
@@ -167,16 +169,18 @@ export function HistoryListWithSearch({
                     {item.reflections.map((ref) => {
                       const text = ref.content || ref.reaction;
                       if (!text) return null;
+                      const isMeRef = ref.userId === currentUserId;
                       const refName =
                         item.responses.find((r) => r.userId === ref.userId)?.userName ?? null;
                       const label = refName
                         ? `${refName.trim()}: `
-                        : ref.userId === currentUserId
+                        : isMeRef
                           ? "You: "
                           : "Them: ";
+                      const nameClass = isMeRef ? "font-medium text-brand-700" : "font-medium text-green-700";
                       return (
                         <p key={ref.userId} className="text-sm text-slate-600">
-                          <span className="font-medium text-slate-700">{label}</span>
+                          <span className={nameClass}>{label}</span>
                           {text}
                         </p>
                       );
@@ -193,7 +197,7 @@ export function HistoryListWithSearch({
         <p className="mt-6">
           <Link
             href={`/app/history?cursor=${encodeURIComponent(nextCursor)}`}
-            className="text-sm font-medium text-pink-600 underline"
+            className="text-sm font-medium text-brand-600 underline"
           >
             Load more
           </Link>

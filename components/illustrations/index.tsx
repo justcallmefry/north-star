@@ -2,17 +2,17 @@
 
 /**
  * Inline SVG illustrations you can use from code—no image files.
- * All use the app palette (pink/slate). Pass className for size.
+ * All use the app palette (blue/slate). Pass className for size.
  */
 
 type IllustrationProps = {
   className?: string;
-  /** Override accent color (default: pink-400) */
+  /** Override accent color (default: brand blue) */
   accent?: string;
 };
 
 /** Two figures with a small heart between them. Use for empty state or "create/join". */
-export function EmptyTogetherIllustration({ className = "w-32 h-32", accent = "#f472b6" }: IllustrationProps) {
+export function EmptyTogetherIllustration({ className = "w-32 h-32", accent = "#2b8cbe" }: IllustrationProps) {
   return (
     <svg
       viewBox="0 0 120 100"
@@ -38,7 +38,7 @@ export function EmptyTogetherIllustration({ className = "w-32 h-32", accent = "#
 }
 
 /** Simple "moment" — two overlapping circles (connection) and a soft glow. Use after reveal or on Today. */
-export function MomentIllustration({ className = "w-24 h-24", accent = "#f472b6" }: IllustrationProps) {
+export function MomentIllustration({ className = "w-24 h-24", accent = "#2b8cbe" }: IllustrationProps) {
   return (
     <svg
       viewBox="0 0 80 80"
@@ -56,7 +56,7 @@ export function MomentIllustration({ className = "w-24 h-24", accent = "#f472b6"
 }
 
 /** Minimal "daily" — single figure with a small sparkle. Use on Today card or prompts. */
-export function DailySparkIllustration({ className = "w-20 h-20", accent = "#f472b6" }: IllustrationProps) {
+export function DailySparkIllustration({ className = "w-20 h-20", accent = "#2b8cbe" }: IllustrationProps) {
   return (
     <svg
       viewBox="0 0 64 64"

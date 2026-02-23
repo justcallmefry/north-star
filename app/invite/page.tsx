@@ -54,7 +54,7 @@ export default async function InvitePage({ searchParams }: Props) {
       <header className="flex items-center justify-between">
         <div className="relative h-9 w-9 shrink-0" aria-hidden>
           <Image
-            src="/north-star-app-logo.png"
+            src="/aligned-icon.png"
             alt=""
             width={36}
             height={36}

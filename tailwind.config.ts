@@ -16,12 +16,27 @@ const config: Config = {
       colors: {
         ns: {
           bg: "#ffffff",
-          "bg-soft": "#fdf2f8",
+          "bg-soft": "#f0f9fd",
           card: "#ffffff",
-          border: "rgba(244,114,182,0.35)",
-          accent: "#ec4899",
-          "accent-soft": "#f472b6",
+          border: "rgba(43,140,190,0.35)",
+          accent: "#2b8cbe",
+          "accent-soft": "#7eb8d9",
         },
+        /* Blue accent scale (500 = #2b8cbe) */
+        brand: {
+          50: "#f0f9fd",
+          100: "#dbeef7",
+          200: "#b8dcef",
+          300: "#8bc4e4",
+          400: "#5aa8d6",
+          500: "#2b8cbe",
+          600: "#2479a8",
+          700: "#1e6b9e",
+          800: "#1a5d85",
+        },
+        /* Logo palette: teal/turquoise and blue-green */
+        teal: "#69c9ce",
+        "blue-green": "#4ea8c5",
       },
       boxShadow: {
         "ns-card": "0 24px 80px rgba(15,23,42,0.12)",

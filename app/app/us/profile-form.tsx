@@ -100,7 +100,7 @@ export function ProfileForm({ currentName, currentAvatar }: Props) {
           id="name"
           name="name"
           defaultValue={currentName}
-          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 placeholder:text-slate-400 focus:border-pink-400 focus:outline-none focus:ring-1 focus:ring-pink-300 sm:text-lg"
+          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 placeholder:text-slate-400 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300 sm:text-lg"
           placeholder="Your display name"
         />
       </div>
@@ -111,7 +111,7 @@ export function ProfileForm({ currentName, currentAvatar }: Props) {
         </p>
         {hasCustomImage ? (
           <div className="flex flex-wrap items-center gap-3">
-            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full bg-slate-100 ring-2 ring-pink-200">
+            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full bg-slate-100 ring-2 ring-brand-200">
               <Image
                 src={currentAvatar}
                 alt="Your photo"
@@ -133,7 +133,7 @@ export function ProfileForm({ currentName, currentAvatar }: Props) {
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploading}
-                className="text-sm font-medium text-pink-600 hover:text-pink-700 disabled:opacity-50"
+                className="text-sm font-medium text-brand-600 hover:text-brand-700 disabled:opacity-50"
               >
                 {uploading ? "Uploading…" : "Change photo"}
               </button>
@@ -155,8 +155,8 @@ export function ProfileForm({ currentName, currentAvatar }: Props) {
                   key={icon}
                   className={`inline-flex cursor-pointer items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-colors ${
                     selectedAvatar === icon
-                      ? "border-pink-300 bg-pink-50 text-pink-700"
-                      : "border-slate-200 bg-white text-slate-700 hover:border-pink-100"
+                      ? "border-brand-300 bg-brand-50 text-brand-700"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-brand-100"
                   }`}
                 >
                   <input

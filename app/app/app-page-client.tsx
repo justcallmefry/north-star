@@ -23,7 +23,7 @@ export function AppPageClient({ initialData }: Props) {
   const distinctImages = useMemo(() => pickDistinctRandom(TODAY_IMAGE_PATHS, 3), []);
 
   return (
-    <main className="flex h-full flex-col gap-2">
+    <main className="flex flex-col gap-2">
       <header className="flex shrink-0 items-center justify-between gap-4 py-1">
         <p className="text-base text-slate-600 sm:text-lg min-w-0 flex-1">
           <span className="block">One question a day.</span>
@@ -63,7 +63,7 @@ export function AppPageClient({ initialData }: Props) {
       </header>
 
       {relationships.length > 0 ? (
-        <div className="ns-stack flex-1 min-h-0 animate-fade-in-ease overflow-auto">
+        <div className="ns-stack animate-fade-in-ease">
           <section className="space-y-2">
             <div className="flex justify-end">
               <Link

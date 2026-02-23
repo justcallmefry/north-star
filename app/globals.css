@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-  font-size: 17px;
+  font-size: 18px;
   overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
@@ -16,7 +16,7 @@ html {
 
 @media (min-width: 768px) {
   html {
-    font-size: 18px;
+    font-size: 19px;
   }
 }
 

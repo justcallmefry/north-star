@@ -26,7 +26,7 @@ export default async function LoginPage({
   return (
     <main className="min-h-screen bg-white text-slate-900 flex flex-col">
       {debug && (
-        <div className="mx-4 mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 font-mono text-xs text-amber-800">
+        <div className="mx-4 mt-4 rounded-lg border border-brand-200 bg-brand-50 px-3 py-2 font-mono text-xs text-brand-800">
           Session debug: {decodeURIComponent(debug)}
         </div>
       )}

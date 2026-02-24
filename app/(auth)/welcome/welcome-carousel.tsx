@@ -39,7 +39,7 @@ export function WelcomeCarousel() {
 
   return (
     <div className="flex flex-col items-center w-full">
-      {/* North Star logo */}
+      {/* Aligned logo */}
       <div
         className="ns-shadow-glow flex h-40 w-full max-w-xs items-center justify-center rounded-2xl border border-brand-100/80 bg-gradient-to-b from-white/95 to-brand-50/40 sm:h-48"
         aria-hidden

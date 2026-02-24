@@ -22,14 +22,14 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-semibold text-slate-900">1. Agreement</h2>
             <p>
-              These Terms of Service (“Terms”) govern your use of North Star (“Service”), including our website and app. By creating an account or using the Service, you agree to these Terms. If you do not agree, do not use the Service.
+              These Terms of Service (“Terms”) govern your use of Aligned (“Service”), including our website and app. By creating an account or using the Service, you agree to these Terms. If you do not agree, do not use the Service.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-slate-900">2. Description of Service</h2>
             <p>
-              North Star is a private, relationship-focused app. It lets you and a partner answer daily questions, capture moments, and share a record of your week. Content is private by design: you choose when to reveal answers to each other. We do not provide a public or social feed.
+              Aligned is a private, relationship-focused app. It lets you and a partner answer daily questions, capture moments, and share a record of your week. Content is private by design: you choose when to reveal answers to each other. We do not provide a public or social feed.
             </p>
           </section>
 
@@ -71,7 +71,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-semibold text-slate-900">6. Our Intellectual Property</h2>
             <p>
-              North Star’s name, logo, design, and technology are owned by us or our licensors. You may not use them without our prior written permission, except as necessary to use the Service as intended.
+              Aligned’s name, logo, design, and technology are owned by us or our licensors. You may not use them without our prior written permission, except as necessary to use the Service as intended.
             </p>
           </section>
 
@@ -92,7 +92,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-semibold text-slate-900">9. Indemnity</h2>
             <p>
-              You agree to indemnify and hold harmless North Star and its affiliates, and their officers, directors, and employees, from any claims, damages, or expenses (including legal fees) arising from your use of the Service, your content, or your violation of these Terms.
+              You agree to indemnify and hold harmless Aligned and its affiliates, and their officers, directors, and employees, from any claims, damages, or expenses (including legal fees) arising from your use of the Service, your content, or your violation of these Terms.
             </p>
           </section>
 
@@ -113,7 +113,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-semibold text-slate-900">12. General</h2>
             <p>
-              If any part of these Terms is found unenforceable, the rest remains in effect. Our failure to enforce a right does not waive it. You may not assign these Terms; we may assign them. These Terms are the entire agreement between you and North Star regarding the Service.
+              If any part of these Terms is found unenforceable, the rest remains in effect. Our failure to enforce a right does not waive it. You may not assign these Terms; we may assign them. These Terms are the entire agreement between you and Aligned regarding the Service.
             </p>
           </section>
 

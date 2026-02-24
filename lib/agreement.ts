@@ -22,13 +22,17 @@ function todayUTC(): Date {
 }
 
 export async function getAgreementForToday(
-  relationshipId: string
+  relationshipId: string,
+  localDateStr?: string
 ): Promise<AgreementForTodayResult | null> {
   const authSession = await getServerAuthSession();
   if (!authSession?.user?.id) return null;
   await requireActiveMember(authSession.user.id, relationshipId);
 
-  const today = todayUTC();
+  const today =
+    localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr)
+      ? new Date(localDateStr + "T00:00:00.000Z")
+      : todayUTC();
 
   const latestSession = await prisma.agreementSession.findFirst({
     where: { relationshipId },
@@ -44,7 +48,11 @@ export async function getAgreementForToday(
   let dayIndex: number;
   let questions: AgreementQuestion[];
 
-  if (latestSession && latestSession.state === "open") {
+  if (
+    latestSession &&
+    latestSession.state === "open"
+  ) {
+    // Still on this agreement until both answer and reveal. Stays for a day or two if partner hasn't taken it; new one at midnight after they've revealed.
     agreementSession = latestSession;
     dayIndex = getAgreementDayIndex(agreementSession.sessionDate);
     questions = getAgreementQuestions(dayIndex);
@@ -201,7 +209,8 @@ export async function getAgreementForToday(
 export async function submitAgreement(
   relationshipId: string,
   answerIndices: number[],
-  guessIndices: number[]
+  guessIndices: number[],
+  localDateStr?: string
 ): Promise<{ ok: boolean; error?: string }> {
   const session = await getServerAuthSession();
   if (!session?.user?.id) return { ok: false, error: "Not signed in" };
@@ -217,7 +226,10 @@ export async function submitAgreement(
 
   await requireActiveMember(session.user.id, relationshipId);
 
-  const today = todayUTC();
+  const today =
+    localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr)
+      ? new Date(localDateStr + "T00:00:00.000Z")
+      : todayUTC();
 
   const latestSession = await prisma.agreementSession.findFirst({
     where: { relationshipId },

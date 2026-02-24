@@ -22,7 +22,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-lg font-semibold text-slate-900">1. Introduction</h2>
             <p>
-              North Star (“we,” “our,” or “North Star”) is built to be private by design. This Privacy Policy explains what information we collect, how we use it, and your choices. We do not sell your personal information or use your content for advertising.
+              Aligned (“we,” “our,” or “Aligned”) is built to be private by design. This Privacy Policy explains what information we collect, how we use it, and your choices. We do not sell your personal information or use your content for advertising.
             </p>
           </section>
 

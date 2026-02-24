@@ -35,7 +35,7 @@ export default async function OnboardingPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900/80 ring-1 ring-slate-700/80">
               <Image
                 src="/aligned-icon.png"
-                alt="North Star"
+                alt="Aligned"
                 width={28}
                 height={28}
                 className="h-7 w-7 object-contain"
@@ -44,7 +44,7 @@ export default async function OnboardingPage() {
             </div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-                Welcome to North Star
+                Welcome to Aligned
               </p>
               <p className="text-sm text-slate-300">
                 Set up your first relationship so we can send you both a daily prompt.

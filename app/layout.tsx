@@ -25,7 +25,7 @@ const appUrl =
     : undefined;
 
 export const metadata: Metadata = {
-  title: "North Star",
+  title: "Aligned",
   description: "One question a day. Answer together with your partner.",
   metadataBase: appUrl ? new URL(appUrl) : undefined,
   manifest: "/manifest.json",
@@ -34,17 +34,17 @@ export const metadata: Metadata = {
     apple: "/aligned-icon.png",
   },
   openGraph: {
-    title: "North Star",
+    title: "Aligned",
     description: "One question a day. Answer together with your partner.",
     ...(appUrl && {
       url: appUrl,
-      siteName: "North Star",
-      images: [{ url: "/aligned-icon.png", width: 512, height: 512, alt: "North Star" }],
+      siteName: "Aligned",
+      images: [{ url: "/aligned-icon.png", width: 512, height: 512, alt: "Aligned" }],
     }),
   },
   twitter: {
     card: "summary",
-    title: "North Star",
+    title: "Aligned",
     description: "One question a day. Answer together with your partner.",
   },
 };
@@ -54,6 +54,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  interactiveWidget: "overlays-content",
 };
 
 export default async function RootLayout({

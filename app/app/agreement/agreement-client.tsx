@@ -12,6 +12,7 @@ import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
 type Props = {
   relationshipId: string;
   initialData: AgreementForTodayResult;
+  localDateStr: string;
   sessionUserName: string | null;
   sessionUserImage: string | null;
   partnerImage: string | null;
@@ -23,6 +24,7 @@ const DEFAULT_INDICES = [-1, -1, -1, -1, -1];
 export function AgreementClient({
   relationshipId,
   initialData,
+  localDateStr,
   sessionUserName,
   sessionUserImage,
   partnerImage,
@@ -68,7 +70,7 @@ export function AgreementClient({
     setError(null);
     setLoading(true);
     try {
-      const result = await submitAgreement(relationshipId, answers, guesses);
+      const result = await submitAgreement(relationshipId, answers, guesses, localDateStr);
       if (!result.ok) {
         setError(result.error ?? "Something went wrong");
         return;

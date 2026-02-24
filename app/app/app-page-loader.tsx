@@ -71,7 +71,7 @@ export function AppPageLoader() {
       <main className="flex min-h-[40vh] flex-col items-center justify-center gap-3 p-8">
         <p className="text-slate-500 text-sm">Something went wrong. Try again.</p>
         {debugMessage && (
-          <p className="font-mono text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-3 py-2 max-w-md">
+          <p className="font-mono text-xs text-brand-700 bg-brand-50 border border-brand-200 rounded px-3 py-2 max-w-md">
             Debug: {debugMessage}
           </p>
         )}

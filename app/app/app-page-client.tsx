@@ -20,7 +20,7 @@ export function AppPageClient({ initialData }: Props) {
   const { session, relationships } = initialData;
   const relationshipId = relationships[0]?.id ?? null;
   const displayName = session.user.name ?? session.user.email ?? "";
-  const distinctImages = useMemo(() => pickDistinctRandom(TODAY_IMAGE_PATHS, 3), []);
+  const distinctImages = useMemo(() => pickDistinctRandom(TODAY_IMAGE_PATHS, 4), []);
 
   return (
     <main className="flex flex-col gap-2">
@@ -121,6 +121,21 @@ export function AppPageClient({ initialData }: Props) {
                   <p className="text-sm text-slate-500 leading-relaxed flex-1 min-w-0">
                     A shared place to capture this week as it unfolds.
                   </p>
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                <Link
+                  href="/app/history"
+                  className="ns-btn-secondary w-full !py-2"
+                >
+                  <History className="h-4 w-4" />
+                  Responses
+                </Link>
+                <div className="flex items-center gap-3">
+                  <p className="text-sm text-slate-500 leading-relaxed flex-1 min-w-0">
+                    View your past answers to questions.
+                  </p>
+                  <TodayRandomImage src={distinctImages[3]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shrink-0" sizes="96px" />
                 </div>
               </div>
             </div>

@@ -60,8 +60,8 @@ export function PairContent() {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: "Join me on North Star",
-          text: "Use this link to pair with me on North Star:",
+          title: "Join me on Aligned",
+          text: "Use this link to pair with me on Aligned:",
           url: joinUrl,
         });
       } else {

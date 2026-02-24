@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getToday } from "@/lib/sessions";
 import type { GetTodayResult } from "@/lib/sessions";
 import { TodayCard } from "./today-card";
@@ -16,13 +16,23 @@ function getLocalDateString(): string {
   return `${y}-${m}-${day}`;
 }
 
+/** Milliseconds until the next local midnight. */
+function msUntilNextMidnight(): number {
+  const now = new Date();
+  const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  return tomorrow.getTime() - now.getTime();
+}
+
 export function TodaySection({ relationshipId }: Props) {
   const [today, setToday] = useState<GetTodayResult | null>(null);
   const [loading, setLoading] = useState(true);
+  const [localDateStr, setLocalDateStr] = useState(getLocalDateString);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Fetch today's session when relationship or local date changes.
   useEffect(() => {
     let cancelled = false;
-    const localDateStr = getLocalDateString();
+    setLoading(true);
     getToday(relationshipId, localDateStr)
       .then((result) => {
         if (!cancelled) {
@@ -35,7 +45,22 @@ export function TodaySection({ relationshipId }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [relationshipId]);
+  }, [relationshipId, localDateStr]);
+
+  // At local midnight, update localDateStr so we refetch and show the new day's quiz.
+  useEffect(() => {
+    function scheduleNextMidnight() {
+      const ms = msUntilNextMidnight();
+      timeoutRef.current = setTimeout(() => {
+        setLocalDateStr(getLocalDateString());
+        scheduleNextMidnight();
+      }, ms);
+    }
+    scheduleNextMidnight();
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   if (loading) {
     return (

@@ -111,7 +111,7 @@ function LoginFormInner() {
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 ring-1 ring-brand-200">
             <Image
               src="/aligned-icon.png"
-              alt="North Star"
+              alt="Aligned"
               width={28}
               height={28}
               className="h-7 w-7 object-contain"
@@ -131,7 +131,7 @@ function LoginFormInner() {
           We sent a sign-in link to <strong>{email}</strong>. Click the link to sign in.
         </p>
         {process.env.NODE_ENV === "development" && (
-          <p className="mt-4 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-md p-3 text-left">
+          <p className="mt-4 text-sm text-brand-700 bg-brand-50 border border-brand-200 rounded-md p-3 text-left">
             <strong>Development:</strong> No email was sent. Open the terminal where npm run dev is running and look for a line like [Magic link]. Copy that URL into your browser to sign in.
           </p>
         )}

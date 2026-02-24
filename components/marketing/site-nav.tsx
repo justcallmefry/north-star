@@ -7,13 +7,13 @@ export function SiteNav() {
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-5 sm:px-8">
         <Link href="/" className="flex items-center gap-2 text-slate-900">
           <Image
-            src="/north-star-app-logo.png"
+            src="/aligned-icon.png"
             alt=""
             width={32}
             height={32}
             className="h-8 w-8 object-contain"
           />
-          <span className="font-semibold tracking-tight">North Star</span>
+          <span className="font-semibold tracking-tight">Aligned</span>
         </Link>
         <Link
           href="/login"

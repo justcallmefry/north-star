@@ -48,14 +48,14 @@ function buildMagicLinkHtml(to: string, url: string, logoUrl: string): string {
       <tr>
         <td style="padding:20px 20px 16px 20px;text-align:left;">
           <div style="display:inline-block;padding:8px;border-radius:14px;background:#020617;border:1px solid rgba(30,64,175,0.6);box-shadow:0 18px 45px rgba(15,23,42,0.9);">
-            <img src="${logoUrl}" alt="North Star" width="32" height="32" style="display:block;border:0;max-width:100%;" />
+            <img src="${logoUrl}" alt="Aligned" width="32" height="32" style="display:block;border:0;max-width:100%;" />
           </div>
         </td>
       </tr>
       <tr>
         <td style="padding:0 20px 8px 20px;">
           <h1 style="margin:0 0 8px 0;font-size:24px;line-height:1.3;font-weight:600;color:#f9fafb;">
-            Welcome back to North Star
+            Welcome back to Aligned
           </h1>
           <p style="margin:0;font-size:14px;line-height:1.6;color:#cbd5f5;">
             We sent a one-time sign-in link for <strong style="color:#e5e7eb;">${safeEmail}</strong>. Your sign-in is private and secure.
@@ -66,7 +66,7 @@ function buildMagicLinkHtml(to: string, url: string, logoUrl: string): string {
         <td style="padding:20px 20px 8px 20px;">
           <a href="${url}"
              style="display:inline-block;padding:11px 22px;border-radius:10px;background:#22c55e;color:#022c22;font-size:14px;font-weight:600;text-decoration:none;text-align:center;box-shadow:0 10px 30px rgba(34,197,94,0.35);">
-            Open North Star
+            Open Aligned
           </a>
         </td>
       </tr>
@@ -95,25 +95,25 @@ function buildMagicLinkHtml(to: string, url: string, logoUrl: string): string {
 function buildBetaWelcomeHtml(to: string, appUrl: string): { subject: string; html: string } {
   const safeEmail = to.replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const signInUrl = `${appUrl}/login?email=${encodeURIComponent(to)}`;
-  const logoUrl = `${appUrl.replace(/\/$/, "")}/north-star-app-logo.png`;
-  const subject = "Welcome to the North Star beta";
+  const logoUrl = `${appUrl.replace(/\/$/, "")}/aligned-icon.png`;
+  const subject = "Welcome to the Aligned beta";
   const html = `
   <div style="margin:0;padding:32px 16px;background-color:#020617;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;color:#e5e7eb;">
     <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width:520px;margin:0 auto;">
       <tr>
         <td style="padding:20px 20px 16px 20px;text-align:left;">
           <div style="display:inline-block;padding:8px;border-radius:14px;background:#020617;border:1px solid rgba(30,64,175,0.6);box-shadow:0 18px 45px rgba(15,23,42,0.9);">
-            <img src="${logoUrl}" alt="North Star" width="32" height="32" style="display:block;border:0;max-width:100%;" />
+            <img src="${logoUrl}" alt="Aligned" width="32" height="32" style="display:block;border:0;max-width:100%;" />
           </div>
         </td>
       </tr>
       <tr>
         <td style="padding:0 20px 8px 20px;">
           <h1 style="margin:0 0 8px 0;font-size:24px;line-height:1.3;font-weight:600;color:#f9fafb;">
-            You&apos;re in the North Star beta
+            You&apos;re in the Aligned beta
           </h1>
           <p style="margin:0 0 6px 0;font-size:14px;line-height:1.6;color:#cbd5f5;">
-            Thanks for joining us. North Star is a simple way to stay in sync—one question a day.
+            Thanks for joining us. Aligned is a simple way to stay in sync—one question a day.
           </p>
           <p style="margin:0;font-size:13px;line-height:1.6;color:#9ca3af;">
             This invite was sent to <strong style="color:#e5e7eb;">${safeEmail}</strong>.
@@ -166,11 +166,11 @@ async function sendWithNodemailer(
       return "";
     }
   })();
-  const logoUrl = origin ? `${origin}/north-star-app-logo.png` : "";
+  const logoUrl = origin ? `${origin}/aligned-icon.png` : "";
   await transport.sendMail({
     to,
     from,
-    subject: "Sign in to North Star",
+    subject: "Sign in to Aligned",
     text: `Sign in here: ${url}`,
     html: buildMagicLinkHtml(to, url, logoUrl || url),
   });
@@ -186,11 +186,11 @@ async function sendWithResend(to: string, url: string, from: string, apiKey: str
       return "";
     }
   })();
-  const logoUrl = origin ? `${origin}/north-star-app-logo.png` : "";
+  const logoUrl = origin ? `${origin}/aligned-icon.png` : "";
   const { error } = await client.emails.send({
     from: from || "onboarding@resend.dev",
     to: [to],
-    subject: "Sign in to North Star",
+    subject: "Sign in to Aligned",
     html: buildMagicLinkHtml(to, url, logoUrl || url),
   });
   if (error) {

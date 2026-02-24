@@ -131,7 +131,8 @@ export async function getToday(
       },
     });
   } else if (latestSession.state === "open" || latestSession.state === "expired") {
-    // Still on this question until both answer and reveal (or it's expired)
+    // Still on this question until both answer and reveal (or it's expired).
+    // Stays for a day or two if partner hasn't taken it; new one at midnight after they've revealed.
     dailySession = latestSession;
   } else {
     // Latest is revealed — show today's session, creating if needed
@@ -161,7 +162,7 @@ export async function getToday(
     }
   }
 
-  const promptText = dailySession.prompt?.text ?? "How are you feeling today?";
+  const promptText = dailySession.prompt?.text ?? "How are you feeling right now?";
   const momentText = dailySession.prompt?.momentText ?? null;
   const hasUserResponded = dailySession.responses.some((r) => r.userId === session.user!.id);
   const partnerIds = memberIds.filter((id) => id !== session.user!.id);

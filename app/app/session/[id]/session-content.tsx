@@ -279,7 +279,7 @@ export function SessionContent({ data, currentUserId }: Props) {
       )}
 
       {data.hasUserResponded && data.state === "open" && !data.canReveal && (
-        <div className="space-y-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-base text-amber-800 sm:text-lg">
+        <div className="space-y-3 rounded-xl border border-brand-200 bg-brand-50 p-4 text-base text-brand-800 sm:text-lg">
           <p>Waiting on your partner to answer. You can reveal once both have responded.</p>
           <div className="flex flex-wrap gap-2">
             <NotifyPartnerButton sessionId={data.sessionId} />

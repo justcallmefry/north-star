@@ -15,12 +15,12 @@ export function SiteNav() {
           />
           <span className="font-semibold tracking-tight">Aligned</span>
         </Link>
-        <Link
+        <a
           href="/login"
           className="text-sm font-medium text-slate-600 hover:text-slate-900"
         >
           Sign in
-        </Link>
+        </a>
       </div>
     </header>
   );

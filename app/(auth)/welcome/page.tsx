@@ -31,9 +31,9 @@ export default function WelcomePage() {
               Aligned: Connecting Couples
             </span>
           </div>
-          <Link href="/login" className="ns-btn-secondary !py-2 text-sm">
+          <a href="/login" className="ns-btn-secondary !py-2 text-sm inline-flex">
             Log in
-          </Link>
+          </a>
         </header>
 
         {/* Hero + benefits + CTA — consistent 8/12/16 spacing, scrollable */}

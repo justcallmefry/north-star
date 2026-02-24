@@ -10,9 +10,9 @@ export function SiteFooter() {
           © {new Date().getFullYear()} Aligned
         </p>
         <nav className="flex items-center gap-4 text-xs text-slate-400">
-          <Link href="/login" className="hover:text-slate-600">
+          <a href="/login" className="hover:text-slate-600">
             Sign in
-          </Link>
+          </a>
           <Link href="/privacy" className="hover:text-slate-600">
             Privacy
           </Link>

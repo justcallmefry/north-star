@@ -13,6 +13,7 @@ type Props = {
   relationshipId: string;
   initialData: AgreementForTodayResult;
   localDateStr: string;
+  onAgreementUpdated?: () => void;
   sessionUserName: string | null;
   sessionUserImage: string | null;
   partnerImage: string | null;
@@ -25,6 +26,7 @@ export function AgreementClient({
   relationshipId,
   initialData,
   localDateStr,
+  onAgreementUpdated,
   sessionUserName,
   sessionUserImage,
   partnerImage,
@@ -73,12 +75,14 @@ export function AgreementClient({
       const result = await submitAgreement(relationshipId, answers, guesses, localDateStr);
       if (!result.ok) {
         setError(result.error ?? "Something went wrong");
+        setLoading(false);
         return;
       }
+      onAgreementUpdated?.();
       router.refresh();
+      // Keep loading true so button stays "Submitting…" until refetch updates the view
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to submit");
-    } finally {
       setLoading(false);
     }
   }
@@ -169,7 +173,7 @@ export function AgreementClient({
         <button
           type="submit"
           disabled={loading}
-          className="ns-btn-primary text-lg disabled:opacity-50"
+          className="ns-btn-primary min-w-[10rem] text-lg transition-all duration-200 disabled:opacity-50"
         >
           {loading ? "Submitting…" : "Submit"}
         </button>

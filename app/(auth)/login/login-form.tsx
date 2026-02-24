@@ -6,8 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { getCsrfToken, signIn, useSession } from "next-auth/react";
 import { Suspense, useEffect, useState } from "react";
 
-const PRODUCTION_APP_URL = process.env.NEXT_PUBLIC_APP_URL || "";
-
 function LoginFormInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -149,15 +147,6 @@ function LoginFormInner() {
           Use your email and password, or get a one-time link.
         </p>
       </div>
-
-      {PRODUCTION_APP_URL && (
-        <p className="text-sm text-slate-700 bg-slate-50 border border-slate-200 rounded-xl p-3">
-          For a stable sign-in, use the main site:{" "}
-          <a href={`${PRODUCTION_APP_URL}/login`} className="font-medium underline">
-            Sign in on main site
-          </a>
-        </p>
-      )}
 
       <form
         action="/api/auth/callback/credentials"

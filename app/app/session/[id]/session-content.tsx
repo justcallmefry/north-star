@@ -28,6 +28,11 @@ export function SessionContent({ data, currentUserId }: Props) {
     reflections: { userId: string; content: string | null; reaction: string | null }[];
   } | null>(null);
 
+  // Clear submit loading once refreshed data shows the user has responded
+  useEffect(() => {
+    if (data.userResponse != null && loading === "submit") setLoading(null);
+  }, [data.userResponse, loading]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
@@ -35,9 +40,9 @@ export function SessionContent({ data, currentUserId }: Props) {
     try {
       await submitResponse(data.sessionId, text);
       router.refresh();
+      // Keep loading as "submit" until refreshed data arrives (see useEffect below)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to submit");
-    } finally {
       setLoading(null);
     }
   }
@@ -255,7 +260,7 @@ export function SessionContent({ data, currentUserId }: Props) {
             <button
               type="submit"
               disabled={!!loading}
-              className="ns-btn-primary text-lg"
+              className="ns-btn-primary min-w-[10rem] text-lg transition-all duration-200 disabled:opacity-50"
             >
               {loading === "submit"
                 ? "Saving…"

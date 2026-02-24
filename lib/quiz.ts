@@ -56,15 +56,19 @@ export type QuizForTodayResult = {
 };
 
 export async function getQuizForToday(
-  relationshipId: string
+  relationshipId: string,
+  localDateStr?: string
 ): Promise<QuizForTodayResult | null> {
   const session = await getServerAuthSession();
   if (!session?.user?.id) return null;
   await requireActiveMember(session.user.id, relationshipId);
 
-  const today = todayUTC();
+  const today =
+    localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr)
+      ? new Date(localDateStr + "T00:00:00.000Z")
+      : todayUTC();
 
-  // Option A: Same quiz until both complete. Use the latest session if it's still open.
+  // Same quiz until both complete. Use the latest session if it's still open.
   const latestSession = await prisma.quizSession.findFirst({
     where: { relationshipId },
     orderBy: { sessionDate: "desc" },
@@ -80,7 +84,7 @@ export async function getQuizForToday(
   let questions: QuizQuestion[];
 
   if (latestSession && latestSession.state === "open") {
-    // Still waiting for one or both — keep showing this quiz
+    // Still waiting for one or both — keep showing this quiz until revealed; then new quiz at midnight local.
     quizSession = latestSession;
     dayIndex = getQuizDayIndex(quizSession.sessionDate);
     questions = getQuizQuestions(dayIndex);
@@ -234,7 +238,8 @@ export async function getQuizForToday(
 export async function submitQuiz(
   relationshipId: string,
   answerIndices: number[],
-  guessIndices: number[]
+  guessIndices: number[],
+  localDateStr?: string
 ): Promise<{ ok: boolean; error?: string }> {
   const session = await getServerAuthSession();
   if (!session?.user?.id) return { ok: false, error: "Not signed in" };
@@ -243,7 +248,10 @@ export async function submitQuiz(
 
   await requireActiveMember(session.user.id, relationshipId);
 
-  const today = todayUTC();
+  const today =
+    localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr)
+      ? new Date(localDateStr + "T00:00:00.000Z")
+      : todayUTC();
 
   // Same logic as getQuizForToday: submit to the open session if one exists, else today's
   const latestSession = await prisma.quizSession.findFirst({

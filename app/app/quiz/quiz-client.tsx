@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Check, Trophy, X } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Trophy, X } from "lucide-react";
 import type { QuizForTodayResult, QuizQuestion } from "@/lib/quiz";
 import { submitQuiz } from "@/lib/quiz";
 import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
@@ -11,12 +11,16 @@ import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
 type Props = {
   relationshipId: string;
   initialData: QuizForTodayResult;
+  localDateStr?: string;
+  onQuizUpdated?: () => void;
   sessionUserName: string | null;
   sessionUserImage: string | null;
   partnerImage: string | null;
 };
 
-export function QuizClient({ relationshipId, initialData, sessionUserName, sessionUserImage, partnerImage }: Props) {
+const TOTAL_QUESTIONS = 5;
+
+export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUpdated, sessionUserName, sessionUserImage, partnerImage }: Props) {
   const router = useRouter();
   const [data, setData] = useState(initialData);
   const [answers, setAnswers] = useState<number[]>(
@@ -25,6 +29,7 @@ export function QuizClient({ relationshipId, initialData, sessionUserName, sessi
   const [guesses, setGuesses] = useState<number[]>(
     initialData.myParticipation?.guessIndices ?? [-1, -1, -1, -1, -1]
   );
+  const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitAttempted, setSubmitAttempted] = useState(false);
@@ -38,35 +43,42 @@ export function QuizClient({ relationshipId, initialData, sessionUserName, sessi
   const allAnswered =
     answers.every((a) => a >= 0) && guesses.every((g) => g >= 0);
 
-  const incompleteQuestionNumbers = data.questions
-    .map((_, i) => (answers[i] >= 0 && guesses[i] >= 0 ? null : i + 1))
-    .filter((n): n is number => n !== null);
+  const currentQuestion = data.questions[step];
+  const currentAnswered = currentQuestion && answers[step] >= 0 && guesses[step] >= 0;
+  const canGoNext = step < TOTAL_QUESTIONS - 1 && currentAnswered;
+  const isLastStep = step === TOTAL_QUESTIONS - 1;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!allAnswered) {
       setSubmitAttempted(true);
-      const first = incompleteQuestionNumbers[0];
-      if (first != null) {
-        document.getElementById(`quiz-q-${first}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
       return;
     }
     setSubmitAttempted(false);
     setError(null);
     setLoading(true);
     try {
-      const result = await submitQuiz(relationshipId, answers, guesses);
+      const result = await submitQuiz(relationshipId, answers, guesses, localDateStr);
       if (!result.ok) {
         setError(result.error ?? "Something went wrong");
+        setLoading(false);
         return;
       }
+      onQuizUpdated?.();
       router.refresh();
+      // Keep loading true so button stays "Submitting…" until refetch updates the view
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to submit");
-    } finally {
       setLoading(false);
     }
+  }
+
+  function goNext() {
+    if (canGoNext) setStep((s) => s + 1);
+  }
+
+  function goBack() {
+    if (step > 0) setStep((s) => s - 1);
   }
 
   if (data.state === "revealed" && data.reveal) {
@@ -100,140 +112,139 @@ export function QuizClient({ relationshipId, initialData, sessionUserName, sessi
     );
   }
 
+  if (!currentQuestion) return null;
+
+  const guessLabel = data.partnerName ? `Your guess for ${data.partnerName}` : "Your guess for partner";
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
-      {data.questions.map((q, i) => (
-        <QuestionBlock
-          key={i}
-          index={i}
-          question={q}
-          guessLabel={data.partnerName ? `Your guess for ${data.partnerName}` : "Your guess for partner"}
-          isIncomplete={answers[i] < 0 || guesses[i] < 0}
-          showIncompleteHint={submitAttempted && (answers[i] < 0 || guesses[i] < 0)}
-          answerIndex={answers[i]}
-          guessIndex={guesses[i]}
-          onAnswerChange={(v) => {
-            const next = [...answers];
-            next[i] = v;
-            setAnswers(next);
-          }}
-          onGuessChange={(v) => {
-            const next = [...guesses];
-            next[i] = v;
-            setGuesses(next);
-          }}
-        />
-      ))}
-      {error && (
-        <p className="text-sm text-red-600" role="alert">
-          {error}
+    <form onSubmit={handleSubmit} className="flex min-h-[65vh] flex-col">
+      {/* Progress */}
+      <div className="mb-6 flex items-center justify-between gap-2">
+        <span className="text-sm font-medium text-slate-500">
+          Question {step + 1} of {TOTAL_QUESTIONS}
+        </span>
+        <div className="flex gap-1">
+          {Array.from({ length: TOTAL_QUESTIONS }).map((_, i) => (
+            <div
+              key={i}
+              className={`h-1.5 flex-1 rounded-full min-w-[24px] max-w-[32px] transition-colors ${
+                i < step ? "bg-brand-500" : i === step ? "bg-brand-400" : "bg-slate-200"
+              }`}
+              aria-hidden
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Single question — full-screen feel */}
+      <div key={step} className="flex flex-1 flex-col rounded-2xl bg-white/80 ring-1 ring-slate-200/80 p-6 shadow-sm sm:p-8 animate-calm-fade-in">
+        <p className="text-xl font-semibold leading-snug text-slate-900 sm:text-2xl">
+          {currentQuestion.text}
         </p>
-      )}
-      {!allAnswered && (
-        <p className="text-sm text-brand-700 bg-brand-50 border border-brand-200 rounded-lg px-3 py-2" role="alert">
-          {submitAttempted && incompleteQuestionNumbers.length > 0 ? (
-            <>Complete your answer and guess for question{incompleteQuestionNumbers.length > 1 ? "s" : ""} {incompleteQuestionNumbers.join(", ")} to submit.</>
-          ) : (
-            <>Answer and guess for all 5 questions to submit.</>
-          )}
-        </p>
-      )}
-      <div className="flex flex-col items-center gap-3">
+
+        <div className="mt-8 space-y-8">
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Your answer
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {currentQuestion.options.map((opt, j) => (
+                <button
+                  key={j}
+                  type="button"
+                  onClick={() => {
+                    const next = [...answers];
+                    next[step] = j;
+                    setAnswers(next);
+                  }}
+                  className={`rounded-xl border-2 px-4 py-3.5 text-left text-sm font-medium transition-all ${
+                    answers[step] === j
+                      ? "border-brand-500 bg-brand-50 text-brand-800 shadow-sm"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-brand-200 hover:bg-brand-50/50"
+                  }`}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+              {guessLabel}
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {currentQuestion.options.map((opt, j) => (
+                <button
+                  key={j}
+                  type="button"
+                  onClick={() => {
+                    const next = [...guesses];
+                    next[step] = j;
+                    setGuesses(next);
+                  }}
+                  className={`rounded-xl border-2 px-4 py-3.5 text-left text-sm font-medium transition-all ${
+                    guesses[step] === j
+                      ? "border-brand-500 bg-green-50 text-green-800 shadow-sm"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-green-200 hover:bg-green-50/50"
+                  }`}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {submitAttempted && !currentAnswered && (
+          <p className="mt-4 text-sm font-medium text-brand-700" role="alert">
+            Pick your answer and your guess to continue.
+          </p>
+        )}
+        {error && (
+          <p className="mt-4 text-sm text-red-600" role="alert">
+            {error}
+          </p>
+        )}
+      </div>
+
+      {/* Back / Next or Submit */}
+      <div className="mt-8 flex items-center justify-between gap-4">
         <button
-          type="submit"
-          disabled={loading}
-          className="ns-btn-primary text-lg disabled:opacity-50"
+          type="button"
+          onClick={goBack}
+          className="inline-flex items-center gap-1.5 text-slate-600 hover:text-slate-900 disabled:invisible"
+          disabled={step === 0}
         >
-          {loading ? "Submitting…" : "Submit quiz"}
+          <ChevronLeft className="h-5 w-5" />
+          Back
         </button>
+        {isLastStep ? (
+          <button
+            type="submit"
+            disabled={loading || !allAnswered}
+            className="ns-btn-primary min-w-[10rem] px-6 py-3 transition-all duration-200 disabled:opacity-50"
+          >
+            {loading ? "Submitting…" : "Submit quiz"}
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={goNext}
+            disabled={!currentAnswered}
+            className="ns-btn-primary inline-flex items-center gap-1.5 px-6 py-3 disabled:opacity-50"
+          >
+            Next
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        )}
+      </div>
+
+      <p className="mt-4 text-center">
         <Link href="/app" className="text-sm text-slate-500 hover:text-slate-700">
           Back to today
         </Link>
-      </div>
-    </form>
-  );
-}
-
-function QuestionBlock({
-  index,
-  question,
-  guessLabel,
-  answerIndex,
-  guessIndex,
-  isIncomplete,
-  showIncompleteHint,
-  onAnswerChange,
-  onGuessChange,
-}: {
-  index: number;
-  question: QuizQuestion;
-  guessLabel: string;
-  answerIndex: number;
-  guessIndex: number;
-  isIncomplete: boolean;
-  showIncompleteHint: boolean;
-  onAnswerChange: (v: number) => void;
-  onGuessChange: (v: number) => void;
-}) {
-  const bgClass = index % 2 === 0 ? "bg-brand-50/50" : "bg-green-50/50";
-  return (
-    <div
-      className={`ns-card space-y-4 rounded-2xl ${bgClass} ${showIncompleteHint ? "ring-2 ring-brand-400 ring-offset-2" : ""}`}
-      id={showIncompleteHint ? `quiz-q-${index + 1}` : undefined}
-    >
-      {showIncompleteHint && (
-        <p className="text-sm text-brand-700 font-medium" role="alert">
-          Pick your answer and your guess for this question.
-        </p>
-      )}
-      <p className="text-base font-semibold text-slate-900 sm:text-lg">
-        {index + 1}. {question.text}
       </p>
-      <div className="space-y-4">
-        <div>
-          <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">
-            Your answer
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {question.options.map((opt, j) => (
-              <button
-                key={j}
-                type="button"
-                onClick={() => onAnswerChange(j)}
-                className={`rounded-xl border px-3 py-2 text-sm font-medium transition-colors ${
-                  answerIndex === j
-                    ? "border-brand-400 bg-brand-50 text-brand-800"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-brand-200 hover:bg-brand-50/50"
-                }`}
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div>
-          <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">
-            {guessLabel}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {question.options.map((opt, j) => (
-              <button
-                key={j}
-                type="button"
-                onClick={() => onGuessChange(j)}
-                className={`rounded-xl border px-3 py-2 text-sm font-medium transition-colors ${
-                  guessIndex === j
-                    ? "border-violet-400 bg-violet-50 text-violet-800"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-violet-200 hover:bg-violet-50/50"
-                }`}
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+    </form>
   );
 }
 

@@ -1,6 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 
+const loginHref =
+  typeof process.env.NEXT_PUBLIC_APP_URL === "string" && process.env.NEXT_PUBLIC_APP_URL
+    ? `${process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/login`
+    : "/login";
+
 export function SiteNav() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/80 backdrop-blur-md">
@@ -16,7 +21,7 @@ export function SiteNav() {
           <span className="font-semibold tracking-tight">Aligned</span>
         </Link>
         <a
-          href="/login"
+          href={loginHref}
           className="text-sm font-medium text-slate-600 hover:text-slate-900"
         >
           Sign in

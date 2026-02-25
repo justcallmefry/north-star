@@ -5,6 +5,11 @@ import { WelcomeHero } from "./welcome-hero";
 
 export const dynamic = "force-dynamic";
 
+const loginHref =
+  typeof process.env.NEXT_PUBLIC_APP_URL === "string" && process.env.NEXT_PUBLIC_APP_URL
+    ? `${process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/login`
+    : "/login";
+
 /**
  * Welcome (landing) page. No server-side auth or DB call — always returns HTML
  * so the page loads reliably on Vercel. Logged-in users redirect to /app on the client.
@@ -31,7 +36,7 @@ export default function WelcomePage() {
               Aligned: Connecting Couples
             </span>
           </div>
-          <a href="/login" className="ns-btn-secondary !py-2 text-sm inline-flex">
+          <a href={loginHref} className="ns-btn-secondary !py-2 text-sm inline-flex">
             Log in
           </a>
         </header>

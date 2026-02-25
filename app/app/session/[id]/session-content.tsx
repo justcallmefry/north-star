@@ -257,17 +257,20 @@ export function SessionContent({ data, currentUserId }: Props) {
               : "Your answer stays private until your partner responds."}
           </p>
           <div className="flex flex-col items-center gap-4">
-            <button
-              type="submit"
-              disabled={!!loading}
-              className="ns-btn-primary min-w-[10rem] text-lg transition-all duration-200 disabled:opacity-50"
-            >
-              {loading === "submit"
-                ? "Saving…"
-                : data.hasUserResponded
-                  ? "Update my answer"
-                  : "Save my answer"}
-            </button>
+            {loading === "submit" ? (
+              <div className="flex flex-col items-center gap-2">
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-brand-200 border-t-brand-500" />
+                <p className="text-sm text-slate-600">Saving your answer…</p>
+              </div>
+            ) : (
+              <button
+                type="submit"
+                disabled={!!loading}
+                className="ns-btn-primary min-w-[10rem] text-lg transition-all duration-200 disabled:opacity-50"
+              >
+                {data.hasUserResponded ? "Update my answer" : "Save my answer"}
+              </button>
+            )}
             <p className="text-base text-slate-600 sm:text-lg">
               {responseCount} of 2 responses for today.
             </p>

@@ -112,6 +112,17 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
     );
   }
 
+  if (loading) {
+    return (
+      <div className="flex min-h-[65vh] items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-200 border-t-brand-500" />
+          <p className="text-sm text-slate-600">Submitting your quiz…</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!currentQuestion) return null;
 
   const guessLabel = data.partnerName ? `Your guess for ${data.partnerName}` : "Your guess for partner";

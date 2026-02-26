@@ -18,6 +18,12 @@ export function BottomNav() {
 
   if (!pathname.startsWith("/app")) return null;
 
+  // Hide bottom nav on focused flows like quiz and agreement so users
+  // stay in the experience until they finish.
+  if (pathname.startsWith("/app/quiz") || pathname.startsWith("/app/agreement")) {
+    return null;
+  }
+
   return (
     <nav
       className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 md:hidden"

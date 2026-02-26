@@ -39,6 +39,7 @@ export function AgreementClient({
   const [guesses, setGuesses] = useState<number[]>(
     initialData.myParticipation?.guessIndices ?? DEFAULT_INDICES
   );
+  const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitAttempted, setSubmitAttempted] = useState(false);
@@ -47,25 +48,22 @@ export function AgreementClient({
     setData(initialData);
     setAnswers(initialData.myParticipation?.answerIndices ?? DEFAULT_INDICES);
     setGuesses(initialData.myParticipation?.guessIndices ?? DEFAULT_INDICES);
+    setStep(0);
   }, [initialData]);
 
   const allAnswered =
     answers.every((a) => a >= 0) && guesses.every((g) => g >= 0);
 
-  const incompleteQuestionNumbers = data.questions
-    .map((_, i) => (answers[i] >= 0 && guesses[i] >= 0 ? null : i + 1))
-    .filter((n): n is number => n !== null);
+  const TOTAL_QUESTIONS = data.questions.length;
+  const currentQuestion = data.questions[step];
+  const currentAnswered = currentQuestion && answers[step] >= 0 && guesses[step] >= 0;
+  const canGoNext = step < TOTAL_QUESTIONS - 1 && currentAnswered;
+  const isLastStep = step === TOTAL_QUESTIONS - 1;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!allAnswered) {
       setSubmitAttempted(true);
-      const first = incompleteQuestionNumbers[0];
-      if (first != null) {
-        document
-          .getElementById(`agreement-q-${first}`)
-          ?.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
       return;
     }
     setSubmitAttempted(false);
@@ -85,6 +83,14 @@ export function AgreementClient({
       setError(err instanceof Error ? err.message : "Failed to submit");
       setLoading(false);
     }
+  }
+
+  function goNext() {
+    if (canGoNext) setStep((s) => s + 1);
+  }
+
+  function goBack() {
+    if (step > 0) setStep((s) => s - 1);
   }
 
   if (data.state === "revealed" && data.reveal) {
@@ -129,36 +135,55 @@ export function AgreementClient({
     );
   }
 
+  if (!currentQuestion) return null;
+
+  const guessLabel = data.partnerName
+    ? `Your guess for ${data.partnerName}`
+    : "Your guess for partner";
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
-      {data.questions.map((q, i) => (
-        <AgreementQuestionBlock
-          key={i}
-          index={i}
-          question={q}
-          options={OPTIONS}
-          guessLabel={
-            data.partnerName
-              ? `Your guess for ${data.partnerName}`
-              : "Your guess for partner"
-          }
-          showIncompleteHint={
-            submitAttempted && (answers[i] < 0 || guesses[i] < 0)
-          }
-          answerIndex={answers[i]}
-          guessIndex={guesses[i]}
-          onAnswerChange={(v) => {
-            const next = [...answers];
-            next[i] = v;
-            setAnswers(next);
-          }}
-          onGuessChange={(v) => {
-            const next = [...guesses];
-            next[i] = v;
-            setGuesses(next);
-          }}
-        />
-      ))}
+    <form onSubmit={handleSubmit} className="flex min-h-[65vh] flex-col">
+      {/* Progress */}
+      <div className="mb-6 flex items-center justify-between gap-2">
+        <span className="text-sm font-medium text-slate-500">
+          Statement {step + 1} of {TOTAL_QUESTIONS}
+        </span>
+        <div className="flex gap-1">
+          {Array.from({ length: TOTAL_QUESTIONS }).map((_, i) => (
+            <div
+              key={i}
+              className={`h-1.5 flex-1 rounded-full min-w-[24px] max-w-[32px] transition-colors ${
+                i < step ? "bg-brand-500" : i === step ? "bg-brand-400" : "bg-slate-200"
+              }`}
+              aria-hidden
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Single statement card */}
+      <AgreementQuestionBlock
+        index={step}
+        question={currentQuestion}
+        options={OPTIONS}
+        guessLabel={guessLabel}
+        showIncompleteHint={
+          submitAttempted && (answers[step] < 0 || guesses[step] < 0)
+        }
+        answerIndex={answers[step]}
+        guessIndex={guesses[step]}
+        onAnswerChange={(v) => {
+          const next = [...answers];
+          next[step] = v;
+          setAnswers(next);
+        }}
+        onGuessChange={(v) => {
+          const next = [...guesses];
+          next[step] = v;
+          setGuesses(next);
+        }}
+      />
+
       {error && (
         <p className="text-sm text-red-600" role="alert">
           {error}
@@ -169,29 +194,45 @@ export function AgreementClient({
           className="rounded-lg border border-brand-200 bg-brand-50 px-3 py-2 text-sm text-brand-700"
           role="alert"
         >
-          {submitAttempted && incompleteQuestionNumbers.length > 0 ? (
-            <>
-              Complete your answer and guess for question
-              {incompleteQuestionNumbers.length > 1 ? "s" : ""}{" "}
-              {incompleteQuestionNumbers.join(", ")} to submit.
-            </>
-          ) : (
-            <>Answer and guess for all 5 statements to submit.</>
-          )}
+          <>Answer and guess for all {TOTAL_QUESTIONS} statements to submit.</>
         </p>
       )}
-      <div className="flex flex-col items-center gap-3">
+
+      {/* Back / Next or Submit */}
+      <div className="mt-8 flex items-center justify-between gap-4">
         <button
-          type="submit"
-          disabled={loading}
-          className="ns-btn-primary min-w-[10rem] text-lg transition-all duration-200 disabled:opacity-50"
+          type="button"
+          onClick={goBack}
+          className="inline-flex items-center gap-1.5 text-slate-600 hover:text-slate-900 disabled:invisible"
+          disabled={step === 0}
         >
-          {loading ? "Submitting…" : "Submit"}
+          Back
         </button>
+        {isLastStep ? (
+          <button
+            type="submit"
+            disabled={loading || !allAnswered}
+            className="ns-btn-primary min-w-[10rem] px-6 py-3 transition-all duration-200 disabled:opacity-50"
+          >
+            Submit
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={goNext}
+            disabled={!currentAnswered}
+            className="ns-btn-primary inline-flex items-center gap-1.5 px-6 py-3 disabled:opacity-50"
+          >
+            Next
+          </button>
+        )}
+      </div>
+
+      <p className="mt-4 text-center">
         <Link href="/app" className="text-sm text-slate-500 hover:text-slate-700">
           Back to today
         </Link>
-      </div>
+      </p>
     </form>
   );
 }

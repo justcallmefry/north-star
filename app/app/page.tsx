@@ -1,5 +1,6 @@
 import { getServerAuthSession } from "@/lib/auth";
 import { getActiveRelationshipsForUser } from "@/lib/relationships";
+import { TODAY_IMAGE_PATHS, pickDistinctSeeded } from "@/lib/today-images";
 import { AppPageClient } from "./app-page-client";
 import { RedirectToLogin } from "./redirect-to-login";
 
@@ -16,6 +17,8 @@ export default async function AppPage() {
     return <RedirectToLogin callbackUrl="/app" />;
   }
   const relationships = await getActiveRelationshipsForUser(session.user.id);
+  const dateSeed = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const todayImagePaths = pickDistinctSeeded(TODAY_IMAGE_PATHS, 4, dateSeed);
   const initialData = {
     session: { user: session.user },
     relationships: relationships.map((r) => ({
@@ -23,6 +26,7 @@ export default async function AppPage() {
       name: r.name,
       status: r.status,
     })),
+    todayImagePaths,
   };
   return <AppPageClient initialData={initialData} />;
 }

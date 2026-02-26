@@ -6,7 +6,7 @@ export function SignOutButton() {
   return (
     <button
       type="button"
-      onClick={() => signOut({ callbackUrl: "/welcome" })}
+      onClick={() => signOut({ callbackUrl: "/" })}
       className="ns-btn-secondary mt-3"
     >
       Log out

@@ -4,7 +4,7 @@ export default function TermsPage() {
   return (
     <main className="mx-auto max-w-2xl px-5 py-12 sm:px-8 min-h-screen bg-white text-slate-900">
       <Link
-        href="/welcome"
+        href="/"
         className="inline-flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-slate-700"
       >
         ← Back

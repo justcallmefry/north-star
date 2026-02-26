@@ -2,25 +2,26 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useMemo } from "react";
 import { ArrowRight, CalendarRange, History, HelpCircle, Scale } from "lucide-react";
 import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { TodaySection } from "./today-section";
-import { TodayRandomImage, TODAY_IMAGE_PATHS, pickDistinctRandom } from "./today-random-image";
+import { TodayRandomImage } from "./today-random-image";
 
 export type Relationship = { id: string; name: string | null; status: string };
 export type AppPageInitialData = {
   session: { user: { id: string; email?: string | null; name?: string | null; image?: string | null } };
   relationships: Relationship[];
+  /** Four today-image paths chosen on the server (deterministic by date) to avoid hydration mismatch. */
+  todayImagePaths: string[];
 };
 
 type Props = { initialData: AppPageInitialData };
 
 export function AppPageClient({ initialData }: Props) {
-  const { session, relationships } = initialData;
+  const { session, relationships, todayImagePaths } = initialData;
   const relationshipId = relationships[0]?.id ?? null;
   const displayName = session.user.name ?? session.user.email ?? "";
-  const distinctImages = useMemo(() => pickDistinctRandom(TODAY_IMAGE_PATHS, 4), []);
+  const distinctImages = todayImagePaths;
 
   return (
     <main className="flex flex-col gap-2">

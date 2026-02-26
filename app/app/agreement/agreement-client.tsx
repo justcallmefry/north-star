@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Check, Trophy, X } from "lucide-react";
 import type { AgreementForTodayResult, AgreementQuestion } from "@/lib/agreement-shared";
@@ -32,6 +32,8 @@ export function AgreementClient({
   partnerImage,
 }: Props) {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [data, setData] = useState(initialData);
   const [answers, setAnswers] = useState<number[]>(
     initialData.myParticipation?.answerIndices ?? DEFAULT_INDICES
@@ -50,6 +52,15 @@ export function AgreementClient({
     setGuesses(initialData.myParticipation?.guessIndices ?? DEFAULT_INDICES);
     setStep(0);
   }, [initialData]);
+
+  // Show bottom nav when viewing results or waiting for partner (set ?done=1)
+  const showResultsOrWaiting =
+    data.state === "revealed" || (!!data.myParticipation && !data.partnerSubmitted);
+  useEffect(() => {
+    if (showResultsOrWaiting && pathname.startsWith("/app/agreement") && searchParams.get("done") !== "1") {
+      router.replace(pathname + "?done=1", { scroll: false });
+    }
+  }, [showResultsOrWaiting, pathname, searchParams, router]);
 
   const allAnswered =
     answers.every((a) => a >= 0) && guesses.every((g) => g >= 0);

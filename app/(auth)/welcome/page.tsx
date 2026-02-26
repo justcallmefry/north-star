@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import { RedirectIfAuthenticated } from "../redirect-if-authenticated";
 import { WelcomeHero } from "./welcome-hero";
 
@@ -16,16 +17,27 @@ const signupHref =
     : "/signup";
 
 /**
- * Welcome (landing) page. No server-side auth or DB call — always returns HTML
- * so the page loads reliably on Vercel. Logged-in users redirect to /app on the client.
+ * Welcome (landing) content. Rendered at / (main page). /welcome redirects to /.
+ * No server-side auth or DB call — always returns HTML so the page loads reliably on Vercel.
+ * Logged-in users redirect to /app on the client.
  */
-export default function WelcomePage() {
+export function WelcomeContent() {
   return (
     <RedirectIfAuthenticated>
       {/* Gradient: white → soft blue for depth */}
       <main className="min-h-screen flex flex-col bg-gradient-to-b from-white via-brand-50/40 to-brand-100/50 text-slate-900">
-        {/* Hero: big logo + Sign In / Sign up */}
-        <section className="flex flex-col items-center px-4 pt-8 pb-6 sm:px-6 sm:pt-12 sm:pb-8">
+        {/* Sign In — top right, small */}
+        <header className="flex justify-end px-4 pt-4 sm:px-6 sm:pt-5">
+          <a
+            href={loginHref}
+            className="text-sm font-medium text-slate-600 hover:text-slate-900"
+          >
+            Sign in
+          </a>
+        </header>
+
+        {/* Hero: big logo + CREATE ACCOUNT */}
+        <section className="flex flex-col items-center px-4 pt-4 pb-6 sm:px-6 sm:pt-6 sm:pb-8">
           {/* Big logo — full wordmark from welcome screen */}
           <div
             className="flex h-48 w-full max-w-sm items-center justify-center sm:h-56"
@@ -42,19 +54,13 @@ export default function WelcomePage() {
               />
             </div>
           </div>
-          {/* Two primary CTAs */}
-          <div className="mt-8 flex w-full max-w-sm flex-col gap-3 sm:flex-row sm:gap-4">
-            <a
-              href={loginHref}
-              className="ns-btn-primary flex-1 py-3.5 text-center text-base font-medium"
-            >
-              Sign in
-            </a>
+          {/* Primary CTA */}
+          <div className="mt-8 w-full max-w-sm">
             <a
               href={signupHref}
-              className="ns-btn-accent flex-1 py-3.5 text-center text-base font-medium"
+              className="ns-btn-accent block w-full py-3.5 text-center text-base font-medium"
             >
-              Sign up
+              CREATE ACCOUNT
             </a>
           </div>
         </section>
@@ -84,4 +90,9 @@ export default function WelcomePage() {
       </main>
     </RedirectIfAuthenticated>
   );
+}
+
+/** /welcome → redirect to canonical home (/) so the main URL is alignedconnectingcouples.com */
+export default function WelcomePage() {
+  redirect("/");
 }

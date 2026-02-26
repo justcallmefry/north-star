@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Check, ChevronLeft, ChevronRight, Trophy, X } from "lucide-react";
 import type { QuizForTodayResult, QuizQuestion } from "@/lib/quiz";
@@ -22,6 +22,8 @@ const TOTAL_QUESTIONS = 5;
 
 export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUpdated, sessionUserName, sessionUserImage, partnerImage }: Props) {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [data, setData] = useState(initialData);
   const [answers, setAnswers] = useState<number[]>(
     initialData.myParticipation?.answerIndices ?? [-1, -1, -1, -1, -1]
@@ -39,6 +41,15 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
     setAnswers(initialData.myParticipation?.answerIndices ?? [-1, -1, -1, -1, -1]);
     setGuesses(initialData.myParticipation?.guessIndices ?? [-1, -1, -1, -1, -1]);
   }, [initialData]);
+
+  // Show bottom nav when viewing results or waiting for partner (set ?done=1)
+  const showResultsOrWaiting =
+    data.state === "revealed" || (!!data.myParticipation && !data.partnerSubmitted);
+  useEffect(() => {
+    if (showResultsOrWaiting && pathname.startsWith("/app/quiz") && searchParams.get("done") !== "1") {
+      router.replace(pathname + "?done=1", { scroll: false });
+    }
+  }, [showResultsOrWaiting, pathname, searchParams, router]);
 
   const allAnswered =
     answers.every((a) => a >= 0) && guesses.every((g) => g >= 0);

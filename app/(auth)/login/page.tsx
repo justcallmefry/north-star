@@ -20,7 +20,7 @@ export default function LoginPage() {
           />
         </div>
         <Link
-          href="/welcome"
+          href="/"
           className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-200 rounded-lg py-2 -ml-2"
           aria-label="Back to welcome"
         >

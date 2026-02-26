@@ -10,7 +10,7 @@ type Props = { params: Promise<{ id: string }> };
 
 export default async function SessionPage({ params }: Props) {
   const session = await getServerAuthSession();
-  if (!session?.user) redirect("/welcome");
+  if (!session?.user) redirect("/");
 
   const { id } = await params;
   const data = await getSession(id);

@@ -10,6 +10,11 @@ const loginHref =
     ? `${process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/login`
     : "/login";
 
+const signupHref =
+  typeof process.env.NEXT_PUBLIC_APP_URL === "string" && process.env.NEXT_PUBLIC_APP_URL
+    ? `${process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/signup`
+    : "/signup";
+
 /**
  * Welcome (landing) page. No server-side auth or DB call — always returns HTML
  * so the page loads reliably on Vercel. Logged-in users redirect to /app on the client.
@@ -19,30 +24,43 @@ export default function WelcomePage() {
     <RedirectIfAuthenticated>
       {/* Gradient: white → soft blue for depth */}
       <main className="min-h-screen flex flex-col bg-gradient-to-b from-white via-brand-50/40 to-brand-100/50 text-slate-900">
-        {/* Header: logo + app name left, Log in right */}
-        <header className="flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
-          <div className="flex items-center gap-2">
-            <div className="relative h-9 w-9 shrink-0 sm:h-10 sm:w-10" aria-hidden>
+        {/* Hero: big logo + Sign In / Sign up */}
+        <section className="flex flex-col items-center px-4 pt-8 pb-6 sm:px-6 sm:pt-12 sm:pb-8">
+          {/* Big logo — full wordmark from welcome screen */}
+          <div
+            className="flex h-48 w-full max-w-sm items-center justify-center sm:h-56"
+            aria-hidden
+          >
+            <div className="relative h-full w-full">
               <Image
-                src="/aligned-icon.png"
-                alt=""
-                width={40}
-                height={40}
+                src="/aligned-connecting-couples-logo.png"
+                alt="Aligned: Connecting Couples"
+                fill
                 className="object-contain"
+                sizes="(max-width: 640px) 100vw, 24rem"
                 priority
               />
             </div>
-            <span className="font-display text-lg font-medium text-slate-800 sm:text-xl">
-              Aligned: Connecting Couples
-            </span>
           </div>
-          <a href={loginHref} className="ns-btn-secondary !py-2 text-sm inline-flex">
-            Log in
-          </a>
-        </header>
+          {/* Two primary CTAs */}
+          <div className="mt-8 flex w-full max-w-sm flex-col gap-3 sm:flex-row sm:gap-4">
+            <a
+              href={loginHref}
+              className="ns-btn-primary flex-1 py-3.5 text-center text-base font-medium"
+            >
+              Sign in
+            </a>
+            <a
+              href={signupHref}
+              className="ns-btn-accent flex-1 py-3.5 text-center text-base font-medium"
+            >
+              Sign up
+            </a>
+          </div>
+        </section>
 
-        {/* Hero + benefits + CTA — consistent 8/12/16 spacing, scrollable */}
-        <section className="flex-1 flex flex-col items-center px-4 pt-2 pb-6 sm:px-6 sm:pt-4 sm:pb-8">
+        {/* Benefits + extra copy below */}
+        <section className="flex-1 flex flex-col items-center px-4 pb-6 sm:px-6 sm:pb-8">
           <WelcomeHero />
         </section>
 

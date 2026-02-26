@@ -6,7 +6,7 @@ import { sendBetaConfirmation } from "@/lib/email";
 function getAppUrl(): string {
   if (process.env["VERCEL_URL"]) return `https://${process.env["VERCEL_URL"]}`;
   if (process.env["NEXT_PUBLIC_APP_URL"]) return process.env["NEXT_PUBLIC_APP_URL"];
-  return "https://north-star-hazel.vercel.app";
+  return "https://alignedconnectingcouples.com";
 }
 
 export async function submitBetaSignup(email: string): Promise<{ ok: boolean; message: string }> {

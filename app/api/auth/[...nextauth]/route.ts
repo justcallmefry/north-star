@@ -6,13 +6,18 @@ import { setEmailEnv } from "@/lib/email-env";
 
 export const dynamic = "force-dynamic";
 
-/** Ensure redirects use the URL you're actually on. On localhost we use the request host so port 3000 vs 3003 doesn't matter. On Vercel we use VERCEL_URL when env is a placeholder. */
-function ensureAuthUrl(req: NextRequest) {
+const getRequestOrigin = (req: NextRequest) => {
   const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "";
   const proto = req.headers.get("x-forwarded-proto") ?? (host.includes("localhost") ? "http" : "https");
-  const requestOrigin = host ? `${proto}://${host}` : "";
+  return host ? `${proto}://${host}` : "";
+};
+
+/** Ensure redirects use the URL you're actually on. On localhost we use the request host so port 3000 vs 3003 doesn't matter. On Vercel we use VERCEL_URL when env is a placeholder. */
+function ensureAuthUrl(req: NextRequest) {
+  const requestOrigin = getRequestOrigin(req);
 
   // Localhost: always use the port the user is actually visiting so callbacks stay on the same port
+  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "";
   if (host && (host.startsWith("localhost") || host.startsWith("127.0.0.1"))) {
     process.env.AUTH_URL = requestOrigin;
     process.env.NEXTAUTH_URL = requestOrigin;
@@ -20,8 +25,22 @@ function ensureAuthUrl(req: NextRequest) {
     return;
   }
 
-  const vercelUrl = process.env.VERCEL_URL;
+  // Production: if the request is on a different host than NEXTAUTH_URL (e.g. user moved to new domain), use request origin so magic links and redirects stay on the site they're visiting
   const authUrl = process.env.AUTH_URL ?? process.env.NEXTAUTH_URL ?? "";
+  if (requestOrigin && authUrl) {
+    try {
+      const requestHost = new URL(requestOrigin).host;
+      const authHost = new URL(authUrl).host;
+      if (requestHost !== authHost) {
+        process.env.AUTH_URL = requestOrigin;
+        process.env.NEXTAUTH_URL = requestOrigin;
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  const vercelUrl = process.env.VERCEL_URL;
   const isPlaceholder =
     !authUrl || authUrl.includes("your-main-url") || authUrl.includes("your-app.vercel");
   if (vercelUrl && isPlaceholder) {
@@ -77,10 +96,27 @@ function getAllSetCookies(res: Response): string[] {
   return single ? [single] : [];
 }
 
+/** Rewrite redirect to stay on the request's host (avoids sending user to old domain e.g. north-star when they're on alignedconnectingcouples.com). */
+function safeRedirectLocation(req: NextRequest, location: string): string {
+  const requestOrigin = getRequestOrigin(req);
+  if (!requestOrigin || !location.startsWith("http")) return location;
+  try {
+    const locUrl = new URL(location);
+    const reqUrl = new URL(requestOrigin);
+    if (locUrl.host !== reqUrl.host) {
+      return `${requestOrigin}${locUrl.pathname}${locUrl.search}`;
+    }
+  } catch {
+    // ignore
+  }
+  return location;
+}
+
 /** Forward Auth response and ensure all Set-Cookie headers are sent (Next.js can drop multiples otherwise). */
-function forwardAuthResponse(res: Response): NextResponse {
+function forwardAuthResponse(req: NextRequest, res: Response): NextResponse {
   const status = res.status;
-  const location = res.headers.get("location");
+  const rawLocation = res.headers.get("location");
+  const location = rawLocation ? safeRedirectLocation(req, rawLocation) : null;
   const setCookies = getAllSetCookies(res);
 
   let nextRes: NextResponse;
@@ -109,12 +145,12 @@ export async function GET(req: NextRequest) {
   ensureAuthUrl(req);
   initAuthWithRouteConfig();
   const res = await handlers.GET(req);
-  return forwardAuthResponse(res);
+  return forwardAuthResponse(req, res);
 }
 
 export async function POST(req: NextRequest) {
   ensureAuthUrl(req);
   initAuthWithRouteConfig();
   const res = await handlers.POST(req);
-  return forwardAuthResponse(res);
+  return forwardAuthResponse(req, res);
 }

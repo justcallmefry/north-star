@@ -40,50 +40,49 @@ export async function sendVerificationRequest(
   throw new Error("Email not configured: set EMAIL_SERVER or RESEND_API_KEY");
 }
 
-function buildMagicLinkHtml(to: string, url: string, logoUrl: string): string {
+function buildMagicLinkHtml(to: string, url: string, origin: string): string {
   const safeEmail = to.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const logoUrl = origin ? `${origin}/aligned-connecting-couples-logo.png` : "";
   return `
-  <div style="margin:0;padding:32px 16px;background-color:#020617;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;color:#e5e7eb;">
-    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width:520px;margin:0 auto;">
+  <div style="margin:0;padding:40px 20px;background-color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,0.06);overflow:hidden;">
       <tr>
-        <td style="padding:20px 20px 16px 20px;text-align:left;">
-          <div style="display:inline-block;padding:8px;border-radius:14px;background:#020617;border:1px solid rgba(30,64,175,0.6);box-shadow:0 18px 45px rgba(15,23,42,0.9);">
-            <img src="${logoUrl}" alt="Aligned" width="32" height="32" style="display:block;border:0;max-width:100%;" />
-          </div>
+        <td style="padding:40px 32px 24px;text-align:center;">
+          ${logoUrl ? `<img src="${logoUrl}" alt="Aligned: Connecting Couples" width="220" height="120" style="display:inline-block;border:0;max-width:100%;height:auto;object-fit:contain;" />` : ""}
         </td>
       </tr>
       <tr>
-        <td style="padding:0 20px 8px 20px;">
-          <h1 style="margin:0 0 8px 0;font-size:24px;line-height:1.3;font-weight:600;color:#f9fafb;">
-            Welcome back to Aligned
+        <td style="padding:0 32px 8px;">
+          <h1 style="margin:0 0 12px 0;font-size:22px;line-height:1.35;font-weight:600;color:#0f172a;">
+            Welcome back
           </h1>
-          <p style="margin:0;font-size:14px;line-height:1.6;color:#cbd5f5;">
-            We sent a one-time sign-in link for <strong style="color:#e5e7eb;">${safeEmail}</strong>. Your sign-in is private and secure.
+          <p style="margin:0;font-size:15px;line-height:1.6;color:#475569;">
+            We sent a one-time sign-in link for <strong style="color:#1e293b;">${safeEmail}</strong>. Your sign-in is private and secure.
           </p>
         </td>
       </tr>
       <tr>
-        <td style="padding:20px 20px 8px 20px;">
+        <td style="padding:24px 32px 16px;">
           <a href="${url}"
-             style="display:inline-block;padding:11px 22px;border-radius:10px;background:#22c55e;color:#022c22;font-size:14px;font-weight:600;text-decoration:none;text-align:center;box-shadow:0 10px 30px rgba(34,197,94,0.35);">
-            Open Aligned
+             style="display:inline-block;padding:14px 28px;border-radius:10px;background:#2b8cbe;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;text-align:center;">
+            Sign in to Aligned
           </a>
         </td>
       </tr>
       <tr>
-        <td style="padding:8px 20px 0 20px;">
-          <p style="margin:0;font-size:13px;line-height:1.6;color:#9ca3af;">
-            If the button doesn&apos;t work, paste this link into your browser:
+        <td style="padding:0 32px 24px;border-top:1px solid #e2e8f0;">
+          <p style="margin:16px 0 0 0;font-size:13px;line-height:1.5;color:#64748b;">
+            If the button doesn&apos;t work, copy this link into your browser:
           </p>
-          <p style="margin:6px 0 0 0;font-size:12px;line-height:1.5;color:#9ca3af;word-break:break-all;">
+          <p style="margin:6px 0 0 0;font-size:12px;line-height:1.5;color:#94a3b8;word-break:break-all;">
             ${url}
           </p>
         </td>
       </tr>
       <tr>
-        <td style="padding:20px 20px 0 20px;">
-          <p style="margin:0;font-size:12px;line-height:1.6;color:#6b7280;">
-            One question a day. Your pace.
+        <td style="padding:20px 32px 24px;background:#f8fafc;border-radius:0 0 16px 16px;">
+          <p style="margin:0;font-size:12px;line-height:1.5;color:#94a3b8;">
+            Aligned: Connecting Couples — One question a day. Your pace.
           </p>
         </td>
       </tr>
@@ -95,52 +94,51 @@ function buildMagicLinkHtml(to: string, url: string, logoUrl: string): string {
 function buildBetaWelcomeHtml(to: string, appUrl: string): { subject: string; html: string } {
   const safeEmail = to.replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const signInUrl = `${appUrl}/login?email=${encodeURIComponent(to)}`;
-  const logoUrl = `${appUrl.replace(/\/$/, "")}/aligned-icon.png`;
-  const subject = "Welcome to the Aligned beta";
+  const origin = appUrl.replace(/\/$/, "");
+  const logoUrl = `${origin}/aligned-connecting-couples-logo.png`;
+  const subject = "Welcome to Aligned: Connecting Couples";
   const html = `
-  <div style="margin:0;padding:32px 16px;background-color:#020617;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;color:#e5e7eb;">
-    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width:520px;margin:0 auto;">
+  <div style="margin:0;padding:40px 20px;background-color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,0.06);overflow:hidden;">
       <tr>
-        <td style="padding:20px 20px 16px 20px;text-align:left;">
-          <div style="display:inline-block;padding:8px;border-radius:14px;background:#020617;border:1px solid rgba(30,64,175,0.6);box-shadow:0 18px 45px rgba(15,23,42,0.9);">
-            <img src="${logoUrl}" alt="Aligned" width="32" height="32" style="display:block;border:0;max-width:100%;" />
-          </div>
+        <td style="padding:40px 32px 24px;text-align:center;">
+          <img src="${logoUrl}" alt="Aligned: Connecting Couples" width="220" height="120" style="display:inline-block;border:0;max-width:100%;height:auto;object-fit:contain;" />
         </td>
       </tr>
       <tr>
-        <td style="padding:0 20px 8px 20px;">
-          <h1 style="margin:0 0 8px 0;font-size:24px;line-height:1.3;font-weight:600;color:#f9fafb;">
-            You&apos;re in the Aligned beta
+        <td style="padding:0 32px 8px;">
+          <h1 style="margin:0 0 12px 0;font-size:22px;line-height:1.35;font-weight:600;color:#0f172a;">
+            You&apos;re in
           </h1>
-          <p style="margin:0 0 6px 0;font-size:14px;line-height:1.6;color:#cbd5f5;">
+          <p style="margin:0 0 6px 0;font-size:15px;line-height:1.6;color:#475569;">
             Thanks for joining us. Aligned is a simple way to stay in sync—one question a day.
           </p>
-          <p style="margin:0;font-size:13px;line-height:1.6;color:#9ca3af;">
-            This invite was sent to <strong style="color:#e5e7eb;">${safeEmail}</strong>.
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#64748b;">
+            This invite was sent to <strong style="color:#1e293b;">${safeEmail}</strong>.
           </p>
         </td>
       </tr>
       <tr>
-        <td style="padding:20px 20px 8px 20px;">
+        <td style="padding:24px 32px 16px;">
           <a href="${signInUrl}"
-             style="display:inline-block;padding:11px 22px;border-radius:10px;background:#22c55e;color:#022c22;font-size:14px;font-weight:600;text-decoration:none;text-align:center;box-shadow:0 10px 30px rgba(34,197,94,0.35);">
-            Sign in and answer today's question
+             style="display:inline-block;padding:14px 28px;border-radius:10px;background:#2b8cbe;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;text-align:center;">
+            Sign in and answer today&apos;s question
           </a>
         </td>
       </tr>
       <tr>
-        <td style="padding:8px 20px 0 20px;">
-          <p style="margin:0;font-size:13px;line-height:1.6;color:#9ca3af;">
-            If the button doesn&apos;t work, paste this link into your browser:
+        <td style="padding:0 32px 24px;border-top:1px solid #e2e8f0;">
+          <p style="margin:16px 0 0 0;font-size:13px;line-height:1.5;color:#64748b;">
+            If the button doesn&apos;t work, copy this link into your browser:
           </p>
-          <p style="margin:6px 0 0 0;font-size:12px;line-height:1.5;color:#9ca3af;word-break:break-all;">
+          <p style="margin:6px 0 0 0;font-size:12px;line-height:1.5;color:#94a3b8;word-break:break-all;">
             ${signInUrl}
           </p>
         </td>
       </tr>
       <tr>
-        <td style="padding:20px 20px 0 20px;">
-          <p style="margin:0;font-size:12px;line-height:1.6;color:#6b7280;">
+        <td style="padding:20px 32px 24px;background:#f8fafc;border-radius:0 0 16px 16px;">
+          <p style="margin:0;font-size:12px;line-height:1.5;color:#94a3b8;">
             One question a day. Answer privately, reveal together when you&apos;re both ready.
           </p>
         </td>
@@ -166,13 +164,12 @@ async function sendWithNodemailer(
       return "";
     }
   })();
-  const logoUrl = origin ? `${origin}/aligned-icon.png` : "";
   await transport.sendMail({
     to,
     from,
     subject: "Sign in to Aligned",
     text: `Sign in here: ${url}`,
-    html: buildMagicLinkHtml(to, url, logoUrl || url),
+    html: buildMagicLinkHtml(to, url, origin),
   });
 }
 
@@ -186,12 +183,11 @@ async function sendWithResend(to: string, url: string, from: string, apiKey: str
       return "";
     }
   })();
-  const logoUrl = origin ? `${origin}/aligned-icon.png` : "";
   const { error } = await client.emails.send({
     from: from || "onboarding@resend.dev",
     to: [to],
     subject: "Sign in to Aligned",
-    html: buildMagicLinkHtml(to, url, logoUrl || url),
+    html: buildMagicLinkHtml(to, url, origin),
   });
   if (error) {
     const msg = typeof error === "object" && error !== null && "message" in error ? String((error as { message?: string }).message) : JSON.stringify(error);

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { TODAY_IMAGE_PATHS, pickDistinctSeeded } from "@/lib/today-images";
 import { AppPageClient } from "./app-page-client";
 import type { AppPageInitialData, Relationship } from "./app-page-client";
 
@@ -52,9 +53,12 @@ export function AppPageLoader() {
             status: r.status ?? "active",
           })
         );
+        const dateSeed = new Date().toISOString().slice(0, 10);
+        const todayImagePaths = pickDistinctSeeded(TODAY_IMAGE_PATHS, 4, dateSeed);
         setData({
           session: { user: json.session?.user ?? {} },
           relationships,
+          todayImagePaths,
         });
         setStatus("ok");
       })

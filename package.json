@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "npm run build -w @north-star/shared && npm run build:aligned",
     "dev:aligned": "npm run dev -w aligned",
     "dev:parent-teen": "npm run dev -w parent-teen",
     "dev:friends": "npm run dev -w friends",

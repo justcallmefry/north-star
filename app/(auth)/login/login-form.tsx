@@ -70,10 +70,15 @@ function LoginFormInner() {
   async function handleMagicSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    const trimmedEmail = email?.trim();
+    if (!trimmedEmail) {
+      setError("Please enter your email address in the field above to receive the sign-in link.");
+      return;
+    }
     setMagicLoading(true);
     try {
       const res = await signIn("nodemailer", {
-        email,
+        email: trimmedEmail,
         redirect: false,
         callbackUrl,
       });
@@ -213,11 +218,11 @@ function LoginFormInner() {
 
       <form onSubmit={handleMagicSubmit} className="space-y-2">
         <p className="text-sm text-slate-600">
-          Get a one-time sign-in link by email (no password).
+          Get a one-time sign-in link by email (no password). Enter your email above, then click below.
         </p>
         <button
           type="submit"
-          disabled={magicLoading}
+          disabled={magicLoading || !email.trim()}
           className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
         >
           {magicLoading ? "Sending…" : "Email me a sign-in link"}

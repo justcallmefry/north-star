@@ -8,7 +8,9 @@
 /coverage
 
 # Next.js
-/.next/
+.next/
+**/.next/
+apps/*/.next/
 /out/
 
 # Production

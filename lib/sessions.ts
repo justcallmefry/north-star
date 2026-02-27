@@ -3,31 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getActiveMemberIds, requireActiveMember, todayUTC } from "@/lib/relationship-members";
 import { VALIDATION_ACK_MAX_LENGTH, VALIDATION_ALLOWED_EMOJIS } from "@/lib/validation-constants";
-
-/** Today's date at midnight UTC (date only, no time). */
-function todayUTC(): Date {
-  const now = new Date();
-  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
-}
-
-/** Returns active member IDs for a relationship (leftAt is null). */
-async function getActiveMemberIds(relationshipId: string): Promise<string[]> {
-  const members = await prisma.relationshipMember.findMany({
-    where: { relationshipId, leftAt: null },
-    select: { userId: true },
-  });
-  return members.map((m) => m.userId);
-}
-
-/** Throws if user is not an active member. */
-async function requireActiveMember(userId: string, relationshipId: string) {
-  const member = await prisma.relationshipMember.findFirst({
-    where: { userId, relationshipId, leftAt: null },
-  });
-  if (!member) throw new Error("Not a member of this relationship");
-  return member;
-}
 
 /** Verify user is active member of the session's relationship. Returns minimal session (no sensitive includes). */
 async function requireSessionMembership(userId: string, sessionId: string) {

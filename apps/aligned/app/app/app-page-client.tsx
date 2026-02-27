@@ -100,7 +100,7 @@ export function AppPageClient({ initialData }: Props) {
                   className="ns-btn-secondary w-full !py-2.5 border-l-4 border-l-brand-500 bg-brand-50/40 hover:bg-brand-50/70"
                 >
                   <Scale className="h-4 w-4" />
-                  Start alignment check-in
+                  Start check-in
                 </Link>
                 <div className="flex items-center gap-3">
                   <p className="text-sm text-slate-500 leading-relaxed flex-1 min-w-0">

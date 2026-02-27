@@ -40,17 +40,17 @@ export default async function HistoryPage({ searchParams }: Props) {
     }));
 
     return (
-      <main className="min-h-screen bg-white p-6 sm:p-8">
-        <div className="mb-5">
+      <main className="min-h-screen bg-white p-3 sm:p-4">
+        <div className="mb-4">
           <Link href="/app" className="ns-btn-primary !py-2 text-sm">
             Answer today&apos;s question
           </Link>
         </div>
         <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Our history</h1>
-        <p className="mt-2 text-sm text-slate-600 sm:text-base">
+        <p className="mt-1.5 text-sm text-slate-600 sm:text-base">
           Questions you&apos;ve answered together.
         </p>
-        <div className="mt-6">
+        <div className="mt-4">
           <HistoryListWithSearch
             items={itemsForClient}
             nextCursor={nextCursor}

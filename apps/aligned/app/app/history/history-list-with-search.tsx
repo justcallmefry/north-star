@@ -63,7 +63,7 @@ export function HistoryListWithSearch({
   return (
     <>
       {items.length > 0 && (
-        <div className="mb-4">
+        <div className="mb-3">
           <label htmlFor="history-search" className="sr-only">
             Search responses by word or phrase
           </label>
@@ -99,6 +99,9 @@ export function HistoryListWithSearch({
             <p className="mt-1 text-sm text-slate-500">
               Answer today&apos;s question and reveal together to see it here.
             </p>
+            <p className="mt-2 text-sm text-slate-400">
+              Every day you both answer, you&apos;ll add another moment to this history.
+            </p>
           </li>
         ) : filtered.length === 0 ? (
           <li className="ns-card py-10 text-center">
@@ -109,13 +112,13 @@ export function HistoryListWithSearch({
           filtered.map((item, itemIndex) => (
             <li
               key={item.sessionId}
-              className="ns-card animate-calm-fade-in"
+              className="ns-card animate-calm-fade-in !p-3 sm:!p-4"
               style={{ animationDelay: `${itemIndex * 80}ms` }}
             >
               <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-400 sm:text-sm">
                 {format(new Date(item.sessionDate), "PPP")}
               </p>
-              <p className="mt-2 text-base font-semibold text-slate-900 sm:text-lg">
+              <p className="mt-1.5 text-lg font-semibold text-slate-900 sm:text-xl leading-snug">
                 {item.promptText}
               </p>
 
@@ -161,11 +164,11 @@ export function HistoryListWithSearch({
               </div>
 
               {item.reflections.length > 0 && (
-                <div className="mt-4 border-t border-slate-100 pt-4">
-                  <p className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400 mb-2">
+                <div className="mt-3 border-t border-slate-100 pt-3">
+                  <p className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400 mb-1.5">
                     Our responses back
                   </p>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     {item.reflections.map((ref) => {
                       const text = ref.content || ref.reaction;
                       if (!text) return null;
@@ -179,7 +182,7 @@ export function HistoryListWithSearch({
                           : "Them: ";
                       const nameClass = isMeRef ? "font-medium text-brand-700" : "font-medium text-green-700";
                       return (
-                        <p key={ref.userId} className="text-sm text-slate-600">
+                        <p key={ref.userId} className="text-base text-slate-700 leading-snug">
                           <span className={nameClass}>{label}</span>
                           {text}
                         </p>
@@ -201,6 +204,18 @@ export function HistoryListWithSearch({
           >
             Load more
           </Link>
+        </p>
+      )}
+
+      {items.length > 0 && (
+        <p className="mt-6">
+          <button
+            type="button"
+            onClick={() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "smooth" })}
+            className="text-sm font-medium text-brand-600 underline hover:text-brand-700 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 rounded"
+          >
+            Back to top
+          </button>
         </p>
       )}
     </>

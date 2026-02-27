@@ -1,31 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Home, CalendarRange, History, User, HelpCircle, Scale } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/app", label: "Today", icon: Home },
   { href: "/app/quiz", label: "Quiz", icon: HelpCircle },
-  { href: "/app/agreement", label: "Agreement", icon: Scale },
+  { href: "/app/agreement", label: "Alignment", icon: Scale },
   { href: "/app/history", label: "Responses", icon: History },
   { href: "/app/meeting", label: "Our Week", icon: CalendarRange },
   { href: "/app/us", label: "Profile", icon: User },
 ] as const;
 
-/** Query param set when quiz/agreement is in "results" or "waiting for partner" so bottom nav shows. */
-const DONE_PARAM = "done";
-
 export function BottomNav() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   if (!pathname.startsWith("/app")) return null;
-
-  // Hide bottom nav only while taking the quiz/agreement (questions). Show it on results or waiting-for-partner.
-  if (pathname.startsWith("/app/quiz") || pathname.startsWith("/app/agreement")) {
-    if (searchParams.get(DONE_PARAM) !== "1") return null;
-  }
 
   return (
     <nav

@@ -21,17 +21,37 @@ export function NotifyPartnerButton({ sessionId, size = "md", variant = "primary
     process.env.NEXT_PUBLIC_APP_URL ??
     (typeof window !== "undefined" ? window.location.origin : "");
 
-  const href = `sms:&body=${encodeURIComponent(
-    `${baseText} ${appUrl ? `${appUrl}/app/session/${sessionId}` : ""}`.trim()
-  )}`;
+  const targetUrl = appUrl ? `${appUrl}/app/session/${sessionId}` : "";
+
+  async function handleClick(e: any) {
+    e.preventDefault();
+    const text = `${baseText} ${targetUrl}`.trim();
+
+    if (typeof navigator !== "undefined" && (navigator as any).share) {
+      try {
+        await (navigator as any).share({
+          text,
+          url: targetUrl || undefined,
+        });
+        return;
+      } catch {
+        // User cancelled or share failed; fall through to SMS fallback.
+      }
+    }
+
+    const smsHref = `sms:&body=${encodeURIComponent(text)}`;
+    if (typeof window !== "undefined") {
+      window.location.href = smsHref;
+    }
+  }
 
   const baseClass = variant === "secondary" ? "ns-btn-secondary" : "ns-btn-primary";
   const className = size === "sm" ? `${baseClass} !px-3 !py-1.5 text-sm` : baseClass;
 
   return (
-    <a href={href} className={className}>
+    <button type="button" onClick={handleClick} className={className}>
       Notify
-    </a>
+    </button>
   );
 }
 

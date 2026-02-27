@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Check, Trophy, X } from "lucide-react";
+import { toast } from "sonner";
+import { LoadingSpinner } from "@/components/loading-spinner";
 import type { AgreementForTodayResult, AgreementQuestion } from "@/lib/agreement-shared";
 import { AGREEMENT_OPTIONS } from "@/lib/agreement-shared";
 import { submitAgreement } from "@/lib/agreement";
@@ -98,6 +100,7 @@ export function AgreementClient({
       onAgreementUpdated?.();
       setLoading(false);
       setShowDoneCelebration(true);
+      toast.success("Alignment check-in submitted.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to submit");
       setLoading(false);
@@ -147,8 +150,8 @@ export function AgreementClient({
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-200 border-t-brand-500" />
-          <p className="text-sm text-slate-600">Submitting your agreement…</p>
+          <LoadingSpinner size="md" />
+          <p className="text-sm text-slate-600">Submitting your alignment check-in…</p>
         </div>
       </div>
     );

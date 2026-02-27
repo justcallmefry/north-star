@@ -121,7 +121,7 @@ export function ResponseBubbleValidation({
             {title}
           </span>
         </div>
-        <p className="mt-3 ns-card-inner px-3.5 py-3.5 text-sm leading-relaxed text-slate-900 sm:text-base">
+        <p className="mt-2 ns-card-inner px-3 py-3 text-base leading-relaxed text-slate-900 sm:text-lg">
           {content ?? "—"}
         </p>
       </div>
@@ -129,7 +129,7 @@ export function ResponseBubbleValidation({
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       <div className="flex items-center gap-2">
         <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-base">
           {typeof icon === "string" && icon.trim().startsWith("http") ? (
@@ -142,7 +142,7 @@ export function ResponseBubbleValidation({
           {title}
         </span>
       </div>
-      <p className="mt-3 ns-card-inner px-3.5 py-3.5 text-sm leading-relaxed text-slate-900 sm:text-base">
+      <p className="mt-2 ns-card-inner px-3 py-3 text-base leading-relaxed text-slate-900 sm:text-lg">
         {content ?? "—"}
       </p>
 

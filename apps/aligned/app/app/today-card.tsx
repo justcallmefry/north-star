@@ -60,7 +60,7 @@ export function TodayCard({ today }: Props) {
         {state === "open" && !hasUserResponded && (
           <Link
             href={`/app/session/${sessionId}`}
-            className="ns-btn-primary block w-full text-center py-3.5"
+            className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-white shadow-lg shadow-brand-200/40"
           >
             Answer today&apos;s question
           </Link>
@@ -82,7 +82,7 @@ export function TodayCard({ today }: Props) {
           <div className="space-y-2">
             <Link
               href={`/app/session/${sessionId}`}
-              className="ns-btn-primary block w-full text-center py-3.5"
+              className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-white shadow-lg shadow-brand-200/40"
             >
               Reveal answers
             </Link>

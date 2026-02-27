@@ -120,6 +120,13 @@ body {
   animation: loading-spin 0.9s linear infinite;
 }
 
+/* Focus rings: visible for keyboard navigation */
+@layer base {
+  :where(button:focus-visible, [role="button"]:focus-visible, a:focus-visible) {
+    @apply outline-none ring-2 ring-brand-400 ring-offset-2 ring-offset-white;
+  }
+}
+
 /* Visual anchor: card, buttons, spacing. Gradients, glowy blue shadows, optional accent. */
 @layer components {
   .ns-card {
@@ -130,7 +137,7 @@ body {
     @apply rounded-xl border border-slate-200 bg-slate-50 p-3;
   }
   .ns-btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-center text-base font-semibold uppercase tracking-wide text-white transition disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-center text-base font-semibold uppercase tracking-wide text-white transition disabled:opacity-50 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2;
     background: linear-gradient(135deg, #2b8cbe 0%, #1e6b9e 100%);
     box-shadow: 0 2px 8px -2px rgb(43 140 190 / 0.4), 0 4px 12px -4px rgb(30 107 158 / 0.3);
   }
@@ -138,8 +145,11 @@ body {
     background: linear-gradient(135deg, #2479a8 0%, #1a5d85 100%);
     box-shadow: 0 4px 12px -2px rgb(43 140 190 / 0.45), 0 6px 16px -4px rgb(30 107 158 / 0.35);
   }
+  .ns-btn-primary:active:not(:disabled) {
+    transform: scale(0.98);
+  }
   .ns-btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-center text-base font-medium uppercase tracking-wide text-slate-700 transition disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-center text-base font-medium uppercase tracking-wide text-slate-700 transition disabled:opacity-50 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2;
     border: 1px solid rgb(191 219 234);
     background: linear-gradient(180deg, rgb(255 255 255) 0%, rgb(240 249 253) 100%);
     box-shadow: 0 1px 3px rgb(43 140 190 / 0.1);
@@ -148,6 +158,9 @@ body {
     border-color: rgb(147 197 219);
     background: linear-gradient(180deg, rgb(248 252 254) 0%, rgb(224 242 250) 100%);
     box-shadow: 0 2px 6px rgb(43 140 190 / 0.15);
+  }
+  .ns-btn-secondary:active:not(:disabled) {
+    transform: scale(0.98);
   }
   /* Accent CTA: same blue as primary (e.g. welcome Sign up) */
   .ns-btn-accent {
@@ -158,6 +171,9 @@ body {
   .ns-btn-accent:hover:not(:disabled) {
     background: linear-gradient(135deg, #2479a8 0%, #1a5d85 100%);
     box-shadow: 0 4px 12px -2px rgb(43 140 190 / 0.5), 0 6px 16px -4px rgb(30 107 158 / 0.3);
+  }
+  .ns-btn-accent:active:not(:disabled) {
+    transform: scale(0.98);
   }
   .ns-stack {
     @apply space-y-6;

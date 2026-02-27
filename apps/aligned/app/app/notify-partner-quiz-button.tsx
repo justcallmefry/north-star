@@ -4,7 +4,7 @@ type Variant = "quiz" | "agreement";
 
 const MESSAGES: Record<Variant, string> = {
   quiz: "I just finished the daily quiz — your turn! Think you can beat my score?",
-  agreement: "I just finished our alignment check-in — your turn! Curious how we'll match up.",
+  agreement: "Aligned: check-in?",
 };
 
 const LABELS: Record<Variant, string> = {
@@ -23,12 +23,10 @@ type Props = {
 };
 
 export function NotifyPartnerQuizButton({ variant, size = "md" }: Props) {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_APP_URL ??
-    (typeof window !== "undefined" ? window.location.origin : "");
+  const baseUrl = "https://alignedconnectingcouples.com";
   const path = PATHS[variant];
   const url = baseUrl ? `${baseUrl}${path}` : path;
-  const text = `${MESSAGES[variant]} ${url}`.trim();
+  const message = MESSAGES[variant];
 
   async function handleClick(e: any) {
     e.preventDefault();
@@ -36,7 +34,7 @@ export function NotifyPartnerQuizButton({ variant, size = "md" }: Props) {
     if (typeof navigator !== "undefined" && (navigator as any).share) {
       try {
         await (navigator as any).share({
-          text,
+          text: message,
           url: url || undefined,
         });
         return;
@@ -45,7 +43,8 @@ export function NotifyPartnerQuizButton({ variant, size = "md" }: Props) {
       }
     }
 
-    const smsHref = `sms:&body=${encodeURIComponent(text)}`;
+    const smsBody = `${message} ${url}`.trim();
+    const smsHref = `sms:&body=${encodeURIComponent(smsBody)}`;
     if (typeof window !== "undefined") {
       window.location.href = smsHref;
     }

@@ -70,8 +70,9 @@ export async function getQuizForToday(
   let dayIndex: number;
   let questions: QuizQuestion[];
 
-  if (latestSession && latestSession.state === "open") {
-    // Still waiting for one or both — keep showing this quiz until revealed; then new quiz at midnight local.
+  const todayStr = localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr) ? localDateStr : today.toISOString().slice(0, 10);
+  const latestDateStr = latestSession?.sessionDate.toISOString().slice(0, 10);
+  if (latestSession && latestSession.state === "open" && latestDateStr === todayStr) {
     quizSession = latestSession;
     dayIndex = getQuizDayIndex(quizSession.sessionDate);
     questions = getQuizQuestions(dayIndex);
@@ -227,12 +228,13 @@ export async function getQuizForDate(
   relationshipId: string,
   dateStr: string
 ): Promise<QuizForTodayResult | null> {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return null;
-  const session = await getServerAuthSession();
-  if (!session?.user?.id) return null;
-  await requireActiveMember(session.user.id, relationshipId);
+  try {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return null;
+    const session = await getServerAuthSession();
+    if (!session?.user?.id) return null;
+    await requireActiveMember(session.user.id, relationshipId);
 
-  const sessionDate = new Date(dateStr + "T00:00:00.000Z");
+    const sessionDate = new Date(dateStr + "T00:00:00.000Z");
   const quizSession = await prisma.quizSession.findUnique({
     where: {
       relationshipId_sessionDate: { relationshipId, sessionDate },
@@ -302,6 +304,9 @@ export async function getQuizForDate(
     };
   }
   return result;
+  } catch {
+    return null;
+  }
 }
 
 export async function submitQuiz(

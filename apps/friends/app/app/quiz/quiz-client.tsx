@@ -138,7 +138,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
                 Loading…
               </>
             ) : (
-              "Yesterday&apos;s results"
+              "Yesterday's results"
             )}
           </button>
         </div>
@@ -186,7 +186,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
                 Loading…
               </>
             ) : (
-              "Yesterday&apos;s results"
+              "Yesterday's results"
             )}
           </button>
         </div>
@@ -199,7 +199,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
       <div className="space-y-6">
         <div className="ns-card flex flex-col items-center justify-center py-12">
           <LoadingSpinner size="md" />
-          <p className="mt-3 text-sm text-slate-600">Loading yesterday&apos;s results…</p>
+          <p className="mt-3 text-sm text-slate-600">Loading yesterday's results…</p>
         </div>
       </div>
     );
@@ -222,7 +222,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
     if (yesterdayData.reveal) {
       return (
         <div className="space-y-6">
-          <p className="text-center text-sm font-medium text-slate-500">Yesterday&apos;s results</p>
+          <p className="text-center text-sm font-medium text-slate-500">Yesterday's results</p>
           <QuizRevealView
             questions={yesterdayData.questions}
             reveal={yesterdayData.reveal}
@@ -242,7 +242,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
       const ans = yesterdayData.myParticipation.answerIndices;
       return (
         <div className="space-y-6">
-          <p className="text-center text-sm font-medium text-slate-500">Yesterday&apos;s results — only you answered</p>
+          <p className="text-center text-sm font-medium text-slate-500">Yesterday's results — only you answered</p>
           <div className="space-y-3">
             {yesterdayData.questions.map((q, i) => (
               <div key={i} className="ns-card p-4">

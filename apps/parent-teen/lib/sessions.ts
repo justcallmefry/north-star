@@ -108,9 +108,36 @@ export async function getToday(
       },
     });
   } else if (latestSession.state === "open" || latestSession.state === "expired") {
-    // Still on this question until both answer and reveal (or it's expired).
-    // Stays for a day or two if partner hasn't taken it; new one at midnight after they've revealed.
-    dailySession = latestSession;
+    const todayStr = localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr) ? localDateStr : today.toISOString().slice(0, 10);
+    const latestDateStr = latestSession.sessionDate.toISOString().slice(0, 10);
+    if (latestDateStr === todayStr) {
+      dailySession = latestSession;
+    } else {
+      dailySession = await prisma.dailySession.findUnique({
+        where: {
+          relationshipId_sessionDate: { relationshipId, sessionDate: today },
+        },
+        include: {
+          prompt: true,
+          responses: { select: { userId: true, content: true } },
+        },
+      });
+      if (!dailySession) {
+        const promptId = await pickPromptForSession(relationshipId);
+        dailySession = await prisma.dailySession.create({
+          data: {
+            relationshipId,
+            sessionDate: today,
+            promptId,
+            state: "open",
+          },
+          include: {
+            prompt: true,
+            responses: { select: { userId: true, content: true } },
+          },
+        });
+      }
+    }
   } else {
     // Latest is revealed — show today's session, creating if needed
     dailySession = await prisma.dailySession.findUnique({

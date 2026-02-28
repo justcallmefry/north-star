@@ -35,11 +35,9 @@ export async function getAgreementForToday(
   let dayIndex: number;
   let questions: AgreementQuestion[];
 
-  if (
-    latestSession &&
-    latestSession.state === "open"
-  ) {
-    // Still on this agreement until both answer and reveal. Stays for a day or two if partner hasn't taken it; new one at midnight after they've revealed.
+  const todayStr = localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr) ? localDateStr : today.toISOString().slice(0, 10);
+  const latestDateStr = latestSession?.sessionDate.toISOString().slice(0, 10);
+  if (latestSession && latestSession.state === "open" && latestDateStr === todayStr) {
     agreementSession = latestSession;
     dayIndex = getAgreementDayIndex(agreementSession.sessionDate);
     questions = getAgreementQuestions(dayIndex);
@@ -198,12 +196,13 @@ export async function getAgreementForDate(
   relationshipId: string,
   dateStr: string
 ): Promise<AgreementForTodayResult | null> {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return null;
-  const authSession = await getServerAuthSession();
-  if (!authSession?.user?.id) return null;
-  await requireActiveMember(authSession.user.id, relationshipId);
+  try {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return null;
+    const authSession = await getServerAuthSession();
+    if (!authSession?.user?.id) return null;
+    await requireActiveMember(authSession.user.id, relationshipId);
 
-  const sessionDate = new Date(dateStr + "T00:00:00.000Z");
+    const sessionDate = new Date(dateStr + "T00:00:00.000Z");
   const agreementSession = await prisma.agreementSession.findUnique({
     where: {
       relationshipId_sessionDate: { relationshipId, sessionDate },
@@ -293,6 +292,9 @@ export async function getAgreementForDate(
     };
   }
   return result;
+  } catch {
+    return null;
+  }
 }
 
 export async function submitAgreement(

@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import type { AgreementForTodayResult, AgreementQuestion } from "@/lib/agreement-shared";
 import { AGREEMENT_OPTIONS } from "@/lib/agreement-shared";
-import { submitAgreement } from "@/lib/agreement";
+import { getAgreementForDate, submitAgreement } from "@/lib/agreement";
 import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
 
 type Props = {
@@ -50,6 +50,8 @@ export function AgreementClient({
   const [showDoneCelebration, setShowDoneCelebration] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [yesterdayData, setYesterdayData] = useState<AgreementForTodayResult | null | undefined>(undefined);
+  const [yesterdayLoading, setYesterdayLoading] = useState(false);
 
   useEffect(() => {
     setData(initialData);
@@ -144,6 +146,33 @@ export function AgreementClient({
           sessionUserImage={sessionUserImage}
           partnerImage={partnerImage}
         />
+        <div className="flex justify-center">
+          <button
+            type="button"
+            disabled={yesterdayLoading}
+            onClick={() => {
+              setYesterdayLoading(true);
+              setYesterdayData(undefined);
+              const d = new Date();
+              d.setDate(d.getDate() - 1);
+              const ys = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+              getAgreementForDate(relationshipId, ys)
+                .then((r) => setYesterdayData(r ?? null))
+                .catch(() => setYesterdayData(null))
+                .finally(() => setYesterdayLoading(false));
+            }}
+            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+          >
+            {yesterdayLoading ? (
+              <>
+                <LoadingSpinner size="sm" />
+                Loading…
+              </>
+            ) : (
+              "Yesterday&apos;s results"
+            )}
+          </button>
+        </div>
       </div>
     );
   }
@@ -165,6 +194,116 @@ export function AgreementClient({
               Back to today
             </Link>
           </div>
+        </div>
+        <div className="flex justify-center">
+          <button
+            type="button"
+            disabled={yesterdayLoading}
+            onClick={() => {
+              setYesterdayLoading(true);
+              setYesterdayData(undefined);
+              const d = new Date();
+              d.setDate(d.getDate() - 1);
+              const ys = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+              getAgreementForDate(relationshipId, ys)
+                .then((r) => setYesterdayData(r ?? null))
+                .catch(() => setYesterdayData(null))
+                .finally(() => setYesterdayLoading(false));
+            }}
+            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+          >
+            {yesterdayLoading ? (
+              <>
+                <LoadingSpinner size="sm" />
+                Loading…
+              </>
+            ) : (
+              "Yesterday&apos;s results"
+            )}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (yesterdayLoading) {
+    return (
+      <div className="space-y-6">
+        <AgreementPageHeader />
+        <div className="ns-card flex flex-col items-center justify-center py-12">
+          <LoadingSpinner size="md" />
+          <p className="mt-3 text-sm text-slate-600">Loading yesterday&apos;s results…</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (yesterdayData !== undefined) {
+    if (yesterdayData === null) {
+      return (
+        <div className="space-y-6">
+          <AgreementPageHeader />
+          <div className="ns-card py-8 text-center">
+            <p className="text-slate-600">No results from yesterday.</p>
+            <p className="mt-1 text-sm text-slate-500">If neither of you did the alignment that day, there&apos;s nothing to show.</p>
+            <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary mt-4 !py-2 text-sm">
+              Back to today
+            </button>
+          </div>
+        </div>
+      );
+    }
+    if (yesterdayData.reveal) {
+      return (
+        <div className="space-y-6">
+          <AgreementPageHeader />
+          <p className="text-center text-sm font-medium text-slate-500">Yesterday&apos;s results</p>
+          <AgreementRevealView
+            questions={yesterdayData.questions}
+            reveal={yesterdayData.reveal}
+            sessionUserName={sessionUserName}
+            sessionUserImage={sessionUserImage}
+            partnerImage={yesterdayData.partnerImage ?? null}
+          />
+          <div className="flex justify-center">
+            <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary !py-2 text-sm">
+              Back to today
+            </button>
+          </div>
+        </div>
+      );
+    }
+    if (yesterdayData.myParticipation && !yesterdayData.partnerSubmitted) {
+      const ans = yesterdayData.myParticipation.answerIndices;
+      return (
+        <div className="space-y-6">
+          <AgreementPageHeader />
+          <p className="text-center text-sm font-medium text-slate-500">Yesterday&apos;s results — only you answered</p>
+          <div className="space-y-3">
+            {yesterdayData.questions.map((q, i) => (
+              <div key={i} className="ns-card p-4">
+                <p className="font-semibold text-slate-900">{q.text}</p>
+                <p className="mt-2 text-slate-600">{OPTIONS[ans[i] ?? 0] ?? "—"}</p>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-center">
+            <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary !py-2 text-sm">
+              Back to today
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="space-y-6">
+        <AgreementPageHeader />
+        <div className="ns-card py-8 text-center">
+          <p className="text-slate-600">No results from yesterday.</p>
+          <p className="mt-1 text-sm text-slate-500">If neither of you did the alignment that day, there&apos;s nothing to show.</p>
+          <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary mt-4 !py-2 text-sm">
+            Back to today
+          </button>
         </div>
       </div>
     );

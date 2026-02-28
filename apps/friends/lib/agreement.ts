@@ -193,6 +193,108 @@ export async function getAgreementForToday(
   return result;
 }
 
+/** Returns agreement for a specific date only if a session exists (no create). Used for "Yesterday's results". */
+export async function getAgreementForDate(
+  relationshipId: string,
+  dateStr: string
+): Promise<AgreementForTodayResult | null> {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return null;
+  const authSession = await getServerAuthSession();
+  if (!authSession?.user?.id) return null;
+  await requireActiveMember(authSession.user.id, relationshipId);
+
+  const sessionDate = new Date(dateStr + "T00:00:00.000Z");
+  const agreementSession = await prisma.agreementSession.findUnique({
+    where: {
+      relationshipId_sessionDate: { relationshipId, sessionDate },
+    },
+    include: {
+      participations: {
+        include: { user: { select: { id: true, name: true, image: true } } },
+      },
+    },
+  });
+  if (!agreementSession) return null;
+
+  const dayIndex = getAgreementDayIndex(agreementSession.sessionDate);
+  const questions = getAgreementQuestions(dayIndex);
+  const myPart = agreementSession.participations.find((p) => p.userId === authSession.user!.id);
+  const partnerPart = agreementSession.participations.find((p) => p.userId !== authSession.user!.id);
+  const partner = agreementSession.participations.find((p) => p.userId !== authSession.user!.id)?.user;
+  const otherMember = await prisma.relationshipMember.findFirst({
+    where: { relationshipId, userId: { not: authSession.user!.id }, leftAt: null },
+    include: { user: { select: { name: true } } },
+  });
+  const partnerName = partner?.name ?? otherMember?.user?.name ?? null;
+  const parseIndices = (s: string): number[] => {
+    try {
+      const arr = JSON.parse(s) as number[];
+      return Array.isArray(arr) ? arr : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const result: AgreementForTodayResult = {
+    agreementSessionId: agreementSession.id,
+    sessionDate: agreementSession.sessionDate.toISOString().slice(0, 10),
+    dayIndex,
+    questions,
+    state: agreementSession.state === "revealed" ? "revealed" : "open",
+    myParticipation: myPart ? { answerIndices: parseIndices(myPart.answerIndices), guessIndices: parseIndices(myPart.guessIndices) } : null,
+    partnerSubmitted: !!partnerPart,
+    partnerName,
+    myImage: (authSession.user as { image?: string | null }).image ?? null,
+    partnerImage: partner?.image ?? null,
+  };
+
+  if (agreementSession.state === "revealed" && myPart && partnerPart) {
+    const myAnswers = parseIndices(myPart.answerIndices);
+    const myGuesses = parseIndices(myPart.guessIndices);
+    const partnerAnswers = parseIndices(partnerPart.answerIndices);
+    const partnerGuesses = parseIndices(partnerPart.guessIndices);
+    let myScore = 0;
+    let partnerScore = 0;
+    for (let i = 0; i < questions.length; i++) {
+      if (myGuesses[i] === partnerAnswers[i]) myScore++;
+      if (partnerGuesses[i] === myAnswers[i]) partnerScore++;
+    }
+    const allRevealed = await prisma.agreementSession.findMany({
+      where: { relationshipId, state: "revealed" },
+      include: { participations: true },
+    });
+    let overallMyScore = 0;
+    let overallPartnerScore = 0;
+    for (const s of allRevealed) {
+      const myP = s.participations.find((p) => p.userId === authSession.user!.id);
+      const partnerP = s.participations.find((p) => p.userId !== authSession.user!.id);
+      if (myP && partnerP) {
+        const myG = parseIndices(myP.guessIndices);
+        const pAns = parseIndices(partnerP.answerIndices);
+        const partnerG = parseIndices(partnerP.guessIndices);
+        const myAns = parseIndices(myP.answerIndices);
+        for (let i = 0; i < 5; i++) {
+          if (myG[i] === pAns[i]) overallMyScore++;
+          if (partnerG[i] === myAns[i]) overallPartnerScore++;
+        }
+      }
+    }
+    result.reveal = {
+      myScore,
+      partnerScore,
+      myAnswers,
+      myGuesses,
+      partnerAnswers,
+      partnerGuesses,
+      partnerName: partner?.name ?? null,
+      overallMyScore,
+      overallPartnerScore,
+      overallTotal: 5 * allRevealed.length,
+    };
+  }
+  return result;
+}
+
 export async function submitAgreement(
   relationshipId: string,
   answerIndices: number[],

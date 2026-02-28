@@ -9,7 +9,7 @@ export const TODAY_IMAGE_PATHS = [
   "/today-images/3.jpg",
   "/today-images/4.jpg",
   "/today-images/5.jpg",
-  "/today-images/6.jpg",
+  "/today-images/6.png",
   "/today-images/7.jpg",
   "/today-images/8.jpg",
 ];

@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 const SIDEBAR_NAV = [
   { href: "/app", label: "Today", icon: Home },
   { href: "/app/quiz", label: "Quiz", icon: HelpCircle },
-  { href: "/app/agreement", label: "Agreement", icon: Scale },
+  { href: "/app/agreement", label: "Alignment", icon: Scale },
   { href: "/app/history", label: "Responses", icon: History },
   { href: "/app/meeting", label: "Our Week", icon: CalendarRange },
   { href: "/app/us", label: "Profile", icon: User },
@@ -23,6 +23,7 @@ export default function AppSegmentLayout({
     <div className="flex h-screen h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden md:min-h-screen" style={{ backgroundColor: "#eef6f8", overscrollBehaviorX: "none" }}>
       {/* Only this area scrolls so fixed bottom nav stays viewport-locked on mobile */}
       <div
+        id="app-scroll"
         className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto pb-28 pt-4 md:min-h-0 md:pb-6 md:pt-6"
         style={
           {
@@ -60,7 +61,7 @@ export default function AppSegmentLayout({
                   <Link
                     key={href}
                     href={href}
-                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-white/80 hover:text-slate-900"
+                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors duration-150 hover:bg-white/80 hover:text-slate-900"
                   >
                     <Icon className="h-4 w-4 shrink-0" strokeWidth={2} />
                     {label}

@@ -2,13 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { Home, CalendarRange, History, User, HelpCircle, Scale } from "lucide-react";
 import { BottomNav } from "./bottom-nav";
+import { RelationshipSwitcher } from "./relationship-switcher";
 
 export const dynamic = "force-dynamic";
 
 const SIDEBAR_NAV = [
   { href: "/app", label: "Today", icon: Home },
   { href: "/app/quiz", label: "Quiz", icon: HelpCircle },
-  { href: "/app/agreement", label: "Agreement", icon: Scale },
+  { href: "/app/agreement", label: "Alignment", icon: Scale },
   { href: "/app/history", label: "Responses", icon: History },
   { href: "/app/meeting", label: "Our Week", icon: CalendarRange },
   { href: "/app/us", label: "Profile", icon: User },
@@ -23,6 +24,7 @@ export default function AppSegmentLayout({
     <div className="flex h-screen h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden md:min-h-screen" style={{ backgroundColor: "#eef6f8", overscrollBehaviorX: "none" }}>
       {/* Only this area scrolls so fixed bottom nav stays viewport-locked on mobile */}
       <div
+        id="app-scroll"
         className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto pb-28 pt-4 md:min-h-0 md:pb-6 md:pt-6"
         style={
           {
@@ -33,7 +35,9 @@ export default function AppSegmentLayout({
           } as React.CSSProperties
         }
       >
-        <div className="mx-auto flex w-full min-w-0 max-w-6xl gap-6 px-4 pt-4 pb-8 sm:px-6 lg:px-8 md:pb-6 md:pt-6">
+        <div className="mx-auto flex w-full min-w-0 max-w-6xl flex-col gap-2 px-4 pt-4 pb-8 sm:px-6 lg:px-8 md:pb-6 md:pt-6">
+          <RelationshipSwitcher />
+          <div className="flex min-w-0 flex-1 gap-6">
           {/* Left rail (desktop/tablet): branding + nav links + trust */}
           <aside className="hidden w-64 flex-shrink-0 flex-col justify-between rounded-2xl border border-brand-200/60 p-5 shadow-lg md:flex" style={{ backgroundColor: "#e8f4f6" }}>
             <div className="space-y-6">
@@ -60,7 +64,7 @@ export default function AppSegmentLayout({
                   <Link
                     key={href}
                     href={href}
-                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-white/80 hover:text-slate-900"
+                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors duration-150 hover:bg-white/80 hover:text-slate-900"
                   >
                     <Icon className="h-4 w-4 shrink-0" strokeWidth={2} />
                     {label}
@@ -77,9 +81,10 @@ export default function AppSegmentLayout({
           </aside>
 
           {/* Main app surface */}
-          <main className="ns-card relative min-w-0 flex-1 border-slate-200 px-4 py-5 shadow-lg sm:px-6 md:py-6">
-            {children}
-          </main>
+            <main className="ns-card relative min-w-0 flex-1 border-slate-200 px-4 py-5 shadow-lg sm:px-6 md:py-6">
+              {children}
+            </main>
+          </div>
         </div>
       </div>
 

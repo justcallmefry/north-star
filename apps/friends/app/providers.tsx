@@ -1,5 +1,6 @@
 "use client";
 
+import { Toaster } from "sonner";
 import { SessionProvider } from "next-auth/react";
 import type { ReactNode } from "react";
 import type { Session } from "next-auth";
@@ -18,6 +19,7 @@ export function Providers({
       refetchInterval={0}
     >
       {children}
+      <Toaster position="top-center" richColors closeButton toastOptions={{ duration: 4000 }} />
     </SessionProvider>
   );
 }

@@ -8,6 +8,7 @@ import { getServerAuthSession } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { getLatestInvite } from "@/lib/relationships";
+import { getCurrentRelationshipId } from "@/lib/current-relationship";
 import { InviteContent } from "./invite-content";
 
 type Props = { searchParams: Promise<{ relationshipId?: string; code?: string }> };
@@ -34,7 +35,8 @@ export default async function InvitePage({ searchParams }: Props) {
     redirect("/app/pair");
   }
 
-  const rid = relationshipId ?? relationships[0]?.id;
+  const currentId = await getCurrentRelationshipId();
+  const rid = relationshipId ?? currentId ?? relationships[0]?.id;
   if (!rid) {
     if (isBuildTime()) return fallback;
     redirect("/app/pair");

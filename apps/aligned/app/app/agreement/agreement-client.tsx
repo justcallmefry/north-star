@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Check, Trophy, X } from "lucide-react";
+import { Check, ChevronLeft, Scale, Trophy, X } from "lucide-react";
 import { toast } from "sonner";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import type { AgreementForTodayResult, AgreementQuestion } from "@/lib/agreement-shared";
 import { AGREEMENT_OPTIONS } from "@/lib/agreement-shared";
-import { submitAgreement } from "@/lib/agreement";
+import { getAgreementForDate, submitAgreement } from "@/lib/agreement";
 import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
 
 type Props = {
@@ -44,10 +44,14 @@ export function AgreementClient({
     initialData.myParticipation?.guessIndices ?? DEFAULT_INDICES
   );
   const [step, setStep] = useState(0);
+  const [checkInStarted, setCheckInStarted] = useState(false);
+  const [exiting, setExiting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showDoneCelebration, setShowDoneCelebration] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitAttempted, setSubmitAttempted] = useState(false);
+  /** undefined = not loaded, null = no session yesterday, data = show yesterday's results */
+  const [yesterdayData, setYesterdayData] = useState<AgreementForTodayResult | null | undefined>(undefined);
 
   useEffect(() => {
     setData(initialData);
@@ -55,6 +59,23 @@ export function AgreementClient({
     setGuesses(initialData.myParticipation?.guessIndices ?? DEFAULT_INDICES);
     setStep(0);
   }, [initialData]);
+
+  // Scroll to top when starting check-in or when step changes (one statement at a time at top)
+  useEffect(() => {
+    if (checkInStarted) {
+      requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
+    }
+  }, [checkInStarted, step]);
+
+  // After exit animation, advance to next statement (scroll handled by step effect)
+  useEffect(() => {
+    if (!exiting) return;
+    const t = setTimeout(() => {
+      setExiting(false);
+      setStep((s) => s + 1);
+    }, 280);
+    return () => clearTimeout(t);
+  }, [exiting]);
 
   // Show bottom nav when viewing results or waiting for partner (set ?done=1)
   const showResultsOrWaiting =
@@ -112,35 +133,144 @@ export function AgreementClient({
   }
 
   function goBack() {
-    if (step > 0) setStep((s) => s - 1);
+    if (step > 0) {
+      setStep((s) => s - 1);
+    } else {
+      setCheckInStarted(false);
+    }
   }
 
   if (data.state === "revealed" && data.reveal) {
     return (
-      <AgreementRevealView
-        questions={data.questions}
-        reveal={data.reveal}
-        sessionUserName={sessionUserName}
-        sessionUserImage={sessionUserImage}
-        partnerImage={partnerImage}
-      />
+      <div className="space-y-6">
+        <AgreementPageHeader />
+        <AgreementRevealView
+          questions={data.questions}
+          reveal={data.reveal}
+          sessionUserName={sessionUserName}
+          sessionUserImage={sessionUserImage}
+          partnerImage={partnerImage}
+        />
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={() => {
+              setYesterdayData(undefined);
+              const d = new Date();
+              d.setDate(d.getDate() - 1);
+              const ys = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+              getAgreementForDate(relationshipId, ys).then((r) => setYesterdayData(r ?? null));
+            }}
+            className="text-sm font-medium text-brand-600 underline hover:text-brand-700"
+          >
+            Yesterday&apos;s results
+          </button>
+        </div>
+      </div>
     );
   }
 
   if (data.myParticipation && !data.partnerSubmitted) {
     return (
-      <div className="ns-card space-y-4 py-8 text-center">
-        <p className="text-lg font-medium text-slate-700">
-          You&apos;re done! Waiting for your partner to finish.
-        </p>
-        <p className="text-sm text-slate-500">
-          We&apos;ll show results once you&apos;ve both answered.
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <NotifyPartnerQuizButton variant="agreement" size="sm" />
-          <Link href="/app" className="ns-btn-secondary inline-flex">
+      <div className="space-y-6">
+        <AgreementPageHeader />
+        <div className="ns-card space-y-4 py-8 text-center">
+          <p className="text-lg font-medium text-slate-700">
+            You&apos;re done! Waiting for your partner to finish.
+          </p>
+          <p className="text-sm text-slate-500">
+            We&apos;ll show results once you&apos;ve both answered.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <NotifyPartnerQuizButton variant="agreement" size="sm" />
+            <Link href="/app" className="ns-btn-secondary inline-flex">
+              Back to today
+            </Link>
+          </div>
+        </div>
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={() => {
+              setYesterdayData(undefined);
+              const d = new Date();
+              d.setDate(d.getDate() - 1);
+              const ys = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+              getAgreementForDate(relationshipId, ys).then((r) => setYesterdayData(r ?? null));
+            }}
+            className="text-sm font-medium text-brand-600 underline hover:text-brand-700"
+          >
+            Yesterday&apos;s results
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (yesterdayData !== undefined) {
+    if (yesterdayData === null) {
+      return (
+        <div className="space-y-6">
+          <AgreementPageHeader />
+          <div className="ns-card py-8 text-center">
+            <p className="text-slate-600">No results from yesterday.</p>
+            <button type="button" onClick={() => setYesterdayData(undefined)} className="mt-3 text-sm font-medium text-brand-600 underline hover:text-brand-700">
+              Back to today
+            </button>
+          </div>
+        </div>
+      );
+    }
+    if (yesterdayData.reveal) {
+      return (
+        <div className="space-y-6">
+          <AgreementPageHeader />
+          <p className="text-center text-sm font-medium text-slate-500">Yesterday&apos;s results</p>
+          <AgreementRevealView
+            questions={yesterdayData.questions}
+            reveal={yesterdayData.reveal}
+            sessionUserName={sessionUserName}
+            sessionUserImage={sessionUserImage}
+            partnerImage={yesterdayData.partnerImage ?? null}
+          />
+          <div className="flex justify-center">
+            <button type="button" onClick={() => setYesterdayData(undefined)} className="text-sm font-medium text-brand-600 underline hover:text-brand-700">
+              Back to today
+            </button>
+          </div>
+        </div>
+      );
+    }
+    if (yesterdayData.myParticipation && !yesterdayData.partnerSubmitted) {
+      const ans = yesterdayData.myParticipation.answerIndices;
+      return (
+        <div className="space-y-6">
+          <AgreementPageHeader />
+          <p className="text-center text-sm font-medium text-slate-500">Yesterday&apos;s results — only you answered</p>
+          <div className="space-y-3">
+            {yesterdayData.questions.map((q, i) => (
+              <div key={i} className="ns-card p-4">
+                <p className="font-semibold text-slate-900">{q.text}</p>
+                <p className="mt-2 text-slate-600">{OPTIONS[ans[i] ?? 0] ?? "—"}</p>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-center">
+            <button type="button" onClick={() => setYesterdayData(undefined)} className="text-sm font-medium text-brand-600 underline hover:text-brand-700">
+              Back to today
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="space-y-6">
+        <AgreementPageHeader />
+        <div className="ns-card py-8 text-center">
+          <p className="text-slate-600">No results from yesterday.</p>
+          <button type="button" onClick={() => setYesterdayData(undefined)} className="mt-3 text-sm font-medium text-brand-600 underline hover:text-brand-700">
             Back to today
-          </Link>
+          </button>
         </div>
       </div>
     );
@@ -171,105 +301,162 @@ export function AgreementClient({
     );
   }
 
+  // —— Start check-in gate: header + one CTA, then one statement at a time at top ——
+  if (!checkInStarted) {
+    return (
+      <div className="flex min-h-[50vh] flex-col items-center justify-center py-8">
+        <div className="flex flex-col items-center text-center">
+          <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-lg shadow-brand-200/80 ring-2 ring-white ring-offset-2">
+            <Scale className="h-8 w-8" strokeWidth={2} />
+          </div>
+          <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
+            Alignment check-in
+          </h1>
+          <p className="mt-1 max-w-md text-sm text-slate-600 sm:text-base">
+            Check where you&apos;re aligned today, one statement at a time.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setCheckInStarted(true);
+            requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
+          }}
+          className="ns-btn-primary mt-6 min-w-[12rem] px-8 py-3.5 text-lg ring-2 ring-brand-300/50 ring-offset-2 shadow-lg shadow-brand-200/40"
+        >
+          Start check-in
+        </button>
+        <p className="mt-6 text-center">
+          <Link href="/app" className="text-sm text-slate-500 hover:text-slate-700">
+            Back to today
+          </Link>
+        </p>
+      </div>
+    );
+  }
+
   if (!currentQuestion) return null;
 
   const guessLabel = data.partnerName
     ? `Your guess for ${data.partnerName}`
     : "Your guess for partner";
 
+  // —— One statement at a time: progress + single card with exit/enter ——
   return (
-    <form onSubmit={handleSubmit} className="flex min-h-[65vh] flex-col">
-      {/* Progress */}
-      <div className="mb-6 flex items-center justify-between gap-2">
-        <span className="text-sm font-medium text-slate-500">
+    <form onSubmit={handleSubmit} className="flex min-h-[65vh] flex-col pt-0">
+      {/* Progress — at top */}
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
           Statement {step + 1} of {TOTAL_QUESTIONS}
         </span>
-        <div className="flex gap-1">
+        <div className="flex gap-1" aria-hidden>
           {Array.from({ length: TOTAL_QUESTIONS }).map((_, i) => (
             <div
               key={i}
-              className={`h-1.5 flex-1 rounded-full min-w-[24px] max-w-[32px] transition-colors ${
+              className={`h-1 flex-1 rounded-full min-w-[14px] max-w-[22px] transition-colors duration-200 ${
                 i < step ? "bg-brand-500" : i === step ? "bg-brand-400" : "bg-slate-200"
               }`}
-              aria-hidden
             />
           ))}
         </div>
       </div>
 
-      {/* Single statement card */}
-      <AgreementQuestionBlock
-        index={step}
-        question={currentQuestion}
-        options={OPTIONS}
-        guessLabel={guessLabel}
-        showIncompleteHint={
-          submitAttempted && (answers[step] < 0 || guesses[step] < 0)
-        }
-        answerIndex={answers[step]}
-        guessIndex={guesses[step]}
-        onAnswerChange={(v) => {
-          const next = [...answers];
-          next[step] = v;
-          setAnswers(next);
-        }}
-        onGuessChange={(v) => {
-          const next = [...guesses];
-          next[step] = v;
-          setGuesses(next);
-        }}
-      />
+      {/* Single statement card — exit/enter transition */}
+      <div
+        key={step}
+        className={`flex flex-col ${exiting ? "animate-quiz-card-exit" : "animate-quiz-card-enter"}`}
+      >
+        <AgreementQuestionBlock
+          index={step}
+          question={currentQuestion}
+          options={OPTIONS}
+          guessLabel={guessLabel}
+          showIncompleteHint={
+            submitAttempted && (answers[step] < 0 || guesses[step] < 0)
+          }
+          answerIndex={answers[step]}
+          guessIndex={guesses[step]}
+          onAnswerChange={(v) => {
+            const next = [...answers];
+            next[step] = v;
+            setAnswers(next);
+          }}
+          onGuessChange={(v) => {
+            const next = [...guesses];
+            next[step] = v;
+            setGuesses(next);
+          }}
+        />
+      </div>
 
       {error && (
-        <p className="text-sm text-red-600" role="alert">
+        <p className="mt-3 text-sm text-red-600" role="alert">
           {error}
         </p>
       )}
-      {!allAnswered && (
-        <p
-          className="rounded-lg border border-brand-200 bg-brand-50 px-3 py-2 text-sm text-brand-700"
-          role="alert"
-        >
-          <>Answer and guess for all {TOTAL_QUESTIONS} statements to submit.</>
+
+      {/* Next or Submit */}
+      {currentAnswered && !exiting && (
+        <div className="mt-4 flex flex-col items-center gap-3">
+          {isLastStep ? (
+            <button
+              type="submit"
+              disabled={loading || !allAnswered}
+              className="ns-btn-primary min-w-[12rem] px-8 py-3.5 text-lg disabled:opacity-50"
+            >
+              {loading ? "Submitting…" : "Submit"}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setExiting(true)}
+              className="text-sm font-medium text-brand-600 hover:text-brand-700"
+            >
+              Next →
+            </button>
+          )}
+        </div>
+      )}
+      {!currentAnswered && submitAttempted && (
+        <p className="mt-3 rounded-lg border border-brand-200 bg-brand-50 px-3 py-2 text-sm text-brand-700" role="alert">
+          Pick your answer and your guess for this statement.
         </p>
       )}
 
-      {/* Back / Next or Submit */}
-      <div className="mt-8 flex items-center justify-between gap-4">
+      {/* Back — minimal chrome */}
+      <div className="mt-4 flex items-center justify-between gap-4">
         <button
           type="button"
           onClick={goBack}
-          className="inline-flex items-center gap-1.5 text-slate-600 hover:text-slate-900 disabled:invisible"
-          disabled={step === 0}
+          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800"
         >
+          <ChevronLeft className="h-4 w-4" />
           Back
         </button>
-        {isLastStep ? (
-          <button
-            type="submit"
-            disabled={loading || !allAnswered}
-            className="ns-btn-primary min-w-[10rem] px-6 py-3 transition-all duration-200 disabled:opacity-50"
-          >
-            Submit
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={goNext}
-            disabled={!currentAnswered}
-            className="ns-btn-primary inline-flex items-center gap-1.5 px-6 py-3 disabled:opacity-50"
-          >
-            Next
-          </button>
-        )}
       </div>
 
-      <p className="mt-4 text-center">
+      <p className="mt-3 text-center">
         <Link href="/app" className="text-sm text-slate-500 hover:text-slate-700">
           Back to today
         </Link>
       </p>
     </form>
+  );
+}
+
+function AgreementPageHeader() {
+  return (
+    <div className="flex flex-col items-center text-center">
+      <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-lg shadow-brand-200/80 ring-2 ring-white ring-offset-2">
+        <Scale className="h-8 w-8" strokeWidth={2} />
+      </div>
+      <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
+        Alignment check-in
+      </h1>
+      <p className="mt-1 max-w-md text-sm text-slate-600 sm:text-base">
+        Check where you&apos;re aligned today, one statement at a time.
+      </p>
+    </div>
   );
 }
 
@@ -399,79 +586,13 @@ function AgreementRevealView({
       <p className="text-center text-base font-medium text-slate-700 sm:text-lg">
         {resultsLine}
       </p>
-      {/* Today's scores side by side with name + emoji, then overall with trophy / loser emoji */}
+      {/* Scoreboard commented out for now — may bring back later
       <div className="ns-card space-y-3 py-4">
         <p className="text-center text-xs font-medium uppercase tracking-wide text-slate-700 pb-1">Today</p>
-        <div className="grid grid-cols-2 gap-3 text-center">
-          <div>
-            <div className="flex justify-center">
-              <ProfileImageOrStar imageUrl={sessionUserImage} star="⭐" />
-            </div>
-            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{myName}</p>
-            <p className="text-2xl font-bold text-brand-600">{reveal.myScore}/5</p>
-          </div>
-          <div>
-            <div className="flex justify-center">
-              <ProfileImageOrStar imageUrl={partnerImage} star="🌟" />
-            </div>
-            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{partnerName}</p>
-            <p className="text-2xl font-bold text-violet-600">{reveal.partnerScore}/5</p>
-          </div>
-        </div>
-        <div className="border-t border-violet-100 pt-3">
-          <p className="text-center text-xs font-medium uppercase tracking-wide text-slate-700 pb-2">Overall</p>
-          <div className="grid grid-cols-2 gap-3 text-center">
-          <div>
-            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{myName}</p>
-            {iAmWinning ? (
-              <div className="mt-2 flex flex-col items-center gap-1">
-                <Trophy className="h-10 w-10 text-amber-500" strokeWidth={1.5} aria-hidden />
-                <p className="text-xl font-bold text-slate-800">{reveal.overallMyScore}/{reveal.overallTotal}</p>
-                <p className="text-sm text-slate-600">{overallMyPct}%</p>
-                <p className="text-sm font-medium text-amber-600">Leading</p>
-              </div>
-            ) : isTie ? (
-              <div className="mt-2 flex flex-col items-center gap-1">
-                <Trophy className="h-8 w-8 text-slate-400" strokeWidth={1.5} aria-hidden />
-                <p className="text-xl font-bold text-slate-800">{reveal.overallMyScore}/{reveal.overallTotal}</p>
-                <p className="text-sm text-slate-600">{overallMyPct}%</p>
-                <p className="text-sm text-slate-500">Tied</p>
-              </div>
-            ) : (
-              <div className="mt-2 flex flex-col items-center gap-1">
-                <span className="text-3xl leading-none" aria-hidden>🤪</span>
-                <p className="text-xl font-bold text-slate-800">{reveal.overallMyScore}/{reveal.overallTotal}</p>
-                <p className="text-sm text-slate-600">{overallMyPct}%</p>
-              </div>
-            )}
-          </div>
-          <div>
-            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{partnerName}</p>
-            {theyAreWinning ? (
-              <div className="mt-2 flex flex-col items-center gap-1">
-                <Trophy className="h-10 w-10 text-amber-500" strokeWidth={1.5} aria-hidden />
-                <p className="text-xl font-bold text-slate-800">{reveal.overallPartnerScore}/{reveal.overallTotal}</p>
-                <p className="text-sm text-slate-600">{overallPartnerPct}%</p>
-                <p className="text-sm font-medium text-amber-600">Leading</p>
-              </div>
-            ) : isTie ? (
-              <div className="mt-2 flex flex-col items-center gap-1">
-                <Trophy className="h-8 w-8 text-slate-400" strokeWidth={1.5} aria-hidden />
-                <p className="text-xl font-bold text-slate-800">{reveal.overallPartnerScore}/{reveal.overallTotal}</p>
-                <p className="text-sm text-slate-600">{overallPartnerPct}%</p>
-                <p className="text-sm text-slate-500">Tied</p>
-              </div>
-            ) : (
-              <div className="mt-2 flex flex-col items-center gap-1">
-                <span className="text-3xl leading-none" aria-hidden>🤪</span>
-                <p className="text-xl font-bold text-slate-800">{reveal.overallPartnerScore}/{reveal.overallTotal}</p>
-                <p className="text-sm text-slate-600">{overallPartnerPct}%</p>
-              </div>
-            )}
-          </div>
-          </div>
-        </div>
+        ...
+        Overall section with trophy / loser emoji
       </div>
+      */}
 
       {/* Answers in two columns with green/red and bigger icons */}
       <div className="space-y-4">

@@ -33,6 +33,8 @@ type Props = {
   canValidate: boolean;
   /** When partner response is missing, hide validation UI */
   hasPartnerResponse: boolean;
+  /** True when this member did not answer that day — show "No response that day" */
+  noResponse?: boolean;
 };
 
 export function ResponseBubbleValidation({
@@ -45,6 +47,7 @@ export function ResponseBubbleValidation({
   validation,
   canValidate,
   hasPartnerResponse,
+  noResponse = false,
 }: Props) {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [ackOpen, setAckOpen] = useState(false);
@@ -104,6 +107,28 @@ export function ResponseBubbleValidation({
     } finally {
       setLoading(null);
     }
+  }
+
+  if (noResponse) {
+    return (
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-base">
+            {typeof icon === "string" && icon.trim().startsWith("http") ? (
+              <img src={icon.trim()} alt="" className="absolute inset-0 h-full w-full object-cover" width={32} height={32} />
+            ) : (
+              icon
+            )}
+          </span>
+          <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] ${titleTextClass} ${bubbleClass}`}>
+            {title}
+          </span>
+        </div>
+        <p className="mt-2 ns-card-inner px-3 py-3 text-base italic text-slate-500 sm:text-lg">
+          No response that day
+        </p>
+      </div>
+    );
   }
 
   if (!hasPartnerResponse) {

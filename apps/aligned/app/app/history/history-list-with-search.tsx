@@ -21,13 +21,17 @@ export type HistoryItemForClient = {
     userName: string | null;
     userImage: string | null;
     validation: { reactions: string | null; acknowledgment: string | null } | null;
+    noResponse?: boolean;
   }[];
   reflections: { userId: string; content: string | null; reaction: string | null }[];
 };
 
 type Props = {
   items: HistoryItemForClient[];
-  nextCursor: string | null;
+  page: number;
+  totalPages: number;
+  hasPrev: boolean;
+  hasNext: boolean;
   currentUserId: string;
   sessionUserName: string | null;
 };
@@ -48,7 +52,10 @@ function itemMatchesQuery(item: HistoryItemForClient, q: string): boolean {
 
 export function HistoryListWithSearch({
   items,
-  nextCursor,
+  page,
+  totalPages,
+  hasPrev,
+  hasNext,
   currentUserId,
   sessionUserName,
 }: Props) {
@@ -94,13 +101,13 @@ export function HistoryListWithSearch({
           <li className="ns-card flex flex-col items-center justify-center py-12 text-center">
             <EmptyTogetherIllustration className="w-32 h-32 sm:w-40 sm:h-40" />
             <p className="mt-4 text-base font-medium text-slate-700 sm:text-lg">
-              No revealed sessions yet.
+              No responses yet.
             </p>
             <p className="mt-1 text-sm text-slate-500">
-              Answer today&apos;s question and reveal together to see it here.
+              When you or your partner answer the question of the day, it&apos;ll show here.
             </p>
             <p className="mt-2 text-sm text-slate-400">
-              Every day you both answer, you&apos;ll add another moment to this history.
+              Days when neither answered don&apos;t appear; once someone answers, you&apos;ll see that day.
             </p>
           </li>
         ) : filtered.length === 0 ? (
@@ -140,11 +147,11 @@ export function HistoryListWithSearch({
                     ? "border-brand-200 bg-brand-50"
                     : "border-green-200 bg-green-50";
                   const titleTextClass = isMe ? "text-brand-800" : "text-green-800";
-                  const hasPartnerResponse = item.responses.length >= 2;
+                  const hasPartnerResponse = item.responses.some((x) => !x.noResponse && x.userId !== currentUserId);
 
                   return (
                     <div
-                      key={r.id}
+                      key={r.userId}
                       className={!isMe ? "animate-calm-fade-in animate-calm-delay-1" : ""}
                     >
                       <ResponseBubbleValidation
@@ -155,8 +162,9 @@ export function HistoryListWithSearch({
                         icon={icon}
                         bubbleClass={bubbleClass}
                         validation={r.validation}
-                        canValidate={!isMe}
+                        canValidate={!isMe && !r.noResponse}
                         hasPartnerResponse={hasPartnerResponse}
+                        noResponse={r.noResponse}
                       />
                     </div>
                   );
@@ -196,15 +204,36 @@ export function HistoryListWithSearch({
         )}
       </ul>
 
-      {nextCursor && (
-        <p className="mt-6">
-          <Link
-            href={`/app/history?cursor=${encodeURIComponent(nextCursor)}`}
-            className="text-sm font-medium text-brand-600 underline"
-          >
-            Load more
-          </Link>
-        </p>
+      {items.length > 0 && totalPages > 1 && (
+        <nav className="mt-6 flex flex-wrap items-center justify-center gap-3" aria-label="Previous responses pagination">
+          {hasPrev ? (
+            <Link
+              href={page > 2 ? `/app/history?page=${page - 1}` : "/app/history"}
+              className="ns-btn-primary !py-2 text-sm"
+            >
+              Previous
+            </Link>
+          ) : (
+            <span className="ns-btn-primary !py-2 text-sm opacity-50 pointer-events-none" aria-hidden>
+              Previous
+            </span>
+          )}
+          <span className="text-sm text-slate-600">
+            Page {page} of {totalPages}
+          </span>
+          {hasNext ? (
+            <Link
+              href={`/app/history?page=${page + 1}`}
+              className="ns-btn-primary !py-2 text-sm"
+            >
+              Next
+            </Link>
+          ) : (
+            <span className="ns-btn-primary !py-2 text-sm opacity-50 pointer-events-none" aria-hidden>
+              Next
+            </span>
+          )}
+        </nav>
       )}
 
       {items.length > 0 && (

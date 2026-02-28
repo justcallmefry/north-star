@@ -120,44 +120,84 @@ body {
   animation: loading-spin 0.9s linear infinite;
 }
 
-/* Visual anchor: card, buttons, spacing. Gradients, glowy blue shadows, optional accent. */
+/* Quiz/agreement: card exit (disappear) then next card enters */
+@keyframes quiz-card-exit {
+  to {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.98);
+  }
+}
+@keyframes quiz-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-quiz-card-exit {
+  animation: quiz-card-exit 280ms ease-in forwards;
+}
+.animate-quiz-card-enter {
+  opacity: 0;
+  animation: quiz-card-enter 350ms ease-out forwards;
+}
+
+/* Focus rings: visible for keyboard navigation */
+@layer base {
+  :where(button:focus-visible, [role="button"]:focus-visible, a:focus-visible) {
+    @apply outline-none ring-2 ring-brand-400 ring-offset-2 ring-offset-white;
+  }
+}
+
+/* Visual anchor: card, buttons, spacing. Aligned Connecting Families palette (purple, green, pink). */
 @layer components {
   .ns-card {
     @apply rounded-2xl border border-brand-100/80 bg-white p-5;
-    box-shadow: 0 4px 6px -1px rgb(251 207 232 / 0.2), 0 2px 4px -2px rgb(251 207 232 / 0.15);
+    box-shadow: 0 4px 6px -1px rgb(147 51 234 / 0.12), 0 2px 4px -2px rgb(147 51 234 / 0.08);
   }
   .ns-card-inner {
     @apply rounded-xl border border-slate-200 bg-slate-50 p-3;
   }
   .ns-btn-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-center text-base font-semibold uppercase tracking-wide text-white transition disabled:opacity-50;
-    background: linear-gradient(135deg, #2b8cbe 0%, #1e6b9e 100%);
-    box-shadow: 0 2px 8px -2px rgb(43 140 190 / 0.4), 0 4px 12px -4px rgb(30 107 158 / 0.3);
+    background: linear-gradient(135deg, #9333ea 0%, #6b21a8 100%);
+    box-shadow: 0 2px 8px -2px rgb(147 51 234 / 0.4), 0 4px 12px -4px rgb(126 34 206 / 0.3);
   }
   .ns-btn-primary:hover:not(:disabled) {
-    background: linear-gradient(135deg, #2479a8 0%, #1a5d85 100%);
-    box-shadow: 0 4px 12px -2px rgb(43 140 190 / 0.45), 0 6px 16px -4px rgb(30 107 158 / 0.35);
+    background: linear-gradient(135deg, #7e22ce 0%, #5b21b6 100%);
+    box-shadow: 0 4px 12px -2px rgb(147 51 234 / 0.45), 0 6px 16px -4px rgb(126 34 206 / 0.35);
+  }
+  .ns-btn-primary:active:not(:disabled) {
+    transform: scale(0.98);
   }
   .ns-btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-center text-base font-medium uppercase tracking-wide text-slate-700 transition disabled:opacity-50;
-    border: 1px solid rgb(191 219 234);
-    background: linear-gradient(180deg, rgb(255 255 255) 0%, rgb(240 249 253) 100%);
-    box-shadow: 0 1px 3px rgb(43 140 190 / 0.1);
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-center text-base font-medium uppercase tracking-wide text-slate-700 transition disabled:opacity-50 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2;
+    border: 1px solid rgb(216 180 254);
+    background: linear-gradient(180deg, rgb(255 255 255) 0%, rgb(250 245 255) 100%);
+    box-shadow: 0 1px 3px rgb(147 51 234 / 0.08);
   }
   .ns-btn-secondary:hover:not(:disabled) {
-    border-color: rgb(147 197 219);
-    background: linear-gradient(180deg, rgb(248 252 254) 0%, rgb(224 242 250) 100%);
-    box-shadow: 0 2px 6px rgb(43 140 190 / 0.15);
+    border-color: rgb(192 132 252);
+    background: linear-gradient(180deg, rgb(253 250 255) 0%, rgb(243 232 255) 100%);
+    box-shadow: 0 2px 6px rgb(147 51 234 / 0.12);
   }
-  /* Accent CTA: same blue as primary (e.g. welcome Sign up) */
+  .ns-btn-secondary:active:not(:disabled) {
+    transform: scale(0.98);
+  }
   .ns-btn-accent {
     @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-center text-base font-semibold uppercase tracking-wide text-white transition disabled:opacity-50;
-    background: linear-gradient(135deg, #2b8cbe 0%, #1e6b9e 100%);
-    box-shadow: 0 2px 8px -2px rgb(43 140 190 / 0.4), 0 4px 12px -4px rgb(30 107 158 / 0.25);
+    background: linear-gradient(135deg, #9333ea 0%, #6b21a8 100%);
+    box-shadow: 0 2px 8px -2px rgb(147 51 234 / 0.4), 0 4px 12px -4px rgb(126 34 206 / 0.25);
   }
   .ns-btn-accent:hover:not(:disabled) {
-    background: linear-gradient(135deg, #2479a8 0%, #1a5d85 100%);
-    box-shadow: 0 4px 12px -2px rgb(43 140 190 / 0.5), 0 6px 16px -4px rgb(30 107 158 / 0.3);
+    background: linear-gradient(135deg, #7e22ce 0%, #5b21b6 100%);
+    box-shadow: 0 4px 12px -2px rgb(147 51 234 / 0.5), 0 6px 16px -4px rgb(126 34 206 / 0.3);
+  }
+  .ns-btn-accent:active:not(:disabled) {
+    transform: scale(0.98);
   }
   .ns-stack {
     @apply space-y-6;
@@ -165,8 +205,7 @@ body {
   .ns-stack-tight {
     @apply space-y-4;
   }
-  /* Glowy blue shadow for cards/panels (use with border + bg as needed) */
   .ns-shadow-glow {
-    box-shadow: 0 4px 6px -1px rgb(43 140 190 / 0.15), 0 2px 4px -2px rgb(43 140 190 / 0.1);
+    box-shadow: 0 4px 6px -1px rgb(147 51 234 / 0.12), 0 2px 4px -2px rgb(147 51 234 / 0.08);
   }
 }

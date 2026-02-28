@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
+import { getCurrentRelationshipId } from "@/lib/current-relationship";
 import { RelationshipActions } from "../../relationship-actions";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +12,8 @@ export default async function ManageRelationshipPage() {
   if (!session?.user) redirect("/login");
 
   const relationships = await getMyActiveRelationships();
-  const primary = relationships[0] ?? null;
+  const currentId = await getCurrentRelationshipId();
+  const primary = (currentId ? relationships.find((r) => r.id === currentId) : null) ?? relationships[0] ?? null;
   if (!primary) redirect("/app/us");
 
   return (

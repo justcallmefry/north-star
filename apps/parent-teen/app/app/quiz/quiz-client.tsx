@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Check, ChevronLeft, ChevronRight, Trophy, X } from "lucide-react";
+import { toast } from "sonner";
+import { LoadingSpinner } from "@/components/loading-spinner";
 import type { QuizForTodayResult, QuizQuestion } from "@/lib/quiz";
 import { submitQuiz } from "@/lib/quiz";
 import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
@@ -86,6 +88,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
       onQuizUpdated?.();
       setLoading(false);
       setShowDoneCelebration(true);
+      toast.success("Quiz submitted.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to submit");
       setLoading(false);
@@ -135,7 +138,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
     return (
       <div className="flex min-h-[65vh] items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-200 border-t-brand-500" />
+          <LoadingSpinner size="md" />
           <p className="text-sm text-slate-600">Submitting your quiz…</p>
         </div>
       </div>

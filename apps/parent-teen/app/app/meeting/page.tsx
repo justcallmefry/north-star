@@ -4,7 +4,7 @@ import { format, startOfWeek, endOfWeek } from "date-fns";
 import Image from "next/image";
 import { CalendarRange, ClipboardList } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
-import { getMyActiveRelationships } from "@/lib/relationships";
+import { getCurrentRelationshipId } from "@/lib/current-relationship";
 import { isBuildTime } from "@/lib/build";
 import { getCurrentMeeting, getMeeting } from "@/lib/meetings";
 import { MeetingForm } from "./meeting-form";
@@ -20,8 +20,7 @@ export default async function MeetingPage() {
     const session = await getServerAuthSession();
     if (!session?.user) redirect("/login");
 
-    const relationships = await getMyActiveRelationships();
-    const relationshipId = relationships[0]?.id ?? null;
+    const relationshipId = await getCurrentRelationshipId();
     if (!relationshipId) redirect("/app");
 
     const current = await getCurrentMeeting(relationshipId);

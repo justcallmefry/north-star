@@ -337,33 +337,48 @@ export type HistoryItem = {
     userName: string | null;
     userImage: string | null;
     validation: { reactions: string | null; acknowledgment: string | null } | null;
+    /** True when this slot is for a member who did not answer that day */
+    noResponse?: boolean;
   }[];
   reflections: { userId: string; content: string | null; reaction: string | null }[];
 };
 
+const HISTORY_PAGE_SIZE = 10;
+
+/** Get paginated history: only sessions where at least one person answered. Two slots per session (one per member); missing response shown as "No response that day". */
 export async function getHistory(
   relationshipId: string,
-  cursor?: string,
-  take = 10
-): Promise<{ items: HistoryItem[]; nextCursor: string | null }> {
+  page = 1,
+  pageSize = HISTORY_PAGE_SIZE
+): Promise<{
+  items: HistoryItem[];
+  page: number;
+  totalPages: number;
+  hasPrev: boolean;
+  hasNext: boolean;
+}> {
   const session = await getServerAuthSession();
   if (!session?.user?.id) throw new Error("Not signed in");
 
   await requireActiveMember(session.user.id, relationshipId);
 
-  const baseOpts = {
-    where: { relationshipId, state: "revealed" } as const,
-    orderBy: { sessionDate: "desc" as const } as const,
-    take: take + 1,
-    ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
-  };
+  const memberIds = await getActiveMemberIds(relationshipId);
+  if (memberIds.length === 0) {
+    return { items: [], page: 1, totalPages: 0, hasPrev: false, hasNext: false };
+  }
 
-  type Row = { id: string; userId: string; content: string | null; validations?: { userId: string; reactions: string | null; acknowledgment: string | null }[] };
-  let list: { id: string; sessionDate: Date; prompt: { text: string | null } | null; responses: Row[]; reflections: { userId: string; content: string | null; reaction: string | null }[] }[];
+  const where = {
+    relationshipId,
+    responses: { some: {} },
+  } as const;
 
-  try {
-    const sessions = await prisma.dailySession.findMany({
-      ...baseOpts,
+  const [total, sessionsRaw] = await Promise.all([
+    prisma.dailySession.count({ where }),
+    prisma.dailySession.findMany({
+      where,
+      orderBy: { sessionDate: "desc" as const },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
       include: {
         prompt: true,
         responses: {
@@ -376,26 +391,30 @@ export async function getHistory(
         },
         reflections: { select: { userId: true, content: true, reaction: true } },
       },
-    });
-    list = sessions as typeof list;
+    }),
+  ]);
+
+  type Row = { id: string; userId: string; content: string | null; validations?: { userId: string; reactions: string | null; acknowledgment: string | null }[] };
+  let list: { id: string; sessionDate: Date; prompt: { text: string | null } | null; responses: Row[]; reflections: { userId: string; content: string | null; reaction: string | null }[] }[];
+  try {
+    list = sessionsRaw as typeof list;
   } catch {
-    const sessions = await prisma.dailySession.findMany({
-      ...baseOpts,
+    const fallback = await prisma.dailySession.findMany({
+      where,
+      orderBy: { sessionDate: "desc" as const },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
       include: {
         prompt: true,
         responses: { select: { id: true, userId: true, content: true } },
         reflections: { select: { userId: true, content: true, reaction: true } },
       },
     });
-    list = sessions.map((s) => ({ ...s, responses: s.responses.map((r) => ({ ...r, validations: [] })) })) as typeof list;
+    list = fallback.map((s) => ({ ...s, responses: s.responses.map((r) => ({ ...r, validations: [] as Row["validations"] })) })) as typeof list;
   }
 
-  const hasMore = list.length > take;
-  const listSliced = hasMore ? list.slice(0, take) : list;
-  const nextCursor = hasMore ? listSliced[listSliced.length - 1].id : null;
-
-  const allUserIds: string[] = [];
-  for (const s of listSliced) {
+  const allUserIds = [...new Set(memberIds)];
+  for (const s of list) {
     for (const r of s.responses) {
       if (!allUserIds.includes(r.userId)) allUserIds.push(r.userId);
     }
@@ -406,27 +425,51 @@ export async function getHistory(
       : [];
   const userMap = new Map(users.map((u) => [u.id, { name: u.name, image: u.image }]));
 
-  const items: HistoryItem[] = listSliced.map((s) => ({
-    sessionId: s.id,
-    sessionDate: s.sessionDate,
-    promptText: s.prompt?.text ?? "",
-    responses: s.responses.map((r) => {
-      const u = userMap.get(r.userId);
-      const validations = r.validations ?? [];
-      const partnerVal = validations.find((v) => v.userId !== r.userId) ?? null;
+  const items: HistoryItem[] = list.map((s) => {
+    const responseByUserId = new Map(s.responses.map((r) => [r.userId, r]));
+    const responses = memberIds.map((userId) => {
+      const r = responseByUserId.get(userId);
+      const u = userMap.get(userId);
+      if (r) {
+        const validations = r.validations ?? [];
+        const partnerVal = validations.find((v) => v.userId !== r.userId) ?? null;
+        return {
+          id: r.id,
+          userId: r.userId,
+          content: r.content,
+          userName: u?.name ?? null,
+          userImage: u?.image ?? null,
+          validation: partnerVal ? { reactions: partnerVal.reactions, acknowledgment: partnerVal.acknowledgment } : null,
+        };
+      }
       return {
-        id: r.id,
-        userId: r.userId,
-        content: r.content,
+        id: "",
+        userId,
+        content: null,
         userName: u?.name ?? null,
         userImage: u?.image ?? null,
-        validation: partnerVal ? { reactions: partnerVal.reactions, acknowledgment: partnerVal.acknowledgment } : null,
+        validation: null,
+        noResponse: true,
       };
-    }),
-    reflections: s.reflections.map((r) => ({ userId: r.userId, content: r.content, reaction: r.reaction })),
-  }));
+    });
+    return {
+      sessionId: s.id,
+      sessionDate: s.sessionDate,
+      promptText: s.prompt?.text ?? "",
+      responses,
+      reflections: s.reflections.map((r) => ({ userId: r.userId, content: r.content, reaction: r.reaction })),
+    };
+  });
 
-  return { items, nextCursor };
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const safePage = Math.max(1, Math.min(page, totalPages));
+  return {
+    items,
+    page: safePage,
+    totalPages,
+    hasPrev: safePage > 1,
+    hasNext: safePage < totalPages,
+  };
 }
 
 export async function submitReflection(

@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 10;
 
-type Props = { searchParams: Promise<{ cursor?: string }> };
+type Props = { searchParams: Promise<{ page?: string }> };
 
 const fallback = (
   <main className="min-h-screen p-8">
@@ -27,8 +27,9 @@ export default async function HistoryPage({ searchParams }: Props) {
     const relationshipId = relationships[0]?.id ?? null;
     if (!relationshipId) redirect("/app");
 
-    const { cursor } = await searchParams;
-    const { items, nextCursor } = await getHistory(relationshipId, cursor, PAGE_SIZE);
+    const { page: pageParam } = await searchParams;
+    const page = Math.max(1, parseInt(String(pageParam), 10) || 1);
+    const { items, page: currentPage, totalPages, hasPrev, hasNext } = await getHistory(relationshipId, page, PAGE_SIZE);
     const currentUserId = session.user.id;
 
     const itemsForClient = items.map((item) => ({
@@ -37,6 +38,7 @@ export default async function HistoryPage({ searchParams }: Props) {
         typeof item.sessionDate === "string"
           ? item.sessionDate
           : (item.sessionDate as Date).toISOString(),
+      responses: item.responses.map((r) => ({ ...r, noResponse: r.noResponse ?? false })),
     }));
 
     return (
@@ -53,7 +55,10 @@ export default async function HistoryPage({ searchParams }: Props) {
         <div className="mt-4">
           <HistoryListWithSearch
             items={itemsForClient}
-            nextCursor={nextCursor}
+            page={currentPage}
+            totalPages={totalPages}
+            hasPrev={hasPrev}
+            hasNext={hasNext}
             currentUserId={currentUserId}
             sessionUserName={session.user.name ?? null}
           />

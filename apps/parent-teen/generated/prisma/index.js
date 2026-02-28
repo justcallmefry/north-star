@@ -401,7 +401,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\cfry\\Desktop\\North Star\\apps\\aligned\\generated\\prisma",
+      "value": "C:\\Users\\cfry\\Desktop\\North Star\\apps\\parent-teen\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -419,7 +419,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\cfry\\Desktop\\North Star\\apps\\aligned\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\cfry\\Desktop\\North Star\\apps\\parent-teen\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

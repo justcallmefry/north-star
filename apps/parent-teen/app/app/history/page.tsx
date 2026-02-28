@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "@/lib/auth";
-import { getMyActiveRelationships } from "@/lib/relationships";
+import { getCurrentRelationshipId } from "@/lib/current-relationship";
 import { isBuildTime } from "@/lib/build";
 import { getHistory } from "@/lib/sessions";
 import { HistoryListWithSearch } from "./history-list-with-search";
@@ -23,8 +23,7 @@ export default async function HistoryPage({ searchParams }: Props) {
     const session = await getServerAuthSession();
     if (!session?.user) redirect("/login");
 
-    const relationships = await getMyActiveRelationships();
-    const relationshipId = relationships[0]?.id ?? null;
+    const relationshipId = await getCurrentRelationshipId();
     if (!relationshipId) redirect("/app");
 
     const { cursor } = await searchParams;

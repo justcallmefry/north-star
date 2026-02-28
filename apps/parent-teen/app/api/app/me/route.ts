@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionFromRequest } from "@/lib/auth";
 import { getActiveRelationshipsForUser } from "@/lib/relationships";
+import { CURRENT_RELATIONSHIP_COOKIE_NAME } from "@/lib/current-relationship";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -52,6 +53,11 @@ export async function GET(request: Request) {
     }
 
     const relationships = await getActiveRelationshipsForUser(session.user.id);
+    const cookieRid = parseCookies(cookieHeader)[CURRENT_RELATIONSHIP_COOKIE_NAME];
+    const currentRelationshipId =
+      cookieRid && relationships.some((r) => r.id === cookieRid)
+        ? cookieRid
+        : relationships[0]?.id ?? null;
     return NextResponse.json(
       {
         session: { user: session.user },
@@ -60,6 +66,7 @@ export async function GET(request: Request) {
           name: r.name,
           status: r.status,
         })),
+        currentRelationshipId,
       },
       { headers: { "Cache-Control": "private, no-store" } }
     );

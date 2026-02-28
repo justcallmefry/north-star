@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { LoadingSpinner } from "@/components/loading-spinner";
 import { TODAY_IMAGE_PATHS, pickDistinctSeeded } from "@/lib/today-images";
 import { AppPageClient } from "./app-page-client";
 import type { AppPageInitialData, Relationship } from "./app-page-client";
@@ -85,7 +86,8 @@ export function AppPageLoader() {
 
   if (status === "loading" || !data) {
     return (
-      <main className="flex min-h-[40vh] items-center justify-center p-8">
+      <main className="flex min-h-[40vh] flex-col items-center justify-center gap-3 p-8">
+        <LoadingSpinner size="lg" />
         <p className="text-slate-500 text-sm">Loading…</p>
       </main>
     );

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
+import { getCurrentRelationshipId } from "@/lib/current-relationship";
 import { prisma } from "@/lib/prisma";
 import { RelationshipActions } from "../relationship-actions";
 import { ProfileForm } from "./profile-form";
@@ -16,7 +17,8 @@ export default async function UsPage() {
   if (!session?.user) redirect("/login");
 
   const relationships = await getMyActiveRelationships();
-  const primary = relationships[0] ?? null;
+  const currentId = await getCurrentRelationshipId();
+  const primary = (currentId ? relationships.find((r) => r.id === currentId) : null) ?? relationships[0] ?? null;
   const currentName = session.user.name ?? "";
   const currentAvatar = (session.user.image as string | null) ?? "";
 

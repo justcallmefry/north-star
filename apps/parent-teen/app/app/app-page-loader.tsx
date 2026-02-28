@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { LoadingSpinner } from "@/components/loading-spinner";
 import { TODAY_IMAGE_PATHS, pickDistinctSeeded } from "@/lib/today-images";
 import { AppPageClient } from "./app-page-client";
 import type { AppPageInitialData, Relationship } from "./app-page-client";
@@ -53,11 +54,13 @@ export function AppPageLoader() {
             status: r.status ?? "active",
           })
         );
+        const currentRelationshipId = json.currentRelationshipId ?? null;
         const dateSeed = new Date().toISOString().slice(0, 10);
         const todayImagePaths = pickDistinctSeeded(TODAY_IMAGE_PATHS, 4, dateSeed);
         setData({
           session: { user: json.session?.user ?? {} },
           relationships,
+          currentRelationshipId,
           todayImagePaths,
         });
         setStatus("ok");
@@ -85,7 +88,8 @@ export function AppPageLoader() {
 
   if (status === "loading" || !data) {
     return (
-      <main className="flex min-h-[40vh] items-center justify-center p-8">
+      <main className="flex min-h-[40vh] flex-col items-center justify-center gap-3 p-8">
+        <LoadingSpinner size="lg" />
         <p className="text-slate-500 text-sm">Loading…</p>
       </main>
     );

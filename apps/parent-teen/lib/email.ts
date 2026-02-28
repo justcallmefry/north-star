@@ -64,7 +64,7 @@ function buildMagicLinkHtml(to: string, url: string, origin: string): string {
       <tr>
         <td style="padding:24px 32px 16px;">
           <a href="${url}"
-             style="display:inline-block;padding:14px 28px;border-radius:10px;background:#2b8cbe;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;text-align:center;">
+             style="display:inline-block;padding:14px 28px;border-radius:10px;background:#9333ea;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;text-align:center;">
             Sign in to Aligned
           </a>
         </td>
@@ -121,7 +121,7 @@ function buildBetaWelcomeHtml(to: string, appUrl: string): { subject: string; ht
       <tr>
         <td style="padding:24px 32px 16px;">
           <a href="${signInUrl}"
-             style="display:inline-block;padding:14px 28px;border-radius:10px;background:#2b8cbe;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;text-align:center;">
+             style="display:inline-block;padding:14px 28px;border-radius:10px;background:#9333ea;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;text-align:center;">
             Sign in and answer today&apos;s question
           </a>
         </td>

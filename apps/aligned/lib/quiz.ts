@@ -222,6 +222,88 @@ export async function getQuizForToday(
   return result;
 }
 
+/** Returns quiz for a specific date only if a session exists (no create). Used for "Yesterday's results". */
+export async function getQuizForDate(
+  relationshipId: string,
+  dateStr: string
+): Promise<QuizForTodayResult | null> {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return null;
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) return null;
+  await requireActiveMember(session.user.id, relationshipId);
+
+  const sessionDate = new Date(dateStr + "T00:00:00.000Z");
+  const quizSession = await prisma.quizSession.findUnique({
+    where: {
+      relationshipId_sessionDate: { relationshipId, sessionDate },
+    },
+    include: {
+      participations: {
+        include: { user: { select: { id: true, name: true, image: true } } },
+      },
+    },
+  });
+  if (!quizSession) return null;
+
+  const dayIndex = getQuizDayIndex(quizSession.sessionDate);
+  const questions = getQuizQuestions(dayIndex);
+  const myPart = quizSession.participations.find((p) => p.userId === session.user!.id);
+  const partnerPart = quizSession.participations.find((p) => p.userId !== session.user!.id);
+  const partner = quizSession.participations.find((p) => p.userId !== session.user!.id)?.user;
+  const otherMember = await prisma.relationshipMember.findFirst({
+    where: { relationshipId, userId: { not: session.user!.id }, leftAt: null },
+    include: { user: { select: { name: true } } },
+  });
+  const partnerName = partner?.name ?? otherMember?.user?.name ?? null;
+  const parseIndices = (s: string): number[] => {
+    try {
+      const arr = JSON.parse(s) as number[];
+      return Array.isArray(arr) ? arr : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const result: QuizForTodayResult = {
+    quizSessionId: quizSession.id,
+    sessionDate: quizSession.sessionDate.toISOString().slice(0, 10),
+    dayIndex,
+    questions,
+    state: quizSession.state === "revealed" ? "revealed" : "open",
+    myParticipation: myPart ? { answerIndices: parseIndices(myPart.answerIndices), guessIndices: parseIndices(myPart.guessIndices) } : null,
+    partnerSubmitted: !!partnerPart,
+    partnerName,
+    myImage: (session.user as { image?: string | null }).image ?? null,
+    partnerImage: partner?.image ?? null,
+  };
+
+  if (quizSession.state === "revealed" && myPart && partnerPart) {
+    const myAnswers = parseIndices(myPart.answerIndices);
+    const myGuesses = parseIndices(myPart.guessIndices);
+    const partnerAnswers = parseIndices(partnerPart.answerIndices);
+    const partnerGuesses = parseIndices(partnerPart.guessIndices);
+    let myScore = 0;
+    let partnerScore = 0;
+    for (let i = 0; i < 5; i++) {
+      if (myGuesses[i] === partnerAnswers[i]) myScore++;
+      if (partnerGuesses[i] === myAnswers[i]) partnerScore++;
+    }
+    result.reveal = {
+      myScore,
+      partnerScore,
+      myAnswers,
+      myGuesses,
+      partnerAnswers,
+      partnerGuesses,
+      partnerName: partner?.name ?? null,
+      overallMyScore: myScore,
+      overallPartnerScore: partnerScore,
+      overallTotal: 5,
+    };
+  }
+  return result;
+}
+
 export async function submitQuiz(
   relationshipId: string,
   answerIndices: number[],

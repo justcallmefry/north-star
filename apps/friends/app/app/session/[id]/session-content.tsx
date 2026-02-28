@@ -2,7 +2,9 @@
 
 import { useState, useMemo, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Mic } from "lucide-react";
+import { AlertCircle, Mic } from "lucide-react";
+import { toast } from "sonner";
+import { LoadingSpinner } from "@/components/loading-spinner";
 import { submitResponse, revealSession, submitReflection } from "@/lib/sessions";
 import type { GetSessionResult } from "@/lib/sessions";
 import { NotifyPartnerButton } from "../../notify-partner-button";
@@ -39,6 +41,7 @@ export function SessionContent({ data, currentUserId }: Props) {
     setLoading("submit");
     try {
       await submitResponse(data.sessionId, text);
+      toast.success("Answer saved.");
       router.refresh();
       // Keep loading as "submit" until refreshed data arrives (see useEffect below)
     } catch (err) {
@@ -54,6 +57,7 @@ export function SessionContent({ data, currentUserId }: Props) {
       const result = await revealSession(data.sessionId);
       setRevealData(result);
       setRevealed(true);
+      toast.success("Revealed.");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to reveal");
@@ -69,6 +73,7 @@ export function SessionContent({ data, currentUserId }: Props) {
     try {
       await submitReflection(data.sessionId, undefined, reaction.trim());
       setReaction("");
+      toast.success("Response sent.");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save");
@@ -259,7 +264,7 @@ export function SessionContent({ data, currentUserId }: Props) {
           <div className="flex flex-col items-center gap-4">
             {loading === "submit" ? (
               <div className="flex flex-col items-center gap-2">
-                <div className="h-6 w-6 animate-spin rounded-full border-2 border-brand-200 border-t-brand-500" />
+                <LoadingSpinner size="sm" />
                 <p className="text-sm text-slate-600">Saving your answer…</p>
               </div>
             ) : (
@@ -346,7 +351,7 @@ export function SessionContent({ data, currentUserId }: Props) {
             ))}
           </div>
 
-          <p className="text-center text-base text-slate-600 sm:text-lg">
+          <p className="text-center text-lg font-medium text-brand-700 sm:text-xl">
             {AFTER_REVEAL_LINE}
           </p>
 
@@ -394,7 +399,10 @@ export function SessionContent({ data, currentUserId }: Props) {
       )}
 
       {error && (
-        <p className="text-base text-red-500 sm:text-lg">{error}</p>
+        <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">
+          <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" aria-hidden />
+          <p className="text-base sm:text-lg">{error}</p>
+        </div>
       )}
     </div>
   );

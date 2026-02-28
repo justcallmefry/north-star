@@ -7,7 +7,7 @@ import { Check, ChevronLeft, ChevronRight, HelpCircle, Trophy, X } from "lucide-
 import { toast } from "sonner";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import type { QuizForTodayResult, QuizQuestion } from "@/lib/quiz";
-import { submitQuiz } from "@/lib/quiz";
+import { getQuizForDate, submitQuiz } from "@/lib/quiz";
 import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
 
 type Props = {
@@ -40,6 +40,8 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
   const [showDoneCelebration, setShowDoneCelebration] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitAttempted, setSubmitAttempted] = useState(false);
+  /** undefined = not loaded, null = no session yesterday, data = show yesterday's results */
+  const [yesterdayData, setYesterdayData] = useState<QuizForTodayResult | null | undefined>(undefined);
 
   useEffect(() => {
     setData(initialData);
@@ -135,30 +137,120 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
 
   if (data.state === "revealed" && data.reveal) {
     return (
-      <QuizRevealView
-        questions={data.questions}
-        reveal={data.reveal}
-        sessionUserName={sessionUserName}
-        sessionUserImage={sessionUserImage}
-        partnerImage={partnerImage}
-      />
+      <div className="space-y-6">
+        <QuizPageHeader />
+        <QuizRevealView
+          questions={data.questions}
+          reveal={data.reveal}
+          sessionUserName={sessionUserName}
+          sessionUserImage={sessionUserImage}
+          partnerImage={partnerImage}
+        />
+      </div>
     );
   }
 
   if (data.myParticipation && !data.partnerSubmitted) {
     return (
-      <div className="ns-card space-y-4 py-8 text-center">
-        <p className="text-lg font-medium text-slate-700">
-          You&apos;re done! Waiting for your partner to finish.
-        </p>
-        <p className="text-sm text-slate-500">
-          We&apos;ll show scores once you&apos;ve both answered.
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <NotifyPartnerQuizButton variant="quiz" size="sm" />
-          <Link href="/app" className="ns-btn-secondary inline-flex">
+      <div className="space-y-6">
+        <QuizPageHeader />
+        <div className="ns-card space-y-4 py-8 text-center">
+          <p className="text-lg font-medium text-slate-700">
+            You&apos;re done! Waiting for your partner to finish.
+          </p>
+          <p className="text-sm text-slate-500">
+            We&apos;ll show scores once you&apos;ve both answered.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <NotifyPartnerQuizButton variant="quiz" size="sm" />
+            <Link href="/app" className="ns-btn-secondary inline-flex">
+              Back to today
+            </Link>
+          </div>
+        </div>
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={() => {
+              setYesterdayData(undefined);
+              const d = new Date();
+              d.setDate(d.getDate() - 1);
+              const ys = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+              getQuizForDate(relationshipId, ys).then((r) => setYesterdayData(r ?? null));
+            }}
+            className="text-sm font-medium text-brand-600 underline hover:text-brand-700"
+          >
+            Yesterday&apos;s results
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (yesterdayData !== undefined) {
+    if (yesterdayData === null) {
+      return (
+        <div className="space-y-6">
+          <QuizPageHeader />
+          <div className="ns-card py-8 text-center">
+            <p className="text-slate-600">No results from yesterday.</p>
+            <button type="button" onClick={() => setYesterdayData(undefined)} className="mt-3 text-sm font-medium text-brand-600 underline hover:text-brand-700">
+              Back to today
+            </button>
+          </div>
+        </div>
+      );
+    }
+    if (yesterdayData.reveal) {
+      return (
+        <div className="space-y-6">
+          <QuizPageHeader />
+          <p className="text-center text-sm font-medium text-slate-500">Yesterday&apos;s results</p>
+          <QuizRevealView
+            questions={yesterdayData.questions}
+            reveal={yesterdayData.reveal}
+            sessionUserName={sessionUserName}
+            sessionUserImage={sessionUserImage}
+            partnerImage={yesterdayData.partnerImage ?? null}
+          />
+          <div className="flex justify-center">
+            <button type="button" onClick={() => setYesterdayData(undefined)} className="text-sm font-medium text-brand-600 underline hover:text-brand-700">
+              Back to today
+            </button>
+          </div>
+        </div>
+      );
+    }
+    if (yesterdayData.myParticipation && !yesterdayData.partnerSubmitted) {
+      const ans = yesterdayData.myParticipation.answerIndices;
+      return (
+        <div className="space-y-6">
+          <QuizPageHeader />
+          <p className="text-center text-sm font-medium text-slate-500">Yesterday&apos;s results — only you answered</p>
+          <div className="space-y-3">
+            {yesterdayData.questions.map((q, i) => (
+              <div key={i} className="ns-card p-4">
+                <p className="font-semibold text-slate-900">{q.text}</p>
+                <p className="mt-2 text-slate-600">{q.options[ans[i] ?? 0] ?? "—"}</p>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-center">
+            <button type="button" onClick={() => setYesterdayData(undefined)} className="text-sm font-medium text-brand-600 underline hover:text-brand-700">
+              Back to today
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="space-y-6">
+        <QuizPageHeader />
+        <div className="ns-card py-8 text-center">
+          <p className="text-slate-600">No results from yesterday.</p>
+          <button type="button" onClick={() => setYesterdayData(undefined)} className="mt-3 text-sm font-medium text-brand-600 underline hover:text-brand-700">
             Back to today
-          </Link>
+          </button>
         </div>
       </div>
     );
@@ -348,6 +440,22 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
         <Link href="/app" className="text-sm text-slate-500 hover:text-slate-700">
           Back to today
         </Link>
+      </p>
+    </div>
+  );
+}
+
+function QuizPageHeader() {
+  return (
+    <div className="flex flex-col items-center text-center">
+      <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-lg shadow-brand-200/80 ring-2 ring-white ring-offset-2">
+        <HelpCircle className="h-8 w-8" strokeWidth={2} />
+      </div>
+      <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
+        Quiz
+      </h1>
+      <p className="mt-1 max-w-md text-sm text-slate-600 sm:text-base">
+        Answer for yourself, then guess what your partner would pick.
       </p>
     </div>
   );

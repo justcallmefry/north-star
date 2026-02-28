@@ -99,6 +99,9 @@ export function HistoryListWithSearch({
             <p className="mt-1 text-sm text-slate-500">
               Answer today&apos;s question and reveal together to see it here.
             </p>
+            <p className="mt-2 text-sm text-slate-400">
+              Every day you both answer, you&apos;ll add another moment to this history.
+            </p>
           </li>
         ) : filtered.length === 0 ? (
           <li className="ns-card py-10 text-center">
@@ -201,6 +204,18 @@ export function HistoryListWithSearch({
           >
             Load more
           </Link>
+        </p>
+      )}
+
+      {items.length > 0 && (
+        <p className="mt-6">
+          <button
+            type="button"
+            onClick={() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "smooth" })}
+            className="text-sm font-medium text-brand-600 underline hover:text-brand-700 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 rounded"
+          >
+            Back to top
+          </button>
         </p>
       )}
     </>

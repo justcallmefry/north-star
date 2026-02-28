@@ -7,7 +7,7 @@ import { Home, CalendarRange, History, User, HelpCircle, Scale } from "lucide-re
 const NAV_ITEMS = [
   { href: "/app", label: "Today", icon: Home },
   { href: "/app/quiz", label: "Quiz", icon: HelpCircle },
-  { href: "/app/agreement", label: "Agreement", icon: Scale },
+  { href: "/app/agreement", label: "Alignment", icon: Scale },
   { href: "/app/history", label: "Responses", icon: History },
   { href: "/app/meeting", label: "Our Week", icon: CalendarRange },
   { href: "/app/us", label: "Profile", icon: User },
@@ -22,7 +22,7 @@ export function BottomNav() {
     <nav
       className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 md:hidden"
       style={{
-        backgroundColor: "#2b8cbe",
+        backgroundColor: "#9333ea",
         paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))",
         transform: "translateZ(0)",
         WebkitTransform: "translateZ(0)",
@@ -49,7 +49,7 @@ export function BottomNav() {
             >
               <span
                 className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors ${
-                  isActive ? "bg-white text-[#2b8cbe]" : "bg-white/20 text-white"
+                  isActive ? "bg-white text-[#9333ea]" : "bg-white/20 text-white"
                 }`}
               >
                 <Icon className="h-5 w-5" strokeWidth={2.5} />

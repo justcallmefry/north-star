@@ -2,34 +2,35 @@ import { PrismaClient } from "../generated/prisma";
 
 const prisma = new PrismaClient();
 
+/** Positive, archival prompts for parent + young adult. Safe to read later. */
 const DAILY_PROMPTS: Array<{
   text: string;
   momentText?: string | null;
   category: "gratitude" | "communication" | "reflection" | "fun" | "growth" | "other";
   tone?: "light" | "deep" | "playful" | "serious";
 }> = [
-  // Gratitude — worded so they work whether you open the app in the morning or evening
-  { text: "What's one small thing that made you smile lately?", category: "gratitude", tone: "light", momentText: "If you want, tell your partner one thing you appreciate about them right now." },
+  // Gratitude — positive, worth looking back on
+  { text: "What's one small thing that made you smile lately?", category: "gratitude", tone: "light", momentText: "If you want, share one thing you appreciate about the other person right now." },
   { text: "What's something you're glad you have in your life right now?", category: "gratitude", tone: "light" },
   { text: "Who or what felt like a gift to you this week?", category: "gratitude", tone: "light" },
   { text: "What's a moment lately you'd want to remember?", category: "gratitude", tone: "light", momentText: "If it feels right, share something that's been on your mind lately." },
   { text: "What's something simple you're thankful for right now?", category: "gratitude", tone: "light" },
   { text: "What's felt good lately, even if it was small?", category: "gratitude", tone: "light" },
-  { text: "What's one thing about your partner you were glad for recently?", category: "gratitude", tone: "light", momentText: "If you'd like, name one small way they showed up for you this week." },
+  { text: "What's one thing about the other person you were glad for recently?", category: "gratitude", tone: "light", momentText: "If you'd like, name one small way they showed up for you this week." },
   { text: "What's a part of your routine that you actually enjoy?", category: "gratitude", tone: "light" },
   { text: "What surprised you in a good way lately?", category: "gratitude", tone: "light" },
   { text: "What's made you feel a little bit lighter lately?", category: "gratitude", tone: "light" },
   // Communication (connection)
-  { text: "What's something you appreciated about us this week?", category: "communication", tone: "light" },
-  { text: "What's one thing you'd want your partner to know about how you're doing?", category: "communication", tone: "light", momentText: "If it feels right, share something that's been on your mind lately." },
+  { text: "What's something you appreciated about the two of you this week?", category: "communication", tone: "light" },
+  { text: "What's one thing you'd want them to know about how you're doing?", category: "communication", tone: "light", momentText: "If it feels right, share something that's been on your mind lately." },
   { text: "What's been on your mind more than you expected lately?", category: "communication", tone: "deep" },
   { text: "What's a moment when you felt really heard this week?", category: "communication", tone: "light" },
   { text: "What do you wish you had more time to talk about together?", category: "communication", tone: "deep" },
-  { text: "What's something small that made you feel connected to your partner recently?", category: "communication", tone: "light" },
+  { text: "What's something small that made you feel connected recently?", category: "communication", tone: "light" },
   { text: "What's one thing you're looking forward to doing together?", category: "communication", tone: "light" },
-  { text: "What's a question you've been curious to ask your partner?", category: "communication", tone: "playful" },
+  { text: "What's a question you've been curious to ask them?", category: "communication", tone: "playful" },
   { text: "What felt easy between you two this week?", category: "communication", tone: "light" },
-  { text: "What's something you'd want to do more of as a couple?", category: "communication", tone: "light" },
+  { text: "What's something you'd want to do more of together?", category: "communication", tone: "light" },
   // Reflection
   { text: "What's one small thing that's brought you comfort lately?", category: "reflection", tone: "light" },
   { text: "What's been taking up more of your energy than you expected?", category: "reflection", tone: "deep", momentText: "If you want, share one thing that's felt heavy or light lately." },
@@ -47,7 +48,7 @@ const DAILY_PROMPTS: Array<{
   { text: "What's something you'd love to do together just for fun?", category: "fun", tone: "playful" },
   { text: "What's a show, song, or game you've been into lately?", category: "fun", tone: "playful" },
   { text: "What's something that brought you joy, even for a moment?", category: "fun", tone: "light" },
-  { text: "What's a place you'd love to go with your partner when you get the chance?", category: "fun", tone: "playful" },
+  { text: "What's a place you'd love to go together when you get the chance?", category: "fun", tone: "playful" },
   { text: "What's something you used to do for fun that you'd like to try again?", category: "fun", tone: "playful" },
   { text: "What's a memory of the two of you that still makes you smile?", category: "fun", tone: "light" },
   { text: "What's something that made you feel playful this week?", category: "fun", tone: "playful" },
@@ -60,7 +61,7 @@ async function main() {
     console.log(`Found ${existing} daily prompts. Skipping seed (run once).`);
     return;
   }
-  console.log("Seeding 40 daily prompts...");
+  console.log("Seeding 40 daily prompts (parent-teen: positive, archival)...");
   await prisma.prompt.createMany({
     data: DAILY_PROMPTS.map((p) => ({
       text: p.text,

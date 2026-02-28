@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { format, addDays } from "date-fns";
 import { CalendarRange } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
-import { getMyActiveRelationships } from "@/lib/relationships";
+import { getCurrentRelationshipId } from "@/lib/current-relationship";
 import { isBuildTime } from "@/lib/build";
 import { getMeetingHistory, getCurrentMeeting } from "@/lib/meetings";
 
@@ -33,8 +33,7 @@ export default async function MeetingHistoryPage() {
     const session = await getServerAuthSession();
     if (!session?.user) redirect("/login");
 
-    const relationships = await getMyActiveRelationships();
-    const relationshipId = relationships[0]?.id ?? null;
+    const relationshipId = await getCurrentRelationshipId();
     if (!relationshipId) redirect("/app");
 
     const items = await getMeetingHistory(relationshipId);

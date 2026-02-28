@@ -11,6 +11,8 @@ export type Relationship = { id: string; name: string | null; status: string };
 export type AppPageInitialData = {
   session: { user: { id: string; email?: string | null; name?: string | null; image?: string | null } };
   relationships: Relationship[];
+  /** Which relationship the user is currently viewing (for dual-parent switcher). */
+  currentRelationshipId: string | null;
   /** Four today-image paths chosen on the server (deterministic by date) to avoid hydration mismatch. */
   todayImagePaths: string[];
 };
@@ -18,8 +20,8 @@ export type AppPageInitialData = {
 type Props = { initialData: AppPageInitialData };
 
 export function AppPageClient({ initialData }: Props) {
-  const { session, relationships, todayImagePaths } = initialData;
-  const relationshipId = relationships[0]?.id ?? null;
+  const { session, relationships, currentRelationshipId, todayImagePaths } = initialData;
+  const relationshipId = currentRelationshipId ?? relationships[0]?.id ?? null;
   const displayName = session.user.name ?? session.user.email ?? "";
   const distinctImages = todayImagePaths;
 
@@ -85,7 +87,7 @@ export function AppPageClient({ initialData }: Props) {
                   className="ns-btn-secondary w-full !py-2.5 border-l-4 border-l-brand-500 bg-brand-50/40 hover:bg-brand-50/70"
                 >
                   <HelpCircle className="h-4 w-4" />
-                  Daily quiz
+                  Start quiz
                 </Link>
                 <div className="flex items-center gap-3">
                   <TodayRandomImage src={distinctImages[0]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl" sizes="96px" />
@@ -100,7 +102,7 @@ export function AppPageClient({ initialData }: Props) {
                   className="ns-btn-secondary w-full !py-2.5 border-l-4 border-l-brand-500 bg-brand-50/40 hover:bg-brand-50/70"
                 >
                   <Scale className="h-4 w-4" />
-                  Daily agreement
+                  Start check-in
                 </Link>
                 <div className="flex items-center gap-3">
                   <p className="text-sm text-slate-500 leading-relaxed flex-1 min-w-0">
@@ -159,6 +161,9 @@ export function AppPageClient({ initialData }: Props) {
             </p>
             <p className="mt-1 text-xs text-slate-500">
               One question a day—the most valuable screen time you&apos;ll do together.
+            </p>
+            <p className="mt-1 text-xs text-slate-400">
+              Calm, private, no feed. Just you two.
             </p>
             <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Link href="/app/pair" className="ns-btn-primary" prefetch={false}>

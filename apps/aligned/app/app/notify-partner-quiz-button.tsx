@@ -4,7 +4,7 @@ type Variant = "quiz" | "agreement";
 
 const MESSAGES: Record<Variant, string> = {
   quiz: "I just finished the daily quiz — your turn! Think you can beat my score?",
-  agreement: "Aligned: check-in?",
+  agreement: "I just took the questions about being aligned. Take a look and let's see who gets closest to each other's answers.",
 };
 
 const LABELS: Record<Variant, string> = {

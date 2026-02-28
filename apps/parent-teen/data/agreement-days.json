@@ -1,32 +1,212 @@
 [
-  {"day":1,"questions":[{"text":"I need a lot of alone time to recharge my social battery."},{"text":"I believe couples should share all of their bank accounts and finances."},{"text":"When we argue, I prefer to walk away and cool down before talking."},{"text":"I am completely comfortable with silence when we are hanging out together."},{"text":"I care more about celebrating big milestones (anniversaries, birthdays) than small daily gestures."}]},
-  {"day":2,"questions":[{"text":"I think it is important for partners to have completely separate hobbies."},{"text":"I am the type of person who likes to have every detail of a vacation planned out."},{"text":"I would rather spend money on a memorable experience than a physical item."},{"text":"Keeping the house perfectly clean and organized is a top priority for me."},{"text":"I am very comfortable initiating conversations about physical intimacy and our sex life."}]},
-  {"day":3,"questions":[{"text":"I prefer sticking to a comfortable routine over spontaneous, last-minute plans."},{"text":"I feel completely comfortable being my weirdest, most unfiltered self around you."},{"text":"I believe flirting with other people is harmless as long as it doesn't go further."},{"text":"I rely heavily on my partner to help me make big life decisions."},{"text":"I would be willing to relocate to a new city or country for my partner's dream job."}]},
-  {"day":4,"questions":[{"text":"I feel incredibly loved when my partner takes over my household chores."},{"text":"I have a hard time letting go of grudges after a major disagreement."},{"text":"I think it's healthy for couples to occasionally go to bed angry."},{"text":"I am completely transparent with my partner about my current financial debts and spending."},{"text":"I prefer our weekends to be packed with social events and seeing friends."}]},
-  {"day":5,"questions":[{"text":"I believe pets are equal members of the family."},{"text":"I am very quick to apologize when I know I am in the wrong."},{"text":"I expect my partner to be my absolute best friend."},{"text":"I would rather cook a meal together at home than go out to a fancy restaurant."},{"text":"I feel perfectly secure when my partner spends the evening out with their friends."}]},
-  {"day":6,"questions":[{"text":"I get annoyed when my partner is on their phone during meals or quality time."},{"text":"I think it is important to spend holidays with extended family rather than just the two of us."},{"text":"I am comfortable letting my partner choose what we watch on TV most of the time."},{"text":"I believe we divide household chores fairly."},{"text":"I prefer to vent about a bad day rather than have my partner try to fix the problem."}]},
-  {"day":7,"questions":[{"text":"I am highly ambitious and career-driven."},{"text":"I believe it is important to check in with each other via text throughout the workday."},{"text":"I feel comfortable sharing my phone passcode with my partner."},{"text":"I like receiving frequent physical affection (hugs, kisses, hand-holding) throughout the day."},{"text":"I handle constructive criticism from my partner well."}]},
-  {"day":8,"questions":[{"text":"I prioritize staying physically fit and healthy."},{"text":"I enjoy hosting parties and having people over to our home."},{"text":"I get stressed easily when our plans change at the last minute."},{"text":"I think a shared sense of humor is one of the most important parts of a relationship."},{"text":"I feel a strong need to impress my partner's friends and family."}]},
-  {"day":9,"questions":[{"text":"I am a naturally jealous person in romantic relationships."},{"text":"I prefer sleeping with the room completely dark and cold."},{"text":"I believe in maintaining a strict budget for our personal spending."},{"text":"I would rather receive a thoughtful, handmade gift than an expensive store-bought one."},{"text":"I feel comfortable discussing my past relationships with my current partner."}]},
-  {"day":10,"questions":[{"text":"I think it is perfectly fine to have close friends of the gender I am attracted to."},{"text":"I consider myself to be the more practical and logical one in this relationship."},{"text":"I enjoy engaging in deep, philosophical conversations."},{"text":"I am someone who needs a clear plan for where we will be in 5 to 10 years."},{"text":"I easily notice when my partner is feeling stressed or down."}]},
-  {"day":11,"questions":[{"text":"I prefer to tackle the most difficult tasks first thing in the morning."},{"text":"I believe strongly in traditional gender roles within a household."},{"text":"I feel very anxious when we are running late for an event."},{"text":"I would rather confront a stranger being rude than let it slide."},{"text":"I believe going to couples counseling is a healthy tool, not a sign of failure."}]},
-  {"day":12,"questions":[{"text":"I feel a strong connection to my spiritual or religious beliefs."},{"text":"I like to dress up and look my best, even for casual outings."},{"text":"I am very good at keeping secrets."},{"text":"I think couples should always vote for the same political candidates."},{"text":"I prefer to take the lead in planning our date nights."}]},
-  {"day":13,"questions":[{"text":"I frequently experience 'FOMO' (Fear Of Missing Out) when I stay in."},{"text":"I find it easy to admit when I am feeling vulnerable or scared."},{"text":"I believe keeping a little bit of mystery keeps a relationship exciting."},{"text":"I enjoy taking risks, whether in business, finances, or recreation."},{"text":"I expect my partner to defend me in public, even if I am wrong."}]},
-  {"day":14,"questions":[{"text":"I prefer living in a bustling city over a quiet rural area."},{"text":"I am a very nostalgic person who holds onto keepsakes and memories."},{"text":"I think it is important to establish boundaries with our parents/in-laws."},{"text":"I feel energized after a long workout."},{"text":"I love discovering and trying new foods and cuisines."}]},
-  {"day":15,"questions":[{"text":"I am comfortable letting my partner drive when we are in the car together."},{"text":"I find public displays of affection (PDA) embarrassing."},{"text":"I believe life is too short to work a job I don't love, even if it pays well."},{"text":"I consider myself a perfectionist in almost everything I do."},{"text":"I need my partner to verbally tell me they love me every single day."}]},
-  {"day":16,"questions":[{"text":"I prefer to buy groceries in bulk rather than making frequent small trips."},{"text":"I am very affected by the mood and energy of the people around me."},{"text":"I think social media is generally harmful to relationships."},{"text":"I would rather hire a professional for home repairs than try to do it myself."},{"text":"I actively try to learn new things and expand my skills."}]},
-  {"day":17,"questions":[{"text":"I enjoy playing board games or video games as a way to connect."},{"text":"I have a difficult time saying 'no' when people ask me for favors."},{"text":"I believe the spark in a relationship requires constant, intentional effort."},{"text":"I am the more spontaneous one in our relationship."},{"text":"I care deeply about keeping up with current events and the news."}]},
-  {"day":18,"questions":[{"text":"I prefer having a few very close friends over a large group of acquaintances."},{"text":"I tend to overthink conversations after they have happened."},{"text":"I believe taking separate vacations from each other occasionally is healthy."},{"text":"I enjoy giving advice when someone comes to me with a problem."},{"text":"I feel that our current work-life balance is exactly where it needs to be."}]},
-  {"day":19,"questions":[{"text":"I enjoy being the center of attention in a room full of people."},{"text":"I am very strict about my personal morning routine."},{"text":"I believe that 'white lies' are sometimes necessary to spare someone's feelings."},{"text":"I feel comfortable asking my partner to change a habit that bothers me."},{"text":"I would rather have a quiet night reading or watching a movie than go to a loud bar."}]},
-  {"day":20,"questions":[{"text":"I think it is important to celebrate Valentine's Day."},{"text":"I handle physical pain or sickness very well without complaining."},{"text":"I believe true love means never having to hide your flaws."},{"text":"I am motivated more by the fear of failure than the desire for success."},{"text":"I like to listen to loud music while I clean or work."}]},
-  {"day":21,"questions":[{"text":"I am someone who holds on to items 'just in case' I need them later."},{"text":"I think sharing passwords to social media accounts is a sign of trust."},{"text":"I prefer my living space to be minimalist with very little clutter."},{"text":"I enjoy engaging in friendly, competitive banter with my partner."},{"text":"I believe everything happens for a reason."}]},
-  {"day":22,"questions":[{"text":"I am generally an optimistic person who looks on the bright side."},{"text":"I think it is important to dress up nicely when going to the airport."},{"text":"I would rather cook breakfast together than go out for brunch."},{"text":"I value my partner's opinion more than my friends' opinions."},{"text":"I enjoy spending time outdoors in nature (hiking, camping, etc.)."}]},
-  {"day":23,"questions":[{"text":"I am comfortable discussing my deepest fears with my partner."},{"text":"I prefer to resolve arguments through written communication (text/letter)."},{"text":"I believe that opposites attract and make the best couples."},{"text":"I care a lot about the brand names of the clothes and items I buy."},{"text":"I feel more productive when I am working under a tight deadline."}]},
-  {"day":24,"questions":[{"text":"I think it's important to have dedicated 'date nights' scheduled in advance."},{"text":"I get frustrated when things don't go exactly according to my plan."},{"text":"I enjoy exploring museums and historical sites while on vacation."},{"text":"I am comfortable letting my partner manage all of our investments."},{"text":"I believe that communication is more important than physical intimacy in a relationship."}]},
-  {"day":25,"questions":[{"text":"I prefer watching documentaries over fictional movies."},{"text":"I think children should be raised with strict rules and discipline."},{"text":"I enjoy surprising my partner with unexpected gifts or gestures."},{"text":"I have a difficult time relaxing when there are chores left undone."},{"text":"I value honesty over politeness in almost every situation."}]},
-  {"day":26,"questions":[{"text":"I am comfortable crying in front of my partner."},{"text":"I believe that a person's career defines a large part of who they are."},{"text":"I prefer to spend the holidays at home rather than traveling."},{"text":"I think it is okay to keep small secrets from your partner."},{"text":"I enjoy being the one to drive when we take road trips."}]},
-  {"day":27,"questions":[{"text":"I believe that watching reality TV is a great way to unwind."},{"text":"I am very mindful of my environmental impact and carbon footprint."},{"text":"I think it is important to regularly try new things outside of my comfort zone."},{"text":"I prefer to shower at night rather than in the morning."},{"text":"I am completely satisfied with how we divide mental load (planning, remembering dates, etc.)."}]},
-  {"day":28,"questions":[{"text":"I enjoy participating in intense physical activities or extreme sports."},{"text":"I believe it is important to give back to the community through volunteering."},{"text":"I find it easy to fall asleep quickly at night."},{"text":"I think it is crucial to agree on major political issues as a couple."},{"text":"I am the type of person who reads the book before watching the movie adaptation."}]},
-  {"day":29,"questions":[{"text":"I believe that saving for retirement is more important than traveling right now."},{"text":"I enjoy debating topics just for the sake of the intellectual exercise."},{"text":"I feel deeply connected to my cultural heritage or family roots."},{"text":"I prefer texting to calling when I need to ask a quick question."},{"text":"I am comfortable letting my partner pick out clothes for me."}]},
-  {"day":30,"questions":[{"text":"I believe our relationship has made me a better person."},{"text":"I feel that we spend enough quality, distraction-free time together."},{"text":"I trust my partner completely and unconditionally."},{"text":"I am excited and optimistic about our shared future."},{"text":"I feel truly understood and seen by my partner."}]}
+  {"day":1,"questions":[
+    {"text":"I feel like we're good at staying in touch."},
+    {"text":"I feel comfortable bringing up something that's bothering me."},
+    {"text":"I feel supported when I'm going through a hard time."},
+    {"text":"I like how often we talk or see each other."},
+    {"text":"I feel like we can be honest with each other without judgment."}
+  ]},
+  {"day":2,"questions":[
+    {"text":"I feel like they really listen when I share something important."},
+    {"text":"I'm okay with how much or how little we're involved in each other's daily lives."},
+    {"text":"I feel like we respect each other's boundaries."},
+    {"text":"I feel appreciated by them."},
+    {"text":"I think we handle disagreements in a healthy way."}
+  ]},
+  {"day":3,"questions":[
+    {"text":"I feel like I can be my full self around them."},
+    {"text":"I feel like they're there for me when I need them."},
+    {"text":"I'm happy with how we celebrate good news together."},
+    {"text":"I feel like we're on the same page about what our relationship means."},
+    {"text":"I feel like we give each other enough space."}
+  ]},
+  {"day":4,"questions":[
+    {"text":"I feel like they understand what I'm going through."},
+    {"text":"I'm comfortable with how we communicate (text, call, in person)."},
+    {"text":"I feel like we can talk about both the small stuff and the big stuff."},
+    {"text":"I feel like they're proud of me."},
+    {"text":"I feel like we're good at reconnecting after time apart."}
+  ]},
+  {"day":5,"questions":[
+    {"text":"I feel like our relationship has gotten stronger over time."},
+    {"text":"I feel like I can ask for help when I need it."},
+    {"text":"I feel like we're good at giving each other space when we need it."},
+    {"text":"I feel like they take my feelings seriously."},
+    {"text":"I'm satisfied with how we handle different opinions."}
+  ]},
+  {"day":6,"questions":[
+    {"text":"I feel like we have a good balance of checking in and not smothering."},
+    {"text":"I feel like they're someone I can turn to when things are hard."},
+    {"text":"I feel like we're aligned on what \"being there\" means for each other."},
+    {"text":"I feel like they see me as an adult."},
+    {"text":"I feel like we're good at moving past disagreements."}
+  ]},
+  {"day":7,"questions":[
+    {"text":"I feel like they're interested in my life."},
+    {"text":"I feel like I can share good news without it being a big deal."},
+    {"text":"I feel like we're on the same page about family expectations."},
+    {"text":"I feel like they trust my decisions."},
+    {"text":"I feel like we make time for each other in a way that works."}
+  ]},
+  {"day":8,"questions":[
+    {"text":"I feel like they give me advice when I want it, not when I don't."},
+    {"text":"I feel like we're good at staying connected without it feeling like obligation."},
+    {"text":"I feel like they're supportive of my goals."},
+    {"text":"I feel like we can have hard conversations when we need to."},
+    {"text":"I feel like our relationship is a priority for both of us."}
+  ]},
+  {"day":9,"questions":[
+    {"text":"I feel like they understand when I need space."},
+    {"text":"I feel like we're aligned on how often we talk or see each other."},
+    {"text":"I feel like they're someone I can be vulnerable with."},
+    {"text":"I feel like we're good at celebrating each other's wins."},
+    {"text":"I feel like they accept me for who I am."}
+  ]},
+  {"day":10,"questions":[
+    {"text":"I feel like we're good at reading each other's moods."},
+    {"text":"I feel like they don't judge me when I make mistakes."},
+    {"text":"I feel like we're on the same page about what \"support\" looks like."},
+    {"text":"I feel like they're there for me without being overbearing."},
+    {"text":"I feel like our relationship adds to my life."}
+  ]},
+  {"day":11,"questions":[
+    {"text":"I feel like we can talk about the future without it being heavy."},
+    {"text":"I feel like they respect my independence."},
+    {"text":"I feel like we're good at reconnecting after a disagreement."},
+    {"text":"I feel like they're curious about my life."},
+    {"text":"I feel like we have a good rhythm for staying in touch."}
+  ]},
+  {"day":12,"questions":[
+    {"text":"I feel like they're proud of who I'm becoming."},
+    {"text":"I feel like we're aligned on how to handle family stuff."},
+    {"text":"I feel like I can tell them when I'm struggling."},
+    {"text":"I feel like they give me room to figure things out on my own."},
+    {"text":"I feel like we're good at making each other laugh."}
+  ]},
+  {"day":13,"questions":[
+    {"text":"I feel like they're someone I can count on."},
+    {"text":"I feel like we're on the same page about boundaries."},
+    {"text":"I feel like they're supportive even when they don't agree with my choices."},
+    {"text":"I feel like we're good at picking up where we left off."},
+    {"text":"I feel like they see the real me."}
+  ]},
+  {"day":14,"questions":[
+    {"text":"I feel like we're good at giving each other the benefit of the doubt."},
+    {"text":"I feel like they're there when it matters."},
+    {"text":"I feel like we're aligned on what \"being close\" means."},
+    {"text":"I feel like they don't pressure me to share more than I want to."},
+    {"text":"I feel like our relationship is healthy."}
+  ]},
+  {"day":15,"questions":[
+    {"text":"I feel like they understand that my life is different from theirs."},
+    {"text":"I feel like we're good at staying connected without guilt."},
+    {"text":"I feel like they're in my corner."},
+    {"text":"I feel like we can disagree and still be close."},
+    {"text":"I feel like they're happy for me when good things happen."}
+  ]},
+  {"day":16,"questions":[
+    {"text":"I feel like we're on the same page about how much we're in each other's business."},
+    {"text":"I feel like they're a safe person to be vulnerable with."},
+    {"text":"I feel like we're good at respecting each other's time."},
+    {"text":"I feel like they get me."},
+    {"text":"I feel like we're aligned on what we expect from each other."}
+  ]},
+  {"day":17,"questions":[
+    {"text":"I feel like they're supportive of my relationships with other people."},
+    {"text":"I feel like we're good at knowing when to reach out."},
+    {"text":"I feel like they don't hold grudges."},
+    {"text":"I feel like we're on the same page about family traditions."},
+    {"text":"I feel like they want what's best for me."}
+  ]},
+  {"day":18,"questions":[
+    {"text":"I feel like we can talk about money or practical stuff without it being weird."},
+    {"text":"I feel like they're good at reading when I need space vs. when I need connection."},
+    {"text":"I feel like we're aligned on how we show up for each other."},
+    {"text":"I feel like they accept that I'm still figuring things out."},
+    {"text":"I feel like our relationship makes both of us better."}
+  ]},
+  {"day":19,"questions":[
+    {"text":"I feel like they're someone I can call when I don't know what to do."},
+    {"text":"I feel like we're good at not taking each other for granted."},
+    {"text":"I feel like they're supportive of my career or life path."},
+    {"text":"I feel like we can talk about hard topics when we need to."},
+    {"text":"I feel like they're one of my people."}
+  ]},
+  {"day":20,"questions":[
+    {"text":"I feel like we're on the same page about holidays and family time."},
+    {"text":"I feel like they're good at apologizing when they're wrong."},
+    {"text":"I feel like we're good at forgiving each other."},
+    {"text":"I feel like they're interested in my opinions."},
+    {"text":"I feel like we're aligned on what \"being there\" looks like in practice."}
+  ]},
+  {"day":21,"questions":[
+    {"text":"I feel like they give me room to make my own mistakes."},
+    {"text":"I feel like we're good at staying in touch without it feeling like a chore."},
+    {"text":"I feel like they're supportive when I'm stressed."},
+    {"text":"I feel like we're on the same page about advice (when to give it, when to hold back)."},
+    {"text":"I feel like they love me for who I am."}
+  ]},
+  {"day":22,"questions":[
+    {"text":"I feel like we're good at celebrating milestones together."},
+    {"text":"I feel like they don't compare me to others."},
+    {"text":"I feel like we're aligned on how much we share about our lives."},
+    {"text":"I feel like they're someone I can be real with."},
+    {"text":"I feel like our relationship is built on trust."}
+  ]},
+  {"day":23,"questions":[
+    {"text":"I feel like they're good at not making everything about them."},
+    {"text":"I feel like we're on the same page about what \"family\" means to us."},
+    {"text":"I feel like they're there for the small moments, not just the big ones."},
+    {"text":"I feel like we're good at giving each other grace."},
+    {"text":"I feel like they believe in me."}
+  ]},
+  {"day":24,"questions":[
+    {"text":"I feel like we're good at navigating change together."},
+    {"text":"I feel like they respect my decisions even when they'd do differently."},
+    {"text":"I feel like we're aligned on how we handle conflict."},
+    {"text":"I feel like they're one of the first people I want to tell when something big happens."},
+    {"text":"I feel like we're in a good place."}
+  ]},
+  {"day":25,"questions":[
+    {"text":"I feel like they're good at knowing when to push and when to back off."},
+    {"text":"I feel like we're on the same page about staying in touch when life gets busy."},
+    {"text":"I feel like they're supportive of my friendships."},
+    {"text":"I feel like we can talk about the past without it being loaded."},
+    {"text":"I feel like they're someone I want in my life for the long haul."}
+  ]},
+  {"day":26,"questions":[
+    {"text":"I feel like we're good at making time for each other."},
+    {"text":"I feel like they don't guilt me when I'm busy or distant."},
+    {"text":"I feel like we're aligned on what we need from each other."},
+    {"text":"I feel like they're someone I can count on in a crisis."},
+    {"text":"I feel like our relationship has room to grow."}
+  ]},
+  {"day":27,"questions":[
+    {"text":"I feel like they're good at listening without always trying to fix things."},
+    {"text":"I feel like we're on the same page about how we show love."},
+    {"text":"I feel like they're supportive when I'm trying something new."},
+    {"text":"I feel like we can be honest without hurting each other."},
+    {"text":"I feel like they're in my corner no matter what."}
+  ]},
+  {"day":28,"questions":[
+    {"text":"I feel like we're good at respecting each other's boundaries."},
+    {"text":"I feel like they're proud of me even when I'm not \"succeeding.\""},
+    {"text":"I feel like we're aligned on what \"being close\" looks like at this stage of life."},
+    {"text":"I feel like they're someone I can be silly with."},
+    {"text":"I feel like our relationship is a source of strength for me."}
+  ]},
+  {"day":29,"questions":[
+    {"text":"I feel like they're good at giving me space to grow."},
+    {"text":"I feel like we're on the same page about checking in."},
+    {"text":"I feel like they're supportive when I'm going through something hard."},
+    {"text":"I feel like we can disagree without it damaging our relationship."},
+    {"text":"I feel like they see the best in me."}
+  ]},
+  {"day":30,"questions":[
+    {"text":"I feel like we're good at staying connected through life's changes."},
+    {"text":"I feel like they're someone I can be fully myself with."},
+    {"text":"I feel like we're aligned on what we mean to each other."},
+    {"text":"I feel like they're there for me in the way I need."},
+    {"text":"I feel grateful for our relationship."}
+  ]}
 ]

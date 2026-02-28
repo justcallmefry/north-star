@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Check, ChevronLeft, ChevronRight, Trophy, X } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, HelpCircle, Trophy, X } from "lucide-react";
 import { toast } from "sonner";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import type { QuizForTodayResult, QuizQuestion } from "@/lib/quiz";
@@ -33,7 +33,9 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
   const [guesses, setGuesses] = useState<number[]>(
     initialData.myParticipation?.guessIndices ?? [-1, -1, -1, -1, -1]
   );
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(0); // 0–4 your answer, 5–9 your guess, 10 submit
+  const [quizStarted, setQuizStarted] = useState(false);
+  const [exiting, setExiting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showDoneCelebration, setShowDoneCelebration] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -64,10 +66,42 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
   const allAnswered =
     answers.every((a) => a >= 0) && guesses.every((g) => g >= 0);
 
-  const currentQuestion = data.questions[step];
-  const currentAnswered = currentQuestion && answers[step] >= 0 && guesses[step] >= 0;
-  const canGoNext = step < TOTAL_QUESTIONS - 1 && currentAnswered;
-  const isLastStep = step === TOTAL_QUESTIONS - 1;
+  // One-question flow: step 0–4 = your answer, 5–9 = your guess, 10 = submit
+  const questionIndex = step < 5 ? step : step - 5;
+  const isAnswerPhase = step < 5;
+  const isGuessPhase = step >= 5 && step < 10;
+  const isSubmitStep = step === 10;
+  const currentQuestion = data.questions[questionIndex];
+  const currentAnswered = isAnswerPhase ? answers[questionIndex] >= 0 : isGuessPhase ? guesses[questionIndex] >= 0 : false;
+
+  function handleSelectAnswer(optionIndex: number) {
+    if (exiting) return;
+    if (isAnswerPhase) {
+      const next = [...answers];
+      next[questionIndex] = optionIndex;
+      setAnswers(next);
+    } else {
+      const next = [...guesses];
+      next[questionIndex] = optionIndex;
+      setGuesses(next);
+    }
+    setError(null);
+    setExiting(true);
+  }
+
+  // After exit animation, advance to next step and scroll to top so new question is at top
+  useEffect(() => {
+    if (!exiting) return;
+    const prevStep = step;
+    const nextStep = prevStep >= 9 ? 10 : prevStep + 1;
+    const t = setTimeout(() => {
+      setExiting(false);
+      setStep(nextStep);
+      // Keep question at top: no scrolling
+      requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
+    }, 280);
+    return () => clearTimeout(t);
+  }, [exiting, step]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -93,10 +127,6 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
       setError(err instanceof Error ? err.message : "Failed to submit");
       setLoading(false);
     }
-  }
-
-  function goNext() {
-    if (canGoNext) setStep((s) => s + 1);
   }
 
   function goBack() {
@@ -159,139 +189,167 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
     );
   }
 
-  if (!currentQuestion) return null;
-
-  const guessLabel = data.partnerName ? `Your guess for ${data.partnerName}` : "Your guess for partner";
-
-  return (
-    <form onSubmit={handleSubmit} className="flex min-h-[65vh] flex-col">
-      {/* Progress */}
-      <div className="mb-6 flex items-center justify-between gap-2">
-        <span className="text-sm font-medium text-slate-500">
-          Question {step + 1} of {TOTAL_QUESTIONS}
-        </span>
-        <div className="flex gap-1">
-          {Array.from({ length: TOTAL_QUESTIONS }).map((_, i) => (
-            <div
-              key={i}
-              className={`h-1.5 flex-1 rounded-full min-w-[24px] max-w-[32px] transition-colors ${
-                i < step ? "bg-brand-500" : i === step ? "bg-brand-400" : "bg-slate-200"
-              }`}
-              aria-hidden
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Single question — full-screen feel */}
-      <div key={step} className="flex flex-1 flex-col rounded-2xl bg-white/80 ring-1 ring-slate-200/80 p-6 shadow-sm sm:p-8 animate-calm-fade-in">
-        <p className="text-2xl font-bold leading-snug text-slate-900 sm:text-3xl">
-          {currentQuestion.text}
-        </p>
-
-        <div className="mt-8 space-y-8">
-          <div>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
-              Your answer
-            </p>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {currentQuestion.options.map((opt, j) => (
-                <button
-                  key={j}
-                  type="button"
-                  onClick={() => {
-                    const next = [...answers];
-                    next[step] = j;
-                    setAnswers(next);
-                  }}
-                  className={`rounded-xl border-2 px-4 py-3.5 text-left text-sm font-medium transition-all ${
-                    answers[step] === j
-                      ? "border-brand-500 bg-brand-50 text-brand-800 shadow-sm"
-                      : "border-slate-200 bg-white text-slate-700 hover:border-brand-200 hover:bg-brand-50/50"
-                  }`}
-                >
-                  {opt}
-                </button>
-              ))}
-            </div>
+  // —— Start Quiz gate: header + one CTA, then one question at a time at top ——
+  if (!quizStarted) {
+    return (
+      <div className="flex min-h-[50vh] flex-col items-center justify-center py-8">
+        <div className="flex flex-col items-center text-center">
+          <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-lg shadow-brand-200/80 ring-2 ring-white ring-offset-2">
+            <HelpCircle className="h-8 w-8" strokeWidth={2} />
           </div>
-          <div>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
-              {guessLabel}
-            </p>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {currentQuestion.options.map((opt, j) => (
-                <button
-                  key={j}
-                  type="button"
-                  onClick={() => {
-                    const next = [...guesses];
-                    next[step] = j;
-                    setGuesses(next);
-                  }}
-                  className={`rounded-xl border-2 px-4 py-3.5 text-left text-sm font-medium transition-all ${
-                    guesses[step] === j
-                      ? "border-brand-500 bg-green-50 text-green-800 shadow-sm"
-                      : "border-slate-200 bg-white text-slate-700 hover:border-green-200 hover:bg-green-50/50"
-                  }`}
-                >
-                  {opt}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {submitAttempted && !currentAnswered && (
-          <p className="mt-4 text-sm font-medium text-brand-700" role="alert">
-            Pick your answer and your guess to continue.
+          <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
+            Quiz
+          </h1>
+          <p className="mt-1 max-w-md text-sm text-slate-600 sm:text-base">
+            Answer for yourself, then guess what your partner would pick.
           </p>
-        )}
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setQuizStarted(true);
+            requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
+          }}
+          className="ns-btn-primary mt-6 min-w-[12rem] px-8 py-3.5 text-lg ring-2 ring-brand-300/50 ring-offset-2 shadow-lg shadow-brand-200/40"
+        >
+          Start quiz
+        </button>
+        <p className="mt-6 text-center">
+          <Link href="/app" className="text-sm text-slate-500 hover:text-slate-700">
+            Back to today
+          </Link>
+        </p>
+      </div>
+    );
+  }
+
+  // —— Submit step: all 10 done, show Submit quiz then go to done/waiting ——
+  if (isSubmitStep) {
+    return (
+      <form onSubmit={handleSubmit} className="flex min-h-[50vh] flex-col items-center justify-center py-8">
+        <p className="text-center text-lg font-medium text-slate-700">
+          You&apos;re done! Submit to see results once your partner finishes.
+        </p>
+        <button
+          type="submit"
+          disabled={loading || !allAnswered}
+          className="ns-btn-primary mt-6 min-w-[12rem] px-8 py-3.5 text-lg disabled:opacity-50"
+        >
+          {loading ? "Submitting…" : "Submit quiz"}
+        </button>
         {error && (
           <p className="mt-4 text-sm text-red-600" role="alert">
             {error}
           </p>
         )}
+        <button
+          type="button"
+          onClick={() => setStep(9)}
+          className="mt-4 text-sm text-slate-500 hover:text-slate-700"
+        >
+          Back
+        </button>
+      </form>
+    );
+  }
+
+  if (!currentQuestion) return null;
+
+  const guessLabel = data.partnerName ? `How would ${data.partnerName} answer?` : "How would your partner answer?";
+
+  // —— One question at a time: progress + single card with exit/enter ——
+  const progressLabel = isAnswerPhase
+    ? `Question ${questionIndex + 1} of ${TOTAL_QUESTIONS}`
+    : `Guess ${questionIndex + 1} of ${TOTAL_QUESTIONS}`;
+
+  return (
+    <div className="flex flex-col pt-0" id="quiz-step-container">
+      {/* Progress — at top so no scrolling; clear and minimal */}
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+          {progressLabel}
+        </span>
+        <div className="flex gap-1" aria-hidden>
+          {Array.from({ length: 10 }).map((_, i) => (
+            <div
+              key={i}
+              className={`h-1 flex-1 rounded-full min-w-[14px] max-w-[22px] transition-colors duration-200 ${
+                i < step ? "bg-brand-500" : i === step ? "bg-brand-400" : "bg-slate-200"
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Back / Next or Submit */}
-      <div className="mt-8 flex items-center justify-between gap-4">
+      {/* Single question card — one at a time, exit/enter for seamless feel */}
+      <div
+        key={step}
+        className={`flex flex-col rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-5 sm:p-6 ${
+          exiting ? "animate-quiz-card-exit" : "animate-quiz-card-enter"
+        }`}
+      >
+        <p className="text-lg font-bold leading-snug text-slate-900 sm:text-xl">
+          {currentQuestion.text}
+        </p>
+
+        <div className="mt-4">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            {isAnswerPhase ? "Your answer" : guessLabel}
+          </p>
+          <div className="grid gap-2.5 sm:grid-cols-2">
+            {currentQuestion.options.map((opt, j) => {
+              const selected = isAnswerPhase ? answers[questionIndex] === j : guesses[questionIndex] === j;
+              return (
+                <button
+                  key={j}
+                  type="button"
+                  onClick={() => handleSelectAnswer(j)}
+                  disabled={exiting}
+                  className={`rounded-xl border-2 px-3.5 py-3 text-left text-sm font-medium transition-all disabled:opacity-70 ${
+                    selected
+                      ? isAnswerPhase
+                        ? "border-brand-500 bg-brand-50 text-brand-800 shadow-sm"
+                        : "border-brand-500 bg-green-50 text-green-800 shadow-sm"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-brand-200 hover:bg-brand-50/50"
+                  }`}
+                >
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
+          {currentAnswered && !exiting && (
+            <p className="mt-3">
+              <button
+                type="button"
+                onClick={() => setExiting(true)}
+                className="text-sm font-medium text-brand-600 hover:text-brand-700"
+              >
+                Next →
+              </button>
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Back — minimal chrome */}
+      <div className="mt-4 flex items-center justify-between gap-4">
         <button
           type="button"
           onClick={goBack}
-          className="inline-flex items-center gap-1.5 text-slate-600 hover:text-slate-900 disabled:invisible"
-          disabled={step === 0}
+          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800"
         >
-          <ChevronLeft className="h-5 w-5" />
+          <ChevronLeft className="h-4 w-4" />
           Back
         </button>
-        {isLastStep ? (
-          <button
-            type="submit"
-            disabled={loading || !allAnswered}
-            className="ns-btn-primary min-w-[10rem] px-6 py-3 transition-all duration-200 disabled:opacity-50"
-          >
-            {loading ? "Submitting…" : "Submit quiz"}
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={goNext}
-            disabled={!currentAnswered}
-            className="ns-btn-primary inline-flex items-center gap-1.5 px-6 py-3 disabled:opacity-50"
-          >
-            Next
-            <ChevronRight className="h-5 w-5" />
-          </button>
-        )}
       </div>
 
-      <p className="mt-4 text-center">
+      <p className="mt-3 text-center">
         <Link href="/app" className="text-sm text-slate-500 hover:text-slate-700">
           Back to today
         </Link>
       </p>
-    </form>
+    </div>
   );
 }
 

@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { HelpCircle } from "lucide-react";
 import { getQuizForToday } from "@/lib/quiz";
 import type { QuizForTodayResult } from "@/lib/quiz";
 import { QuizClient } from "./quiz-client";
@@ -95,18 +94,7 @@ export function QuizSection({
   if (!quiz) return null;
 
   return (
-    <div className="space-y-6 rounded-2xl bg-gradient-to-b from-brand-50/40 via-white to-brand-50/30 py-6 px-4 -mx-4 -my-5 sm:px-6 sm:-mx-6 sm:-my-6">
-      <div className="flex flex-col items-center text-center">
-        <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-lg shadow-brand-200/80 ring-2 ring-white ring-offset-2">
-          <HelpCircle className="h-8 w-8" strokeWidth={2} />
-        </div>
-        <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
-          Quiz
-        </h1>
-        <p className="mt-1 max-w-md text-sm text-slate-600 sm:text-base">
-          Answer for yourself, then guess what your partner picked. See how well you know each other.
-        </p>
-      </div>
+    <div className="rounded-2xl bg-gradient-to-b from-brand-50/40 via-white to-brand-50/30 py-6 px-4 -mx-4 -my-5 sm:px-6 sm:-mx-6 sm:-my-6">
       <QuizClient
         relationshipId={relationshipId}
         initialData={quiz}

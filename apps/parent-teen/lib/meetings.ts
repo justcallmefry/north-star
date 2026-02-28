@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { getISOWeek, getISOWeekYear } from "date-fns";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { requireActiveMember } from "@/lib/relationship-members";
+import { getActiveMemberIds, requireActiveMember } from "@/lib/relationship-members";
 
 /** ISO week key for a date, e.g. "2026-W07". */
 function getWeekKey(date: Date): string {

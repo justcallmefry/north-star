@@ -38,15 +38,15 @@ export function WelcomeContent() {
 
         {/* Hero: big logo + CREATE ACCOUNT */}
         <section className="flex flex-col items-center px-4 pt-4 pb-6 sm:px-6 sm:pt-6 sm:pb-8">
-          {/* Big logo — full wordmark from welcome screen */}
+          {/* Big logo — Aligned Connecting Families (with wording) */}
           <div
             className="flex h-48 w-full max-w-sm items-center justify-center sm:h-56"
             aria-hidden
           >
             <div className="relative h-full w-full">
               <Image
-                src="/aligned-connecting-couples-logo.png"
-                alt="Aligned: Connecting Couples"
+                src="/aligned-connecting-families-logo.png"
+                alt="Aligned Connecting Families"
                 fill
                 className="object-contain"
                 sizes="(max-width: 640px) 100vw, 24rem"

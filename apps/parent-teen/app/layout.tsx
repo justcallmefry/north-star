@@ -26,8 +26,8 @@ const appUrl =
     : undefined;
 
 export const metadata: Metadata = {
-  title: "Parent & Teen",
-  description: "One question a day. You and your teen.",
+  title: "Parent & Young Adult",
+  description: "One question a day. You and your young adult.",
   metadataBase: appUrl ? new URL(appUrl) : undefined,
   manifest: "/manifest.json",
   icons: {
@@ -35,18 +35,18 @@ export const metadata: Metadata = {
     apple: "/aligned-icon.png",
   },
   openGraph: {
-    title: "Parent & Teen",
-    description: "One question a day. You and your teen.",
+    title: "Parent & Young Adult",
+    description: "One question a day. You and your young adult.",
     ...(appUrl && {
       url: appUrl,
-      siteName: "Parent & Teen",
-      images: [{ url: "/aligned-icon.png", width: 512, height: 512, alt: "Parent & Teen" }],
+      siteName: "Parent & Young Adult",
+      images: [{ url: "/aligned-icon.png", width: 512, height: 512, alt: "Parent & Young Adult" }],
     }),
   },
   twitter: {
     card: "summary",
-    title: "Parent & Teen",
-    description: "One question a day. You and your teen.",
+    title: "Parent & Young Adult",
+    description: "One question a day. You and your young adult.",
   },
 };
 
@@ -65,8 +65,8 @@ export default async function RootLayout({
 }>) {
   const session = await getServerAuthSession();
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white text-slate-900 overflow-x-hidden max-w-[100vw]`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white text-slate-900 overflow-x-hidden max-w-[100vw]`} suppressHydrationWarning>
         <ApplePwaMeta />
         <Providers session={session}>{children}</Providers>
         <Analytics />

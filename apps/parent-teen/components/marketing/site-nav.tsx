@@ -18,7 +18,7 @@ export function SiteNav() {
             height={32}
             className="h-8 w-8 object-contain"
           />
-          <span className="font-semibold tracking-tight">Parent & Teen</span>
+          <span className="font-semibold tracking-tight">Parent & Young Adult</span>
         </Link>
         <a
           href={loginHref}

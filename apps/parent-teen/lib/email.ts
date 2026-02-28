@@ -42,13 +42,13 @@ export async function sendVerificationRequest(
 
 function buildMagicLinkHtml(to: string, url: string, origin: string): string {
   const safeEmail = to.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const logoUrl = origin ? `${origin}/aligned-connecting-couples-logo.png` : "";
+  const logoUrl = origin ? `${origin}/aligned-connecting-families-logo.png` : "";
   return `
   <div style="margin:0;padding:40px 20px;background-color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
     <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,0.06);overflow:hidden;">
       <tr>
         <td style="padding:40px 32px 24px;text-align:center;">
-          ${logoUrl ? `<img src="${logoUrl}" alt="Aligned: Connecting Couples" width="220" height="120" style="display:inline-block;border:0;max-width:100%;height:auto;object-fit:contain;" />` : ""}
+          ${logoUrl ? `<img src="${logoUrl}" alt="Aligned Connecting Families" width="220" height="120" style="display:inline-block;border:0;max-width:100%;height:auto;object-fit:contain;" />` : ""}
         </td>
       </tr>
       <tr>
@@ -82,7 +82,7 @@ function buildMagicLinkHtml(to: string, url: string, origin: string): string {
       <tr>
         <td style="padding:20px 32px 24px;background:#f8fafc;border-radius:0 0 16px 16px;">
           <p style="margin:0;font-size:12px;line-height:1.5;color:#94a3b8;">
-            Aligned: Connecting Couples — One question a day. Your pace.
+            Aligned Connecting Families — One question a day. You and your young adult.
           </p>
         </td>
       </tr>
@@ -95,14 +95,14 @@ function buildBetaWelcomeHtml(to: string, appUrl: string): { subject: string; ht
   const safeEmail = to.replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const signInUrl = `${appUrl}/login?email=${encodeURIComponent(to)}`;
   const origin = appUrl.replace(/\/$/, "");
-  const logoUrl = `${origin}/aligned-connecting-couples-logo.png`;
-  const subject = "Welcome to Aligned: Connecting Couples";
+  const logoUrl = `${origin}/aligned-connecting-families-logo.png`;
+  const subject = "Welcome to Aligned Connecting Families";
   const html = `
   <div style="margin:0;padding:40px 20px;background-color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
     <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,0.06);overflow:hidden;">
       <tr>
         <td style="padding:40px 32px 24px;text-align:center;">
-          <img src="${logoUrl}" alt="Aligned: Connecting Couples" width="220" height="120" style="display:inline-block;border:0;max-width:100%;height:auto;object-fit:contain;" />
+          <img src="${logoUrl}" alt="Aligned Connecting Families" width="220" height="120" style="display:inline-block;border:0;max-width:100%;height:auto;object-fit:contain;" />
         </td>
       </tr>
       <tr>

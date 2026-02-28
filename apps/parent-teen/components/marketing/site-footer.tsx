@@ -12,7 +12,7 @@ export function SiteFooter() {
     <footer className="border-t border-slate-200/80 bg-white py-6">
       <div className={`${CONTAINER} flex flex-col items-center gap-3 sm:flex-row sm:justify-between sm:gap-4`}>
         <p className="text-center text-xs text-slate-400 sm:text-left">
-          © {new Date().getFullYear()} Parent & Teen
+          © {new Date().getFullYear()} Parent & Young Adult
         </p>
         <nav className="flex items-center gap-4 text-xs text-slate-400">
           <a href={loginHref} className="hover:text-slate-600">

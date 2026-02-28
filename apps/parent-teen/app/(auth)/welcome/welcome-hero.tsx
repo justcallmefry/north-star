@@ -1,10 +1,11 @@
-import { Clock, ThumbsUp, Heart, Lock } from "lucide-react";
+import { Clock, ThumbsUp, Heart, Lock, BookMarked } from "lucide-react";
 
 const BENEFITS = [
   { icon: Clock, text: "Under 3 minutes a day." },
-  { icon: ThumbsUp, text: "Teen-approved. Low pressure." },
+  { icon: ThumbsUp, text: "Young adult–approved. Low pressure." },
   { icon: Heart, text: "The most valuable screen time you'll do today." },
   { icon: Lock, text: "No gimmicks. Fully private. Always positive." },
+  { icon: BookMarked, text: "A place to keep a record of memories with your young adult." },
 ] as const;
 
 export function WelcomeHero() {
@@ -26,7 +27,7 @@ export function WelcomeHero() {
         Connect daily, effortlessly. Reflect positively. Grow stronger together.
       </p>
       <p className="mt-2 text-center text-sm font-medium text-brand-700">
-        Built for parents and teens who don&apos;t want another chore.
+        Built for parents and young adults who don&apos;t want another chore.
       </p>
 
       <div
@@ -49,7 +50,7 @@ export function WelcomeHero() {
         Private by design • No ads • No social feed
       </p>
       <p className="mt-3 text-center text-xs font-medium text-brand-600">
-        Parents and teens use this to stay connected.
+        Parents and young adults use this to stay connected.
       </p>
     </div>
   );

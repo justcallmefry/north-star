@@ -3,15 +3,15 @@
  * render the same image URLs and avoid hydration mismatch (no Math.random in the tree).
  */
 
+/** Parent & Young Adult in-app imagery (public/today-images/). Replace couples imagery. */
 export const TODAY_IMAGE_PATHS = [
-  "/today-images/1.jpg",
-  "/today-images/2.jpg",
-  "/today-images/3.jpg",
-  "/today-images/4.jpg",
-  "/today-images/5.jpg",
+  "/today-images/1.png",
+  "/today-images/2.png",
+  "/today-images/3.png",
+  "/today-images/4.png",
+  "/today-images/5.png",
   "/today-images/6.png",
-  "/today-images/7.jpg",
-  "/today-images/8.jpg",
+  "/today-images/7.png",
 ];
 
 /** Simple seeded RNG so shuffle is deterministic for a given seed (e.g. date string). */

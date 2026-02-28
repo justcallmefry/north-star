@@ -3,16 +3,9 @@
 import Image from "next/image";
 import { useMemo } from "react";
 
-export const TODAY_IMAGE_PATHS = [
-  "/today-images/1.jpg",
-  "/today-images/2.jpg",
-  "/today-images/3.jpg",
-  "/today-images/4.jpg",
-  "/today-images/5.jpg",
-  "/today-images/6.png",
-  "/today-images/7.jpg",
-  "/today-images/8.jpg",
-];
+import { TODAY_IMAGE_PATHS } from "@/lib/today-images";
+
+export { TODAY_IMAGE_PATHS };
 
 function pickRandom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];

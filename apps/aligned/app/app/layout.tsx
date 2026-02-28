@@ -24,7 +24,7 @@ export default function AppSegmentLayout({
       {/* Only this area scrolls so fixed bottom nav stays viewport-locked on mobile */}
       <div
         id="app-scroll"
-        className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto pb-28 pt-4 md:min-h-0 md:pb-6 md:pt-6"
+        className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto pb-36 pt-4 md:min-h-0 md:pb-6 md:pt-6"
         style={
           {
             overscrollBehaviorX: "none",
@@ -34,7 +34,7 @@ export default function AppSegmentLayout({
           } as React.CSSProperties
         }
       >
-        <div className="mx-auto flex w-full min-w-0 max-w-6xl gap-6 px-4 pt-4 pb-8 sm:px-6 lg:px-8 md:pb-6 md:pt-6">
+        <div className="mx-auto flex w-full min-w-0 max-w-6xl gap-6 px-4 pt-4 pb-16 sm:px-6 lg:px-8 md:pb-6 md:pt-6">
           {/* Left rail (desktop/tablet): branding + nav links + trust */}
           <aside className="hidden w-64 flex-shrink-0 flex-col justify-between rounded-2xl border border-brand-200/60 p-5 shadow-lg md:flex" style={{ backgroundColor: "#e8f4f6" }}>
             <div className="space-y-6">

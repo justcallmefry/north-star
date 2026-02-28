@@ -262,12 +262,11 @@ export function AgreementClient({
             sessionUserName={sessionUserName}
             sessionUserImage={sessionUserImage}
             partnerImage={yesterdayData.partnerImage ?? null}
+            onBack={() => {
+              setYesterdayData(undefined);
+              requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "smooth" }));
+            }}
           />
-          <div className="flex justify-center">
-            <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary !py-2 text-sm">
-              Back to today
-            </button>
-          </div>
         </div>
       );
     }
@@ -609,12 +608,14 @@ function AgreementRevealView({
   sessionUserName,
   sessionUserImage,
   partnerImage,
+  onBack,
 }: {
   questions: AgreementQuestion[];
   reveal: NonNullable<AgreementForTodayResult["reveal"]>;
   sessionUserName: string | null;
   sessionUserImage: string | null;
   partnerImage: string | null;
+  onBack?: () => void;
 }) {
   const myName = sessionUserName ?? "You";
   const partnerName = reveal.partnerName ?? "Partner";
@@ -727,9 +728,15 @@ function AgreementRevealView({
       </div>
 
       <p className="text-center">
-        <Link href="/app" className="ns-btn-secondary inline-flex">
-          Back to today
-        </Link>
+        {onBack ? (
+          <button type="button" onClick={onBack} className="ns-btn-secondary inline-flex">
+            Back to today
+          </button>
+        ) : (
+          <Link href="/app" className="ns-btn-secondary inline-flex">
+            Back to today
+          </Link>
+        )}
       </p>
     </div>
   );

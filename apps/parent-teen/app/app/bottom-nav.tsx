@@ -26,6 +26,9 @@ export function BottomNav() {
         paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))",
         transform: "translateZ(0)",
         WebkitTransform: "translateZ(0)",
+        position: "fixed",
+        left: 0,
+        right: 0,
       }}
     >
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-2 py-3">

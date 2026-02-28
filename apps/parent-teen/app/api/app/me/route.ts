@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionFromRequest } from "@/lib/auth";
 import { getActiveRelationshipsForUser } from "@/lib/relationships";
-import { CURRENT_RELATIONSHIP_COOKIE_NAME } from "@/lib/current-relationship";
+import { CURRENT_RELATIONSHIP_COOKIE_NAME } from "@/lib/current-relationship-constants";
 
 export const dynamic = "force-dynamic";
 

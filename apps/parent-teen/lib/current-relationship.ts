@@ -3,9 +3,10 @@
 import { cookies } from "next/headers";
 import { getServerAuthSession } from "@/lib/auth";
 import { getActiveRelationshipsForUser } from "@/lib/relationships";
-
-const COOKIE_NAME = "pt_rid";
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
+import {
+  CURRENT_RELATIONSHIP_COOKIE_NAME as COOKIE_NAME,
+  CURRENT_RELATIONSHIP_COOKIE_MAX_AGE as COOKIE_MAX_AGE,
+} from "@/lib/current-relationship-constants";
 
 /**
  * Returns the relationship id the user is currently "in" (for dual-parent switching).
@@ -24,5 +25,3 @@ export async function getCurrentRelationshipId(): Promise<string | null> {
 
   return relationships[0]?.id ?? null;
 }
-
-export { COOKIE_NAME as CURRENT_RELATIONSHIP_COOKIE_NAME, COOKIE_MAX_AGE as CURRENT_RELATIONSHIP_COOKIE_MAX_AGE };

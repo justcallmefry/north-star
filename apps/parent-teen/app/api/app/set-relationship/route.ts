@@ -4,7 +4,7 @@ import { requireActiveMember } from "@/lib/relationship-members";
 import {
   CURRENT_RELATIONSHIP_COOKIE_NAME,
   CURRENT_RELATIONSHIP_COOKIE_MAX_AGE,
-} from "@/lib/current-relationship";
+} from "@/lib/current-relationship-constants";
 
 export const dynamic = "force-dynamic";
 

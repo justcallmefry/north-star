@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getUsageStats } from "@/lib/usage";
 
+export const dynamic = "force-dynamic";
+
 /**
  * GET /api/admin/usage
  * Returns usage stats for a given date (default: today UTC).

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
+export const dynamic = "force-dynamic";
+
 /**
  * Cron endpoint: sends a reminder email to review Aligned content (daily prompts,
  * quiz questions, agreement statements). Schedule in vercel.json (e.g. monthly).

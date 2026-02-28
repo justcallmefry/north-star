@@ -6,6 +6,8 @@ import {
   CURRENT_RELATIONSHIP_COOKIE_MAX_AGE,
 } from "@/lib/current-relationship";
 
+export const dynamic = "force-dynamic";
+
 /**
  * POST body: { relationshipId: string }
  * Sets the "current relationship" cookie so the user can switch between two parents (one login, dual context).

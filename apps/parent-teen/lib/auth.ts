@@ -35,8 +35,12 @@ function createAuthInstance(
   const isHttp =
     process.env.NODE_ENV === "development" ||
     (typeof authUrl === "string" && authUrl.startsWith("http://"));
+  const secret =
+    process.env.AUTH_SECRET ??
+    (process.env.NODE_ENV === "development" ? "parent-teen-dev-secret-do-not-use-in-production" : undefined);
   return NextAuth({
     adapter: PrismaAdapter(prisma as Parameters<typeof PrismaAdapter>[0]),
+    secret,
     // Credentials provider only ever writes a JWT to the cookie (Auth.js has no DB session for credentials).
     // So we must use JWT strategy or session lookup fails and login appears broken.
     session: { strategy: "jwt", maxAge: 30 * 24 * 60 * 60, updateAge: 24 * 60 * 60 },

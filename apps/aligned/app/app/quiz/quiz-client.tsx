@@ -136,6 +136,18 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
     if (step > 0) setStep((s) => s - 1);
   }
 
+  const loadYesterdayQuiz = () => {
+    setYesterdayLoading(true);
+    setYesterdayData(undefined);
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    const ys = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    getQuizForDate(relationshipId, ys)
+      .then((r) => setYesterdayData(r ?? null))
+      .catch(() => setYesterdayData(null))
+      .finally(() => setYesterdayLoading(false));
+  };
+
   if (data.state === "revealed" && data.reveal) {
     return (
       <div className="space-y-6">
@@ -147,6 +159,23 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
           sessionUserImage={sessionUserImage}
           partnerImage={partnerImage}
         />
+        <div className="flex justify-center">
+          <button
+            type="button"
+            disabled={yesterdayLoading}
+            onClick={loadYesterdayQuiz}
+            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+          >
+            {yesterdayLoading ? (
+              <>
+                <LoadingSpinner size="sm" />
+                Loading…
+              </>
+            ) : (
+              "Yesterday's results"
+            )}
+          </button>
+        </div>
       </div>
     );
   }
@@ -173,17 +202,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
           <button
             type="button"
             disabled={yesterdayLoading}
-            onClick={() => {
-              setYesterdayLoading(true);
-              setYesterdayData(undefined);
-              const d = new Date();
-              d.setDate(d.getDate() - 1);
-              const ys = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-              getQuizForDate(relationshipId, ys)
-                .then((r) => setYesterdayData(r ?? null))
-                .catch(() => setYesterdayData(null))
-                .finally(() => setYesterdayLoading(false));
-            }}
+            onClick={loadYesterdayQuiz}
             className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
           >
             {yesterdayLoading ? (
@@ -338,6 +357,23 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
             Back to today
           </Link>
         </p>
+        <div className="mt-4">
+          <button
+            type="button"
+            disabled={yesterdayLoading}
+            onClick={loadYesterdayQuiz}
+            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+          >
+            {yesterdayLoading ? (
+              <>
+                <LoadingSpinner size="sm" />
+                Loading…
+              </>
+            ) : (
+              "Yesterday's results"
+            )}
+          </button>
+        </div>
       </div>
     );
   }
@@ -368,6 +404,23 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
         >
           Back
         </button>
+        <div className="mt-4">
+          <button
+            type="button"
+            disabled={yesterdayLoading}
+            onClick={loadYesterdayQuiz}
+            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+          >
+            {yesterdayLoading ? (
+              <>
+                <LoadingSpinner size="sm" />
+                Loading…
+              </>
+            ) : (
+              "Yesterday's results"
+            )}
+          </button>
+        </div>
       </form>
     );
   }
@@ -468,6 +521,23 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
           Back to today
         </Link>
       </p>
+      <div className="mt-2 flex justify-center">
+        <button
+          type="button"
+          disabled={yesterdayLoading}
+          onClick={loadYesterdayQuiz}
+          className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+        >
+          {yesterdayLoading ? (
+            <>
+              <LoadingSpinner size="sm" />
+              Loading…
+            </>
+          ) : (
+            "Yesterday's results"
+          )}
+        </button>
+      </div>
     </div>
   );
 }

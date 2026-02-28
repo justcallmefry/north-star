@@ -135,6 +135,18 @@ export function AgreementClient({
     }
   }
 
+  const loadYesterdayAgreement = () => {
+    setYesterdayLoading(true);
+    setYesterdayData(undefined);
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    const ys = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    getAgreementForDate(relationshipId, ys)
+      .then((r) => setYesterdayData(r ?? null))
+      .catch(() => setYesterdayData(null))
+      .finally(() => setYesterdayLoading(false));
+  };
+
   if (data.state === "revealed" && data.reveal) {
     return (
       <div className="space-y-6">
@@ -150,17 +162,7 @@ export function AgreementClient({
           <button
             type="button"
             disabled={yesterdayLoading}
-            onClick={() => {
-              setYesterdayLoading(true);
-              setYesterdayData(undefined);
-              const d = new Date();
-              d.setDate(d.getDate() - 1);
-              const ys = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-              getAgreementForDate(relationshipId, ys)
-                .then((r) => setYesterdayData(r ?? null))
-                .catch(() => setYesterdayData(null))
-                .finally(() => setYesterdayLoading(false));
-            }}
+            onClick={loadYesterdayAgreement}
             className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
           >
             {yesterdayLoading ? (
@@ -199,17 +201,7 @@ export function AgreementClient({
           <button
             type="button"
             disabled={yesterdayLoading}
-            onClick={() => {
-              setYesterdayLoading(true);
-              setYesterdayData(undefined);
-              const d = new Date();
-              d.setDate(d.getDate() - 1);
-              const ys = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-              getAgreementForDate(relationshipId, ys)
-                .then((r) => setYesterdayData(r ?? null))
-                .catch(() => setYesterdayData(null))
-                .finally(() => setYesterdayLoading(false));
-            }}
+            onClick={loadYesterdayAgreement}
             className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
           >
             {yesterdayLoading ? (
@@ -364,6 +356,23 @@ export function AgreementClient({
             Back to today
           </Link>
         </p>
+        <div className="mt-4 flex justify-center">
+          <button
+            type="button"
+            disabled={yesterdayLoading}
+            onClick={loadYesterdayAgreement}
+            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+          >
+            {yesterdayLoading ? (
+              <>
+                <LoadingSpinner size="sm" />
+                Loading…
+              </>
+            ) : (
+              "Yesterday's results"
+            )}
+          </button>
+        </div>
       </div>
     );
   }
@@ -473,6 +482,23 @@ export function AgreementClient({
           Back to today
         </Link>
       </p>
+      <div className="mt-4 flex justify-center">
+        <button
+          type="button"
+          disabled={yesterdayLoading}
+          onClick={loadYesterdayAgreement}
+          className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+        >
+          {yesterdayLoading ? (
+            <>
+              <LoadingSpinner size="sm" />
+              Loading…
+            </>
+          ) : (
+            "Yesterday's results"
+          )}
+        </button>
+      </div>
     </form>
   );
 }

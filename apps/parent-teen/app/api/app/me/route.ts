@@ -3,6 +3,8 @@ import { getSessionFromRequest } from "@/lib/auth";
 import { getActiveRelationshipsForUser } from "@/lib/relationships";
 import { CURRENT_RELATIONSHIP_COOKIE_NAME } from "@/lib/current-relationship";
 
+export const dynamic = "force-dynamic";
+
 const isDev = process.env.NODE_ENV === "development";
 
 /** Parse Cookie header into a record of name -> value (for dev logging only). */

@@ -53,7 +53,14 @@ export async function createAccount(
     });
     return { ok: true };
   } catch (e) {
-    console.error("[signup] createAccount error:", e);
+    const err = e as { code?: string; message?: string };
+    console.error("[signup] createAccount error:", err?.code ?? err?.message ?? e);
+    if (err?.code === "P2002") {
+      return { ok: false, error: "An account with this email already exists. Log in instead." };
+    }
+    if (err?.code === "P1001" || err?.message?.toLowerCase().includes("connect") || err?.message?.toLowerCase().includes("database")) {
+      return { ok: false, error: "We couldn’t reach the database. Please try again in a moment." };
+    }
     return { ok: false, error: "Could not create account. Try again." };
   }
 }

@@ -117,75 +117,6 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
       .finally(() => setYesterdayLoading(false));
   };
 
-  if (data.state === "revealed" && data.reveal) {
-    return (
-      <div className="space-y-6">
-        <QuizRevealView
-          questions={data.questions}
-          reveal={data.reveal}
-          sessionUserName={sessionUserName}
-          sessionUserImage={sessionUserImage}
-          partnerImage={partnerImage}
-        />
-        <div className="flex justify-center">
-          <button
-            type="button"
-            disabled={yesterdayLoading}
-            onClick={loadYesterdayQuiz}
-            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
-          >
-            {yesterdayLoading ? (
-              <>
-                <LoadingSpinner size="sm" />
-                Loading…
-              </>
-            ) : (
-              "Yesterday's results"
-            )}
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (data.myParticipation && !data.partnerSubmitted) {
-    return (
-      <div className="space-y-6">
-        <div className="ns-card space-y-4 py-8 text-center">
-          <p className="text-lg font-medium text-slate-700">
-            You&apos;re done! Waiting for your partner to finish.
-          </p>
-          <p className="text-sm text-slate-500">
-            We&apos;ll show scores once you&apos;ve both answered.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <NotifyPartnerQuizButton variant="quiz" size="sm" />
-            <Link href="/app" className="ns-btn-secondary inline-flex">
-              Back to today
-            </Link>
-          </div>
-        </div>
-        <div className="flex justify-center">
-          <button
-            type="button"
-            disabled={yesterdayLoading}
-            onClick={loadYesterdayQuiz}
-            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
-          >
-            {yesterdayLoading ? (
-              <>
-                <LoadingSpinner size="sm" />
-                Loading…
-              </>
-            ) : (
-              "Yesterday's results"
-            )}
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   if (yesterdayLoading) {
     return (
       <div className="space-y-6">
@@ -257,6 +188,75 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
           <p className="mt-1 text-sm text-slate-500">If neither of you did the quiz that day, there&apos;s nothing to show.</p>
           <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary mt-4 !py-2 text-sm">
             Back to today
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (data.state === "revealed" && data.reveal) {
+    return (
+      <div className="space-y-6">
+        <QuizRevealView
+          questions={data.questions}
+          reveal={data.reveal}
+          sessionUserName={sessionUserName}
+          sessionUserImage={sessionUserImage}
+          partnerImage={partnerImage}
+        />
+        <div className="flex justify-center">
+          <button
+            type="button"
+            disabled={yesterdayLoading}
+            onClick={loadYesterdayQuiz}
+            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+          >
+            {yesterdayLoading ? (
+              <>
+                <LoadingSpinner size="sm" />
+                Loading…
+              </>
+            ) : (
+              "Yesterday's results"
+            )}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (data.myParticipation && !data.partnerSubmitted) {
+    return (
+      <div className="space-y-6">
+        <div className="ns-card space-y-4 py-8 text-center">
+          <p className="text-lg font-medium text-slate-700">
+            You&apos;re done! Waiting for your partner to finish.
+          </p>
+          <p className="text-sm text-slate-500">
+            We&apos;ll show scores once you&apos;ve both answered.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <NotifyPartnerQuizButton variant="quiz" size="sm" />
+            <Link href="/app" className="ns-btn-secondary inline-flex">
+              Back to today
+            </Link>
+          </div>
+        </div>
+        <div className="flex justify-center">
+          <button
+            type="button"
+            disabled={yesterdayLoading}
+            onClick={loadYesterdayQuiz}
+            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+          >
+            {yesterdayLoading ? (
+              <>
+                <LoadingSpinner size="sm" />
+                Loading…
+              </>
+            ) : (
+              "Yesterday's results"
+            )}
           </button>
         </div>
       </div>

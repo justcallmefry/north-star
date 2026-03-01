@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, CalendarRange, History, HelpCircle, Scale } from "lucide-react";
-import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { TodaySection } from "./today-section";
 import { TodayRandomImage } from "./today-random-image";
 
@@ -147,17 +146,14 @@ export function AppPageClient({ initialData }: Props) {
       ) : (
         <section className="mt-4 flex flex-1 items-center justify-center">
           <div className="ns-card max-w-md text-center">
-            <div className="flex justify-center">
-              <EmptyTogetherIllustration className="w-28 h-28 sm:w-32 sm:h-32" />
-            </div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-500 sm:text-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-familyGreen-600 sm:text-sm">
               Welcome
             </p>
             <p className="mt-3 text-xl font-semibold text-slate-900 sm:text-2xl">
               Create or join
             </p>
             <p className="mt-2 text-sm text-slate-600 sm:text-base">
-              Create or join to get your first question. Invite your partner when you&apos;re ready.
+              Create or join to get your first question. Invite your partner or child when you&apos;re ready.
             </p>
             <p className="mt-1 text-xs text-slate-500">
               One question a day—the most valuable screen time you&apos;ll do together.
@@ -168,7 +164,7 @@ export function AppPageClient({ initialData }: Props) {
             <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Link href="/app/pair" className="ns-btn-primary" prefetch={false}>
                 <ArrowRight className="h-4 w-4" />
-                Pair with partner
+                Pair up with your partner or child
               </Link>
             </div>
           </div>

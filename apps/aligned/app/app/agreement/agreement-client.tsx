@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Check, ChevronLeft, Scale, Trophy, X } from "lucide-react";
+import { Check, ChevronLeft, Scale, X } from "lucide-react";
 import { toast } from "sonner";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import type { AgreementForTodayResult, AgreementQuestion } from "@/lib/agreement-shared";
@@ -43,7 +43,7 @@ export function AgreementClient({
   const [guesses, setGuesses] = useState<number[]>(
     initialData.myParticipation?.guessIndices ?? DEFAULT_INDICES
   );
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(0); // 0–4 your answer, 5–9 your guess, 10 submit
   const [checkInStarted, setCheckInStarted] = useState(false);
   const [exiting, setExiting] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -58,25 +58,20 @@ export function AgreementClient({
     setData(initialData);
     setAnswers(initialData.myParticipation?.answerIndices ?? DEFAULT_INDICES);
     setGuesses(initialData.myParticipation?.guessIndices ?? DEFAULT_INDICES);
-    setStep(0);
   }, [initialData]);
 
-  // Scroll to top when starting check-in or when step changes (one statement at a time at top)
-  useEffect(() => {
-    if (checkInStarted) {
-      requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
-    }
-  }, [checkInStarted, step]);
-
-  // After exit animation, advance to next statement (scroll handled by step effect)
+  // After exit animation, advance to next step and scroll to top (quiz-style)
   useEffect(() => {
     if (!exiting) return;
+    const prevStep = step;
+    const nextStep = prevStep >= 9 ? 10 : prevStep + 1;
     const t = setTimeout(() => {
       setExiting(false);
-      setStep((s) => s + 1);
+      setStep(nextStep);
+      requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
     }, 280);
     return () => clearTimeout(t);
-  }, [exiting]);
+  }, [exiting, step]);
 
   // Show bottom nav when viewing results or waiting for partner (set ?done=1)
   const showResultsOrWaiting =
@@ -98,10 +93,17 @@ export function AgreementClient({
     answers.every((a) => a >= 0) && guesses.every((g) => g >= 0);
 
   const TOTAL_QUESTIONS = data.questions.length;
-  const currentQuestion = data.questions[step];
-  const currentAnswered = currentQuestion && answers[step] >= 0 && guesses[step] >= 0;
-  const canGoNext = step < TOTAL_QUESTIONS - 1 && currentAnswered;
-  const isLastStep = step === TOTAL_QUESTIONS - 1;
+  // Quiz-style: step 0–4 = your answer, 5–9 = your guess, 10 = submit
+  const questionIndex = step < 5 ? step : step - 5;
+  const isAnswerPhase = step < 5;
+  const isGuessPhase = step >= 5 && step < 10;
+  const isSubmitStep = step === 10;
+  const currentQuestion = data.questions[questionIndex];
+  const currentAnswered = isAnswerPhase
+    ? answers[questionIndex] >= 0
+    : isGuessPhase
+      ? guesses[questionIndex] >= 0
+      : false;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -129,16 +131,24 @@ export function AgreementClient({
     }
   }
 
-  function goNext() {
-    if (canGoNext) setStep((s) => s + 1);
+  function handleSelectOption(optionIndex: number) {
+    if (exiting) return;
+    if (isAnswerPhase) {
+      const next = [...answers];
+      next[questionIndex] = optionIndex;
+      setAnswers(next);
+    } else {
+      const next = [...guesses];
+      next[questionIndex] = optionIndex;
+      setGuesses(next);
+    }
+    setError(null);
+    setExiting(true);
   }
 
   function goBack() {
-    if (step > 0) {
-      setStep((s) => s - 1);
-    } else {
-      setCheckInStarted(false);
-    }
+    if (step > 0) setStep((s) => s - 1);
+    else setCheckInStarted(false);
   }
 
   const loadYesterdayAgreement = () => {
@@ -343,7 +353,7 @@ export function AgreementClient({
             Alignment check-in
           </h1>
           <p className="mt-1 max-w-md text-sm text-slate-600 sm:text-base">
-            Check where you&apos;re aligned today, one statement at a time.
+            Rate each statement, then guess how your partner would answer.
           </p>
         </div>
         <button
@@ -382,22 +392,72 @@ export function AgreementClient({
     );
   }
 
+  // —— Submit step: all 10 done, show Submit then go to done/waiting (quiz-style) ——
+  if (isSubmitStep) {
+    return (
+      <form onSubmit={handleSubmit} className="flex min-h-[50vh] flex-col items-center justify-center py-8">
+        <p className="text-center text-lg font-medium text-slate-700">
+          You&apos;re done! Submit to see results once your partner finishes.
+        </p>
+        <button
+          type="submit"
+          disabled={loading || !allAnswered}
+          className="ns-btn-primary mt-6 min-w-[12rem] px-8 py-3.5 text-lg disabled:opacity-50"
+        >
+          {loading ? "Submitting…" : "Submit"}
+        </button>
+        {error && (
+          <p className="mt-4 text-sm text-red-600" role="alert">
+            {error}
+          </p>
+        )}
+        <button
+          type="button"
+          onClick={() => setStep(9)}
+          className="mt-4 text-sm text-slate-500 hover:text-slate-700"
+        >
+          Back
+        </button>
+        <div className="mt-4">
+          <button
+            type="button"
+            disabled={yesterdayLoading}
+            onClick={loadYesterdayAgreement}
+            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+          >
+            {yesterdayLoading ? (
+              <>
+                <LoadingSpinner size="sm" />
+                Loading…
+              </>
+            ) : (
+              "Yesterday's results"
+            )}
+          </button>
+        </div>
+      </form>
+    );
+  }
+
   if (!currentQuestion) return null;
 
   const guessLabel = data.partnerName
-    ? `Your guess for ${data.partnerName}`
-    : "Your guess for partner";
+    ? `How would ${data.partnerName} answer?`
+    : "How would your partner answer?";
 
-  // —— One statement at a time: progress + single card with exit/enter ——
+  // —— One statement at a time: your answer only (steps 0–4), then your guess only (5–9), same format as quiz ——
+  const progressLabel = isAnswerPhase
+    ? `Statement ${questionIndex + 1} of ${TOTAL_QUESTIONS}`
+    : `Guess ${questionIndex + 1} of ${TOTAL_QUESTIONS}`;
+
   return (
-    <form onSubmit={handleSubmit} className="flex min-h-[65vh] flex-col pt-0">
-      {/* Progress — at top */}
+    <div className="flex flex-col pt-0" id="agreement-step-container">
       <div className="mb-3 flex items-center justify-between gap-2">
         <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-          Statement {step + 1} of {TOTAL_QUESTIONS}
+          {progressLabel}
         </span>
         <div className="flex gap-1" aria-hidden>
-          {Array.from({ length: TOTAL_QUESTIONS }).map((_, i) => (
+          {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
               className={`h-1 flex-1 rounded-full min-w-[14px] max-w-[22px] transition-colors duration-200 ${
@@ -408,69 +468,57 @@ export function AgreementClient({
         </div>
       </div>
 
-      {/* Single statement card — exit/enter transition */}
       <div
         key={step}
-        className={`flex flex-col ${exiting ? "animate-quiz-card-exit" : "animate-quiz-card-enter"}`}
+        className={`flex flex-col rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-5 sm:p-6 ${
+          exiting ? "animate-quiz-card-exit" : "animate-quiz-card-enter"
+        }`}
       >
-        <AgreementQuestionBlock
-          index={step}
-          question={currentQuestion}
-          options={OPTIONS}
-          guessLabel={guessLabel}
-          showIncompleteHint={
-            submitAttempted && (answers[step] < 0 || guesses[step] < 0)
-          }
-          answerIndex={answers[step]}
-          guessIndex={guesses[step]}
-          onAnswerChange={(v) => {
-            const next = [...answers];
-            next[step] = v;
-            setAnswers(next);
-          }}
-          onGuessChange={(v) => {
-            const next = [...guesses];
-            next[step] = v;
-            setGuesses(next);
-          }}
-        />
-      </div>
-
-      {error && (
-        <p className="mt-3 text-sm text-red-600" role="alert">
-          {error}
+        <p className="text-lg font-bold leading-snug text-slate-900 sm:text-xl">
+          {currentQuestion.text}
         </p>
-      )}
-
-      {/* Next or Submit */}
-      {currentAnswered && !exiting && (
-        <div className="mt-4 flex flex-col items-center gap-3">
-          {isLastStep ? (
-            <button
-              type="submit"
-              disabled={loading || !allAnswered}
-              className="ns-btn-primary min-w-[12rem] px-8 py-3.5 text-lg disabled:opacity-50"
-            >
-              {loading ? "Submitting…" : "Submit"}
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setExiting(true)}
-              className="ns-btn-primary min-w-[8rem] px-6 py-3 text-base font-medium"
-            >
-              Next →
-            </button>
+        <div className="mt-4">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            {isAnswerPhase ? "Your answer" : guessLabel}
+          </p>
+          <div className="grid gap-2.5 sm:grid-cols-2">
+            {OPTIONS.map((opt, j) => {
+              const selected = isAnswerPhase
+                ? answers[questionIndex] === j
+                : guesses[questionIndex] === j;
+              return (
+                <button
+                  key={j}
+                  type="button"
+                  onClick={() => handleSelectOption(j)}
+                  disabled={exiting}
+                  className={`rounded-xl border-2 px-3.5 py-3 text-left text-sm font-medium transition-all disabled:opacity-70 ${
+                    selected
+                      ? isAnswerPhase
+                        ? "border-brand-500 bg-brand-50 text-brand-800 shadow-sm"
+                        : "border-brand-500 bg-green-50 text-green-800 shadow-sm"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-brand-200 hover:bg-brand-50/50"
+                  }`}
+                >
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
+          {currentAnswered && !exiting && (
+            <p className="mt-3">
+              <button
+                type="button"
+                onClick={() => setExiting(true)}
+                className="text-sm font-medium text-brand-600 hover:text-brand-700"
+              >
+                Next →
+              </button>
+            </p>
           )}
         </div>
-      )}
-      {!currentAnswered && submitAttempted && (
-        <p className="mt-3 rounded-lg border border-brand-200 bg-brand-50 px-3 py-2 text-sm text-brand-700" role="alert">
-          Pick your answer and your guess for this statement.
-        </p>
-      )}
+      </div>
 
-      {/* Back — minimal chrome */}
       <div className="mt-4 flex items-center justify-between gap-4">
         <button
           type="button"
@@ -487,7 +535,24 @@ export function AgreementClient({
           Back to today
         </Link>
       </p>
-    </form>
+      <div className="mt-2 flex justify-center">
+        <button
+          type="button"
+          disabled={yesterdayLoading}
+          onClick={loadYesterdayAgreement}
+          className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+        >
+          {yesterdayLoading ? (
+            <>
+              <LoadingSpinner size="sm" />
+              Loading…
+            </>
+          ) : (
+            "Yesterday's results"
+          )}
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -501,91 +566,8 @@ function AgreementPageHeader() {
         Alignment check-in
       </h1>
       <p className="mt-1 max-w-md text-sm text-slate-600 sm:text-base">
-        Check where you&apos;re aligned today, one statement at a time.
+        Rate each statement, then guess how your partner would answer.
       </p>
-    </div>
-  );
-}
-
-function AgreementQuestionBlock({
-  index,
-  question,
-  options,
-  guessLabel,
-  showIncompleteHint,
-  answerIndex,
-  guessIndex,
-  onAnswerChange,
-  onGuessChange,
-}: {
-  index: number;
-  question: AgreementQuestion;
-  options: readonly string[];
-  guessLabel: string;
-  showIncompleteHint: boolean;
-  answerIndex: number;
-  guessIndex: number;
-  onAnswerChange: (v: number) => void;
-  onGuessChange: (v: number) => void;
-}) {
-  const bgClass = index % 2 === 0 ? "bg-brand-50/50" : "bg-green-50/50";
-  return (
-    <div
-      className={`ns-card space-y-4 rounded-2xl ${bgClass} ${showIncompleteHint ? "ring-2 ring-brand-400 ring-offset-2" : ""}`}
-      id={showIncompleteHint ? `agreement-q-${index + 1}` : undefined}
-    >
-      {showIncompleteHint && (
-        <p className="text-sm font-medium text-brand-700" role="alert">
-          Pick your answer and your guess for this statement.
-        </p>
-      )}
-      <p className="text-lg font-bold text-slate-900 sm:text-xl">
-        {index + 1}. {question.text}
-      </p>
-      <div className="space-y-4">
-        <div>
-          <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">
-            Your answer
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {options.map((opt, j) => (
-              <button
-                key={j}
-                type="button"
-                onClick={() => onAnswerChange(j)}
-                className={`rounded-xl border px-3 py-2 text-sm font-medium transition-colors ${
-                  answerIndex === j
-                    ? "border-brand-400 bg-brand-50 text-brand-800"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-brand-200 hover:bg-brand-50/50"
-                }`}
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div>
-          <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">
-            {guessLabel}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {options.map((opt, j) => (
-              <button
-                key={j}
-                type="button"
-                onClick={() => onGuessChange(j)}
-                className={`rounded-xl border px-3 py-2 text-sm font-medium transition-colors ${
-                  guessIndex === j
-                    ? "border-violet-400 bg-violet-50 text-violet-800"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-violet-200 hover:bg-violet-50/50"
-                }`}
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

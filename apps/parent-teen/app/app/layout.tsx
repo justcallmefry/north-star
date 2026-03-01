@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Home, CalendarRange, History, User, HelpCircle, Scale } from "lucide-react";
 import { BottomNav } from "./bottom-nav";
 import { RelationshipSwitcher } from "./relationship-switcher";
+import { ScrollToTopOnNav } from "./scroll-to-top-on-nav";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +22,8 @@ export default function AppSegmentLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden md:min-h-screen" style={{ backgroundColor: "#eef6f8", overscrollBehaviorX: "none" }}>
+    <div className="flex h-screen h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden bg-familyGreen-50 md:min-h-screen overscroll-x-none" style={{ overscrollBehaviorX: "none" }}>
+      <ScrollToTopOnNav />
       {/* Only this area scrolls so fixed bottom nav stays viewport-locked on mobile */}
       <div
         id="app-scroll"
@@ -39,7 +41,7 @@ export default function AppSegmentLayout({
           <RelationshipSwitcher />
           <div className="flex min-w-0 flex-1 gap-6">
           {/* Left rail (desktop/tablet): branding + nav links + trust */}
-          <aside className="hidden w-64 flex-shrink-0 flex-col justify-between rounded-2xl border border-brand-200/60 p-5 shadow-lg md:flex" style={{ backgroundColor: "#e8f4f6" }}>
+          <aside className="hidden w-64 flex-shrink-0 flex-col justify-between rounded-2xl border border-familyGreen-200/60 bg-familyGreen-50/80 p-5 shadow-lg md:flex">
             <div className="space-y-6">
               <div>
                 <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white ring-1 ring-brand-200/80 shadow-sm">

@@ -24,3 +24,13 @@ npx prisma db push
 - Or use the Vercel Postgres **Connect** instructions; they often give a connection string you can paste into `.env` as `DATABASE_URL`.
 
 After `db push` succeeds, the app can create users and store data. Redeploy the project if you added env vars after the last deploy.
+
+## Local login (localhost)
+
+If you see “There is a problem with the server configuration” when logging in locally, add to `apps/parent-teen/.env`:
+
+- **AUTH_SECRET** – any random string (e.g. `openssl rand -base64 32`), or use the dev secret from `.env.example`.
+- **NEXTAUTH_URL** – `http://localhost:3000` (or the port you use, e.g. `http://localhost:3001`).
+- **AUTH_URL** – same as NEXTAUTH_URL for localhost.
+
+Restart the dev server after changing `.env`.

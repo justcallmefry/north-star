@@ -18,7 +18,7 @@ export default async function AppPage() {
   }
   const relationships = await getActiveRelationshipsForUser(session.user.id);
   const dateSeed = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-  const todayImagePaths = pickDistinctSeeded(TODAY_IMAGE_PATHS, 4, dateSeed);
+  const todayImagePaths = pickDistinctSeeded(TODAY_IMAGE_PATHS, 2, dateSeed);
   const initialData = {
     session: { user: session.user },
     relationships: relationships.map((r) => ({

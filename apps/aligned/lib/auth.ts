@@ -21,6 +21,10 @@ export type AuthHandlerOptions = {
   emailConfigured?: boolean;
   /** Sender address for magic-link emails. Set from the route so Vercel env (e.g. EMAIL_FROM) is used at runtime. Falls back to "onboarding@resend.dev" when using Resend and no custom from. */
   from?: string;
+  /** Explicit secret from the route so credentials callback always has it (avoids Configuration error on localhost). */
+  secret?: string;
+  /** Explicit auth URL from the route (e.g. http://localhost:3000) so redirects and cookies use the correct origin. */
+  authUrl?: string;
 }
 
 function createAuthInstance(
@@ -31,11 +35,23 @@ function createAuthInstance(
     options?.emailConfigured ?? !!(process.env["EMAIL_SERVER"] || process.env["RESEND_API_KEY"]);
   const from =
     options?.from ?? process.env["EMAIL_FROM"] ?? "noreply@example.com";
-  const authUrl = process.env.AUTH_URL ?? process.env.NEXTAUTH_URL ?? "";
+  const authUrl =
+    options?.authUrl ??
+    process.env.AUTH_URL ??
+    process.env.NEXTAUTH_URL ??
+    (process.env.NODE_ENV === "development" ? "http://localhost:3000" : "");
   const isHttp =
     process.env.NODE_ENV === "development" ||
     (typeof authUrl === "string" && authUrl.startsWith("http://"));
+  const devSecret = "aligned-dev-secret-do-not-use-in-production";
+  const secret =
+    options?.secret ??
+    process.env.AUTH_SECRET ??
+    (process.env.NODE_ENV === "development" ? devSecret : undefined);
+  // Auth.js throws Configuration error if secret is missing; in dev always ensure we have one
+  const resolvedSecret = process.env.NODE_ENV === "development" ? (secret || devSecret) : secret;
   return NextAuth({
+    secret: resolvedSecret,
     adapter: PrismaAdapter(prisma as Parameters<typeof PrismaAdapter>[0]),
     // Credentials provider only ever writes a JWT to the cookie (Auth.js has no DB session for credentials).
     // So we must use JWT strategy or session lookup fails and login appears broken.
@@ -118,7 +134,16 @@ function createAuthInstance(
     debug: process.env.NODE_ENV === "development",
     logger: {
       error(message) {
-        console.error("[auth] error:", typeof message === "string" ? message : message?.message ?? String(message));
+        const msg = typeof message === "string" ? message : (message as Error)?.message ?? String(message);
+        const isJwtSessionError =
+          msg.includes("jwtsessionerror") || msg.includes("JWT") || (typeof msg === "string" && msg.includes("errors.authjs.dev"));
+        if (isJwtSessionError && process.env.NODE_ENV === "development") {
+          if (process.env.AUTH_DEBUG) {
+            console.warn("[auth] Session cookie invalid or signed with different secret (clear cookies and log in again):", msg.slice(0, 80));
+          }
+          return;
+        }
+        console.error("[auth] error:", msg);
         if (message instanceof Error && message.cause) {
           const c = message.cause as { err?: Error };
           if (c?.err?.stack) console.error("[auth] cause stack:", c.err.stack);

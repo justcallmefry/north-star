@@ -1,9 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, CalendarRange, History, HelpCircle, Scale } from "lucide-react";
+import { ArrowRight, CheckCircle, Circle, HelpCircle, Scale } from "lucide-react";
 import { EmptyTogetherIllustration } from "@/components/illustrations";
+import { getQuizForToday } from "@/lib/quiz";
+import { getAgreementForToday } from "@/lib/agreement";
 import { TodaySection } from "./today-section";
 import { TodayRandomImage } from "./today-random-image";
 
@@ -11,9 +14,17 @@ export type Relationship = { id: string; name: string | null; status: string };
 export type AppPageInitialData = {
   session: { user: { id: string; email?: string | null; name?: string | null; image?: string | null } };
   relationships: Relationship[];
-  /** Four today-image paths chosen on the server (deterministic by date) to avoid hydration mismatch. */
+  /** Two today-image paths for the daily checklist (Quiz, Alignment). */
   todayImagePaths: string[];
 };
+
+function getLocalDateString(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
 
 type Props = { initialData: AppPageInitialData };
 
@@ -22,6 +33,26 @@ export function AppPageClient({ initialData }: Props) {
   const relationshipId = relationships[0]?.id ?? null;
   const displayName = session.user.name ?? session.user.email ?? "";
   const distinctImages = todayImagePaths;
+
+  const [localDateStr] = useState(getLocalDateString);
+  const [quizDoneToday, setQuizDoneToday] = useState<boolean | null>(null);
+  const [agreementDoneToday, setAgreementDoneToday] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (!relationshipId) return;
+    let cancelled = false;
+    Promise.all([
+      getQuizForToday(relationshipId, localDateStr),
+      getAgreementForToday(relationshipId, localDateStr),
+    ]).then(([quiz, agreement]) => {
+      if (cancelled) return;
+      setQuizDoneToday(quiz?.myParticipation != null);
+      setAgreementDoneToday(agreement?.myParticipation != null);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [relationshipId, localDateStr]);
 
   return (
     <main className="flex flex-col gap-2">
@@ -65,80 +96,67 @@ export function AppPageClient({ initialData }: Props) {
 
       {relationships.length > 0 ? (
         <div className="ns-stack animate-fade-in-ease">
-          <section className="space-y-2">
-            <div className="flex justify-end">
+          <TodaySection relationshipId={relationshipId!} />
+
+          <section className="space-y-3">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
+              Today
+            </h2>
+            <p className="text-slate-600 text-sm">
+              Do these when you can. Tap to open.
+            </p>
+            <div className="space-y-3">
               <Link
-                href="/app/history"
-                className="ns-btn-secondary hidden sm:inline-flex"
+                href="/app/quiz"
+                className="ns-card flex items-start gap-4 w-full text-left !py-4 border-l-4 border-l-brand-500 bg-brand-50/30 hover:bg-brand-50/50 transition-colors"
               >
-                <History className="h-3.5 w-3.5" />
-                History
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-slate-200 bg-white" aria-hidden>
+                  {quizDoneToday === true ? (
+                    <CheckCircle className="h-6 w-6 text-emerald-600" strokeWidth={2} aria-label="Done today" />
+                  ) : (
+                    <Circle className="h-6 w-6 text-slate-400" strokeWidth={2} aria-label="Not done today" />
+                  )}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <HelpCircle className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={2} />
+                    <span className="font-semibold text-slate-900">Quiz</span>
+                    {quizDoneToday === true && (
+                      <span className="text-xs font-medium text-emerald-600">Done</span>
+                    )}
+                  </div>
+                  <p className="mt-1 text-sm text-slate-500 leading-relaxed">
+                    Answer for yourself, then guess what your partner picked.
+                  </p>
+                </div>
+                <TodayRandomImage src={distinctImages[0]} className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl shrink-0" sizes="80px" />
               </Link>
-            </div>
 
-            <TodaySection relationshipId={relationshipId!} />
-
-            <div className="space-y-4">
-              <div className="space-y-1.5">
-                <Link
-                  href="/app/quiz"
-                  className="ns-btn-secondary w-full !py-2.5 border-l-4 border-l-brand-500 bg-brand-50/40 hover:bg-brand-50/70"
-                >
-                  <HelpCircle className="h-4 w-4" />
-                  Start quiz
-                </Link>
-                <div className="flex items-center gap-3">
-                  <TodayRandomImage src={distinctImages[0]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl" sizes="96px" />
-                  <p className="text-sm text-slate-500 leading-relaxed flex-1 min-w-0">
-                    Answer for yourself, then guess what your partner picked. See how well you know each other.
+              <Link
+                href="/app/agreement"
+                className="ns-card flex items-start gap-4 w-full text-left !py-4 border-l-4 border-l-brand-500 bg-brand-50/30 hover:bg-brand-50/50 transition-colors"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-slate-200 bg-white" aria-hidden>
+                  {agreementDoneToday === true ? (
+                    <CheckCircle className="h-6 w-6 text-emerald-600" strokeWidth={2} aria-label="Done today" />
+                  ) : (
+                    <Circle className="h-6 w-6 text-slate-400" strokeWidth={2} aria-label="Not done today" />
+                  )}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <Scale className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={2} />
+                    <span className="font-semibold text-slate-900">Alignment</span>
+                    {agreementDoneToday === true && (
+                      <span className="text-xs font-medium text-emerald-600">Done</span>
+                    )}
+                  </div>
+                  <p className="mt-1 text-sm text-slate-500 leading-relaxed">
+                    Rate each statement, then guess how your partner would answer.
                   </p>
                 </div>
-              </div>
-              <div className="space-y-1.5">
-                <Link
-                  href="/app/agreement"
-                  className="ns-btn-secondary w-full !py-2.5 border-l-4 border-l-brand-500 bg-brand-50/40 hover:bg-brand-50/70"
-                >
-                  <Scale className="h-4 w-4" />
-                  Start check-in
-                </Link>
-                <div className="flex items-center gap-3">
-                  <p className="text-sm text-slate-500 leading-relaxed flex-1 min-w-0">
-                    Rate each statement, then guess how your partner would answer. See how aligned you are.
-                  </p>
-                  <TodayRandomImage src={distinctImages[1]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shrink-0" sizes="96px" />
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <Link
-                  href="/app/meeting"
-                  className="ns-btn-secondary w-full !py-2"
-                >
-                  <CalendarRange className="h-4 w-4" />
-                  Our Week
-                </Link>
-                <div className="flex items-center gap-3">
-                  <TodayRandomImage src={distinctImages[2]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shrink-0" sizes="96px" />
-                  <p className="text-sm text-slate-500 leading-relaxed flex-1 min-w-0">
-                    A shared place to capture this week as it unfolds.
-                  </p>
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <Link
-                  href="/app/history"
-                  className="ns-btn-secondary w-full !py-2"
-                >
-                  <History className="h-4 w-4" />
-                  Responses
-                </Link>
-                <div className="flex items-center gap-3">
-                  <p className="text-sm text-slate-500 leading-relaxed flex-1 min-w-0">
-                    View your past answers to questions.
-                  </p>
-                  <TodayRandomImage src={distinctImages[3]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shrink-0" sizes="96px" />
-                </div>
-              </div>
+                <TodayRandomImage src={distinctImages[1]} className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl shrink-0" sizes="80px" />
+              </Link>
             </div>
           </section>
         </div>

@@ -12,21 +12,29 @@ const getRequestOrigin = (req: NextRequest) => {
   return host ? `${proto}://${host}` : "";
 };
 
-/** Ensure redirects use the URL you're actually on. On localhost we use the request host so port 3000 vs 3003 doesn't matter. On Vercel we use VERCEL_URL when env is a placeholder. */
-function ensureAuthUrl(req: NextRequest) {
+const DEV_SECRET = "aligned-dev-secret-do-not-use-in-production";
+
+/** Ensure redirects use the URL you're actually on. On localhost we use the request host so port 3000 vs 3003 doesn't matter. On Vercel we use VERCEL_URL when env is a placeholder. Returns { origin, secret } for passing into getHandlers so the auth instance always has valid config. */
+function ensureAuthUrl(req: NextRequest): { origin: string; secret: string } {
   const requestOrigin = getRequestOrigin(req);
+  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "";
 
   // Localhost: always use the port the user is actually visiting so callbacks stay on the same port
-  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "";
   if (host && (host.startsWith("localhost") || host.startsWith("127.0.0.1"))) {
-    process.env.AUTH_URL = requestOrigin;
-    process.env.NEXTAUTH_URL = requestOrigin;
+    const origin = requestOrigin || `http://${host}`;
+    process.env.AUTH_URL = origin;
+    process.env.NEXTAUTH_URL = origin;
     process.env.AUTH_TRUST_HOST = "true";
-    return;
+    const secret =
+      process.env.AUTH_SECRET ?? (process.env.NODE_ENV === "development" ? DEV_SECRET : "");
+    if (!process.env.AUTH_SECRET && process.env.NODE_ENV === "development") {
+      process.env.AUTH_SECRET = secret;
+    }
+    return { origin, secret: secret || DEV_SECRET };
   }
 
   // Production: if the request is on a different host than NEXTAUTH_URL (e.g. user moved to new domain), use request origin so magic links and redirects stay on the site they're visiting
-  const authUrl = process.env.AUTH_URL ?? process.env.NEXTAUTH_URL ?? "";
+  let authUrl = process.env.AUTH_URL ?? process.env.NEXTAUTH_URL ?? "";
   if (requestOrigin && authUrl) {
     try {
       const requestHost = new URL(requestOrigin).host;
@@ -34,6 +42,7 @@ function ensureAuthUrl(req: NextRequest) {
       if (requestHost !== authHost) {
         process.env.AUTH_URL = requestOrigin;
         process.env.NEXTAUTH_URL = requestOrigin;
+        authUrl = requestOrigin;
       }
     } catch {
       // ignore
@@ -44,9 +53,15 @@ function ensureAuthUrl(req: NextRequest) {
   const isPlaceholder =
     !authUrl || authUrl.includes("your-main-url") || authUrl.includes("your-app.vercel");
   if (vercelUrl && isPlaceholder) {
-    process.env.AUTH_URL = `https://${vercelUrl}`;
-    process.env.NEXTAUTH_URL = `https://${vercelUrl}`;
+    const url = `https://${vercelUrl}`;
+    process.env.AUTH_URL = url;
+    process.env.NEXTAUTH_URL = url;
+    authUrl = url;
   }
+
+  const origin = authUrl || requestOrigin;
+  const secret = process.env.AUTH_SECRET ?? "";
+  return { origin, secret };
 }
 
 const hasResend = () => !!process.env.RESEND_API_KEY;
@@ -79,10 +94,15 @@ function getEmailConfig() {
   return { emailConfigured, resend, smtp, from };
 }
 
-/** Initialize the shared auth instance with route config (email, etc.) then use the same handlers so session cookie is set and read by the same instance. */
-function initAuthWithRouteConfig() {
+/** Build handler options for this request so the auth instance has valid config. */
+function getRouteHandlerOptions(routeAuth: { origin: string; secret: string }) {
   const { emailConfigured, from } = getEmailConfig();
-  getHandlers(sendVerificationRequestFromRoute, { emailConfigured, from });
+  return {
+    emailConfigured,
+    from,
+    secret: routeAuth.secret || undefined,
+    authUrl: routeAuth.origin || undefined,
+  };
 }
 
 /** Collect all Set-Cookie header values (Headers can have multiple). */
@@ -142,15 +162,29 @@ function forwardAuthResponse(req: NextRequest, res: Response): NextResponse {
 }
 
 export async function GET(req: NextRequest) {
-  ensureAuthUrl(req);
-  initAuthWithRouteConfig();
-  const res = await handlers.GET(req);
+  const routeAuth = ensureAuthUrl(req);
+  const opts = getRouteHandlerOptions(routeAuth);
+  const requestHandlers = getHandlers(sendVerificationRequestFromRoute, opts);
+  if (process.env.NODE_ENV === "development") {
+    console.log("[auth route] GET origin=%s secretSet=%s", routeAuth.origin, !!routeAuth.secret);
+  }
+  const res = await requestHandlers.GET(req);
   return forwardAuthResponse(req, res);
 }
 
 export async function POST(req: NextRequest) {
-  ensureAuthUrl(req);
-  initAuthWithRouteConfig();
-  const res = await handlers.POST(req);
+  const routeAuth = ensureAuthUrl(req);
+  const opts = getRouteHandlerOptions(routeAuth);
+  const requestHandlers = getHandlers(sendVerificationRequestFromRoute, opts);
+  if (process.env.NODE_ENV === "development") {
+    console.log("[auth route] POST origin=%s secretSet=%s", routeAuth.origin, !!routeAuth.secret);
+  }
+  const res = await requestHandlers.POST(req);
+  if (process.env.NODE_ENV === "development") {
+    const location = res.headers.get("location") ?? "";
+    if (location.includes("error=Configuration")) {
+      console.error("[auth route] Auth.js returned Configuration error. Check [auth] error lines above for the real cause.");
+    }
+  }
   return forwardAuthResponse(req, res);
 }

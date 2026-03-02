@@ -99,64 +99,72 @@ export function AppPageClient({ initialData }: Props) {
           <TodaySection relationshipId={relationshipId!} />
 
           <section className="space-y-3">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
-              Today
-            </h2>
-            <p className="text-slate-600 text-sm">
-              Do these when you can. Tap to open.
-            </p>
+            <div className="flex items-center justify-end">
+              <Link
+                href="/app/history"
+                className="text-sm font-medium text-brand-600 hover:text-brand-700 hover:underline"
+              >
+                View Today&apos;s Results
+              </Link>
+            </div>
             <div className="space-y-3">
-              <Link
-                href="/app/quiz"
-                className="ns-card flex items-start gap-4 w-full text-left !py-4 border-l-4 border-l-brand-500 bg-brand-50/30 hover:bg-brand-50/50 transition-colors"
-              >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-slate-200 bg-white" aria-hidden>
+              {/* Quiz card: checkmark top-right, two columns (content | image), Take Quiz / View Results button */}
+              <div className="ns-card relative w-full text-left !py-4 !pr-4 border-l-4 border-l-brand-500 bg-brand-50/30">
+                <span className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90" aria-hidden>
                   {quizDoneToday === true ? (
-                    <CheckCircle className="h-6 w-6 text-emerald-600" strokeWidth={2} aria-label="Done today" />
+                    <CheckCircle className="h-5 w-5 text-emerald-600" strokeWidth={2} aria-label="Done today" />
                   ) : (
-                    <Circle className="h-6 w-6 text-slate-400" strokeWidth={2} aria-label="Not done today" />
+                    <Circle className="h-5 w-5 text-slate-400" strokeWidth={2} aria-label="Not done today" />
                   )}
                 </span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <HelpCircle className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={2} />
-                    <span className="font-semibold text-slate-900">Quiz</span>
-                    {quizDoneToday === true && (
-                      <span className="text-xs font-medium text-emerald-600">Done</span>
-                    )}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr,auto]">
+                  <div className="min-w-0 space-y-3">
+                    <Link href="/app/quiz" className="inline-flex items-center gap-2 hover:opacity-90">
+                      <HelpCircle className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={2} />
+                      <span className="font-semibold text-slate-900">Quiz</span>
+                    </Link>
+                    <p className="text-sm text-slate-500 leading-relaxed">
+                      Answer for yourself, then guess what your partner picked.
+                    </p>
+                    <Link
+                      href="/app/quiz"
+                      className="ns-btn-primary inline-flex items-center gap-1.5 text-sm"
+                    >
+                      {quizDoneToday === true ? "View Results" : "Take Quiz"}
+                    </Link>
                   </div>
-                  <p className="mt-1 text-sm text-slate-500 leading-relaxed">
-                    Answer for yourself, then guess what your partner picked.
-                  </p>
+                  <TodayRandomImage src={distinctImages[0]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shrink-0" sizes="96px" />
                 </div>
-                <TodayRandomImage src={distinctImages[0]} className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl shrink-0" sizes="80px" />
-              </Link>
+              </div>
 
-              <Link
-                href="/app/agreement"
-                className="ns-card flex items-start gap-4 w-full text-left !py-4 border-l-4 border-l-brand-500 bg-brand-50/30 hover:bg-brand-50/50 transition-colors"
-              >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-slate-200 bg-white" aria-hidden>
+              {/* Alignment card: same layout */}
+              <div className="ns-card relative w-full text-left !py-4 !pr-4 border-l-4 border-l-brand-500 bg-brand-50/30">
+                <span className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90" aria-hidden>
                   {agreementDoneToday === true ? (
-                    <CheckCircle className="h-6 w-6 text-emerald-600" strokeWidth={2} aria-label="Done today" />
+                    <CheckCircle className="h-5 w-5 text-emerald-600" strokeWidth={2} aria-label="Done today" />
                   ) : (
-                    <Circle className="h-6 w-6 text-slate-400" strokeWidth={2} aria-label="Not done today" />
+                    <Circle className="h-5 w-5 text-slate-400" strokeWidth={2} aria-label="Not done today" />
                   )}
                 </span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <Scale className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={2} />
-                    <span className="font-semibold text-slate-900">Alignment</span>
-                    {agreementDoneToday === true && (
-                      <span className="text-xs font-medium text-emerald-600">Done</span>
-                    )}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr,auto]">
+                  <div className="min-w-0 space-y-3">
+                    <Link href="/app/agreement" className="inline-flex items-center gap-2 hover:opacity-90">
+                      <Scale className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={2} />
+                      <span className="font-semibold text-slate-900">Alignment</span>
+                    </Link>
+                    <p className="text-sm text-slate-500 leading-relaxed">
+                      Rate each statement, then guess how your partner would answer.
+                    </p>
+                    <Link
+                      href="/app/agreement"
+                      className="ns-btn-primary inline-flex items-center gap-1.5 text-sm"
+                    >
+                      {agreementDoneToday === true ? "View Results" : "Take Alignment"}
+                    </Link>
                   </div>
-                  <p className="mt-1 text-sm text-slate-500 leading-relaxed">
-                    Rate each statement, then guess how your partner would answer.
-                  </p>
+                  <TodayRandomImage src={distinctImages[1]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shrink-0" sizes="96px" />
                 </div>
-                <TodayRandomImage src={distinctImages[1]} className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl shrink-0" sizes="80px" />
-              </Link>
+              </div>
             </div>
           </section>
         </div>

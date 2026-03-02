@@ -162,55 +162,86 @@ export function SessionContent({ data, currentUserId }: Props) {
   const responsesToShow = useMemo(() => {
     if (!isRevealed) return [];
 
-    const possessive = (name: string) =>
-      `${name.trim()}${name.trim().endsWith("s") ? "'" : "'s"}`;
-    const myTitle = data.currentUserName
-      ? `${possessive(data.currentUserName)} response`
-      : "My response";
-    const partnerTitle = data.partnerName
-      ? `${possessive(data.partnerName)} response`
-      : "Their response";
-    const myIcon = (data.currentUserImage as string) || "💗";
-    const partnerIcon = (data.partnerImage as string) || "💜";
+    const baseResponses =
+      revealData?.responses ??
+      (data.allResponses
+        ? data.allResponses.map((r) => ({
+            userId: r.userId,
+            content: r.content ?? null,
+          }))
+        : []);
 
-    if (revealData) {
-      const mine = revealData.responses.find((r) => r.userId === currentUserId) ?? null;
-      const partner = revealData.responses.find((r) => r.userId !== currentUserId) ?? null;
+    if (baseResponses.length === 0) {
+      const possessive = (name: string) =>
+        `${name.trim()}${name.trim().endsWith("s") ? "'" : "'s"}`;
+      const myTitle = data.currentUserName
+        ? `${possessive(data.currentUserName)} response`
+        : "My response";
+      const partnerTitle = data.partnerName
+        ? `${possessive(data.partnerName)} response`
+        : "Their response";
+      const myIcon = (data.currentUserImage as string) || "💗";
+      const partnerIcon = (data.partnerImage as string) || "💜";
       return [
         {
           key: "me",
           title: myTitle,
           icon: myIcon,
           bubbleClass: "border-brand-200 bg-brand-50 text-slate-900",
-          content: mine?.content ?? null,
+          content: data.userResponse ?? null,
         },
         {
           key: "partner",
           title: partnerTitle,
           icon: partnerIcon,
           bubbleClass: "border-violet-100 bg-violet-50 text-slate-900",
-          content: partner?.content ?? null,
+          content: data.partnerResponse ?? null,
         },
       ];
     }
 
-    return [
-      {
-        key: "me",
-        title: myTitle,
-        icon: myIcon,
-        bubbleClass: "border-brand-200 bg-brand-50 text-slate-900",
-        content: data.userResponse ?? null,
-      },
-      {
-        key: "partner",
-        title: partnerTitle,
-        icon: partnerIcon,
-        bubbleClass: "border-violet-100 bg-violet-50 text-slate-900",
-        content: data.partnerResponse ?? null,
-      },
-    ];
-  }, [isRevealed, revealData, data.userResponse, data.partnerResponse, data.partnerName, data.currentUserName, data.currentUserImage, data.partnerImage, currentUserId]);
+    // When we have full response/user data, show everyone (2 or 3 people).
+    const withMeta =
+      data.allResponses && data.allResponses.length >= baseResponses.length
+        ? baseResponses.map((r) => {
+            const meta = data.allResponses!.find((m) => m.userId === r.userId);
+            return {
+              userId: r.userId,
+              content: r.content,
+              name: meta?.name ?? null,
+              image: meta?.image ?? null,
+            };
+          })
+        : baseResponses.map((r) => ({
+            userId: r.userId,
+            content: r.content,
+            name: null,
+            image: null,
+          }));
+
+    const sorted = withMeta.sort((a, b) => {
+      if (a.userId === currentUserId) return -1;
+      if (b.userId === currentUserId) return 1;
+      return (a.name ?? "").localeCompare(b.name ?? "");
+    });
+
+    return sorted.map((r, index) => {
+      const isMe = r.userId === currentUserId;
+      const fallbackLabel = isMe ? "My response" : "Their response";
+      const title = r.name ? `${r.name}'s response` : fallbackLabel;
+      const icon = r.image || (isMe ? "💗" : index === 1 ? "💜" : "💛");
+      const bubbleClass = isMe
+        ? "border-brand-200 bg-brand-50 text-slate-900"
+        : "border-violet-100 bg-violet-50 text-slate-900";
+      return {
+        key: r.userId,
+        title,
+        icon,
+        bubbleClass,
+        content: r.content ?? null,
+      };
+    });
+  }, [isRevealed, revealData, data.userResponse, data.partnerResponse, data.allResponses, data.partnerName, data.currentUserName, data.currentUserImage, data.partnerImage, currentUserId]);
   const reflectionsToShow = revealData?.reflections ?? data.reflections ?? [];
 
   const responseCount = (data.hasUserResponded ? 1 : 0) + (data.hasPartnerResponded ? 1 : 0);
@@ -259,7 +290,7 @@ export function SessionContent({ data, currentUserId }: Props) {
           <p className="text-center text-base text-slate-700 sm:text-lg">
             {data.hasUserResponded
               ? "You can tweak your answer any time before you both reveal."
-              : "Your answer stays private until your partner responds."}
+              : "Your answer stays private until the other person responds."}
           </p>
           <div className="flex flex-col items-center gap-4">
             {loading === "submit" ? (
@@ -293,7 +324,7 @@ export function SessionContent({ data, currentUserId }: Props) {
 
       {data.hasUserResponded && data.state === "open" && !data.canReveal && (
         <div className="space-y-3 rounded-xl border border-brand-200 bg-brand-50 p-4 text-base text-brand-800 sm:text-lg">
-          <p>Waiting on your partner to answer. You can reveal once both have responded.</p>
+          <p>Waiting on the other person to answer. You can reveal once both have responded.</p>
           <div className="flex flex-wrap gap-2">
             <NotifyPartnerButton sessionId={data.sessionId} />
           </div>
@@ -363,7 +394,7 @@ export function SessionContent({ data, currentUserId }: Props) {
               id="session-response"
               value={reaction}
               onChange={(e) => setReaction(e.target.value)}
-              placeholder="A short note or emoji for your partner…"
+              placeholder="A short note or emoji for them…"
               rows={3}
               className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-base text-slate-900 placeholder:text-slate-500 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300"
             />

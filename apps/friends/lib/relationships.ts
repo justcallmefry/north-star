@@ -89,6 +89,13 @@ export async function claimInvite(code: string) {
   if (invite.status !== "pending") throw new Error("This invite was already used");
   if (invite.expiresAt && invite.expiresAt < new Date()) throw new Error("This invite has expired");
 
+  const activeMemberCount = await prisma.relationshipMember.count({
+    where: { relationshipId: invite.relationshipId, leftAt: null },
+  });
+  if (activeMemberCount >= 3) {
+    throw new Error("This space already has three people. Create a new one for anyone else.");
+  }
+
   const existing = await prisma.relationshipMember.findUnique({
     where: {
       relationshipId_userId: { relationshipId: invite.relationshipId, userId: session.user.id },

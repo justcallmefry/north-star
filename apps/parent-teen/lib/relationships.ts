@@ -13,6 +13,8 @@ function generateInviteCode(): string {
   return crypto.randomBytes(8).toString("base64url").slice(0, 12);
 }
 
+export type RelationshipRole = "parent" | "young_adult";
+
 export async function createRelationship(name?: string) {
   const session = await getServerAuthSession();
   if (!session?.user?.id) throw new Error("Not signed in");
@@ -27,7 +29,8 @@ export async function createRelationship(name?: string) {
       members: {
         create: {
           userId,
-          role: "owner",
+          // v1: creator is treated as a parent in this space.
+          role: "parent",
         },
       },
       invites: {
@@ -75,7 +78,7 @@ export async function createInvite(relationshipId: string) {
   return { code };
 }
 
-export async function claimInvite(code: string) {
+export async function claimInvite(code: string, roleHint?: RelationshipRole) {
   const session = await getServerAuthSession();
   if (!session?.user?.id) throw new Error("Not signed in");
 
@@ -88,6 +91,36 @@ export async function claimInvite(code: string) {
   if (!invite) throw new Error("Invalid or expired code");
   if (invite.status !== "pending") throw new Error("This invite was already used");
   if (invite.expiresAt && invite.expiresAt < new Date()) throw new Error("This invite has expired");
+  // Determine current roles in this space so we can tag the new member.
+  const activeMembers = await prisma.relationshipMember.findMany({
+    where: {
+      relationshipId: invite.relationshipId,
+      leftAt: null,
+    },
+    select: { role: true },
+  });
+  const parentCount = activeMembers.filter(
+    (m) => m.role === "parent" || m.role === "owner" || m.role == null
+  ).length;
+  const youngAdultCount = activeMembers.filter((m) => m.role === "young_adult").length;
+  const activeCount = activeMembers.length;
+
+  let role: RelationshipRole;
+  if (roleHint === "parent" || roleHint === "young_adult") {
+    role = roleHint;
+  } else {
+    // Fallback: if there is already a parent but no young adult, assume this joiner is the young adult.
+    if (parentCount >= 1 && youngAdultCount === 0) {
+      role = "young_adult";
+    } else {
+      role = "parent";
+    }
+  }
+
+  // Allow up to 3 people in a space (e.g. two parents + one young adult).
+  if (activeCount >= 3) {
+    throw new Error("This space already has three people. Create a new one for anyone else.");
+  }
 
   const existing = await prisma.relationshipMember.findUnique({
     where: {
@@ -102,7 +135,7 @@ export async function claimInvite(code: string) {
       data: {
         relationshipId: invite.relationshipId,
         userId: session.user.id,
-        role: "member",
+        role,
       },
     }),
     prisma.invite.update({
@@ -155,6 +188,33 @@ export async function archiveRelationship(relationshipId: string) {
 
   revalidatePath("/app");
   revalidatePath("/invite");
+}
+
+/** Update your role in a relationship (parent or young_adult). */
+export async function updateMyRole(
+  relationshipId: string,
+  role: RelationshipRole
+): Promise<{ ok: boolean; error?: string }> {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) return { ok: false, error: "Not signed in" };
+
+  const member = await prisma.relationshipMember.findFirst({
+    where: {
+      relationshipId,
+      userId: session.user.id,
+      leftAt: null,
+    },
+  });
+  if (!member) return { ok: false, error: "Not a member of this space" };
+
+  await prisma.relationshipMember.update({
+    where: { id: member.id },
+    data: { role },
+  });
+
+  revalidatePath("/app");
+  revalidatePath("/app/us");
+  return { ok: true };
 }
 
 /** List relationships where the given user is an active member (for API/route handlers that already have userId). */

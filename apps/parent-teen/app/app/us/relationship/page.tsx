@@ -29,7 +29,7 @@ export default async function ManageRelationshipPage() {
           Manage relationship
         </h1>
         <p className="mt-1 text-sm text-slate-600 sm:text-base">
-          Invite your partner, see status, or leave this relationship.
+          Invite a parent or child. See status or leave this space.
         </p>
       </header>
 
@@ -43,7 +43,7 @@ export default async function ManageRelationshipPage() {
               {primary.name ?? "Your relationship"}
             </p>
             <p className="text-sm text-slate-600 sm:text-base">
-              Invite your partner, see status, manage or leave.
+              Invite a parent or child. See status, manage, or leave.
             </p>
           </div>
           <div className="hidden shrink-0 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 sm:inline-flex">
@@ -56,7 +56,7 @@ export default async function ManageRelationshipPage() {
             href="/invite"
             className="ns-btn-primary"
           >
-            Invite partner
+            Invite parent or child
           </Link>
         </div>
 

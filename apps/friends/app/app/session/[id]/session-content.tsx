@@ -162,58 +162,89 @@ export function SessionContent({ data, currentUserId }: Props) {
   const responsesToShow = useMemo(() => {
     if (!isRevealed) return [];
 
-    const possessive = (name: string) =>
-      `${name.trim()}${name.trim().endsWith("s") ? "'" : "'s"}`;
-    const myTitle = data.currentUserName
-      ? `${possessive(data.currentUserName)} response`
-      : "My response";
-    const partnerTitle = data.partnerName
-      ? `${possessive(data.partnerName)} response`
-      : "Their response";
-    const myIcon = (data.currentUserImage as string) || "💗";
-    const partnerIcon = (data.partnerImage as string) || "💜";
+    const baseResponses =
+      revealData?.responses ??
+      (data.allResponses
+        ? data.allResponses.map((r) => ({
+            userId: r.userId,
+            content: r.content ?? null,
+          }))
+        : []);
 
-    if (revealData) {
-      const mine = revealData.responses.find((r) => r.userId === currentUserId) ?? null;
-      const partner = revealData.responses.find((r) => r.userId !== currentUserId) ?? null;
+    if (baseResponses.length === 0) {
+      const possessive = (name: string) =>
+        `${name.trim()}${name.trim().endsWith("s") ? "'" : "'s"}`;
+      const myTitle = data.currentUserName
+        ? `${possessive(data.currentUserName)} response`
+        : "My response";
+      const partnerTitle = data.partnerName
+        ? `${possessive(data.partnerName)} response`
+        : "Their response";
+      const myIcon = (data.currentUserImage as string) || "💗";
+      const partnerIcon = (data.partnerImage as string) || "💜";
       return [
         {
           key: "me",
           title: myTitle,
           icon: myIcon,
           bubbleClass: "border-brand-200 bg-brand-50 text-slate-900",
-          content: mine?.content ?? null,
+          content: data.userResponse ?? null,
         },
         {
           key: "partner",
           title: partnerTitle,
           icon: partnerIcon,
           bubbleClass: "border-violet-100 bg-violet-50 text-slate-900",
-          content: partner?.content ?? null,
+          content: data.partnerResponse ?? null,
         },
       ];
     }
 
-    return [
-      {
-        key: "me",
-        title: myTitle,
-        icon: myIcon,
-        bubbleClass: "border-brand-200 bg-brand-50 text-slate-900",
-        content: data.userResponse ?? null,
-      },
-      {
-        key: "partner",
-        title: partnerTitle,
-        icon: partnerIcon,
-        bubbleClass: "border-violet-100 bg-violet-50 text-slate-900",
-        content: data.partnerResponse ?? null,
-      },
-    ];
-  }, [isRevealed, revealData, data.userResponse, data.partnerResponse, data.partnerName, data.currentUserName, data.currentUserImage, data.partnerImage, currentUserId]);
+    const withMeta =
+      data.allResponses && data.allResponses.length >= baseResponses.length
+        ? baseResponses.map((r) => {
+            const meta = data.allResponses!.find((m) => m.userId === r.userId);
+            return {
+              userId: r.userId,
+              content: r.content,
+              name: meta?.name ?? null,
+              image: meta?.image ?? null,
+            };
+          })
+        : baseResponses.map((r) => ({
+            userId: r.userId,
+            content: r.content,
+            name: null,
+            image: null,
+          }));
+
+    const sorted = withMeta.sort((a, b) => {
+      if (a.userId === currentUserId) return -1;
+      if (b.userId === currentUserId) return 1;
+      return (a.name ?? "").localeCompare(b.name ?? "");
+    });
+
+    return sorted.map((r, index) => {
+      const isMe = r.userId === currentUserId;
+      const fallbackLabel = isMe ? "My response" : "Their response";
+      const title = r.name ? `${r.name}'s response` : fallbackLabel;
+      const icon = r.image || (isMe ? "💗" : index === 1 ? "💜" : "💛");
+      const bubbleClass = isMe
+        ? "border-brand-200 bg-brand-50 text-slate-900"
+        : "border-violet-100 bg-violet-50 text-slate-900";
+      return {
+        key: r.userId,
+        title,
+        icon,
+        bubbleClass,
+        content: r.content ?? null,
+      };
+    });
+  }, [isRevealed, revealData, data.userResponse, data.partnerResponse, data.allResponses, data.partnerName, data.currentUserName, data.currentUserImage, data.partnerImage, currentUserId]);
   const reflectionsToShow = revealData?.reflections ?? data.reflections ?? [];
 
-  const responseCount = (data.hasUserResponded ? 1 : 0) + (data.hasPartnerResponded ? 1 : 0);
+  const totalMembers = data.memberCount ?? 2;
+  const respondedCount = data.respondedCount ?? ((data.hasUserResponded ? 1 : 0) + (data.hasPartnerResponded ? totalMembers - 1 : 0));
 
   return (
     <div className="space-y-10">
@@ -258,8 +289,12 @@ export function SessionContent({ data, currentUserId }: Props) {
           </div>
           <p className="text-center text-base text-slate-700 sm:text-lg">
             {data.hasUserResponded
-              ? "You can tweak your answer any time before you both reveal."
-              : "Your answer stays private until your partner responds."}
+              ? totalMembers === 2
+                ? "You can tweak your answer any time before you both reveal."
+                : "You can tweak your answer any time before everyone reveals."
+              : totalMembers === 2
+                ? "Your answer stays private until your partner responds."
+                : "Your answer stays private until everyone has responded."}
           </p>
           <div className="flex flex-col items-center gap-4">
             {loading === "submit" ? (
@@ -277,7 +312,7 @@ export function SessionContent({ data, currentUserId }: Props) {
               </button>
             )}
             <p className="text-base text-slate-600 sm:text-lg">
-              {responseCount} of 2 responses for today.
+              {respondedCount} of {totalMembers} responses for today.
             </p>
           </div>
         </form>
@@ -286,14 +321,14 @@ export function SessionContent({ data, currentUserId }: Props) {
       {data.hasUserResponded && (
         <p className="text-center text-base text-slate-700 sm:text-lg">
           {data.canReveal
-            ? "2 of 2 responses for today."
-            : "You're 1 of 2 responses for today."}
+            ? `${respondedCount} of ${totalMembers} responses for today.`
+            : `You're 1 of ${totalMembers} responses for today.`}
         </p>
       )}
 
       {data.hasUserResponded && data.state === "open" && !data.canReveal && (
         <div className="space-y-3 rounded-xl border border-brand-200 bg-brand-50 p-4 text-base text-brand-800 sm:text-lg">
-          <p>Waiting on your partner to answer. You can reveal once both have responded.</p>
+          <p>Waiting on {totalMembers === 2 ? "your partner" : "everyone"} to answer. You can reveal once all have responded.</p>
           <div className="flex flex-wrap gap-2">
             <NotifyPartnerButton sessionId={data.sessionId} />
           </div>
@@ -302,7 +337,7 @@ export function SessionContent({ data, currentUserId }: Props) {
 
       {data.hasUserResponded && data.state === "open" && data.canReveal && !isRevealed && (
         <div>
-          <p className="mb-2 text-base text-slate-700 sm:text-lg">Both of you have answered.</p>
+          <p className="mb-2 text-base text-slate-700 sm:text-lg">{totalMembers === 2 ? "Both of you have answered." : "Everyone has answered."}</p>
           <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"

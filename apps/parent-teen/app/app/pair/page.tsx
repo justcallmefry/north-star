@@ -44,10 +44,10 @@ export default async function PairPage() {
       <div className="flex flex-col gap-6">
         <div>
           <h1 className="text-2xl font-semibold text-slate-900 tracking-tight sm:text-3xl">
-            Pair up with your partner or child
+            Pair up with your young adult or parent
           </h1>
           <p className="mt-2 text-slate-600">
-            Share your invite code or enter your partner or child&apos;s code to start answering questions together.
+            Share your invite code or enter their code to start answering questions together.
           </p>
         </div>
 

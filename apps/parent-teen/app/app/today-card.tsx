@@ -68,7 +68,7 @@ export function TodayCard({ today }: Props) {
         {state === "open" && hasUserResponded && !canReveal && (
           <div className="space-y-4">
             <p className="text-center text-sm text-slate-500 leading-relaxed max-w-md mx-auto">
-              Your answer is saved. We&apos;ll reveal when your partner replies.
+              Your answer is saved. We&apos;ll reveal when they reply.
             </p>
             <div className="flex flex-wrap items-center gap-2">
               <Link href={`/app/session/${sessionId}`} className="ns-btn-primary">

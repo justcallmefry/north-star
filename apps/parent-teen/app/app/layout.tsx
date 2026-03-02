@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Home, CalendarRange, History, User, HelpCircle, Scale } from "lucide-react";
+import { Home, History, User, HelpCircle, Scale } from "lucide-react";
 import { BottomNav } from "./bottom-nav";
 import { RelationshipSwitcher } from "./relationship-switcher";
 import { ScrollToTopOnNav } from "./scroll-to-top-on-nav";
@@ -12,7 +12,6 @@ const SIDEBAR_NAV = [
   { href: "/app/quiz", label: "Quiz", icon: HelpCircle },
   { href: "/app/agreement", label: "Alignment", icon: Scale },
   { href: "/app/history", label: "Responses", icon: History },
-  { href: "/app/meeting", label: "Our Week", icon: CalendarRange },
   { href: "/app/us", label: "Profile", icon: User },
 ] as const;
 
@@ -77,7 +76,7 @@ export default function AppSegmentLayout({
             <div className="mt-6 space-y-2 text-sm text-slate-500">
               <p>Calm, private, no feed.</p>
               <p className="text-xs leading-snug">
-                Your answers are only shared with your partner after you both answer.
+                Your answers are only shared with the other person after you both answer.
               </p>
             </div>
           </aside>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, CalendarRange, History, HelpCircle, Scale } from "lucide-react";
+import { ArrowRight, History, HelpCircle, Scale } from "lucide-react";
 import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { TodaySection } from "./today-section";
 import { TodayRandomImage } from "./today-random-image";
@@ -111,21 +111,6 @@ export function AppPageClient({ initialData }: Props) {
               </div>
               <div className="space-y-1.5">
                 <Link
-                  href="/app/meeting"
-                  className="ns-btn-secondary w-full !py-2"
-                >
-                  <CalendarRange className="h-4 w-4" />
-                  Our Week
-                </Link>
-                <div className="flex items-center gap-3">
-                  <TodayRandomImage src={distinctImages[2]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shrink-0" sizes="96px" />
-                  <p className="text-sm text-slate-500 leading-relaxed flex-1 min-w-0">
-                    A shared place to capture this week as it unfolds.
-                  </p>
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <Link
                   href="/app/history"
                   className="ns-btn-secondary w-full !py-2"
                 >
@@ -136,7 +121,7 @@ export function AppPageClient({ initialData }: Props) {
                   <p className="text-sm text-slate-500 leading-relaxed flex-1 min-w-0">
                     View your past answers to questions.
                   </p>
-                  <TodayRandomImage src={distinctImages[3]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shrink-0" sizes="96px" />
+                  <TodayRandomImage src={distinctImages[2]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shrink-0" sizes="96px" />
                 </div>
               </div>
             </div>

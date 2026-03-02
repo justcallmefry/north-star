@@ -72,10 +72,10 @@ export default async function InvitePage({ searchParams }: Props) {
       </header>
       <div className="mx-auto w-full max-w-md flex-1 py-6">
         <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">
-          Invite your partner
+          Invite a parent or child
         </h1>
         <p className="mt-2 text-slate-600">
-          Share your code or link so they can join. Same code flow as the pair screen.
+          Share your code or link so they can join this space.
         </p>
         <div className="mt-8">
           <InviteContent

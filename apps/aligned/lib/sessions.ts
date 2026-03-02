@@ -73,7 +73,6 @@ export async function getToday(
   await requireActiveMember(session.user.id, relationshipId);
   const memberIds = await getActiveMemberIds(relationshipId);
   if (memberIds.length === 0) return null;
-  const exactlyTwo = memberIds.length === 2;
 
   // Use local date when provided (midnight in their area = this calendar day in UTC for lookup).
   const today =
@@ -172,14 +171,14 @@ export async function getToday(
   const hasUserResponded = dailySession.responses.some((r) => r.userId === session.user!.id);
   const partnerIds = memberIds.filter((id) => id !== session.user!.id);
   const hasPartnerResponded =
-    exactlyTwo &&
-    (partnerIds.length === 0 ||
-      partnerIds.every((id) => dailySession!.responses.some((r) => r.userId === id)));
+    partnerIds.length === 0
+      ? false
+      : partnerIds.every((id) => dailySession!.responses.some((r) => r.userId === id));
   const canReveal =
-    exactlyTwo &&
     dailySession.state === "open" &&
     hasUserResponded &&
-    hasPartnerResponded;
+    hasPartnerResponded &&
+    memberIds.length >= 2;
 
   return {
     sessionId: dailySession.id,
@@ -230,17 +229,17 @@ export async function revealSession(sessionId: string): Promise<RevealResult> {
 
   const base = await requireSessionMembership(session.user.id, sessionId);
   const memberIds = await getActiveMemberIds(base.relationshipId);
-  if (memberIds.length !== 2)
-    throw new Error("This relationship must have exactly 2 active members.");
+  if (memberIds.length < 2)
+    throw new Error("This space needs at least 2 active people.");
   const withResponses = await prisma.dailySession.findUnique({
     where: { id: sessionId },
     include: { responses: { select: { userId: true } } },
   });
-  const bothResponded =
+  const allResponded =
     memberIds.length >= 2 &&
     withResponses &&
     memberIds.every((id) => withResponses.responses.some((r) => r.userId === id));
-  if (!bothResponded) throw new Error("Both partners must respond before revealing");
+  if (!allResponded) throw new Error("Everyone needs to answer before revealing.");
 
   await prisma.dailySession.update({
     where: { id: sessionId },
@@ -285,6 +284,17 @@ export type GetSessionResult = {
   /** Partner display name and icon */
   partnerName?: string | null;
   partnerImage?: string | null;
+  /** All revealed responses with names/images when available (2 or 3 people). */
+  allResponses?: {
+    userId: string;
+    name: string | null;
+    image: string | null;
+    content: string | null;
+  }[];
+  /** Number of active members in the relationship (for "X of N responses"). */
+  memberCount?: number;
+  /** Number of members who have submitted a response this session. */
+  respondedCount?: number;
 };
 
 export async function getSession(sessionId: string): Promise<GetSessionResult | null> {
@@ -308,15 +318,17 @@ export async function getSession(sessionId: string): Promise<GetSessionResult | 
   const userResponse = dailySession.responses.find((r) => r.userId === session.user!.id);
   const partnerIds = memberIds.filter((id) => id !== session.user!.id);
   const hasPartnerResponded =
-    partnerIds.length === 0 ||
-    partnerIds.every((id) => dailySession.responses.some((r) => r.userId === id));
-  const exactlyTwo = memberIds.length === 2;
+    partnerIds.length === 0
+      ? false
+      : partnerIds.every((id) => dailySession.responses.some((r) => r.userId === id));
   const canReveal =
-    exactlyTwo &&
     dailySession.state === "open" &&
     !!userResponse &&
-    hasPartnerResponded;
+    hasPartnerResponded &&
+    memberIds.length >= 2;
 
+  const memberCount = memberIds.length;
+  const respondedCount = dailySession.responses.length;
   const result: GetSessionResult = {
     sessionId: dailySession.id,
     relationshipId: dailySession.relationshipId,
@@ -328,6 +340,8 @@ export async function getSession(sessionId: string): Promise<GetSessionResult | 
     hasUserResponded: !!userResponse,
     hasPartnerResponded: partnerIds.length === 0 ? null : hasPartnerResponded,
     canReveal,
+    memberCount,
+    respondedCount,
   };
 
   if (dailySession.state === "revealed") {
@@ -338,17 +352,29 @@ export async function getSession(sessionId: string): Promise<GetSessionResult | 
       content: r.content,
       reaction: r.reaction,
     }));
-    const userIds = [session.user!.id, ...(partner ? [partner.userId] : [])];
+    const responseUserIds = Array.from(
+      new Set(dailySession.responses.map((r) => r.userId))
+    );
     const users = await prisma.user.findMany({
-      where: { id: { in: userIds } },
+      where: { id: { in: responseUserIds } },
       select: { id: true, name: true, image: true },
     });
-    const currentUser = users.find((u) => u.id === session.user!.id);
-    const partnerUser = users.find((u) => u.id !== session.user!.id);
+    const userMap = new Map(users.map((u) => [u.id, u]));
+    const currentUser = userMap.get(session.user!.id);
+    const firstOther = users.find((u) => u.id !== session.user!.id) ?? null;
     result.currentUserName = currentUser?.name ?? null;
     result.currentUserImage = currentUser?.image ?? null;
-    result.partnerName = partnerUser?.name ?? null;
-    result.partnerImage = partnerUser?.image ?? null;
+    result.partnerName = firstOther?.name ?? null;
+    result.partnerImage = firstOther?.image ?? null;
+    result.allResponses = dailySession.responses.map((r) => {
+      const u = userMap.get(r.userId);
+      return {
+        userId: r.userId,
+        name: u?.name ?? null,
+        image: u?.image ?? null,
+        content: r.content,
+      };
+    });
   }
 
   return result;

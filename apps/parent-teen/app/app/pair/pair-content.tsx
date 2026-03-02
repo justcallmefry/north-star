@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Copy, Share2 } from "lucide-react";
-import { createRelationship, claimInvite } from "@/lib/relationships";
+import { createRelationship, claimInvite, type RelationshipRole } from "@/lib/relationships";
 
 /** Format 12-char code as 4-4-4 for display */
 function formatCode(code: string): string {
@@ -21,6 +21,7 @@ export function PairContent() {
   const [claimLoading, setClaimLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [joinRole, setJoinRole] = useState<RelationshipRole>("young_adult");
 
   const joinUrl =
     typeof window !== "undefined" && inviteCode
@@ -85,7 +86,7 @@ export function PairContent() {
     setError(null);
     setClaimLoading(true);
     try {
-      await claimInvite(trimmed);
+      await claimInvite(trimmed, joinRole);
       router.push("/app");
       router.refresh();
     } catch (err) {
@@ -161,6 +162,33 @@ export function PairContent() {
         <p className="mt-2 text-sm text-slate-600">
           Enter the code they sent you to pair now.
         </p>
+        <div className="mt-3 space-y-2">
+          <p className="text-sm font-medium text-slate-800">Who are you in this space?</p>
+          <div className="flex flex-wrap gap-3 text-sm text-slate-700">
+            <button
+              type="button"
+              onClick={() => setJoinRole("parent")}
+              className={`rounded-full px-3 py-1.5 border ${
+                joinRole === "parent"
+                  ? "border-brand-500 bg-brand-50 text-brand-700"
+                  : "border-slate-200 bg-white"
+              }`}
+            >
+              I&apos;m a parent
+            </button>
+            <button
+              type="button"
+              onClick={() => setJoinRole("young_adult")}
+              className={`rounded-full px-3 py-1.5 border ${
+                joinRole === "young_adult"
+                  ? "border-brand-500 bg-brand-50 text-brand-700"
+                  : "border-slate-200 bg-white"
+              }`}
+            >
+              I&apos;m the young adult
+            </button>
+          </div>
+        </div>
         <form onSubmit={handleClaim} className="mt-4 space-y-3">
           <div>
             <label htmlFor="partner-code" className="sr-only">

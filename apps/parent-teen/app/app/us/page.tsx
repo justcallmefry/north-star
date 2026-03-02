@@ -9,6 +9,7 @@ import { RelationshipActions } from "../relationship-actions";
 import { ProfileForm } from "./profile-form";
 import { PasswordForm } from "./password-form";
 import { SignOutButton } from "./sign-out-button";
+import { RoleInSpaceForm } from "./role-in-space-form";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +28,21 @@ export default async function UsPage() {
     select: { password: true },
   });
   const hasPassword = !!userRow?.password;
+
+  const myRoleInPrimary =
+    primary &&
+    (await prisma.relationshipMember.findFirst({
+      where: {
+        relationshipId: primary.id,
+        userId: session.user.id,
+        leftAt: null,
+      },
+      select: { role: true },
+    }));
+  const normalizedRole =
+    myRoleInPrimary?.role === "young_adult"
+      ? ("young_adult" as const)
+      : ("parent" as const);
 
   return (
     <main className="flex h-full flex-col ns-stack">
@@ -85,7 +101,7 @@ export default async function UsPage() {
                   {primary.name ?? "Your relationship"}
                 </p>
                 <p className="text-sm text-slate-600 sm:text-base">
-                  Invite your partner, see status, manage or leave the relationship.
+                  Invite a parent or child. See status, manage, or leave this space.
                 </p>
               </div>
               <div className="hidden shrink-0 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 sm:inline-flex">
@@ -93,12 +109,25 @@ export default async function UsPage() {
               </div>
             </div>
 
+            <div className="mt-4 rounded-xl border border-brand-100 bg-brand-50/50 px-4 py-3">
+              <RoleInSpaceForm
+                relationshipId={primary.id}
+                currentRole={normalizedRole}
+              />
+            </div>
+
             <div className="mt-4 flex flex-wrap gap-2">
               <Link
                 href="/invite"
                 className="ns-btn-primary"
               >
-                Invite partner
+                Invite parent or child
+              </Link>
+              <Link
+                href="/join"
+                className="ns-btn-secondary"
+              >
+                Join with a code
               </Link>
               <Link
                 href="/app/us/relationship"
@@ -126,14 +155,22 @@ export default async function UsPage() {
               Set up your relationship
             </p>
             <p className="mt-2 text-sm text-slate-600 sm:text-base">
-              Get an invite code to text your partner, or enter the code they sent you.
+              Get an invite code to text your partner or young adult, or enter a code they sent you.
             </p>
-            <Link
-              href="/app/pair"
-              className="ns-btn-primary mt-5 inline-flex"
-            >
-              Pair with partner
-            </Link>
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <Link
+                href="/app/pair"
+                className="ns-btn-primary inline-flex justify-center"
+              >
+                Create or pair
+              </Link>
+              <Link
+                href="/join"
+                className="ns-btn-secondary inline-flex justify-center"
+              >
+                I have a code — join
+              </Link>
+            </div>
           </div>
         </section>
       )}

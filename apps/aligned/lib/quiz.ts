@@ -393,13 +393,21 @@ export async function submitQuiz(
 
   const updated = await prisma.quizSession.findUnique({
     where: { id: quizSession.id },
-    include: { participations: true },
+    include: { participations: true, relationship: { include: { members: { where: { leftAt: null } } } } },
   });
-  if (updated && updated.participations.length === 2) {
-    await prisma.quizSession.update({
-      where: { id: quizSession.id },
-      data: { state: "revealed" },
-    });
+  if (updated) {
+    const activeMemberIds = updated.relationship.members.map((m) => m.userId);
+    const allAnswered =
+      activeMemberIds.length >= 2 &&
+      activeMemberIds.every((id) =>
+        updated.participations.some((p) => p.userId === id)
+      );
+    if (allAnswered) {
+      await prisma.quizSession.update({
+        where: { id: quizSession.id },
+        data: { state: "revealed" },
+      });
+    }
   }
 
   revalidatePath("/app");

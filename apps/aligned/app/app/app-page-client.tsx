@@ -1,8 +1,7 @@
-"use client";
+\"use client\";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, CheckCircle, Circle, HelpCircle, Scale } from "lucide-react";
 import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { getQuizForToday } from "@/lib/quiz";
@@ -29,9 +28,8 @@ function getLocalDateString(): string {
 type Props = { initialData: AppPageInitialData };
 
 export function AppPageClient({ initialData }: Props) {
-  const { session, relationships, todayImagePaths } = initialData;
+  const { relationships, todayImagePaths } = initialData;
   const relationshipId = relationships[0]?.id ?? null;
-  const displayName = session.user.name ?? session.user.email ?? "";
   const distinctImages = todayImagePaths;
 
   const [localDateStr] = useState(getLocalDateString);
@@ -56,44 +54,6 @@ export function AppPageClient({ initialData }: Props) {
 
   return (
     <main className="flex flex-col gap-2">
-      <header className="flex shrink-0 items-center justify-between gap-4 py-1">
-        <p className="text-base text-slate-600 sm:text-lg min-w-0 flex-1">
-          <span className="block">One question a day.</span>
-          <span className="block">Answer together.</span>
-        </p>
-        <div className="flex shrink-0 items-center gap-3">
-          <div className="hidden flex-col items-end text-xs text-slate-400 sm:flex">
-            <span className="flex items-center gap-2">
-              {session.user.image && (session.user.image.startsWith("http://") || session.user.image.startsWith("https://")) ? (
-                <span className="relative block h-6 w-6 shrink-0 overflow-hidden rounded-full bg-slate-200 ring-1 ring-slate-200">
-                  <Image
-                    src={session.user.image}
-                    alt=""
-                    fill
-                    className="object-cover"
-                    sizes="24px"
-                    unoptimized={session.user.image.includes("blob.vercel-storage.com")}
-                  />
-                </span>
-              ) : null}
-              <span className="text-slate-500">Signed in as</span>
-            </span>
-            <span className="mt-0.5 max-w-[180px] truncate text-sm font-medium text-slate-600">
-              {displayName}
-            </span>
-          </div>
-          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-brand-50/80 ring-1 ring-brand-200/80 sm:h-24 sm:w-24" aria-hidden>
-            <Image
-              src="/aligned-icon.png"
-              alt=""
-              fill
-              className="object-contain"
-              sizes="(max-width: 640px) 80px, 96px"
-            />
-          </div>
-        </div>
-      </header>
-
       {relationships.length > 0 ? (
         <div className="ns-stack animate-fade-in-ease">
           <TodaySection relationshipId={relationshipId!} />

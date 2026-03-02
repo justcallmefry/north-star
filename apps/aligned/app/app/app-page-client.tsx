@@ -115,11 +115,11 @@ export function AppPageClient({ initialData }: Props) {
                     )}
                   </span>
                 </div>
-                <div className="grid grid-cols-[1fr,auto] gap-3 items-center">
+                <div className="grid grid-cols-[auto,1fr] gap-3 items-center">
+                  <TodayRandomImage src={distinctImages[0]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg shrink-0" sizes="96px" />
                   <p className="text-sm text-slate-500 leading-snug min-w-0">
                     Answer for yourself, then guess what your partner picked.
                   </p>
-                  <TodayRandomImage src={distinctImages[0]} className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg shrink-0" sizes="64px" />
                 </div>
                 <Link
                   href="/app/quiz"
@@ -148,7 +148,7 @@ export function AppPageClient({ initialData }: Props) {
                   <p className="text-sm text-slate-500 leading-snug min-w-0">
                     Rate each statement, then guess how your partner would answer.
                   </p>
-                  <TodayRandomImage src={distinctImages[1]} className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg shrink-0" sizes="64px" />
+                  <TodayRandomImage src={distinctImages[1]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg shrink-0" sizes="96px" />
                 </div>
                 <Link
                   href="/app/agreement"

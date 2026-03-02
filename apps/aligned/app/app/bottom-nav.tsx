@@ -4,14 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, CalendarRange, History, User, HelpCircle, Scale } from "lucide-react";
 
-const NAV_ITEMS = [
+const NAV_ITEMS: Array<{ href: string; label: string; icon: typeof Home; hidden?: boolean }> = [
   { href: "/app", label: "Today", icon: Home },
   { href: "/app/quiz", label: "Quiz", icon: HelpCircle },
   { href: "/app/agreement", label: "Alignment", icon: Scale },
   { href: "/app/history", label: "Responses", icon: History },
-  { href: "/app/meeting", label: "Our Week", icon: CalendarRange },
+  { href: "/app/meeting", label: "Our Week", icon: CalendarRange, hidden: true },
   { href: "/app/us", label: "Profile", icon: User },
-] as const;
+];
 
 export function BottomNav() {
   const pathname = usePathname();
@@ -32,7 +32,7 @@ export function BottomNav() {
       }}
     >
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-2 py-3">
-        {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+        {NAV_ITEMS.filter((item) => !item.hidden).map(({ href, label, icon: Icon }) => {
           const isActive =
             href === "/app"
               ? pathname === "/app" || pathname.startsWith("/app?")

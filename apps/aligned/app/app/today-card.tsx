@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CheckCircle, Circle } from "lucide-react";
 import type { GetTodayResult } from "@/lib/sessions";
 import { NotifyPartnerButton } from "./notify-partner-button";
 
@@ -22,9 +23,10 @@ export function TodayCard({ today }: Props) {
   }
 
   const { sessionId, promptText, momentText, state, hasUserResponded, hasPartnerResponded, canReveal } = today;
+  const done = hasUserResponded || state === "revealed" || (state === "open" && canReveal);
 
   return (
-    <section className="animate-calm-fade-in rounded-2xl border border-brand-100/80 bg-gradient-to-br from-brand-50/90 to-white p-5 shadow-sm ring-1 ring-brand-50/80 sm:p-6">
+    <section className="relative animate-calm-fade-in rounded-2xl border border-brand-100/80 bg-gradient-to-br from-brand-50/90 to-white p-5 shadow-sm ring-1 ring-brand-50/80 sm:p-6">
       <div className="flex items-center justify-between gap-3">
         <div className="inline-flex items-center gap-2 rounded-lg bg-brand-100/80 px-3 py-1">
           <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
@@ -33,6 +35,16 @@ export function TodayCard({ today }: Props) {
           </h2>
         </div>
       </div>
+      <span
+        className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-sm"
+        aria-hidden
+      >
+        {done ? (
+          <CheckCircle className="h-6 w-6 text-emerald-600" strokeWidth={2} aria-label="Done today" />
+        ) : (
+          <Circle className="h-6 w-6 text-slate-300" strokeWidth={2} aria-label="Not done today" />
+        )}
+      </span>
       <p className="mt-3 text-2xl font-bold leading-snug text-slate-900 sm:text-3xl">
         {promptText}
       </p>
@@ -52,9 +64,9 @@ export function TodayCard({ today }: Props) {
         {state === "revealed" && (
           <Link
             href={`/app/session/${sessionId}`}
-            className="ns-btn-secondary"
+            className="ns-btn-secondary block w-full text-center py-3.5"
           >
-            View today&apos;s session
+            View Today&apos;s Answers
           </Link>
         )}
         {state === "open" && !hasUserResponded && (

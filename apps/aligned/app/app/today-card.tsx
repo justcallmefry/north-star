@@ -64,7 +64,7 @@ export function TodayCard({ today }: Props) {
         {state === "revealed" && (
           <Link
             href={`/app/session/${sessionId}`}
-            className="ns-btn-secondary block w-full text-center py-3.5"
+            className="ns-btn-primary block w-full text-center py-3.5"
           >
             View Today&apos;s Answers
           </Link>

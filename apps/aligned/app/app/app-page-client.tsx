@@ -100,7 +100,7 @@ export function AppPageClient({ initialData }: Props) {
 
           <section className="space-y-3">
             <div className="space-y-3">
-              {/* Quiz card: checkmark top-right, two columns (sentence | image), full-width button below */}
+              {/* Quiz card: image left, sentence right; full-width button below */}
               <div className="ns-card relative w-full text-left !py-4 !pr-4 border-l-4 border-l-brand-500 bg-brand-50/30">
                 <span className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/90" aria-hidden>
                   {quizDoneToday === true ? (
@@ -110,9 +110,10 @@ export function AppPageClient({ initialData }: Props) {
                   )}
                 </span>
                 <div className="space-y-4">
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr),auto]">
-                    <div className="min-w-0 space-y-2">
-                      <Link href="/app/quiz" className="inline-flex items-center gap-2 hover:opacity-90">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-[auto,minmax(0,1fr)]">
+                    <TodayRandomImage src={distinctImages[0]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shrink-0 justify-self-start" sizes="96px" />
+                    <div className="min-w-0 space-y-2 text-right">
+                      <Link href="/app/quiz" className="inline-flex items-center gap-2 hover:opacity-90 sm:ml-auto sm:justify-end">
                         <HelpCircle className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={2} />
                         <span className="font-semibold text-slate-900">Quiz</span>
                       </Link>
@@ -120,7 +121,6 @@ export function AppPageClient({ initialData }: Props) {
                         Answer for yourself, then guess what your partner picked.
                       </p>
                     </div>
-                    <TodayRandomImage src={distinctImages[0]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shrink-0" sizes="96px" />
                   </div>
                   <Link
                     href="/app/quiz"
@@ -131,7 +131,7 @@ export function AppPageClient({ initialData }: Props) {
                 </div>
               </div>
 
-              {/* Alignment card: same layout */}
+              {/* Alignment card: sentence left, image right; full-width button below */}
               <div className="ns-card relative w-full text-left !py-4 !pr-4 border-l-4 border-l-brand-500 bg-brand-50/30">
                 <span className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/90" aria-hidden>
                   {agreementDoneToday === true ? (
@@ -142,7 +142,7 @@ export function AppPageClient({ initialData }: Props) {
                 </span>
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr),auto]">
-                    <div className="min-w-0 space-y-2">
+                    <div className="min-w-0 space-y-2 text-left">
                       <Link href="/app/agreement" className="inline-flex items-center gap-2 hover:opacity-90">
                         <Scale className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={2} />
                         <span className="font-semibold text-slate-900">Alignment</span>
@@ -151,7 +151,7 @@ export function AppPageClient({ initialData }: Props) {
                         Rate each statement, then guess how your partner would answer.
                       </p>
                     </div>
-                    <TodayRandomImage src={distinctImages[1]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shrink-0" sizes="96px" />
+                    <TodayRandomImage src={distinctImages[1]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shrink-0 justify-self-end" sizes="96px" />
                   </div>
                   <Link
                     href="/app/agreement"

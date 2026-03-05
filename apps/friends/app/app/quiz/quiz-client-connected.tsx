@@ -155,8 +155,8 @@
        <div className="space-y-6">
          <QuizPageHeader />
          <div className="ns-card flex flex-col items-center justify-center py-12">
-           <LoadingSpinner size="md" />
-           <p className="mt-3 text-sm text-slate-600">Loading yesterday&apos;s results…</p>
+          <LoadingSpinner size="md" />
+          <p className="mt-3 text-sm text-slate-600">Loading yesterday's results…</p>
          </div>
        </div>
      );
@@ -168,8 +168,8 @@
          <div className="space-y-6">
            <QuizPageHeader />
            <div className="ns-card py-8 text-center">
-             <p className="text-slate-600">No results from yesterday.</p>
-             <p className="mt-1 text-sm text-slate-500">If neither of you did the quiz that day, there&apos;s nothing to show.</p>
+            <p className="text-slate-600">No results from yesterday.</p>
+            <p className="mt-1 text-sm text-slate-500">If neither of you did the quiz that day, there's nothing to show.</p>
              <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary mt-4 !py-2 text-sm">
                Back to today
              </button>
@@ -180,8 +180,8 @@
      if (yesterdayData.reveal) {
        return (
          <div className="space-y-6">
-           <QuizPageHeader />
-           <p className="text-center text-sm font-medium text-slate-500">Yesterday&apos;s results</p>
+          <QuizPageHeader />
+          <p className="text-center text-sm font-medium text-slate-500">Yesterday's results</p>
            <QuizRevealView
              questions={yesterdayData.questions}
              reveal={yesterdayData.reveal}
@@ -200,8 +200,8 @@
        const ans = yesterdayData.myParticipation.answerIndices;
        return (
          <div className="space-y-6">
-           <QuizPageHeader />
-           <p className="text-center text-sm font-medium text-slate-500">Yesterday&apos;s results — only you answered</p>
+          <QuizPageHeader />
+          <p className="text-center text-sm font-medium text-slate-500">Yesterday's results — only you answered</p>
            <div className="space-y-3">
              {yesterdayData.questions.map((q, i) => (
                <div key={i} className="ns-card p-4">
@@ -223,7 +223,7 @@
          <QuizPageHeader />
          <div className="ns-card py-8 text-center">
            <p className="text-slate-600">No results from yesterday.</p>
-           <p className="mt-1 text-sm text-slate-500">If neither of you did the quiz that day, there&apos;s nothing to show.</p>
+           <p className="mt-1 text-sm text-slate-500">If neither of you did the quiz that day, there's nothing to show.</p>
            <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary mt-4 !py-2 text-sm">
              Back to today
            </button>
@@ -256,7 +256,7 @@
                  Loading…
                </>
              ) : (
-               "Yesterday&apos;s results"
+               "Yesterday's results"
              )}
            </button>
          </div>
@@ -269,12 +269,12 @@
        <div className="space-y-6">
          <QuizPageHeader />
          <div className="ns-card space-y-4 py-8 text-center">
-           <p className="text-lg font-medium text-slate-700">
-             You&apos;re done! Waiting for your partner to finish.
-           </p>
-           <p className="text-sm text-slate-500">
-             We&apos;ll show scores once you&apos;ve both answered.
-           </p>
+          <p className="text-lg font-medium text-slate-700">
+            You're done! Waiting for your partner to finish.
+          </p>
+          <p className="text-sm text-slate-500">
+            We'll show scores once you've both answered.
+          </p>
            <div className="flex flex-wrap items-center justify-center gap-3">
              <NotifyPartnerQuizButton variant="quiz" size="sm" />
              <Link href="/app" className="ns-btn-secondary inline-flex">
@@ -295,7 +295,7 @@
                  Loading…
                </>
              ) : (
-               "Yesterday&apos;s results"
+               "Yesterday's results"
              )}
            </button>
          </div>
@@ -371,7 +371,7 @@
                  Loading…
                </>
              ) : (
-               "Yesterday&apos;s results"
+               "Yesterday's results"
              )}
            </button>
          </div>
@@ -383,9 +383,9 @@
    if (isSubmitStep) {
      return (
        <form onSubmit={handleSubmit} className="flex min-h-[50vh] flex-col items-center justify-center py-8">
-         <p className="text-center text-lg font-medium text-slate-700">
-           You&apos;re done! Submit to see results once your partner finishes.
-         </p>
+        <p className="text-center text-lg font-medium text-slate-700">
+          You're done! Submit to see results once your partner finishes.
+        </p>
          <button
            type="submit"
            disabled={loading || !allAnswered}
@@ -418,7 +418,7 @@
                  Loading…
                </>
              ) : (
-               "Yesterday&apos;s results"
+               "Yesterday's results"
              )}
            </button>
          </div>
@@ -529,14 +529,14 @@
            onClick={loadYesterdayQuiz}
            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
          >
-           {yesterdayLoading ? (
-             <>
-               <LoadingSpinner size="sm" />
-               Loading…
-             </>
-           ) : (
-             "Yesterday&apos;s results"
-           )}
+             {yesterdayLoading ? (
+               <>
+                 <LoadingSpinner size="sm" />
+                 Loading…
+               </>
+             ) : (
+               "Yesterday's results"
+             )}
          </button>
        </div>
      </div>

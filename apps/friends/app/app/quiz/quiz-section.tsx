@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { HelpCircle } from "lucide-react";
 import { getQuizForToday } from "@/lib/quiz";
 import type { QuizForTodayResult } from "@/lib/quiz";
-import { QuizClient } from "./quiz-client";
+import { QuizClient } from "./quiz-client-connected";
 
 type Props = {
   relationshipId: string;

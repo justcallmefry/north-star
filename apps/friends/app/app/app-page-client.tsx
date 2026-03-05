@@ -169,23 +169,6 @@ export function AppPageClient({ initialData }: Props) {
                   </Link>
                 </div>
               </div>
-
-              {/* Responses card: keep existing behavior */}
-              <div className="space-y-1.5">
-                <Link
-                  href="/app/history"
-                  className="ns-btn-secondary w-full !py-2"
-                >
-                  <History className="h-4 w-4" />
-                  Responses
-                </Link>
-                <div className="flex items-center gap-3">
-                  <p className="text-sm text-slate-500 leading-relaxed flex-1 min-w-0">
-                    View your past answers to questions.
-                  </p>
-                  <TodayRandomImage src={distinctImages[2]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shrink-0" sizes="96px" />
-                </div>
-              </div>
             </section>
           </section>
         </div>

@@ -8,9 +8,11 @@ type Props = {
 export function NotifyPartnerMeetingButton({ meetingId, size = "md" }: Props) {
   const baseText = "I updated Our Week. Please feel free to add your thoughts.";
 
+  // Prefer current page origin so notify link always goes to the site the user is on (e.g. alignedconnectingcouples.com), not a build-time env.
   const appUrl =
-    process.env.NEXT_PUBLIC_APP_URL ??
-    (typeof window !== "undefined" ? window.location.origin : "");
+    typeof window !== "undefined"
+      ? window.location.origin
+      : (process.env.NEXT_PUBLIC_APP_URL ?? "");
 
   const targetUrl = appUrl ? `${appUrl}/app/meeting/${meetingId}` : "";
 

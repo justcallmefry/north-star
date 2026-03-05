@@ -17,9 +17,11 @@ const MESSAGES = {
 export function NotifyPartnerButton({ sessionId, size = "md", variant = "primary", messageType = "your_turn" }: Props) {
   const baseText = MESSAGES[messageType];
 
+  // Prefer current page origin so notify link always goes to the site the user is on (e.g. alignedconnectingcouples.com), not a build-time env.
   const appUrl =
-    process.env.NEXT_PUBLIC_APP_URL ??
-    (typeof window !== "undefined" ? window.location.origin : "");
+    typeof window !== "undefined"
+      ? window.location.origin
+      : (process.env.NEXT_PUBLIC_APP_URL ?? "");
 
   const targetUrl = appUrl ? `${appUrl}/app/session/${sessionId}` : "";
 

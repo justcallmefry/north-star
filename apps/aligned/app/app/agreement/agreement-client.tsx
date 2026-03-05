@@ -66,6 +66,7 @@ export function AgreementClient({
     const prevStep = step;
     const nextStep = prevStep >= 9 ? 10 : prevStep + 1;
     const t = setTimeout(() => {
+      (document.activeElement as HTMLElement)?.blur();
       setExiting(false);
       setStep(nextStep);
       requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));

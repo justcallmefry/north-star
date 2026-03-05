@@ -98,6 +98,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
     const prevStep = step;
     const nextStep = prevStep >= 9 ? 10 : prevStep + 1;
     const t = setTimeout(() => {
+      (document.activeElement as HTMLElement)?.blur();
       setExiting(false);
       setStep(nextStep);
       // Keep question at top: no scrolling

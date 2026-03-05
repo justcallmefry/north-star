@@ -1,14 +1,14 @@
-\"use client\";
+"use client";
 
-import { useEffect, useState } from \"react\";
-import Link from \"next/link\";
-import Image from \"next/image\";
-import { ArrowRight, CheckCircle, Circle, HelpCircle, History, Scale } from \"lucide-react\";
-import { EmptyTogetherIllustration } from \"@/components/illustrations\";
-import { getQuizForToday } from \"@/lib/quiz\";
-import { getAgreementForToday } from \"@/lib/agreement\";
-import { TodaySection } from \"./today-section\";
-import { TodayRandomImage } from \"./today-random-image\";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight, CheckCircle, Circle, HelpCircle, History, Scale } from "lucide-react";
+import { EmptyTogetherIllustration } from "@/components/illustrations";
+import { getQuizForToday } from "@/lib/quiz";
+import { getAgreementForToday } from "@/lib/agreement";
+import { TodaySection } from "./today-section";
+import { TodayRandomImage } from "./today-random-image";
 
 export type Relationship = { id: string; name: string | null; status: string };
 export type AppPageInitialData = {
@@ -21,8 +21,8 @@ export type AppPageInitialData = {
 function getLocalDateString(): string {
   const d = new Date();
   const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, \"0\");
-  const day = String(d.getDate()).padStart(2, \"0\");
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
   return `${y}-${m}-${day}`;
 }
 

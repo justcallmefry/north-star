@@ -33,7 +33,7 @@ export default async function UsPage() {
             where: { relationshipId: primary.id, responses: { some: {} } },
           }),
           prisma.dailySession.findMany({
-            where: { relationshipId: primary.id, responses: { some: {} }, prompt: { category: { not: null } } },
+            where: { relationshipId: primary.id, responses: { some: {} }, prompt: { isNot: null } },
             select: { prompt: { select: { category: true } } },
             take: 200,
           }),

@@ -8,6 +8,7 @@ import { getServerAuthSession } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { getLatestInvite } from "@/lib/relationships";
+import { prisma } from "@/lib/prisma";
 import { InviteContent } from "./invite-content";
 
 type Props = { searchParams: Promise<{ relationshipId?: string; code?: string }> };
@@ -49,6 +50,12 @@ export default async function InvitePage({ searchParams }: Props) {
     ? `${headersList.get("x-forwarded-proto")}://${host}`
     : `http://${host}`;
 
+  const totalAnswered = await prisma.dailySession.count({
+    where: { responses: { some: {} } },
+  });
+  const roundedAnswered =
+    totalAnswered >= 100 ? Math.floor(totalAnswered / 10) * 10 : totalAnswered;
+
   return (
     <main className="min-h-screen bg-white text-slate-900 flex flex-col px-4 py-6 sm:px-6">
       <header className="flex items-center justify-between">
@@ -75,6 +82,15 @@ export default async function InvitePage({ searchParams }: Props) {
         <p className="mt-2 text-slate-600">
           Share your code or link so they can join. Same code flow as the pair screen.
         </p>
+        {roundedAnswered > 0 && (
+          <p className="mt-1 text-xs font-medium text-slate-500">
+            Couples have already answered{" "}
+            <span className="font-semibold text-slate-900">
+              {roundedAnswered.toLocaleString()}
+            </span>{" "}
+            questions with Aligned.
+          </p>
+        )}
         <div className="mt-8">
           <InviteContent
             relationshipId={rid}

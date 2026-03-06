@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getStreak, updateStreakOnReveal } from "@/lib/streak";
 import { getActiveMemberIds, requireActiveMember, todayUTC } from "@/lib/relationship-members";
 import { VALIDATION_ACK_MAX_LENGTH, VALIDATION_ALLOWED_EMOJIS } from "@north-star/shared";
 
@@ -19,17 +20,29 @@ async function requireSessionMembership(userId: string, sessionId: string) {
 
 /** Pick a prompt not used in the last 7 sessions for this relationship. */
 async function pickPromptForSession(relationshipId: string): Promise<string | null> {
-  const recent = await prisma.dailySession.findMany({
-    where: { relationshipId },
-    orderBy: { sessionDate: "desc" },
-    take: 7,
-    select: { promptId: true },
-  });
+  const [recent, totalCount] = await Promise.all([
+    prisma.dailySession.findMany({
+      where: { relationshipId },
+      orderBy: { sessionDate: "desc" },
+      take: 7,
+      select: { promptId: true },
+    }),
+    prisma.dailySession.count({
+      where: { relationshipId },
+    }),
+  ]);
   const usedIds = recent.map((s) => s.promptId).filter(Boolean) as string[];
+  const isIntroPhase = totalCount < 7;
+
   let prompt = await prisma.prompt.findFirst({
     where: {
       active: true,
       type: "daily",
+      // Guided first week: favor light, connection-focused prompts for the first few sessions.
+      ...(isIntroPhase && {
+        category: { in: ["gratitude", "fun", "reflection", "growth"] },
+        tone: { in: ["light", "playful"] },
+      }),
       // later: isPremium: false if not subscribed
       id: usedIds.length > 0 ? { notIn: usedIds } : undefined,
     },
@@ -38,7 +51,10 @@ async function pickPromptForSession(relationshipId: string): Promise<string | nu
   });
   if (!prompt) {
     prompt = await prisma.prompt.findFirst({
-      where: { active: true, type: "daily" },
+      where: {
+        active: true,
+        type: "daily",
+      },
       orderBy: { createdAt: "asc" },
       select: { id: true },
     });
@@ -54,6 +70,8 @@ export type GetTodayResult = {
   hasUserResponded: boolean;
   hasPartnerResponded: boolean;
   canReveal: boolean;
+  /** Consecutive days the couple has completed the question (revealed). */
+  streak?: { currentCount: number; longestCount: number; justReset?: boolean } | null;
 };
 
 /**
@@ -180,6 +198,8 @@ export async function getToday(
     hasPartnerResponded &&
     memberIds.length >= 2;
 
+  const streak = await getStreak(relationshipId);
+
   return {
     sessionId: dailySession.id,
     promptText,
@@ -188,6 +208,7 @@ export async function getToday(
     hasUserResponded,
     hasPartnerResponded,
     canReveal,
+    streak: streak ?? undefined,
   };
 }
 
@@ -246,6 +267,8 @@ export async function revealSession(sessionId: string): Promise<RevealResult> {
     data: { state: "revealed" },
   });
 
+  await updateStreakOnReveal(base.relationshipId, base.sessionDate);
+
   const updated = await prisma.dailySession.findUnique({
     where: { id: sessionId },
     include: {
@@ -295,6 +318,10 @@ export type GetSessionResult = {
   memberCount?: number;
   /** Number of members who have submitted a response this session. */
   respondedCount?: number;
+  /** Consecutive days the couple has completed the question (revealed). */
+  streak?: { currentCount: number; longestCount: number; justReset?: boolean } | null;
+  /** True when this is the first revealed daily session for this relationship. */
+  isFirstCompletedSession?: boolean;
 };
 
 export async function getSession(sessionId: string): Promise<GetSessionResult | null> {
@@ -329,6 +356,18 @@ export async function getSession(sessionId: string): Promise<GetSessionResult | 
 
   const memberCount = memberIds.length;
   const respondedCount = dailySession.responses.length;
+  const streak = await getStreak(dailySession.relationshipId);
+  const revealedBeforeCount =
+    dailySession.state === "revealed"
+      ? await prisma.dailySession.count({
+          where: {
+            relationshipId: dailySession.relationshipId,
+            state: "revealed",
+            sessionDate: { lt: dailySession.sessionDate },
+          },
+        })
+      : 0;
+  const isFirstCompletedSession = dailySession.state === "revealed" && revealedBeforeCount === 0;
   const result: GetSessionResult = {
     sessionId: dailySession.id,
     relationshipId: dailySession.relationshipId,
@@ -342,6 +381,8 @@ export async function getSession(sessionId: string): Promise<GetSessionResult | 
     canReveal,
     memberCount,
     respondedCount,
+    streak: streak ?? undefined,
+    isFirstCompletedSession,
   };
 
   if (dailySession.state === "revealed") {

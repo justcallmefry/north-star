@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CheckCircle, Circle } from "lucide-react";
 import type { GetTodayResult } from "@/lib/sessions";
 import { NotifyPartnerButton } from "./notify-partner-button";
+import { StreakBadge } from "./streak-badge";
 
 type Props = { today: GetTodayResult | null };
 
@@ -22,19 +23,31 @@ export function TodayCard({ today }: Props) {
     );
   }
 
-  const { sessionId, promptText, momentText, state, hasUserResponded, hasPartnerResponded, canReveal } = today;
+  const { sessionId, promptText, momentText, state, hasUserResponded, hasPartnerResponded, canReveal, streak } = today;
   const done = hasUserResponded || state === "revealed" || (state === "open" && canReveal);
 
   return (
     <section className="relative animate-calm-fade-in rounded-2xl border border-brand-100/80 bg-gradient-to-br from-brand-50/90 to-white p-5 shadow-sm ring-1 ring-brand-50/80 sm:p-6">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="inline-flex items-center gap-2 rounded-lg bg-brand-100/80 px-3 py-1">
           <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
           <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700 sm:text-sm">
             Today
           </h2>
         </div>
+        {streak && streak.currentCount > 0 && (
+          <StreakBadge
+            currentCount={streak.currentCount}
+            longestCount={streak.longestCount}
+            variant="compact"
+          />
+        )}
       </div>
+      {streak && !streak.currentCount && streak.justReset && (
+        <p className="mt-2 text-xs font-medium text-amber-800">
+          Every day is a fresh start.
+        </p>
+      )}
       <span
         className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-sm"
         aria-hidden

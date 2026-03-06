@@ -8,9 +8,10 @@ import { LoadingSpinner } from "@/components/loading-spinner";
 import { submitResponse, revealSession, submitReflection } from "@/lib/sessions";
 import type { GetSessionResult } from "@/lib/sessions";
 import { NotifyPartnerButton } from "../../notify-partner-button";
+import { StreakBadge } from "../../streak-badge";
+import { StreakShareCard } from "./streak-share-card";
 
 const AFTER_REVEAL_PAUSE_MS = 1000;
-const AFTER_REVEAL_LINE = "You showed up for each other today.";
 
 type Props = { data: GetSessionResult; currentUserId: string };
 
@@ -245,6 +246,9 @@ export function SessionContent({ data, currentUserId }: Props) {
 
   const totalMembers = data.memberCount ?? 2;
   const respondedCount = data.respondedCount ?? ((data.hasUserResponded ? 1 : 0) + (data.hasPartnerResponded ? totalMembers - 1 : 0));
+  const afterRevealLine = data.isFirstCompletedSession
+    ? "You just did the hard part — you showed up for each other. This can be your new daily rhythm."
+    : "You showed up for each other today.";
 
   return (
     <div className="space-y-10">
@@ -387,10 +391,30 @@ export function SessionContent({ data, currentUserId }: Props) {
           </div>
 
           <p className="text-center text-lg font-medium text-brand-700 sm:text-xl">
-            {AFTER_REVEAL_LINE}
+            {afterRevealLine}
           </p>
 
+          {data.streak && data.streak.currentCount > 0 && (
+            <div className="flex justify-center">
+              <StreakBadge
+                currentCount={data.streak.currentCount}
+                longestCount={data.streak.longestCount}
+                variant="full"
+              />
+            </div>
+          )}
+
+          {data.streak &&
+            (data.streak.currentCount === 7 || data.streak.currentCount === 30) && (
+              <StreakShareCard currentCount={data.streak.currentCount} />
+            )}
+
           <div className="space-y-3 border-t border-brand-100 pt-5">
+            {data.isFirstCompletedSession && (
+              <p className="text-sm text-slate-600">
+                Optional: What surprised you about your partner&apos;s answer, or what do you want to remember from today?
+              </p>
+            )}
             <label htmlFor="session-response" className="block text-sm font-medium text-slate-700">
               Send a response back
             </label>

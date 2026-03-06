@@ -26,6 +26,56 @@ export default async function UsPage() {
   });
   const hasPassword = !!userRow?.password;
 
+  const insights = primary
+    ? await (async () => {
+        const [answeredCount, sessionsWithPrompt, streakRow] = await Promise.all([
+          prisma.dailySession.count({
+            where: { relationshipId: primary.id, responses: { some: {} } },
+          }),
+          prisma.dailySession.findMany({
+            where: { relationshipId: primary.id, responses: { some: {} }, prompt: { category: { not: null } } },
+            select: { prompt: { select: { category: true } } },
+            take: 200,
+          }),
+          prisma.streak.findUnique({
+            where: { relationshipId: primary.id },
+            select: { currentCount: true, longestCount: true },
+          }),
+        ]);
+
+        const categoryCounts: Record<string, number> = {};
+        for (const s of sessionsWithPrompt) {
+          const cat = s.prompt?.category;
+          if (!cat) continue;
+          categoryCounts[cat] = (categoryCounts[cat] ?? 0) + 1;
+        }
+        const topCategory =
+          Object.entries(categoryCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+
+        const prettyCategory =
+          topCategory === "gratitude"
+            ? "gratitude"
+            : topCategory === "communication"
+              ? "communication"
+              : topCategory === "reflection"
+                ? "reflection"
+                : topCategory === "fun"
+                  ? "fun"
+                  : topCategory === "growth"
+                    ? "growth"
+                    : topCategory
+                      ? topCategory
+                      : null;
+
+        return {
+          answeredCount,
+          topCategory: prettyCategory,
+          currentStreak: streakRow?.currentCount ?? 0,
+          longestStreak: streakRow?.longestCount ?? 0,
+        };
+      })()
+    : null;
+
   return (
     <main className="flex h-full flex-col ns-stack">
       <header className="space-y-1">
@@ -110,6 +160,42 @@ export default async function UsPage() {
               <RelationshipActions relationshipId={primary.id} />
             </div>
           </div>
+
+          {insights && (
+            <div className="ns-card">
+              <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
+                How you&apos;ve been showing up
+              </h2>
+              <div className="mt-3 space-y-1.5 text-sm text-slate-700 sm:text-base">
+                <p>
+                  You&apos;ve answered{" "}
+                  <span className="font-semibold text-slate-900">
+                    {insights.answeredCount}
+                  </span>{" "}
+                  questions together.
+                </p>
+                {insights.topCategory && (
+                  <p>
+                    You tend to lean toward{" "}
+                    <span className="font-semibold text-slate-900">
+                      {insights.topCategory}
+                    </span>{" "}
+                    questions.
+                  </p>
+                )}
+                {insights.longestStreak > 0 && (
+                  <p>
+                    Your longest streak so far is{" "}
+                    <span className="font-semibold text-slate-900">
+                      {insights.longestStreak} day
+                      {insights.longestStreak === 1 ? "" : "s"}
+                    </span>
+                    .
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
         </section>
       ) : (
         <section className="mt-4 flex flex-1 items-center justify-center">

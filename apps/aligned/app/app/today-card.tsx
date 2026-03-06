@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CheckCircle, Circle } from "lucide-react";
 import type { GetTodayResult } from "@/lib/sessions";
+import { DedicationBadge } from "./dedication-badge";
 import { NotifyPartnerButton } from "./notify-partner-button";
 import { StreakBadge } from "./streak-badge";
 
@@ -23,7 +24,7 @@ export function TodayCard({ today }: Props) {
     );
   }
 
-  const { sessionId, promptText, momentText, state, hasUserResponded, hasPartnerResponded, canReveal, streak } = today;
+  const { sessionId, promptText, momentText, state, hasUserResponded, hasPartnerResponded, canReveal, streak, dedication } = today;
   const done = hasUserResponded || state === "revealed" || (state === "open" && canReveal);
 
   return (
@@ -47,6 +48,11 @@ export function TodayCard({ today }: Props) {
         <p className="mt-2 text-xs font-medium text-amber-800">
           Every day is a fresh start.
         </p>
+      )}
+      {dedication && dedication.totalCheckIns > 0 && (
+        <div className="mt-2">
+          <DedicationBadge totalCheckIns={dedication.totalCheckIns} variant="compact" />
+        </div>
       )}
       <span
         className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-sm"

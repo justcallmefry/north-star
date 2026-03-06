@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getDedication } from "@/lib/dedication";
 import { getStreak, updateStreakOnReveal } from "@/lib/streak";
 import { getActiveMemberIds, requireActiveMember, todayUTC } from "@/lib/relationship-members";
 import { VALIDATION_ACK_MAX_LENGTH, VALIDATION_ALLOWED_EMOJIS } from "@north-star/shared";
@@ -72,6 +73,8 @@ export type GetTodayResult = {
   canReveal: boolean;
   /** Consecutive days the couple has completed the question (revealed). */
   streak?: { currentCount: number; longestCount: number; justReset?: boolean } | null;
+  /** This user's total daily check-ins in this relationship (never resets). */
+  dedication?: { totalCheckIns: number } | null;
 };
 
 /**
@@ -198,7 +201,10 @@ export async function getToday(
     hasPartnerResponded &&
     memberIds.length >= 2;
 
-  const streak = await getStreak(relationshipId);
+  const [streak, dedication] = await Promise.all([
+    getStreak(relationshipId),
+    getDedication(relationshipId, session.user.id),
+  ]);
 
   return {
     sessionId: dailySession.id,
@@ -209,6 +215,7 @@ export async function getToday(
     hasPartnerResponded,
     canReveal,
     streak: streak ?? undefined,
+    dedication: dedication.totalCheckIns > 0 ? dedication : undefined,
   };
 }
 
@@ -320,6 +327,8 @@ export type GetSessionResult = {
   respondedCount?: number;
   /** Consecutive days the couple has completed the question (revealed). */
   streak?: { currentCount: number; longestCount: number; justReset?: boolean } | null;
+  /** This user's total daily check-ins in this relationship (never resets). */
+  dedication?: { totalCheckIns: number } | null;
   /** True when this is the first revealed daily session for this relationship. */
   isFirstCompletedSession?: boolean;
 };
@@ -356,7 +365,10 @@ export async function getSession(sessionId: string): Promise<GetSessionResult | 
 
   const memberCount = memberIds.length;
   const respondedCount = dailySession.responses.length;
-  const streak = await getStreak(dailySession.relationshipId);
+  const [streak, dedication] = await Promise.all([
+    getStreak(dailySession.relationshipId),
+    getDedication(dailySession.relationshipId, session.user.id),
+  ]);
   const revealedBeforeCount =
     dailySession.state === "revealed"
       ? await prisma.dailySession.count({
@@ -382,6 +394,7 @@ export async function getSession(sessionId: string): Promise<GetSessionResult | 
     memberCount,
     respondedCount,
     streak: streak ?? undefined,
+    dedication: dedication.totalCheckIns > 0 ? dedication : undefined,
     isFirstCompletedSession,
   };
 

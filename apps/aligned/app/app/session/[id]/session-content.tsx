@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import { submitResponse, revealSession, submitReflection } from "@/lib/sessions";
 import type { GetSessionResult } from "@/lib/sessions";
+import { DedicationBadge } from "../../dedication-badge";
 import { NotifyPartnerButton } from "../../notify-partner-button";
 import { StreakBadge } from "../../streak-badge";
 import { StreakShareCard } from "./streak-share-card";
@@ -401,6 +402,12 @@ export function SessionContent({ data, currentUserId }: Props) {
                 longestCount={data.streak.longestCount}
                 variant="full"
               />
+            </div>
+          )}
+
+          {data.dedication && data.dedication.totalCheckIns > 0 && (
+            <div className="flex justify-center">
+              <DedicationBadge totalCheckIns={data.dedication.totalCheckIns} variant="full" />
             </div>
           )}
 

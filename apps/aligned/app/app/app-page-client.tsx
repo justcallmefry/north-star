@@ -32,12 +32,17 @@ export function AppPageClient({ initialData }: Props) {
   const relationshipId = relationships[0]?.id ?? null;
   const distinctImages = todayImagePaths;
 
-  const [localDateStr] = useState(getLocalDateString);
+  // Set only on client so we use the user's calendar day, not the server's (same fix as TodaySection).
+  const [localDateStr, setLocalDateStr] = useState<string | null>(null);
   const [quizDoneToday, setQuizDoneToday] = useState<boolean | null>(null);
   const [agreementDoneToday, setAgreementDoneToday] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (!relationshipId) return;
+    setLocalDateStr(getLocalDateString());
+  }, []);
+
+  useEffect(() => {
+    if (!relationshipId || localDateStr == null) return;
     let cancelled = false;
     Promise.all([
       getQuizForToday(relationshipId, localDateStr),

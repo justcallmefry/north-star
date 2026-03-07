@@ -36,6 +36,18 @@ type Props = {
   sessionUserName: string | null;
 };
 
+/**
+ * Session dates are stored as midnight UTC (calendar day). Format using UTC
+ * date parts so we show "March 6" not "March 5" for users in timezones behind UTC.
+ */
+function formatSessionCalendarDate(isoOrDate: string | Date): string {
+  const d = typeof isoOrDate === "string" ? new Date(isoOrDate) : isoOrDate;
+  const y = d.getUTCFullYear();
+  const m = d.getUTCMonth();
+  const day = d.getUTCDate();
+  return format(new Date(y, m, day), "PPP");
+}
+
 function itemMatchesQuery(item: HistoryItemForClient, q: string): boolean {
   const lower = q.trim().toLowerCase();
   if (!lower) return true;
@@ -123,7 +135,7 @@ export function HistoryListWithSearch({
               style={{ animationDelay: `${itemIndex * 80}ms` }}
             >
               <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-400 sm:text-sm">
-                {format(new Date(item.sessionDate), "PPP")}
+                {formatSessionCalendarDate(item.sessionDate)}
               </p>
               <p className="mt-1.5 text-lg font-semibold text-slate-900 sm:text-xl leading-snug">
                 {item.promptText}

@@ -26,11 +26,19 @@ function msUntilNextMidnight(): number {
 export function TodaySection({ relationshipId }: Props) {
   const [today, setToday] = useState<GetTodayResult | null>(null);
   const [loading, setLoading] = useState(true);
-  const [localDateStr, setLocalDateStr] = useState(getLocalDateString);
+  // Set only on client after mount so we never use the server's date (avoids timezone bug
+  // where history showed sessions one day behind for users ahead of server TZ).
+  const [localDateStr, setLocalDateStr] = useState<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Fetch today's session when relationship or local date changes.
+  // Initialize local date on client so it's always the user's calendar day, not the server's.
   useEffect(() => {
+    setLocalDateStr(getLocalDateString());
+  }, []);
+
+  // Fetch today's session when relationship or local date changes. Skip until we have client date.
+  useEffect(() => {
+    if (localDateStr == null) return;
     let cancelled = false;
     setLoading(true);
     getToday(relationshipId, localDateStr)
@@ -47,8 +55,9 @@ export function TodaySection({ relationshipId }: Props) {
     };
   }, [relationshipId, localDateStr]);
 
-  // At local midnight, update localDateStr so we refetch and show the new day's quiz.
+  // At local midnight, update localDateStr so we refetch and show the new day's question.
   useEffect(() => {
+    if (localDateStr == null) return;
     function scheduleNextMidnight() {
       const ms = msUntilNextMidnight();
       timeoutRef.current = setTimeout(() => {
@@ -60,9 +69,9 @@ export function TodaySection({ relationshipId }: Props) {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, []);
+  }, [localDateStr]);
 
-  if (loading) {
+  if (localDateStr == null || loading) {
     return (
       <section className="ns-card animate-pulse">
         <div className="h-4 w-32 rounded bg-slate-200" />

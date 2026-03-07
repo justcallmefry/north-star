@@ -6,6 +6,9 @@
     "packages/*"
   ],
   "scripts": {
+    "prepare": "husky",
+    "lint": "npm run lint -w aligned && npm run lint -w parent-teen && npm run lint -w friends",
+    "typecheck": "npm run typecheck -w @north-star/shared && npm run typecheck -w aligned && npm run typecheck -w parent-teen && npm run typecheck -w friends",
     "build": "npm run build -w @north-star/shared && npm run build:aligned",
     "dev:aligned": "npm run dev -w aligned",
     "dev:parent-teen": "npm run dev -w parent-teen",
@@ -13,5 +16,8 @@
     "build:aligned": "npm run build -w aligned",
     "build:parent-teen": "npm run build -w parent-teen",
     "build:friends": "npm run build -w friends"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
   }
 }

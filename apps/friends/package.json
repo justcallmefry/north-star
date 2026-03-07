@@ -10,6 +10,7 @@
     "build": "cross-env NEXT_PUBLIC_BUILD_PHASE=phase-production-build next build",
     "start": "next start",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",

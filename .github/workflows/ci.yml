@@ -1,0 +1,37 @@
+# Run lint and build on push and pull requests.
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          # Prisma generate runs in postinstall; use dummy URL for CI
+          DATABASE_URL: "postgresql://ci:ci@localhost:5432/ci"
+
+      # Lint skipped: Next 16 removed "next lint"; migrate to ESLint flat config to re-enable.
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build shared + aligned
+        run: npm run build
+        env:
+          DATABASE_URL: "postgresql://ci:ci@localhost:5432/ci"
+          # Optional build-time env; use placeholder so build doesn't fail
+          NEXT_PUBLIC_APP_URL: "https://alignedconnectingcouples.com"

@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Typecheck catches type errors before commit. Lint (next lint) is not run here
+# because Next 16 removed the next lint CLI; run "npm run lint -w aligned" manually.
+npm run typecheck

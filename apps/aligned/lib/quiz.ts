@@ -40,6 +40,12 @@ export type QuizForTodayResult = {
     /** Total possible (5 per session × number of revealed sessions) */
     overallTotal: number;
   };
+  /** Overall stats across all revealed sessions (included even when today is open so history is always visible). */
+  overallStats?: {
+    overallMyScore: number;
+    overallPartnerScore: number;
+    overallTotal: number;
+  };
 };
 
 export async function getQuizForToday(
@@ -218,6 +224,35 @@ export async function getQuizForToday(
       overallPartnerScore,
       overallTotal,
     };
+  } else {
+    // Today's session is open — still return overall stats from past revealed sessions so history is visible.
+    const allRevealed = await prisma.quizSession.findMany({
+      where: { relationshipId, state: "revealed" },
+      include: { participations: true },
+    });
+    if (allRevealed.length > 0) {
+      let overallMyScore = 0;
+      let overallPartnerScore = 0;
+      for (const s of allRevealed) {
+        const myP = s.participations.find((p) => p.userId === session.user!.id);
+        const partnerP = s.participations.find((p) => p.userId !== session.user!.id);
+        if (myP && partnerP) {
+          const myG = parseIndices(myP.guessIndices);
+          const pAns = parseIndices(partnerP.answerIndices);
+          const partnerG = parseIndices(partnerP.guessIndices);
+          const myAns = parseIndices(myP.answerIndices);
+          for (let i = 0; i < 5; i++) {
+            if (myG[i] === pAns[i]) overallMyScore++;
+            if (partnerG[i] === myAns[i]) overallPartnerScore++;
+          }
+        }
+      }
+      result.overallStats = {
+        overallMyScore,
+        overallPartnerScore,
+        overallTotal: 5 * allRevealed.length,
+      };
+    }
   }
 
   return result;

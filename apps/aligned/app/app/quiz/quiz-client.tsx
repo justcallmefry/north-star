@@ -342,6 +342,12 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
           <p className="mt-1 max-w-md text-sm text-slate-600 sm:text-base">
             Answer for yourself, then guess what your partner would pick.
           </p>
+          {data.overallStats && data.overallStats.overallTotal > 0 && (
+            <p className="mt-4 text-base font-medium text-slate-700 sm:text-lg">
+              Your overall: <span className="text-brand-600">{data.overallStats.overallMyScore}</span>
+              /{data.overallStats.overallTotal} · Partner: <span className="text-violet-600">{data.overallStats.overallPartnerScore}</span>/{data.overallStats.overallTotal}
+            </p>
+          )}
         </div>
         <button
           type="button"
@@ -439,7 +445,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
     <div className="flex flex-col pt-0" id="quiz-step-container">
       {/* Progress — at top so no scrolling; clear and minimal */}
       <div className="mb-3 flex items-center justify-between gap-2">
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+        <span className="text-sm font-semibold uppercase tracking-wider text-slate-500">
           {progressLabel}
         </span>
         <div className="flex gap-1" aria-hidden>
@@ -457,19 +463,19 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
       {/* Single question card — one at a time, exit/enter for seamless feel */}
       <div
         key={step}
-        className={`flex flex-col rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-5 sm:p-6 ${
+        className={`flex flex-col rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-6 sm:p-7 ${
           exiting ? "animate-quiz-card-exit" : "animate-quiz-card-enter"
         }`}
       >
-        <p className="text-lg font-bold leading-snug text-slate-900 sm:text-xl">
+        <p className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl">
           {currentQuestion.text}
         </p>
 
-        <div className="mt-4">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+        <div className="mt-5">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-500">
             {isAnswerPhase ? "Your answer" : guessLabel}
           </p>
-          <div className="grid gap-2.5 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2">
             {currentQuestion.options.map((opt, j) => {
               const selected = isAnswerPhase ? answers[questionIndex] === j : guesses[questionIndex] === j;
               return (
@@ -478,7 +484,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
                   type="button"
                   onClick={() => handleSelectAnswer(j)}
                   disabled={exiting}
-                  className={`rounded-xl border-2 px-3.5 py-3 text-left text-sm font-medium transition-all disabled:opacity-70 ${
+                  className={`min-h-[3.25rem] rounded-xl border-2 px-4 py-4 text-left text-base font-medium leading-snug transition-all disabled:opacity-70 sm:min-h-[3.5rem] sm:py-4 sm:text-lg ${
                     selected
                       ? isAnswerPhase
                         ? "border-brand-500 bg-brand-50 text-brand-800 shadow-sm"

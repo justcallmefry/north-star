@@ -367,9 +367,9 @@ export function SessionContent({ data, currentUserId }: Props) {
         <div className="animate-calm-fade-in ns-card ns-stack-tight">
           <h3 className="text-lg font-semibold text-slate-900 sm:text-xl">Answers</h3>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {responsesToShow.map((resp) => (
-              <div key={resp.key} className="space-y-2">
+              <div key={resp.key} className="space-y-1.5">
                 <div className="flex items-center gap-2">
                   <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-base">
                     {typeof resp.icon === "string" && resp.icon.trim().startsWith("http") ? (
@@ -384,7 +384,7 @@ export function SessionContent({ data, currentUserId }: Props) {
                     {resp.title}
                   </span>
                 </div>
-                <p className="ns-card-inner p-3 text-lg leading-relaxed text-slate-900 sm:text-xl">
+                <p className="ns-card-inner px-2.5 py-2 text-xl leading-relaxed text-slate-900 sm:text-2xl">
                   {resp.content ?? "—"}
                 </p>
               </div>

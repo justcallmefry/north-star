@@ -472,18 +472,18 @@ export function AgreementClient({
 
       <div
         key={step}
-        className={`flex flex-col rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-5 sm:p-6 ${
+        className={`flex flex-col rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-6 sm:p-7 ${
           exiting ? "animate-quiz-card-exit" : "animate-quiz-card-enter"
         }`}
       >
-        <p className="text-lg font-bold leading-snug text-slate-900 sm:text-xl">
+        <p className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl">
           {currentQuestion.text}
         </p>
-        <div className="mt-4">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+        <div className="mt-5">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-500">
             {isAnswerPhase ? "Your answer" : guessLabel}
           </p>
-          <div className="grid gap-2.5 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2">
             {OPTIONS.map((opt, j) => {
               const selected = isAnswerPhase
                 ? answers[questionIndex] === j
@@ -494,7 +494,7 @@ export function AgreementClient({
                   type="button"
                   onClick={() => handleSelectOption(j)}
                   disabled={exiting}
-                  className={`rounded-xl border-2 px-3.5 py-3 text-left text-sm font-medium transition-all disabled:opacity-70 ${
+                  className={`min-h-[3.25rem] rounded-xl border-2 px-4 py-4 text-left text-base font-medium leading-snug transition-all disabled:opacity-70 sm:min-h-[3.5rem] sm:text-lg ${
                     selected
                       ? isAnswerPhase
                         ? "border-brand-500 bg-brand-50 text-brand-800 shadow-sm"
@@ -639,10 +639,10 @@ function AgreementRevealView({
 
           return (
             <div key={i} className="ns-card space-y-3">
-              <p className="font-semibold text-slate-900">{q.text}</p>
+              <p className="text-lg font-semibold text-slate-900 sm:text-xl">{q.text}</p>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div
-                  className={`rounded-xl border p-4 ${
+                  className={`rounded-xl border p-3 ${
                     theyGotRight
                       ? "border-emerald-300 bg-emerald-50"
                       : "border-red-200 bg-red-50/70"
@@ -652,10 +652,10 @@ function AgreementRevealView({
                     <ProfileImageOrStar imageUrl={sessionUserImage} star="⭐" />
                   </div>
                   <p className="mt-1 font-medium text-brand-800">{myName}</p>
-                  <p className="text-sm text-slate-700">
+                  <p className="text-base text-slate-700 sm:text-lg">
                     Picked: <span className="font-medium text-slate-900">{options[myAns]}</span>
                   </p>
-                  <p className="mt-2 text-sm text-slate-600">
+                  <p className="mt-2 text-base text-slate-600 sm:text-lg">
                     {partnerName} guessed: {options[partnerGuess]}
                   </p>
                   <div className="mt-2 flex items-center gap-1.5">
@@ -668,13 +668,13 @@ function AgreementRevealView({
                         <X className="h-5 w-5" strokeWidth={2.5} />
                       </span>
                     )}
-                    <span className="text-sm font-medium text-slate-700">
+                    <span className="text-base font-medium text-slate-700">
                       {theyGotRight ? "Correct" : "Missed"}
                     </span>
                   </div>
                 </div>
                 <div
-                  className={`rounded-xl border p-4 ${
+                  className={`rounded-xl border p-3 ${
                     iGotRight
                       ? "border-emerald-300 bg-emerald-50"
                       : "border-red-200 bg-red-50/70"
@@ -684,10 +684,10 @@ function AgreementRevealView({
                     <ProfileImageOrStar imageUrl={partnerImage} star="🌟" />
                   </div>
                   <p className="mt-1 font-medium text-violet-800">{partnerName}</p>
-                  <p className="text-sm text-slate-700">
+                  <p className="text-base text-slate-700 sm:text-lg">
                     Picked: <span className="font-medium text-slate-900">{options[partnerAns]}</span>
                   </p>
-                  <p className="mt-2 text-sm text-slate-600">
+                  <p className="mt-2 text-base text-slate-600 sm:text-lg">
                     You guessed: {options[myGuess]}
                   </p>
                   <div className="mt-2 flex items-center gap-1.5">
@@ -700,7 +700,7 @@ function AgreementRevealView({
                         <X className="h-5 w-5" strokeWidth={2.5} />
                       </span>
                     )}
-                    <span className="text-sm font-medium text-slate-700">
+                    <span className="text-base font-medium text-slate-700">
                       {iGotRight ? "Correct" : "Missed"}
                     </span>
                   </div>

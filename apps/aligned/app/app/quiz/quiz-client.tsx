@@ -695,10 +695,10 @@ function QuizRevealView({
 
           return (
             <div key={i} className="ns-card space-y-3">
-              <p className="font-semibold text-slate-900">{q.text}</p>
+              <p className="text-lg font-semibold text-slate-900 sm:text-xl">{q.text}</p>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div
-                  className={`rounded-xl border p-4 ${
+                  className={`rounded-xl border p-3 ${
                     theyGotRight
                       ? "border-emerald-300 bg-emerald-50"
                       : "border-red-200 bg-red-50/70"
@@ -708,10 +708,10 @@ function QuizRevealView({
                     <ProfileImageOrStar imageUrl={sessionUserImage} star="⭐" />
                   </div>
                   <p className="mt-1 font-medium text-brand-800">{myName}</p>
-                  <p className="text-sm text-slate-700">
+                  <p className="text-base text-slate-700 sm:text-lg">
                     Picked: <span className="font-medium text-slate-900">{q.options[myAns]}</span>
                   </p>
-                  <p className="mt-2 text-sm text-slate-600">
+                  <p className="mt-2 text-base text-slate-600 sm:text-lg">
                     {partnerName} guessed: {q.options[partnerGuess]}
                   </p>
                   <div className="mt-2 flex items-center gap-1.5">
@@ -724,13 +724,13 @@ function QuizRevealView({
                         <X className="h-5 w-5" strokeWidth={2.5} />
                       </span>
                     )}
-                    <span className="text-sm font-medium text-slate-700">
+                    <span className="text-base font-medium text-slate-700">
                       {theyGotRight ? "Correct" : "Missed"}
                     </span>
                   </div>
                 </div>
                 <div
-                  className={`rounded-xl border p-4 ${
+                  className={`rounded-xl border p-3 ${
                     iGotRight
                       ? "border-emerald-300 bg-emerald-50"
                       : "border-red-200 bg-red-50/70"
@@ -740,10 +740,10 @@ function QuizRevealView({
                     <ProfileImageOrStar imageUrl={partnerImage} star="🌟" />
                   </div>
                   <p className="mt-1 font-medium text-violet-800">{partnerName}</p>
-                  <p className="text-sm text-slate-700">
+                  <p className="text-base text-slate-700 sm:text-lg">
                     Picked: <span className="font-medium text-slate-900">{q.options[partnerAns]}</span>
                   </p>
-                  <p className="mt-2 text-sm text-slate-600">
+                  <p className="mt-2 text-base text-slate-600 sm:text-lg">
                     You guessed: {q.options[myGuess]}
                   </p>
                   <div className="mt-2 flex items-center gap-1.5">
@@ -756,7 +756,7 @@ function QuizRevealView({
                         <X className="h-5 w-5" strokeWidth={2.5} />
                       </span>
                     )}
-                    <span className="text-sm font-medium text-slate-700">
+                    <span className="text-base font-medium text-slate-700">
                       {iGotRight ? "Correct" : "Missed"}
                     </span>
                   </div>

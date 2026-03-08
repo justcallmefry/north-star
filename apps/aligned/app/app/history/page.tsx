@@ -44,7 +44,7 @@ export default async function HistoryPage({ searchParams }: Props) {
     return (
       <main className="min-h-screen bg-white p-3 sm:p-4">
         <div className="mb-4">
-          <Link href="/app" className="ns-btn-primary !py-2 text-sm">
+          <Link href="/app" className="ns-btn-primary block w-full text-center !py-2.5 text-sm">
             Answer today&apos;s question
           </Link>
         </div>

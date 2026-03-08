@@ -217,34 +217,36 @@ export function HistoryListWithSearch({
       </ul>
 
       {items.length > 0 && totalPages > 1 && (
-        <nav className="mt-6 flex flex-wrap items-center justify-center gap-3" aria-label="Previous responses pagination">
-          {hasPrev ? (
-            <Link
-              href={page > 2 ? `/app/history?page=${page - 1}` : "/app/history"}
-              className="ns-btn-primary !py-2 text-sm"
-            >
-              Previous
-            </Link>
-          ) : (
-            <span className="ns-btn-primary !py-2 text-sm opacity-50 pointer-events-none" aria-hidden>
-              Previous
-            </span>
-          )}
-          <span className="text-sm text-slate-600">
+        <nav className="mt-6 flex flex-col gap-2" aria-label="Previous responses pagination">
+          <span className="text-center text-sm text-slate-600">
             Page {page} of {totalPages}
           </span>
-          {hasNext ? (
-            <Link
-              href={`/app/history?page=${page + 1}`}
-              className="ns-btn-primary !py-2 text-sm"
-            >
-              Next
-            </Link>
-          ) : (
-            <span className="ns-btn-primary !py-2 text-sm opacity-50 pointer-events-none" aria-hidden>
-              Next
-            </span>
-          )}
+          <div className="grid grid-cols-2 gap-2">
+            {hasPrev ? (
+              <Link
+                href={page > 2 ? `/app/history?page=${page - 1}` : "/app/history"}
+                className="ns-btn-primary block w-full text-center !py-2.5 text-sm"
+              >
+                Previous
+              </Link>
+            ) : (
+              <span className="ns-btn-primary block w-full text-center !py-2.5 text-sm opacity-50 pointer-events-none" aria-hidden>
+                Previous
+              </span>
+            )}
+            {hasNext ? (
+              <Link
+                href={`/app/history?page=${page + 1}`}
+                className="ns-btn-primary block w-full text-center !py-2.5 text-sm"
+              >
+                Next
+              </Link>
+            ) : (
+              <span className="ns-btn-primary block w-full text-center !py-2.5 text-sm opacity-50 pointer-events-none" aria-hidden>
+                Next
+              </span>
+            )}
+          </div>
         </nav>
       )}
 

@@ -185,7 +185,7 @@ export function AgreementClient({
           <div className="ns-card py-8 text-center">
             <p className="text-slate-600">No results from yesterday.</p>
             <p className="mt-1 text-sm text-slate-500">If neither of you did the alignment that day, there&apos;s nothing to show.</p>
-            <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary mt-4 !py-2 text-sm">
+            <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary mt-4 w-full !py-2.5 text-sm">
               Back to today
             </button>
           </div>
@@ -226,7 +226,7 @@ export function AgreementClient({
             ))}
           </div>
           <div className="flex justify-center">
-            <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary !py-2 text-sm">
+            <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary w-full !py-2.5 text-sm">
               Back to today
             </button>
           </div>
@@ -239,7 +239,7 @@ export function AgreementClient({
         <div className="ns-card py-8 text-center">
           <p className="text-slate-600">No results from yesterday.</p>
           <p className="mt-1 text-sm text-slate-500">If neither of you did the alignment that day, there&apos;s nothing to show.</p>
-          <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary mt-4 !py-2 text-sm">
+          <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary mt-4 w-full !py-2.5 text-sm">
             Back to today
           </button>
         </div>
@@ -263,7 +263,7 @@ export function AgreementClient({
             type="button"
             disabled={yesterdayLoading}
             onClick={loadYesterdayAgreement}
-            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+            className="ns-btn-secondary flex w-full justify-center items-center gap-2 !py-2.5 text-sm"
           >
             {yesterdayLoading ? (
               <>
@@ -292,7 +292,7 @@ export function AgreementClient({
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <NotifyPartnerQuizButton variant="agreement" size="sm" />
-            <Link href="/app" className="ns-btn-secondary inline-flex">
+            <Link href="/app" className="ns-btn-secondary block w-full text-center py-2.5">
               Back to today
             </Link>
           </div>
@@ -302,7 +302,7 @@ export function AgreementClient({
             type="button"
             disabled={yesterdayLoading}
             onClick={loadYesterdayAgreement}
-            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+            className="ns-btn-secondary flex w-full justify-center items-center gap-2 !py-2.5 text-sm"
           >
             {yesterdayLoading ? (
               <>
@@ -364,7 +364,7 @@ export function AgreementClient({
             setCheckInStarted(true);
             requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
           }}
-          className="ns-btn-primary mt-6 min-w-[12rem] px-8 py-3.5 text-lg ring-2 ring-brand-300/50 ring-offset-2 shadow-lg shadow-brand-200/40"
+          className="ns-btn-primary mt-6 w-full py-3.5 text-lg ring-2 ring-brand-300/50 ring-offset-2 shadow-lg shadow-brand-200/40"
         >
           Start check-in
         </button>
@@ -378,7 +378,7 @@ export function AgreementClient({
             type="button"
             disabled={yesterdayLoading}
             onClick={loadYesterdayAgreement}
-            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+            className="ns-btn-secondary flex w-full justify-center items-center gap-2 !py-2.5 text-sm"
           >
             {yesterdayLoading ? (
               <>
@@ -404,7 +404,7 @@ export function AgreementClient({
         <button
           type="submit"
           disabled={loading || !allAnswered}
-          className="ns-btn-primary mt-6 min-w-[12rem] px-8 py-3.5 text-lg disabled:opacity-50"
+          className="ns-btn-primary mt-6 w-full py-3.5 text-lg disabled:opacity-50"
         >
           {loading ? "Submitting…" : "Submit"}
         </button>
@@ -425,7 +425,7 @@ export function AgreementClient({
             type="button"
             disabled={yesterdayLoading}
             onClick={loadYesterdayAgreement}
-            className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+            className="ns-btn-secondary flex w-full justify-center items-center gap-2 !py-2.5 text-sm"
           >
             {yesterdayLoading ? (
               <>
@@ -521,11 +521,11 @@ export function AgreementClient({
         </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-between gap-4">
+      <div className="mt-4 w-full">
         <button
           type="button"
           onClick={goBack}
-          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800"
+          className="ns-btn-secondary flex w-full justify-center items-center gap-1.5 !py-2.5 text-sm"
         >
           <ChevronLeft className="h-4 w-4" />
           Back
@@ -537,12 +537,12 @@ export function AgreementClient({
           Back to today
         </Link>
       </p>
-      <div className="mt-2 flex justify-center">
+      <div className="mt-2 w-full">
         <button
           type="button"
           disabled={yesterdayLoading}
           onClick={loadYesterdayAgreement}
-          className="ns-btn-secondary inline-flex items-center gap-2 !py-2 text-sm"
+          className="ns-btn-secondary flex w-full justify-center items-center gap-2 !py-2.5 text-sm"
         >
           {yesterdayLoading ? (
             <>
@@ -713,11 +713,11 @@ function AgreementRevealView({
 
       <p className="text-center">
         {onBack ? (
-          <button type="button" onClick={onBack} className="ns-btn-secondary inline-flex">
+          <button type="button" onClick={onBack} className="ns-btn-secondary w-full py-2.5">
             Back to today
           </button>
         ) : (
-          <Link href="/app" className="ns-btn-secondary inline-flex">
+          <Link href="/app" className="ns-btn-secondary block w-full text-center py-2.5">
             Back to today
           </Link>
         )}

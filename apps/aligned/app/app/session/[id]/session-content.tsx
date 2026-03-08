@@ -311,7 +311,7 @@ export function SessionContent({ data, currentUserId }: Props) {
               <button
                 type="submit"
                 disabled={!!loading}
-                className="ns-btn-primary min-w-[10rem] text-lg transition-all duration-200 disabled:opacity-50"
+                className="ns-btn-primary w-full py-3.5 text-lg transition-all duration-200 disabled:opacity-50"
               >
                 {data.hasUserResponded ? "Update my answer" : "Save my answer"}
               </button>
@@ -334,25 +334,23 @@ export function SessionContent({ data, currentUserId }: Props) {
       {data.hasUserResponded && data.state === "open" && !data.canReveal && (
         <div className="space-y-3 rounded-xl border border-brand-200 bg-brand-50 p-4 text-base text-brand-800 sm:text-lg">
           <p>Waiting on {totalMembers === 2 ? "your partner" : "everyone"} to answer. You can reveal once all have responded.</p>
-          <div className="flex flex-wrap gap-2">
-            <NotifyPartnerButton sessionId={data.sessionId} />
-          </div>
+          <NotifyPartnerButton sessionId={data.sessionId} className="w-full py-3.5" />
         </div>
       )}
 
       {data.hasUserResponded && data.state === "open" && data.canReveal && !isRevealed && (
         <div>
           <p className="mb-2 text-base text-slate-700 sm:text-lg">Both of you have answered.</p>
-          <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={handleReveal}
-            disabled={!!loading}
-            className="ns-btn-primary text-lg"
-          >
-            {loading === "reveal" ? "Revealing…" : "Reveal answers"}
-          </button>
-          <NotifyPartnerButton sessionId={data.sessionId} messageType="reveal" size="sm" />
+          <div className="flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={handleReveal}
+              disabled={!!loading}
+              className="ns-btn-primary w-full py-3.5 text-lg"
+            >
+              {loading === "reveal" ? "Revealing…" : "Reveal answers"}
+            </button>
+            <NotifyPartnerButton sessionId={data.sessionId} messageType="reveal" size="sm" className="w-full py-2.5" />
           </div>
         </div>
       )}
@@ -437,7 +435,7 @@ export function SessionContent({ data, currentUserId }: Props) {
               type="button"
               onClick={handleReaction}
               disabled={!!loading || !reaction.trim()}
-              className="ns-btn-primary"
+              className="ns-btn-primary w-full py-3.5"
             >
               {loading === "reaction" ? "Saving…" : "Send response"}
             </button>

@@ -141,16 +141,16 @@ export default async function UsPage() {
               </div>
             </div>
 
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-col gap-2">
               <Link
                 href="/invite"
-                className="ns-btn-primary"
+                className="ns-btn-primary block w-full text-center py-3"
               >
                 Invite partner
               </Link>
               <Link
                 href="/app/us/relationship"
-                className="ns-btn-secondary"
+                className="ns-btn-secondary block w-full text-center py-3"
               >
                 Manage relationship
               </Link>
@@ -214,7 +214,7 @@ export default async function UsPage() {
             </p>
             <Link
               href="/app/pair"
-              className="ns-btn-primary mt-5 inline-flex"
+              className="ns-btn-primary mt-5 block w-full text-center py-3.5"
             >
               Pair with partner
             </Link>

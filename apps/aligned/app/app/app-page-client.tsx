@@ -146,8 +146,8 @@ export function AppPageClient({ initialData }: Props) {
             <p className="mt-1 text-xs text-slate-400">
               Calm, private, no feed. Just you two.
             </p>
-            <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <Link href="/app/pair" className="ns-btn-primary" prefetch={false}>
+            <div className="mt-5 w-full">
+              <Link href="/app/pair" className="ns-btn-primary flex w-full justify-center items-center gap-2 py-3.5" prefetch={false}>
                 <ArrowRight className="h-4 w-4" />
                 Pair with partner
               </Link>

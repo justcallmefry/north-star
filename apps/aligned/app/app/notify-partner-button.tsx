@@ -7,6 +7,8 @@ type Props = {
   variant?: "primary" | "secondary";
   /** "reveal" = we both answered, nudge to reveal; default = waiting for partner to answer */
   messageType?: "your_turn" | "reveal";
+  /** Optional extra classes (e.g. w-full for full-width section buttons) */
+  className?: string;
 };
 
 const MESSAGES = {
@@ -14,7 +16,7 @@ const MESSAGES = {
   reveal: "I answered the question. We both did – come reveal so we can see what we said.",
 } as const;
 
-export function NotifyPartnerButton({ sessionId, size = "md", variant = "primary", messageType = "your_turn" }: Props) {
+export function NotifyPartnerButton({ sessionId, size = "md", variant = "primary", messageType = "your_turn", className: extraClass }: Props) {
   const baseText = MESSAGES[messageType];
 
   // Prefer current page origin so notify link always goes to the site the user is on (e.g. alignedconnectingcouples.com), not a build-time env.
@@ -48,7 +50,8 @@ export function NotifyPartnerButton({ sessionId, size = "md", variant = "primary
   }
 
   const baseClass = variant === "secondary" ? "ns-btn-secondary" : "ns-btn-primary";
-  const className = size === "sm" ? `${baseClass} !px-3 !py-1.5 text-sm` : baseClass;
+  const sizeClass = size === "sm" ? "!px-3 !py-1.5 text-sm" : "";
+  const className = [baseClass, sizeClass, extraClass].filter(Boolean).join(" ");
 
   return (
     <button type="button" onClick={handleClick} className={className}>

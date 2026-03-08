@@ -101,11 +101,11 @@ export function TodayCard({ today }: Props) {
             <p className="text-center text-sm text-slate-500 leading-relaxed max-w-md mx-auto">
               Your answer is saved. We&apos;ll reveal when your partner replies.
             </p>
-            <div className="flex flex-wrap items-center gap-2">
-              <Link href={`/app/session/${sessionId}`} className="ns-btn-primary">
+            <div className="flex flex-col gap-2">
+              <Link href={`/app/session/${sessionId}`} className="ns-btn-primary block w-full text-center py-3.5">
                 View my answer
               </Link>
-              <NotifyPartnerButton sessionId={sessionId} variant="secondary" />
+              <NotifyPartnerButton sessionId={sessionId} variant="secondary" className="w-full py-3.5" />
             </div>
           </div>
         )}

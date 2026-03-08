@@ -615,8 +615,8 @@ function AgreementRevealView({
   const resultsLine = avgPct >= 70 ? "You're aligned!" : "Keep at it—you're building something good.";
 
   return (
-    <div className="space-y-6">
-      <p className="text-center text-base font-medium text-slate-700 sm:text-lg">
+    <div className="space-y-5">
+      <p className="text-center text-lg font-medium text-slate-700 sm:text-xl">
         {resultsLine}
       </p>
       {/* Scoreboard commented out for now — may bring back later
@@ -628,7 +628,7 @@ function AgreementRevealView({
       */}
 
       {/* Answers in two columns with green/red and bigger icons */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {questions.map((q, i) => {
           const myAns = reveal.myAnswers[i];
           const myGuess = reveal.myGuesses[i];
@@ -638,11 +638,11 @@ function AgreementRevealView({
           const theyGotRight = partnerGuess === myAns;
 
           return (
-            <div key={i} className="ns-card space-y-3">
-              <p className="text-lg font-semibold text-slate-900 sm:text-xl">{q.text}</p>
-              <div className="grid gap-3 sm:grid-cols-2">
+            <div key={i} className="ns-card space-y-3 py-4">
+              <p className="text-xl font-semibold text-slate-900 sm:text-2xl">{q.text}</p>
+              <div className="grid gap-4 sm:grid-cols-2">
                 <div
-                  className={`rounded-xl border p-3 ${
+                  className={`rounded-xl border-2 p-4 ${
                     theyGotRight
                       ? "border-emerald-300 bg-emerald-50"
                       : "border-red-200 bg-red-50/70"
@@ -651,30 +651,30 @@ function AgreementRevealView({
                   <div className="flex justify-center">
                     <ProfileImageOrStar imageUrl={sessionUserImage} star="⭐" />
                   </div>
-                  <p className="mt-1 font-medium text-brand-800">{myName}</p>
-                  <p className="text-base text-slate-700 sm:text-lg">
+                  <p className="mt-1.5 font-medium text-brand-800">{myName}</p>
+                  <p className="mt-1 text-lg text-slate-700 sm:text-xl">
                     Picked: <span className="font-medium text-slate-900">{options[myAns]}</span>
                   </p>
-                  <p className="mt-2 text-base text-slate-600 sm:text-lg">
+                  <p className="mt-2 text-lg text-slate-600 sm:text-xl">
                     {partnerName} guessed: {options[partnerGuess]}
                   </p>
                   <div className="mt-2 flex items-center gap-1.5">
                     {theyGotRight ? (
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white" aria-label="Correct">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500 text-white" aria-label="Correct">
                         <Check className="h-5 w-5" strokeWidth={2.5} />
                       </span>
                     ) : (
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-red-400 text-white" aria-label="Missed">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-red-400 text-white" aria-label="Missed">
                         <X className="h-5 w-5" strokeWidth={2.5} />
                       </span>
                     )}
-                    <span className="text-base font-medium text-slate-700">
+                    <span className="text-lg font-medium text-slate-700">
                       {theyGotRight ? "Correct" : "Missed"}
                     </span>
                   </div>
                 </div>
                 <div
-                  className={`rounded-xl border p-3 ${
+                  className={`rounded-xl border-2 p-4 ${
                     iGotRight
                       ? "border-emerald-300 bg-emerald-50"
                       : "border-red-200 bg-red-50/70"
@@ -683,24 +683,24 @@ function AgreementRevealView({
                   <div className="flex justify-center">
                     <ProfileImageOrStar imageUrl={partnerImage} star="🌟" />
                   </div>
-                  <p className="mt-1 font-medium text-violet-800">{partnerName}</p>
-                  <p className="text-base text-slate-700 sm:text-lg">
+                  <p className="mt-1.5 font-medium text-violet-800">{partnerName}</p>
+                  <p className="mt-1 text-lg text-slate-700 sm:text-xl">
                     Picked: <span className="font-medium text-slate-900">{options[partnerAns]}</span>
                   </p>
-                  <p className="mt-2 text-base text-slate-600 sm:text-lg">
+                  <p className="mt-2 text-lg text-slate-600 sm:text-xl">
                     You guessed: {options[myGuess]}
                   </p>
                   <div className="mt-2 flex items-center gap-1.5">
                     {iGotRight ? (
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white" aria-label="Correct">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500 text-white" aria-label="Correct">
                         <Check className="h-5 w-5" strokeWidth={2.5} />
                       </span>
                     ) : (
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-red-400 text-white" aria-label="Missed">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-red-400 text-white" aria-label="Missed">
                         <X className="h-5 w-5" strokeWidth={2.5} />
                       </span>
                     )}
-                    <span className="text-base font-medium text-slate-700">
+                    <span className="text-lg font-medium text-slate-700">
                       {iGotRight ? "Correct" : "Missed"}
                     </span>
                   </div>

@@ -365,24 +365,24 @@ export function SessionContent({ data, currentUserId }: Props) {
         <div className="animate-calm-fade-in ns-card ns-stack-tight">
           <h3 className="text-lg font-semibold text-slate-900 sm:text-xl">Answers</h3>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             {responsesToShow.map((resp) => (
               <div key={resp.key} className="space-y-1.5">
                 <div className="flex items-center gap-2">
-                  <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-base">
+                  <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-base">
                     {typeof resp.icon === "string" && resp.icon.trim().startsWith("http") ? (
-                      <img src={resp.icon.trim()} alt="" className="absolute inset-0 h-full w-full object-cover" width={32} height={32} />
+                      <img src={resp.icon.trim()} alt="" className="absolute inset-0 h-full w-full object-cover" width={36} height={36} />
                     ) : (
                       resp.icon
                     )}
                   </span>
                   <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] ${resp.bubbleClass}`}
+                    className={`rounded-full px-3 py-1.5 text-sm font-semibold uppercase tracking-[0.14em] ${resp.bubbleClass}`}
                   >
                     {resp.title}
                   </span>
                 </div>
-                <p className="ns-card-inner px-2.5 py-2 text-xl leading-relaxed text-slate-900 sm:text-2xl">
+                <p className="ns-card-inner px-3 py-3 text-2xl leading-relaxed text-slate-900 sm:text-3xl">
                   {resp.content ?? "—"}
                 </p>
               </div>

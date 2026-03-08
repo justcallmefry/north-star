@@ -605,77 +605,77 @@ function QuizRevealView({
   const resultsLine = todayCombined >= 8 ? "You know each other well!" : "Keep playing to improve.";
 
   return (
-    <div className="space-y-6">
-      <p className="text-center text-base font-medium text-slate-700 sm:text-lg">
+    <div className="space-y-5">
+      <p className="text-center text-lg font-medium text-slate-700 sm:text-xl">
         {resultsLine}
       </p>
       {/* Today's scores side by side with name + emoji, then overall with trophy / loser emoji */}
-      <div className="ns-card space-y-3 py-4">
-        <p className="text-center text-xs font-medium uppercase tracking-wide text-slate-700 pb-1">Today</p>
-        <div className="grid grid-cols-2 gap-3 text-center">
+      <div className="ns-card space-y-4 py-5">
+        <p className="text-center text-sm font-medium uppercase tracking-wide text-slate-700 pb-1">Today</p>
+        <div className="grid grid-cols-2 gap-4 text-center">
           <div>
             <div className="flex justify-center">
               <ProfileImageOrStar imageUrl={sessionUserImage} star="⭐" />
             </div>
-            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{myName}</p>
-            <p className="text-2xl font-bold text-brand-600">{reveal.myScore}/5</p>
+            <p className="mt-1.5 text-sm font-medium uppercase tracking-wide text-slate-500">{myName}</p>
+            <p className="text-3xl font-bold text-brand-600">{reveal.myScore}/5</p>
           </div>
           <div>
             <div className="flex justify-center">
               <ProfileImageOrStar imageUrl={partnerImage} star="🌟" />
             </div>
-            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{partnerName}</p>
-            <p className="text-2xl font-bold text-violet-600">{reveal.partnerScore}/5</p>
+            <p className="mt-1.5 text-sm font-medium uppercase tracking-wide text-slate-500">{partnerName}</p>
+            <p className="text-3xl font-bold text-violet-600">{reveal.partnerScore}/5</p>
           </div>
         </div>
-        <div className="border-t border-brand-100 pt-3">
-          <p className="text-center text-xs font-medium uppercase tracking-wide text-slate-700 pb-2">Overall</p>
-          <div className="grid grid-cols-2 gap-3 text-center">
+        <div className="border-t border-brand-100 pt-4">
+          <p className="text-center text-sm font-medium uppercase tracking-wide text-slate-700 pb-2">Overall</p>
+          <div className="grid grid-cols-2 gap-4 text-center">
           <div>
-            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{myName}</p>
+            <p className="mt-1.5 text-sm font-medium uppercase tracking-wide text-slate-500">{myName}</p>
             {iAmWinning ? (
               <div className="mt-2 flex flex-col items-center gap-1">
                 <Trophy className="h-10 w-10 text-amber-500" strokeWidth={1.5} aria-hidden />
-                <p className="text-xl font-bold text-slate-800">{reveal.overallMyScore}/{reveal.overallTotal}</p>
-                <p className="text-sm text-slate-600">{overallMyPct}%</p>
-                <p className="text-sm font-medium text-amber-600">Leading</p>
+                <p className="text-2xl font-bold text-slate-800">{reveal.overallMyScore}/{reveal.overallTotal}</p>
+                <p className="text-base text-slate-600">{overallMyPct}%</p>
+                <p className="text-base font-medium text-amber-600">Leading</p>
               </div>
             ) : isTie ? (
               <div className="mt-2 flex flex-col items-center gap-1">
                 <Trophy className="h-8 w-8 text-slate-400" strokeWidth={1.5} aria-hidden />
-                <p className="text-xl font-bold text-slate-800">{reveal.overallMyScore}/{reveal.overallTotal}</p>
-                <p className="text-sm text-slate-600">{overallMyPct}%</p>
-                <p className="text-sm text-slate-500">Tied</p>
+                <p className="text-2xl font-bold text-slate-800">{reveal.overallMyScore}/{reveal.overallTotal}</p>
+                <p className="text-base text-slate-600">{overallMyPct}%</p>
+                <p className="text-base text-slate-500">Tied</p>
               </div>
             ) : (
               <div className="mt-2 flex flex-col items-center gap-1">
                 <span className="text-3xl leading-none" aria-hidden>🤪</span>
-                <p className="text-xl font-bold text-slate-800">{reveal.overallMyScore}/{reveal.overallTotal}</p>
-                <p className="text-sm text-slate-600">{overallMyPct}%</p>
+                <p className="text-2xl font-bold text-slate-800">{reveal.overallMyScore}/{reveal.overallTotal}</p>
+                <p className="text-base text-slate-600">{overallMyPct}%</p>
               </div>
             )}
           </div>
           <div>
-            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{partnerName}</p>
+            <p className="mt-1.5 text-sm font-medium uppercase tracking-wide text-slate-500">{partnerName}</p>
             {theyAreWinning ? (
               <div className="mt-2 flex flex-col items-center gap-1">
                 <Trophy className="h-10 w-10 text-amber-500" strokeWidth={1.5} aria-hidden />
-                <p className="text-xl font-bold text-slate-800">{reveal.overallPartnerScore}/{reveal.overallTotal}</p>
-                <p className="text-sm text-slate-600">{overallPartnerPct}%</p>
-                <p className="text-sm font-medium text-amber-600">Leading</p>
+                <p className="text-2xl font-bold text-slate-800">{reveal.overallPartnerScore}/{reveal.overallTotal}</p>
+                <p className="text-base text-slate-600">{overallPartnerPct}%</p>
+                <p className="text-base font-medium text-amber-600">Leading</p>
               </div>
             ) : isTie ? (
               <div className="mt-2 flex flex-col items-center gap-1">
                 <Trophy className="h-8 w-8 text-slate-400" strokeWidth={1.5} aria-hidden />
-                <p className="text-xl font-bold text-slate-800">{reveal.overallPartnerScore}/{reveal.overallTotal}</p>
-                <p className="text-sm text-slate-600">{overallPartnerPct}%</p>
-                <p className="text-sm text-slate-500">Tied</p>
+                <p className="text-2xl font-bold text-slate-800">{reveal.overallPartnerScore}/{reveal.overallTotal}</p>
+                <p className="text-base text-slate-600">{overallPartnerPct}%</p>
+                <p className="text-base text-slate-500">Tied</p>
               </div>
             ) : (
               <div className="mt-2 flex flex-col items-center gap-1">
                 <span className="text-3xl leading-none" aria-hidden>🤪</span>
-                <p className="text-xl font-bold text-slate-800">{reveal.overallPartnerScore}/{reveal.overallTotal}</p>
-                <p className="text-sm text-slate-600">{overallPartnerPct}%</p>
+                <p className="text-2xl font-bold text-slate-800">{reveal.overallPartnerScore}/{reveal.overallTotal}</p>
+                <p className="text-base text-slate-600">{overallPartnerPct}%</p>
               </div>
             )}
           </div>
@@ -684,7 +684,7 @@ function QuizRevealView({
       </div>
 
       {/* Answers in two columns with green/red and bigger icons */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {questions.map((q, i) => {
           const myAns = reveal.myAnswers[i];
           const myGuess = reveal.myGuesses[i];
@@ -694,11 +694,11 @@ function QuizRevealView({
           const theyGotRight = partnerGuess === myAns;
 
           return (
-            <div key={i} className="ns-card space-y-3">
-              <p className="text-lg font-semibold text-slate-900 sm:text-xl">{q.text}</p>
-              <div className="grid gap-3 sm:grid-cols-2">
+            <div key={i} className="ns-card space-y-3 py-4">
+              <p className="text-xl font-semibold text-slate-900 sm:text-2xl">{q.text}</p>
+              <div className="grid gap-4 sm:grid-cols-2">
                 <div
-                  className={`rounded-xl border p-3 ${
+                  className={`rounded-xl border-2 p-4 ${
                     theyGotRight
                       ? "border-emerald-300 bg-emerald-50"
                       : "border-red-200 bg-red-50/70"
@@ -707,30 +707,30 @@ function QuizRevealView({
                   <div className="flex justify-center">
                     <ProfileImageOrStar imageUrl={sessionUserImage} star="⭐" />
                   </div>
-                  <p className="mt-1 font-medium text-brand-800">{myName}</p>
-                  <p className="text-base text-slate-700 sm:text-lg">
+                  <p className="mt-1.5 font-medium text-brand-800">{myName}</p>
+                  <p className="mt-1 text-lg text-slate-700 sm:text-xl">
                     Picked: <span className="font-medium text-slate-900">{q.options[myAns]}</span>
                   </p>
-                  <p className="mt-2 text-base text-slate-600 sm:text-lg">
+                  <p className="mt-2 text-lg text-slate-600 sm:text-xl">
                     {partnerName} guessed: {q.options[partnerGuess]}
                   </p>
                   <div className="mt-2 flex items-center gap-1.5">
                     {theyGotRight ? (
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white" aria-label="Correct">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500 text-white" aria-label="Correct">
                         <Check className="h-5 w-5" strokeWidth={2.5} />
                       </span>
                     ) : (
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-red-400 text-white" aria-label="Missed">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-red-400 text-white" aria-label="Missed">
                         <X className="h-5 w-5" strokeWidth={2.5} />
                       </span>
                     )}
-                    <span className="text-base font-medium text-slate-700">
+                    <span className="text-lg font-medium text-slate-700">
                       {theyGotRight ? "Correct" : "Missed"}
                     </span>
                   </div>
                 </div>
                 <div
-                  className={`rounded-xl border p-3 ${
+                  className={`rounded-xl border-2 p-4 ${
                     iGotRight
                       ? "border-emerald-300 bg-emerald-50"
                       : "border-red-200 bg-red-50/70"
@@ -739,24 +739,24 @@ function QuizRevealView({
                   <div className="flex justify-center">
                     <ProfileImageOrStar imageUrl={partnerImage} star="🌟" />
                   </div>
-                  <p className="mt-1 font-medium text-violet-800">{partnerName}</p>
-                  <p className="text-base text-slate-700 sm:text-lg">
+                  <p className="mt-1.5 font-medium text-violet-800">{partnerName}</p>
+                  <p className="mt-1 text-lg text-slate-700 sm:text-xl">
                     Picked: <span className="font-medium text-slate-900">{q.options[partnerAns]}</span>
                   </p>
-                  <p className="mt-2 text-base text-slate-600 sm:text-lg">
+                  <p className="mt-2 text-lg text-slate-600 sm:text-xl">
                     You guessed: {q.options[myGuess]}
                   </p>
                   <div className="mt-2 flex items-center gap-1.5">
                     {iGotRight ? (
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white" aria-label="Correct">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500 text-white" aria-label="Correct">
                         <Check className="h-5 w-5" strokeWidth={2.5} />
                       </span>
                     ) : (
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-red-400 text-white" aria-label="Missed">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-red-400 text-white" aria-label="Missed">
                         <X className="h-5 w-5" strokeWidth={2.5} />
                       </span>
                     )}
-                    <span className="text-base font-medium text-slate-700">
+                    <span className="text-lg font-medium text-slate-700">
                       {iGotRight ? "Correct" : "Missed"}
                     </span>
                   </div>

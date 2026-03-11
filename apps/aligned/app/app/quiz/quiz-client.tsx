@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { Check, ChevronLeft, ChevronRight, HelpCircle, Trophy, X } from "lucide-react";
 import { toast } from "sonner";
 import { LoadingSpinner } from "@/components/loading-spinner";
@@ -275,29 +274,24 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
           <p className="text-sm text-slate-500">
             We&apos;ll show scores once you&apos;ve both answered.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="flex flex-col gap-3">
             <NotifyPartnerQuizButton variant="quiz" size="sm" />
-            <Link href="/app" className="ns-btn-secondary block w-full text-center py-2.5">
-              Back to today
-            </Link>
+            <button
+              type="button"
+              disabled={yesterdayLoading}
+              onClick={loadYesterdayQuiz}
+              className="ns-btn-secondary flex w-full justify-center items-center gap-2 !py-2.5 text-sm"
+            >
+              {yesterdayLoading ? (
+                <>
+                  <LoadingSpinner size="sm" />
+                  Loading…
+                </>
+              ) : (
+                "Yesterday's results"
+              )}
+            </button>
           </div>
-        </div>
-        <div className="flex justify-center">
-          <button
-            type="button"
-            disabled={yesterdayLoading}
-            onClick={loadYesterdayQuiz}
-            className="ns-btn-secondary flex w-full justify-center items-center gap-2 !py-2.5 text-sm"
-          >
-            {yesterdayLoading ? (
-              <>
-                <LoadingSpinner size="sm" />
-                Loading…
-              </>
-            ) : (
-              "Yesterday's results"
-            )}
-          </button>
         </div>
       </div>
     );
@@ -349,22 +343,17 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
             </p>
           )}
         </div>
-        <button
-          type="button"
-          onClick={() => {
-            setQuizStarted(true);
-            requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
-          }}
-          className="ns-btn-primary mt-6 w-full py-3.5 text-lg ring-2 ring-brand-300/50 ring-offset-2 shadow-lg shadow-brand-200/40"
-        >
-          Start quiz
-        </button>
-        <p className="mt-6 text-center">
-          <Link href="/app" className="text-sm text-slate-500 hover:text-slate-700">
-            Back to today
-          </Link>
-        </p>
-        <div className="mt-4">
+        <div className="mt-6 flex w-full flex-col gap-4">
+          <button
+            type="button"
+            onClick={() => {
+              setQuizStarted(true);
+              requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
+            }}
+            className="ns-btn-primary w-full py-3.5 text-lg ring-2 ring-brand-300/50 ring-offset-2 shadow-lg shadow-brand-200/40"
+          >
+            Start quiz
+          </button>
           <button
             type="button"
             disabled={yesterdayLoading}
@@ -523,12 +512,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
         </button>
       </div>
 
-      <p className="mt-3 text-center">
-        <Link href="/app" className="text-sm text-slate-500 hover:text-slate-700">
-          Back to today
-        </Link>
-      </p>
-      <div className="mt-2 w-full">
+      <div className="mt-3 w-full">
         <button
           type="button"
           disabled={yesterdayLoading}
@@ -767,17 +751,13 @@ function QuizRevealView({
         })}
       </div>
 
-      <p className="text-center">
-        {onBack ? (
+      {onBack && (
+        <p className="text-center">
           <button type="button" onClick={onBack} className="ns-btn-secondary w-full py-2.5">
             Back to today
           </button>
-        ) : (
-          <Link href="/app" className="ns-btn-secondary block w-full text-center py-2.5">
-            Back to today
-          </Link>
-        )}
-      </p>
+        </p>
+      )}
     </div>
   );
 }

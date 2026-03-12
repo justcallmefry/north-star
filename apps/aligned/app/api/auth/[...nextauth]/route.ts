@@ -59,8 +59,13 @@ function ensureAuthUrl(req: NextRequest): { origin: string; secret: string } {
     authUrl = url;
   }
 
-  const origin = authUrl || requestOrigin;
-  const secret = process.env.AUTH_SECRET ?? "";
+  let origin = authUrl || requestOrigin;
+  let secret = process.env.AUTH_SECRET ?? "";
+  // Dev fallback: avoid Configuration error when env is missing (e.g. no .env.local)
+  if (process.env.NODE_ENV === "development") {
+    if (!origin || origin === "") origin = "http://localhost:3000";
+    if (!secret) secret = DEV_SECRET;
+  }
   return { origin, secret };
 }
 

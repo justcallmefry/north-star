@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { cookies, headers } from "next/headers";
 import NextAuth from "next-auth";
+import Apple from "next-auth/providers/apple";
 import Credentials from "next-auth/providers/credentials";
 import Nodemailer from "next-auth/providers/nodemailer";
 import { PrismaAdapter } from "@auth/prisma-adapter";
@@ -33,6 +34,13 @@ function createAuthInstance(
 ): ReturnType<typeof NextAuth> {
   const emailConfigured =
     options?.emailConfigured ?? !!(process.env["EMAIL_SERVER"] || process.env["RESEND_API_KEY"]);
+  const appleConfigured =
+    !!(
+      process.env["APPLE_ID"] &&
+      process.env["APPLE_TEAM_ID"] &&
+      process.env["APPLE_KEY_ID"] &&
+      process.env["APPLE_PRIVATE_KEY"]
+    );
   const from =
     options?.from ?? process.env["EMAIL_FROM"] ?? "noreply@example.com";
   const authUrl =
@@ -89,6 +97,18 @@ function createAuthInstance(
               server: process.env["EMAIL_SERVER"] ?? { host: "localhost", port: 1, secure: false },
               from,
               sendVerificationRequest,
+            }),
+          ]
+        : []),
+      ...(appleConfigured
+        ? [
+            Apple({
+              clientId: process.env["APPLE_ID"]!,
+              clientSecret: {
+                teamId: process.env["APPLE_TEAM_ID"]!,
+                privateKey: process.env["APPLE_PRIVATE_KEY"]!.replace(/\\n/g, "\n"),
+                keyId: process.env["APPLE_KEY_ID"]!,
+              },
             }),
           ]
         : []),

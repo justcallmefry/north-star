@@ -104,11 +104,13 @@ function createAuthInstance(
         ? [
             Apple({
               clientId: process.env["APPLE_ID"]!,
+              // Runtime supports object clientSecret, but current types expect a string.
+              // Cast to any to avoid blocking the build while still using the recommended config shape.
               clientSecret: {
                 teamId: process.env["APPLE_TEAM_ID"]!,
                 privateKey: process.env["APPLE_PRIVATE_KEY"]!.replace(/\\n/g, "\n"),
                 keyId: process.env["APPLE_KEY_ID"]!,
-              },
+              } as any,
             }),
           ]
         : []),

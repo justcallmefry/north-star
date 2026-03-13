@@ -45,9 +45,10 @@ export async function requestPermissionAndSubscribe(): Promise<boolean> {
   if (!reg || !reg.pushManager) return false;
 
   try {
+    const vapidKey = urlBase64ToUint8Array(vapidPublic);
     const sub = await reg.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(vapidPublic),
+      applicationServerKey: vapidKey as BufferSource,
     });
     const payload = sub.toJSON();
     if (!payload.endpoint || !payload.keys?.p256dh || !payload.keys?.auth) return false;

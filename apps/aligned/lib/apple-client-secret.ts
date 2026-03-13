@@ -18,7 +18,9 @@ export function getAppleClientSecret(): string | null {
   const clientId = process.env.APPLE_ID;
   const teamId = process.env.APPLE_TEAM_ID;
   const keyId = process.env.APPLE_KEY_ID;
-  const privateKeyPem = process.env.APPLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  // Support env stored as one line with \n or as multi-line
+  const raw = process.env.APPLE_PRIVATE_KEY ?? "";
+  const privateKeyPem = raw.replace(/\\n/g, "\n").replace(/\r\n/g, "\n").trim();
 
   if (!clientId || !teamId || !keyId || !privateKeyPem) return null;
 

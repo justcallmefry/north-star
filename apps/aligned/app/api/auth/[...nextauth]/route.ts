@@ -103,12 +103,18 @@ function getEmailConfig() {
 /** Build handler options for this request so the auth instance has valid config. */
 function getRouteHandlerOptions(routeAuth: { origin: string; secret: string }) {
   const { emailConfigured, from } = getEmailConfig();
+  let appleClientSecret: string | null = null;
+  try {
+    appleClientSecret = getAppleClientSecret();
+  } catch (err) {
+    console.error("[auth route] getAppleClientSecret failed:", err);
+  }
   return {
     emailConfigured,
     from,
     secret: routeAuth.secret || undefined,
     authUrl: routeAuth.origin || undefined,
-    appleClientSecret: getAppleClientSecret(),
+    appleClientSecret: appleClientSecret || undefined,
   };
 }
 
@@ -169,29 +175,45 @@ function forwardAuthResponse(req: NextRequest, res: Response): NextResponse {
 }
 
 export async function GET(req: NextRequest) {
-  const routeAuth = ensureAuthUrl(req);
-  const opts = getRouteHandlerOptions(routeAuth);
-  const requestHandlers = getHandlers(sendVerificationRequestFromRoute, opts);
-  if (process.env.NODE_ENV === "development") {
-    console.log("[auth route] GET origin=%s secretSet=%s", routeAuth.origin, !!routeAuth.secret);
+  try {
+    const routeAuth = ensureAuthUrl(req);
+    const opts = getRouteHandlerOptions(routeAuth);
+    const requestHandlers = getHandlers(sendVerificationRequestFromRoute, opts);
+    if (process.env.NODE_ENV === "development") {
+      console.log("[auth route] GET origin=%s secretSet=%s appleSecret=%s", routeAuth.origin, !!routeAuth.secret, !!opts.appleClientSecret);
+    }
+    const res = await requestHandlers.GET(req);
+    return forwardAuthResponse(req, res);
+  } catch (err) {
+    console.error("[auth route] GET failed:", err);
+    return NextResponse.json(
+      { error: "Auth failed", message: process.env.NODE_ENV === "development" ? String(err) : undefined },
+      { status: 500 }
+    );
   }
-  const res = await requestHandlers.GET(req);
-  return forwardAuthResponse(req, res);
 }
 
 export async function POST(req: NextRequest) {
-  const routeAuth = ensureAuthUrl(req);
-  const opts = getRouteHandlerOptions(routeAuth);
-  const requestHandlers = getHandlers(sendVerificationRequestFromRoute, opts);
-  if (process.env.NODE_ENV === "development") {
-    console.log("[auth route] POST origin=%s secretSet=%s", routeAuth.origin, !!routeAuth.secret);
-  }
-  const res = await requestHandlers.POST(req);
-  if (process.env.NODE_ENV === "development") {
-    const location = res.headers.get("location") ?? "";
-    if (location.includes("error=Configuration")) {
-      console.error("[auth route] Auth.js returned Configuration error. Check [auth] error lines above for the real cause.");
+  try {
+    const routeAuth = ensureAuthUrl(req);
+    const opts = getRouteHandlerOptions(routeAuth);
+    const requestHandlers = getHandlers(sendVerificationRequestFromRoute, opts);
+    if (process.env.NODE_ENV === "development") {
+      console.log("[auth route] POST origin=%s secretSet=%s appleSecret=%s", routeAuth.origin, !!routeAuth.secret, !!opts.appleClientSecret);
     }
+    const res = await requestHandlers.POST(req);
+    if (process.env.NODE_ENV === "development") {
+      const location = res.headers.get("location") ?? "";
+      if (location.includes("error=Configuration")) {
+        console.error("[auth route] Auth.js returned Configuration error. Check [auth] error lines above for the real cause.");
+      }
+    }
+    return forwardAuthResponse(req, res);
+  } catch (err) {
+    console.error("[auth route] POST failed:", err);
+    return NextResponse.json(
+      { error: "Auth failed", message: process.env.NODE_ENV === "development" ? String(err) : undefined },
+      { status: 500 }
+    );
   }
-  return forwardAuthResponse(req, res);
 }

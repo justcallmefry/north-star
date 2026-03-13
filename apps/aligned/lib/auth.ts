@@ -102,6 +102,8 @@ function createAuthInstance(
             Apple({
               clientId: process.env["APPLE_ID"],
               clientSecret: appleClientSecret,
+              // Link Apple to existing account when email matches (e.g. same person, different sign-in method).
+              allowDangerousEmailAccountLinking: true,
             }),
           ]
         : []),

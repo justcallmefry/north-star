@@ -34,7 +34,7 @@ export async function requestPermissionAndSubscribe(): Promise<boolean> {
   if (typeof navigator === "undefined" || !("Notification" in navigator)) return false;
   if (Notification.permission === "denied") return false;
 
-  let permission = Notification.permission;
+  let permission: NotificationPermission = Notification.permission;
   if (permission === "default") {
     permission = await Notification.requestPermission();
   }

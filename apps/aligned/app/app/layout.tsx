@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Home, CalendarRange, History, User, HelpCircle, Scale } from "lucide-react";
 import { BottomNav } from "./bottom-nav";
+import { NativePushRegistration } from "./native-push-registration";
 import { ScrollToTopOnNav } from "./scroll-to-top-on-nav";
 
 export const dynamic = "force-dynamic";
@@ -22,6 +23,7 @@ export default function AppSegmentLayout({
 }) {
   return (
     <div className="flex h-screen h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden md:min-h-screen" style={{ backgroundColor: "#eef6f8", overscrollBehaviorX: "none" }}>
+      <NativePushRegistration />
       <ScrollToTopOnNav />
       {/* Only this area scrolls so fixed bottom nav stays viewport-locked on mobile */}
       <div

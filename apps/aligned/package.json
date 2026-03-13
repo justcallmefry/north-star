@@ -15,16 +15,19 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
     "db:studio": "prisma studio",
     "db:seed": "prisma db seed",
     "db:update-prompts": "tsx prisma/update-daily-prompts.ts",
-    "content:generate-quiz-draft": "tsx scripts/generate-quiz-draft.ts"
+    "content:generate-quiz-draft": "tsx scripts/generate-quiz-draft.ts",
+    "ios:copy-privacy": "node scripts/copy-ios-privacy.js"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.2",
     "@capacitor/cli": "^8.1.0",
     "@capacitor/core": "^8.1.0",
     "@capacitor/ios": "^8.1.0",
+    "@capacitor/push-notifications": "^8.0.0",
     "@north-star/shared": "*",
     "@prisma/client": "^5.22.0",
     "@vercel/analytics": "^1.6.1",
@@ -39,6 +42,7 @@
     "resend": "^4.0.0",
     "sonner": "^2.0.7",
     "stripe": "^17.4.0",
+    "apns2": "^12.2.0",
     "web-push": "^3.6.7",
     "zod": "^3.23.8"
   },

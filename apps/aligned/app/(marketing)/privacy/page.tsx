@@ -15,7 +15,7 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
         <p className="mt-2 text-sm text-slate-500">
-          Last updated: February 2026
+          Last updated: March 2026
         </p>
 
         <div className="mt-8 space-y-8 text-base leading-relaxed text-slate-700">
@@ -39,6 +39,10 @@ export default function PrivacyPage() {
             <p className="mt-3 font-medium text-slate-800">Usage and device</p>
             <p>
               We may collect information about how you use the Service (e.g., pages or screens you open, actions you take) and basic device or browser data (e.g., type, language) to operate, secure, and improve the Service. We may use cookies or similar technologies for authentication and preferences.
+            </p>
+            <p className="mt-3 font-medium text-slate-800">Push notifications (web and app)</p>
+            <p>
+              If you use the website in a browser or install our iOS/Android app, you may choose to allow push notifications. We store the tokens or subscription data needed to send you those notifications (e.g., when your partner taps “Notify”). We use this only to deliver in-app alerts you requested; we do not use it for marketing or tracking.
             </p>
           </section>
 

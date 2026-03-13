@@ -81,7 +81,8 @@ model User {
   agreementParticipations AgreementParticipation[]
   meetingEntries     MeetingEntry[]
   subscriptions      Subscription[]
-  pushSubscriptions  PushSubscription[]
+  pushSubscriptions   PushSubscription[]
+  nativePushTokens    NativePushToken[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -94,6 +95,17 @@ model PushSubscription {
   p256dhKey String   @map("p256dh_key")
   authKey   String   @map("auth_key")
   userAgent String?  @map("user_agent")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model NativePushToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  platform  String   // "ios" | "android"
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 

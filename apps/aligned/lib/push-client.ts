@@ -1,11 +1,12 @@
 "use client";
 
-/** Base64url to Uint8Array for VAPID key */
+/** Base64url to Uint8Array for VAPID key. Uses ArrayBuffer so Push API accepts it. */
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
   const rawData = atob(base64);
-  const output = new Uint8Array(rawData.length);
+  const buffer = new ArrayBuffer(rawData.length);
+  const output = new Uint8Array(buffer);
   for (let i = 0; i < rawData.length; i++) {
     output[i] = rawData.charCodeAt(i);
   }

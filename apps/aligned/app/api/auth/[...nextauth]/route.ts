@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { getAppleClientSecret } from "@/lib/apple-client-secret";
 import { getHandlers, handlers } from "@/lib/auth";
 import { sendMagicLinkWithKey } from "@/lib/email";
 import { setEmailEnv } from "@/lib/email-env";
@@ -107,6 +108,7 @@ function getRouteHandlerOptions(routeAuth: { origin: string; secret: string }) {
     from,
     secret: routeAuth.secret || undefined,
     authUrl: routeAuth.origin || undefined,
+    appleClientSecret: getAppleClientSecret(),
   };
 }
 

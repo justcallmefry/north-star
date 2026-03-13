@@ -26,6 +26,8 @@ export type AuthHandlerOptions = {
   secret?: string;
   /** Explicit auth URL from the route (e.g. http://localhost:3000) so redirects and cookies use the correct origin. */
   authUrl?: string;
+  /** Pre-generated Sign in with Apple client secret (JWT). Pass from the route so the secret is built at request time with env vars. */
+  appleClientSecret?: string | null;
 }
 
 function createAuthInstance(
@@ -34,13 +36,8 @@ function createAuthInstance(
 ): ReturnType<typeof NextAuth> {
   const emailConfigured =
     options?.emailConfigured ?? !!(process.env["EMAIL_SERVER"] || process.env["RESEND_API_KEY"]);
-  const appleConfigured =
-    !!(
-      process.env["APPLE_ID"] &&
-      process.env["APPLE_TEAM_ID"] &&
-      process.env["APPLE_KEY_ID"] &&
-      process.env["APPLE_PRIVATE_KEY"]
-    );
+  const appleClientSecret = options?.appleClientSecret ?? null;
+  const appleConfigured = !!(process.env["APPLE_ID"] && appleClientSecret);
   const from =
     options?.from ?? process.env["EMAIL_FROM"] ?? "noreply@example.com";
   const authUrl =
@@ -100,17 +97,11 @@ function createAuthInstance(
             }),
           ]
         : []),
-      ...(appleConfigured
+      ...(appleConfigured && process.env["APPLE_ID"] && appleClientSecret
         ? [
             Apple({
-              clientId: process.env["APPLE_ID"]!,
-              // Runtime supports object clientSecret, but current types expect a string.
-              // Cast to any to avoid blocking the build while still using the recommended config shape.
-              clientSecret: {
-                teamId: process.env["APPLE_TEAM_ID"]!,
-                privateKey: process.env["APPLE_PRIVATE_KEY"]!.replace(/\\n/g, "\n"),
-                keyId: process.env["APPLE_KEY_ID"]!,
-              } as any,
+              clientId: process.env["APPLE_ID"],
+              clientSecret: appleClientSecret,
             }),
           ]
         : []),

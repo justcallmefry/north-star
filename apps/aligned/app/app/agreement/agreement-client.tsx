@@ -290,7 +290,7 @@ export function AgreementClient({
             We&apos;ll show results once you&apos;ve both answered.
           </p>
           <div className="flex flex-col gap-3">
-            <NotifyPartnerQuizButton variant="agreement" size="sm" />
+            <NotifyPartnerQuizButton variant="agreement" relationshipId={relationshipId} size="sm" />
             <button
               type="button"
               disabled={yesterdayLoading}

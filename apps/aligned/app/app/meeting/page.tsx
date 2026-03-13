@@ -81,7 +81,7 @@ export default async function MeetingPage() {
               <MeetingForm meetingId={current.meetingId} initial={meetingData?.ownEntry ?? null} />
             </div>
             <div className="mt-4 pt-3 border-t border-brand-100">
-              <NotifyPartnerMeetingButton meetingId={current.meetingId} size="sm" />
+              <NotifyPartnerMeetingButton meetingId={current.meetingId} relationshipId={relationshipId} size="sm" />
             </div>
           </section>
 

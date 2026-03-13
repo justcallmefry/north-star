@@ -41,7 +41,7 @@ export default async function MeetingByIdPage({ params }: Props) {
           <MeetingForm meetingId={data.meetingId} initial={data.ownEntry} />
         </div>
         <div className="pt-2">
-          <NotifyPartnerMeetingButton meetingId={data.meetingId} size="sm" />
+          <NotifyPartnerMeetingButton meetingId={data.meetingId} relationshipId={data.relationshipId} size="sm" />
         </div>
       </section>
     </main>

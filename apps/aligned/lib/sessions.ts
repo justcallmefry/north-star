@@ -65,6 +65,7 @@ async function pickPromptForSession(relationshipId: string): Promise<string | nu
 
 export type GetTodayResult = {
   sessionId: string;
+  relationshipId: string;
   promptText: string;
   momentText?: string | null;
   state: "open" | "revealed" | "expired";
@@ -208,6 +209,7 @@ export async function getToday(
 
   return {
     sessionId: dailySession.id,
+    relationshipId,
     promptText,
     momentText,
     state: dailySession.state as "open" | "revealed" | "expired",

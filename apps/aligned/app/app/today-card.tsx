@@ -24,7 +24,7 @@ export function TodayCard({ today }: Props) {
     );
   }
 
-  const { sessionId, promptText, momentText, state, hasUserResponded, hasPartnerResponded, canReveal, streak, dedication } = today;
+  const { sessionId, relationshipId, promptText, momentText, state, hasUserResponded, hasPartnerResponded, canReveal, streak, dedication } = today;
   const done = hasUserResponded || state === "revealed" || (state === "open" && canReveal);
 
   return (
@@ -105,7 +105,7 @@ export function TodayCard({ today }: Props) {
               <Link href={`/app/session/${sessionId}`} className="ns-btn-primary block w-full text-center py-3.5">
                 View my answer
               </Link>
-              <NotifyPartnerButton sessionId={sessionId} variant="secondary" className="w-full py-3.5" />
+              <NotifyPartnerButton sessionId={sessionId} relationshipId={relationshipId} variant="secondary" className="w-full py-3.5" />
             </div>
           </div>
         )}

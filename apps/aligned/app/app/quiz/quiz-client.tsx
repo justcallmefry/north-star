@@ -275,7 +275,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
             We&apos;ll show scores once you&apos;ve both answered.
           </p>
           <div className="flex flex-col gap-3">
-            <NotifyPartnerQuizButton variant="quiz" size="sm" />
+            <NotifyPartnerQuizButton variant="quiz" relationshipId={relationshipId} size="sm" />
             <button
               type="button"
               disabled={yesterdayLoading}

@@ -1,13 +1,15 @@
 "use client";
 
+import { toast } from "sonner";
+import { requestPermissionAndSubscribe } from "@/lib/push-client";
+
 type Props = {
   sessionId: string;
+  /** Required for in-app push; when missing we only use Share/SMS */
+  relationshipId?: string;
   size?: "sm" | "md";
-  /** Use "secondary" when shown next to a primary action (e.g. View my answer) so hierarchy is clear */
   variant?: "primary" | "secondary";
-  /** "reveal" = we both answered, nudge to reveal; default = waiting for partner to answer */
   messageType?: "your_turn" | "reveal";
-  /** Optional extra classes (e.g. w-full for full-width section buttons) */
   className?: string;
 };
 
@@ -16,37 +18,71 @@ const MESSAGES = {
   reveal: "I answered the question. We both did – come reveal so we can see what we said.",
 } as const;
 
-export function NotifyPartnerButton({ sessionId, size = "md", variant = "primary", messageType = "your_turn", className: extraClass }: Props) {
-  const baseText = MESSAGES[messageType];
+const TITLES = {
+  your_turn: "Your turn",
+  reveal: "Time to reveal",
+} as const;
 
-  // Prefer current page origin so notify link always goes to the site the user is on (e.g. alignedconnectingcouples.com), not a build-time env.
+export function NotifyPartnerButton({
+  sessionId,
+  relationshipId,
+  size = "md",
+  variant = "primary",
+  messageType = "your_turn",
+  className: extraClass,
+}: Props) {
   const appUrl =
     typeof window !== "undefined"
       ? window.location.origin
       : (process.env.NEXT_PUBLIC_APP_URL ?? "");
-
   const targetUrl = appUrl ? `${appUrl}/app/session/${sessionId}` : "";
+  const baseText = MESSAGES[messageType];
 
-  async function handleClick(e: any) {
+  async function handleClick(e: React.MouseEvent) {
     e.preventDefault();
-    const text = `${baseText} ${targetUrl}`.trim();
 
-    if (typeof navigator !== "undefined" && (navigator as any).share) {
+    if (relationshipId && process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
       try {
-        await (navigator as any).share({
+        const subscribed = await requestPermissionAndSubscribe();
+        if (subscribed) {
+          const res = await fetch("/api/push/notify-partner", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              relationshipId,
+              title: TITLES[messageType],
+              body: baseText,
+              url: `/app/session/${sessionId}`,
+            }),
+          });
+          if (res.ok) {
+            const data = (await res.json()) as { sent?: number };
+            if (data.sent && data.sent > 0) {
+              toast.success("Notification sent.");
+              return;
+            }
+          }
+        }
+      } catch {
+        // Fall through to Share/SMS
+      }
+    }
+
+    const text = `${baseText} ${targetUrl}`.trim();
+    if (typeof navigator !== "undefined" && (navigator as Navigator & { share?: (o: { text: string; url?: string }) => Promise<void> }).share) {
+      try {
+        await (navigator as Navigator & { share: (o: { text: string; url?: string }) => Promise<void> }).share({
           text,
           url: targetUrl || undefined,
         });
         return;
       } catch {
-        // User cancelled or share failed; fall through to SMS fallback.
+        // User cancelled or share failed; fall through to SMS.
       }
     }
 
     const smsHref = `sms:&body=${encodeURIComponent(text)}`;
-    if (typeof window !== "undefined") {
-      window.location.href = smsHref;
-    }
+    if (typeof window !== "undefined") window.location.href = smsHref;
   }
 
   const baseClass = variant === "secondary" ? "ns-btn-secondary" : "ns-btn-primary";
@@ -59,4 +95,3 @@ export function NotifyPartnerButton({ sessionId, size = "md", variant = "primary
     </button>
   );
 }
-

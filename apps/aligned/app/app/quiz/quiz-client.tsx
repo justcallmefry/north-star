@@ -8,7 +8,6 @@ import { toast } from "sonner";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import type { QuizForTodayResult, QuizQuestion } from "@/lib/quiz";
 import { getQuizForDate, submitQuiz } from "@/lib/quiz";
-import { MagicalIntro } from "../magical-intro";
 import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
 
 type Props = {
@@ -44,7 +43,6 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
   /** undefined = not loaded, null = no session yesterday, data = show yesterday's results */
   const [yesterdayData, setYesterdayData] = useState<QuizForTodayResult | null | undefined>(undefined);
   const [yesterdayLoading, setYesterdayLoading] = useState(false);
-  const [introDone, setIntroDone] = useState(false);
 
   useEffect(() => {
     setData(initialData);
@@ -137,18 +135,6 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
 
   function goBack() {
     if (step > 0) setStep((s) => s - 1);
-  }
-
-  // Magical intro: logo appears, comes to you, flies off — then show quiz
-  if (!introDone && !yesterdayLoading && yesterdayData === undefined) {
-    return (
-      <MagicalIntro
-        onComplete={() => {
-          setIntroDone(true);
-          requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
-        }}
-      />
-    );
   }
 
   const loadYesterdayQuiz = () => {

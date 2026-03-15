@@ -8,7 +8,6 @@ import { LoadingSpinner } from "@/components/loading-spinner";
 import type { AgreementForTodayResult, AgreementQuestion } from "@/lib/agreement-shared";
 import { AGREEMENT_OPTIONS } from "@/lib/agreement-shared";
 import { getAgreementForDate, submitAgreement } from "@/lib/agreement";
-import { MagicalIntro } from "../magical-intro";
 import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
 
 type Props = {
@@ -53,7 +52,6 @@ export function AgreementClient({
   /** undefined = not loaded, null = no session yesterday, data = show yesterday's results */
   const [yesterdayData, setYesterdayData] = useState<AgreementForTodayResult | null | undefined>(undefined);
   const [yesterdayLoading, setYesterdayLoading] = useState(false);
-  const [introDone, setIntroDone] = useState(false);
 
   useEffect(() => {
     setData(initialData);
@@ -151,18 +149,6 @@ export function AgreementClient({
   function goBack() {
     if (step > 0) setStep((s) => s - 1);
     else setCheckInStarted(false);
-  }
-
-  // Magical intro: logo appears, comes to you, flies off — then show alignment
-  if (!introDone && !yesterdayLoading && yesterdayData === undefined) {
-    return (
-      <MagicalIntro
-        onComplete={() => {
-          setIntroDone(true);
-          requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
-        }}
-      />
-    );
   }
 
   const loadYesterdayAgreement = () => {

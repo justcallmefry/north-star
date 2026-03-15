@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import type { QuizForTodayResult, QuizQuestion } from "@/lib/quiz";
 import { getQuizForDate, submitQuiz } from "@/lib/quiz";
+import { MagicalIntro } from "../magical-intro";
 import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
 
 type Props = {
@@ -43,6 +44,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
   /** undefined = not loaded, null = no session yesterday, data = show yesterday's results */
   const [yesterdayData, setYesterdayData] = useState<QuizForTodayResult | null | undefined>(undefined);
   const [yesterdayLoading, setYesterdayLoading] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
 
   useEffect(() => {
     setData(initialData);
@@ -135,6 +137,18 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
 
   function goBack() {
     if (step > 0) setStep((s) => s - 1);
+  }
+
+  // Magical intro: logo appears, comes to you, flies off — then show quiz
+  if (!introDone && !yesterdayLoading && yesterdayData === undefined) {
+    return (
+      <MagicalIntro
+        onComplete={() => {
+          setIntroDone(true);
+          requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
+        }}
+      />
+    );
   }
 
   const loadYesterdayQuiz = () => {
@@ -326,11 +340,10 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
   // —— Start Quiz gate: header + one CTA, then one question at a time at top ——
   if (!quizStarted) {
     return (
-      <div className="flex min-h-[50vh] flex-col items-center justify-center py-8">
+      <div className="flex min-h-[50vh] flex-col items-center justify-center py-8 animate-calm-fade-in">
         <div className="flex flex-col items-center text-center">
           <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-lg shadow-brand-200/80 ring-2 ring-white ring-offset-2">
             <HelpCircle className="h-8 w-8" strokeWidth={2} />
-          </div>
           <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
             Quiz
           </h1>

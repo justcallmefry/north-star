@@ -8,6 +8,7 @@ import { LoadingSpinner } from "@/components/loading-spinner";
 import type { AgreementForTodayResult, AgreementQuestion } from "@/lib/agreement-shared";
 import { AGREEMENT_OPTIONS } from "@/lib/agreement-shared";
 import { getAgreementForDate, submitAgreement } from "@/lib/agreement";
+import { MagicalIntro } from "../magical-intro";
 import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
 
 type Props = {
@@ -52,6 +53,7 @@ export function AgreementClient({
   /** undefined = not loaded, null = no session yesterday, data = show yesterday's results */
   const [yesterdayData, setYesterdayData] = useState<AgreementForTodayResult | null | undefined>(undefined);
   const [yesterdayLoading, setYesterdayLoading] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
 
   useEffect(() => {
     setData(initialData);
@@ -151,6 +153,18 @@ export function AgreementClient({
     else setCheckInStarted(false);
   }
 
+  // Magical intro: logo appears, comes to you, flies off — then show alignment
+  if (!introDone && !yesterdayLoading && yesterdayData === undefined) {
+    return (
+      <MagicalIntro
+        onComplete={() => {
+          setIntroDone(true);
+          requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
+        }}
+      />
+    );
+  }
+
   const loadYesterdayAgreement = () => {
     setYesterdayLoading(true);
     setYesterdayData(undefined);
@@ -166,7 +180,7 @@ export function AgreementClient({
   // Show yesterday's results or loading first — otherwise when today is revealed/waiting we'd never leave that view
   if (yesterdayLoading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 animate-calm-fade-in">
         <AgreementPageHeader />
         <div className="ns-card flex flex-col items-center justify-center py-12">
           <LoadingSpinner size="md" />
@@ -340,7 +354,7 @@ export function AgreementClient({
   // —— Start check-in gate: header + one CTA, then one statement at a time at top ——
   if (!checkInStarted) {
     return (
-      <div className="flex min-h-[50vh] flex-col items-center justify-center py-8">
+      <div className="flex min-h-[50vh] flex-col items-center justify-center py-8 animate-calm-fade-in">
         <div className="flex flex-col items-center text-center">
           <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-lg shadow-brand-200/80 ring-2 ring-white ring-offset-2">
             <Scale className="h-8 w-8" strokeWidth={2} />

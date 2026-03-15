@@ -16,10 +16,12 @@ const NAV_ITEMS: Array<{ href: string; label: string; icon: typeof Home; hidden?
 export function BottomNav() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const isQuizActive = pathname.startsWith("/app/quiz") && searchParams.get("done") !== "1";
+  const isFocusMode =
+    (pathname.startsWith("/app/quiz") || pathname.startsWith("/app/agreement")) &&
+    searchParams.get("done") !== "1";
 
   if (!pathname.startsWith("/app")) return null;
-  if (isQuizActive) return null;
+  if (isFocusMode) return null;
 
   return (
     <nav

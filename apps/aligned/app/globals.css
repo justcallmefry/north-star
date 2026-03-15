@@ -145,6 +145,50 @@ body {
   animation: quiz-card-enter 350ms ease-out forwards;
 }
 
+/* Magical intro: logo appears, comes to you, flies off — for quiz/alignment */
+@keyframes magical-logo-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(0.7);
+  }
+  50% {
+    transform: scale(1.35);
+  }
+  75% {
+    transform: translateY(-40px) scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120%) scale(0.6);
+    opacity: 0;
+  }
+}
+
+@keyframes magical-content-in {
+  0% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-magical-logo {
+  animation: magical-logo-in 2.1s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+}
+
+.animate-magical-content {
+  opacity: 0;
+  animation: magical-content-in 2.1s ease-out forwards;
+}
+
 /* Focus rings: visible for keyboard navigation */
 @layer base {
   :where(button:focus-visible, [role="button"]:focus-visible, a:focus-visible) {

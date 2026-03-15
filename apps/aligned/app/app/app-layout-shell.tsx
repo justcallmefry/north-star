@@ -18,14 +18,16 @@ const SIDEBAR_NAV = [
 export function AppLayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const isQuizActive = pathname.startsWith("/app/quiz") && searchParams.get("done") !== "1";
+  const isFocusMode =
+    (pathname.startsWith("/app/quiz") || pathname.startsWith("/app/agreement")) &&
+    searchParams.get("done") !== "1";
 
   return (
     <>
       <div
         id="app-scroll"
         className={`flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto pt-4 md:min-h-0 md:pt-6 ${
-          isQuizActive ? "pb-6" : "pb-36 md:pb-6"
+          isFocusMode ? "pb-6" : "pb-36 md:pb-6"
         }`}
         style={{
           overscrollBehaviorX: "none",
@@ -35,7 +37,7 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
         } as React.CSSProperties}
       >
         <div className="mx-auto flex w-full min-w-0 max-w-6xl gap-6 px-4 pb-16 sm:px-6 lg:px-8 md:pb-6">
-          {!isQuizActive && (
+          {!isFocusMode && (
             <aside className="hidden w-64 flex-shrink-0 flex-col justify-between rounded-2xl border border-amber-200/50 bg-[#f5f2ee] p-5 shadow-lg md:flex">
               <div className="space-y-6">
                 <div>
@@ -79,7 +81,7 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
           )}
           <main
             className={`ns-card relative min-w-0 flex-1 border-slate-200/90 px-4 py-5 shadow-lg sm:px-6 md:py-6 ${
-              isQuizActive ? "max-w-2xl md:mx-auto md:w-full" : ""
+              isFocusMode ? "max-w-2xl md:mx-auto md:w-full" : ""
             }`}
           >
             {children}

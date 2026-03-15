@@ -17,7 +17,9 @@ const config: Config = {
         ns: {
           bg: "#ffffff",
           "bg-soft": "#f0f9fd",
-          card: "#ffffff",
+          "bg-warm": "#f9f7f4",
+          "bg-warm-sidebar": "#f5f2ee",
+          card: "#fefdfb",
           border: "rgba(43,140,190,0.35)",
           accent: "#2b8cbe",
           "accent-soft": "#7eb8d9",

@@ -11,9 +11,9 @@ export function TodayCard({ today }: Props) {
   if (!today) {
     return (
       <section className="ns-card">
-        <div className="inline-flex items-center gap-2 rounded-lg bg-brand-50 px-3 py-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-brand-400" />
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600 sm:text-sm">
+        <div className="inline-flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700 sm:text-sm">
             Today
           </h2>
         </div>
@@ -28,11 +28,11 @@ export function TodayCard({ today }: Props) {
   const done = hasUserResponded || state === "revealed" || (state === "open" && canReveal);
 
   return (
-    <section className="relative animate-calm-fade-in rounded-2xl border border-brand-100/80 bg-gradient-to-br from-brand-50/90 to-white p-5 shadow-sm ring-1 ring-brand-50/80 sm:p-6">
+    <section className="relative animate-calm-fade-in rounded-2xl border border-amber-100/70 bg-gradient-to-br from-amber-50/60 to-[#fefdfb] p-5 shadow-sm ring-1 ring-amber-50/60 sm:p-6">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="inline-flex items-center gap-2 rounded-lg bg-brand-100/80 px-3 py-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700 sm:text-sm">
+        <div className="inline-flex items-center gap-2 rounded-lg bg-amber-100/80 px-3 py-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-800 sm:text-sm">
             Today
           </h2>
         </div>

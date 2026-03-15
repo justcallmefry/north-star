@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Check, ChevronLeft, ChevronRight, HelpCircle, Trophy, X } from "lucide-react";
 import { toast } from "sonner";
@@ -425,23 +426,34 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
 
   const guessLabel = data.partnerName ? `How would ${data.partnerName} answer?` : "How would your partner answer?";
 
-  // —— One question at a time: progress + single card with exit/enter ——
+  // —— One question at a time: exit link, progress + single card with exit/enter ——
   const progressLabel = isAnswerPhase
     ? `Question ${questionIndex + 1} of ${TOTAL_QUESTIONS}`
     : `Guess ${questionIndex + 1} of ${TOTAL_QUESTIONS}`;
 
   return (
     <div className="flex flex-col pt-0" id="quiz-step-container">
+      {/* Exit quiz — clear way out without full nav */}
+      <div className="mb-4">
+        <Link
+          href="/app"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-900"
+        >
+          <ChevronLeft className="h-4 w-4" />
+          Exit quiz
+        </Link>
+      </div>
+
       {/* Progress — at top so no scrolling; clear and minimal */}
-      <div className="mb-3 flex items-center justify-between gap-2">
-        <span className="text-sm font-semibold uppercase tracking-wider text-slate-500">
+      <div className="mb-4 flex items-center justify-between gap-2">
+        <span className="text-base font-semibold uppercase tracking-wider text-slate-500">
           {progressLabel}
         </span>
         <div className="flex gap-1" aria-hidden>
           {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
-              className={`h-1 flex-1 rounded-full min-w-[14px] max-w-[22px] transition-colors duration-200 ${
+              className={`h-1.5 flex-1 rounded-full min-w-[14px] max-w-[22px] transition-colors duration-200 ${
                 i < step ? "bg-brand-500" : i === step ? "bg-brand-400" : "bg-slate-200"
               }`}
             />
@@ -449,22 +461,22 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
         </div>
       </div>
 
-      {/* Single question card — one at a time, exit/enter for seamless feel */}
+      {/* Single question card — larger type for focus */}
       <div
         key={step}
-        className={`flex flex-col rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-6 sm:p-7 ${
+        className={`flex flex-col rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-6 sm:p-8 ${
           exiting ? "animate-quiz-card-exit" : "animate-quiz-card-enter"
         }`}
       >
-        <p className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl">
+        <p className="text-2xl font-bold leading-snug text-slate-900 sm:text-3xl">
           {currentQuestion.text}
         </p>
 
-        <div className="mt-5">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-500">
+        <div className="mt-6">
+          <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-slate-500">
             {isAnswerPhase ? "Your answer" : guessLabel}
           </p>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2">
             {currentQuestion.options.map((opt, j) => {
               const selected = isAnswerPhase ? answers[questionIndex] === j : guesses[questionIndex] === j;
               return (
@@ -473,7 +485,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
                   type="button"
                   onClick={() => handleSelectAnswer(j)}
                   disabled={exiting}
-                  className={`min-h-[3.25rem] rounded-xl border-2 px-4 py-4 text-left text-base font-medium leading-snug transition-all disabled:opacity-70 sm:min-h-[3.5rem] sm:py-4 sm:text-lg ${
+                  className={`min-h-[3.75rem] rounded-xl border-2 px-4 py-4 text-left text-lg font-medium leading-snug transition-all disabled:opacity-70 sm:min-h-[4rem] sm:py-5 sm:text-xl ${
                     selected
                       ? isAnswerPhase
                         ? "border-brand-500 bg-brand-50 text-brand-800 shadow-sm"
@@ -487,11 +499,11 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
             })}
           </div>
           {currentAnswered && !exiting && (
-            <p className="mt-3">
+            <p className="mt-4">
               <button
                 type="button"
                 onClick={() => setExiting(true)}
-                className="text-sm font-medium text-brand-600 hover:text-brand-700"
+                className="text-base font-medium text-brand-600 hover:text-brand-700"
               >
                 Next →
               </button>
@@ -501,7 +513,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
       </div>
 
       {/* Back — minimal chrome */}
-      <div className="mt-4 flex items-center justify-between gap-4">
+      <div className="mt-5 flex items-center justify-between gap-4">
         <button
           type="button"
           onClick={goBack}
@@ -536,13 +548,13 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
 function QuizPageHeader() {
   return (
     <div className="flex flex-col items-center text-center">
-      <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-lg shadow-brand-200/80 ring-2 ring-white ring-offset-2">
-        <HelpCircle className="h-8 w-8" strokeWidth={2} />
+      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-lg shadow-brand-200/80 ring-2 ring-white ring-offset-2">
+        <HelpCircle className="h-9 w-9" strokeWidth={2} />
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
+      <h1 className="text-3xl font-semibold text-slate-900 sm:text-4xl">
         Quiz
       </h1>
-      <p className="mt-1 max-w-md text-sm text-slate-600 sm:text-base">
+      <p className="mt-2 max-w-md text-base text-slate-600 sm:text-lg">
         Answer for yourself, then guess what your partner would pick.
       </p>
     </div>

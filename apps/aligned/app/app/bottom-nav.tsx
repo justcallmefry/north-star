@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Home, CalendarRange, History, User, HelpCircle, Scale } from "lucide-react";
 
 const NAV_ITEMS: Array<{ href: string; label: string; icon: typeof Home; hidden?: boolean }> = [
@@ -15,8 +15,11 @@ const NAV_ITEMS: Array<{ href: string; label: string; icon: typeof Home; hidden?
 
 export function BottomNav() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const isQuizActive = pathname.startsWith("/app/quiz") && searchParams.get("done") !== "1";
 
   if (!pathname.startsWith("/app")) return null;
+  if (isQuizActive) return null;
 
   return (
     <nav

@@ -458,12 +458,13 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
         <p className="text-2xl font-bold leading-snug text-slate-900 sm:text-3xl">
           {currentQuestion.text}
         </p>
+        <div className="mt-2 h-0.5 w-16 rounded-full bg-brand-500" aria-hidden />
 
-        <div className="mt-5">
+        <div className="mt-4">
           <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-slate-500">
             {isAnswerPhase ? "Your answer" : guessLabel}
           </p>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2">
             {currentQuestion.options.map((opt, j) => {
               const selected = isAnswerPhase ? answers[questionIndex] === j : guesses[questionIndex] === j;
               return (
@@ -472,12 +473,12 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
                   type="button"
                   onClick={() => handleSelectAnswer(j)}
                   disabled={exiting}
-                  className={`min-h-[3.75rem] rounded-xl border-2 px-4 py-4 text-left text-lg font-medium leading-snug transition-all disabled:opacity-70 sm:min-h-[4rem] sm:py-5 sm:text-xl ${
+                  className={`min-h-[3.5rem] rounded-xl border-2 px-4 py-4 text-left text-lg font-medium leading-snug transition-all disabled:opacity-70 sm:min-h-[3.75rem] sm:py-4 sm:text-xl ${
                     selected
                       ? isAnswerPhase
-                        ? "border-brand-500 bg-brand-50 text-brand-800 shadow-sm"
-                        : "border-brand-500 bg-green-50 text-green-800 shadow-sm"
-                      : "border-slate-200 bg-white text-slate-700 hover:border-brand-200 hover:bg-brand-50/50"
+                        ? "border-brand-600 bg-brand-600 text-white shadow-sm"
+                        : "border-emerald-600 bg-emerald-600 text-white shadow-sm"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-brand-200 hover:bg-brand-50/60"
                   }`}
                 >
                   {opt}

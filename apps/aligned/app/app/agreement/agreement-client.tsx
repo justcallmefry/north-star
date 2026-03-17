@@ -467,6 +467,7 @@ export function AgreementClient({
         <p className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl">
           {currentQuestion.text}
         </p>
+        <div className="mt-2 h-0.5 w-16 rounded-full bg-brand-500" aria-hidden />
         <div className="mt-4">
           <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-500">
             {isAnswerPhase ? "Your answer" : guessLabel}
@@ -482,12 +483,12 @@ export function AgreementClient({
                   type="button"
                   onClick={() => handleSelectOption(j)}
                   disabled={exiting}
-                  className={`min-h-[3.25rem] rounded-xl border-2 px-4 py-4 text-left text-base font-medium leading-snug transition-all disabled:opacity-70 sm:min-h-[3.5rem] sm:text-lg ${
+                  className={`min-h-[3.25rem] rounded-xl border-2 px-4 py-3.5 text-left text-base font-medium leading-snug transition-all disabled:opacity-70 sm:min-h-[3.5rem] sm:text-lg ${
                     selected
                       ? isAnswerPhase
-                        ? "border-brand-500 bg-brand-50 text-brand-800 shadow-sm"
-                        : "border-brand-500 bg-green-50 text-green-800 shadow-sm"
-                      : "border-slate-200 bg-white text-slate-700 hover:border-brand-200 hover:bg-brand-50/50"
+                        ? "border-brand-600 bg-brand-600 text-white shadow-sm"
+                        : "border-emerald-600 bg-emerald-600 text-white shadow-sm"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-brand-200 hover:bg-brand-50/60"
                   }`}
                 >
                   {opt}

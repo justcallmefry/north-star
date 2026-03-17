@@ -276,7 +276,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
             We&apos;ll show scores once you&apos;ve both answered.
           </p>
           <div className="flex flex-col gap-3">
-            <NotifyPartnerQuizButton variant="quiz" relationshipId={relationshipId} size="sm" />
+            <NotifyPartnerQuizButton variant="quiz" relationshipId={relationshipId} size="md" />
             <button
               type="button"
               disabled={yesterdayLoading}
@@ -427,28 +427,15 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
   const guessLabel = data.partnerName ? `How would ${data.partnerName} answer?` : "How would your partner answer?";
 
   // —— One question at a time: exit link, progress + single card with exit/enter ——
-  const progressLabel = isAnswerPhase
-    ? `Question ${questionIndex + 1} of ${TOTAL_QUESTIONS}`
-    : `Guess ${questionIndex + 1} of ${TOTAL_QUESTIONS}`;
-
   return (
     <div className="flex flex-col pt-0" id="quiz-step-container">
-      {/* Exit quiz — clear way out without full nav */}
-      <div className="mb-4">
-        <Link
-          href="/app"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-900"
-        >
-          <ChevronLeft className="h-4 w-4" />
-          Exit quiz
-        </Link>
-      </div>
-
-      {/* Progress — at top so no scrolling; clear and minimal */}
-      <div className="mb-4 flex items-center justify-between gap-2">
-        <span className="text-base font-semibold uppercase tracking-wider text-slate-500">
-          {progressLabel}
-        </span>
+      {/* Progress — label above dots so it’s readable at a glance */}
+      <div className="mb-3 space-y-2">
+        <p className="text-sm font-semibold uppercase tracking-wide text-slate-600 text-center">
+          {isAnswerPhase
+            ? `Question ${questionIndex + 1} of ${TOTAL_QUESTIONS}`
+            : `Guess ${questionIndex + 1} of ${TOTAL_QUESTIONS}`}
+        </p>
         <div className="flex gap-1" aria-hidden>
           {Array.from({ length: 10 }).map((_, i) => (
             <div
@@ -464,7 +451,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
       {/* Single question card — larger type for focus */}
       <div
         key={step}
-        className={`flex flex-col rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-6 sm:p-8 ${
+        className={`flex flex-col rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-5 sm:p-7 ${
           exiting ? "animate-quiz-card-exit" : "animate-quiz-card-enter"
         }`}
       >
@@ -472,7 +459,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
           {currentQuestion.text}
         </p>
 
-        <div className="mt-6">
+        <div className="mt-5">
           <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-slate-500">
             {isAnswerPhase ? "Your answer" : guessLabel}
           </p>
@@ -513,7 +500,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
       </div>
 
       {/* Back — minimal chrome */}
-      <div className="mt-5 flex items-center justify-between gap-4">
+      <div className="mt-4 flex items-center justify-between gap-4">
         <button
           type="button"
           onClick={goBack}
@@ -540,6 +527,16 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
             "Yesterday's results"
           )}
         </button>
+      </div>
+
+      <div className="mt-3 w-full">
+        <Link
+          href="/app"
+          className="ns-btn-secondary flex w-full justify-center items-center gap-1.5 !py-2.5 text-sm"
+        >
+          <ChevronLeft className="h-4 w-4" />
+          Exit quiz
+        </Link>
       </div>
     </div>
   );

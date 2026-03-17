@@ -76,7 +76,7 @@ export function TodaySection({ relationshipId }: Props) {
       <section className="ns-card animate-pulse">
         <div className="h-4 w-32 rounded bg-slate-200" />
         <div className="mt-4 h-8 w-full rounded bg-slate-200" />
-        <div className="mt-3 h-4 w-3/4 rounded bg-slate-100" />
+        <div className="mt-3 h-4 w-2/3 rounded bg-slate-100" />
         <div className="mt-6 h-12 w-full rounded-xl bg-slate-100" />
       </section>
     );

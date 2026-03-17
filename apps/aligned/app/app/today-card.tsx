@@ -14,7 +14,7 @@ export function TodayCard({ today }: Props) {
         <div className="inline-flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-1">
           <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
           <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700 sm:text-sm">
-            Today
+            Daily check-in
           </h2>
         </div>
         <p className="mt-3 text-sm text-slate-600 sm:text-base">
@@ -33,22 +33,10 @@ export function TodayCard({ today }: Props) {
         <div className="inline-flex items-center gap-2 rounded-lg bg-amber-100/80 px-3 py-1">
           <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
           <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-800 sm:text-sm">
-            Today
+            Daily check-in
           </h2>
         </div>
-        {streak && streak.currentCount > 0 && (
-          <StreakBadge
-            currentCount={streak.currentCount}
-            longestCount={streak.longestCount}
-            variant="compact"
-          />
-        )}
       </div>
-      {streak && !streak.currentCount && streak.justReset && (
-        <p className="mt-2 text-xs font-medium text-amber-800">
-          Every day is a fresh start.
-        </p>
-      )}
       {dedication && dedication.totalCheckIns > 0 && (
         <div className="mt-2">
           <DedicationBadge totalCheckIns={dedication.totalCheckIns} variant="compact" />
@@ -126,6 +114,26 @@ export function TodayCard({ today }: Props) {
           <span className="text-base text-slate-400">This session has expired.</span>
         )}
       </div>
+
+      {/* Streak info: shown just below the main action / notify area */}
+      {streak && (
+        <div className="mt-4 space-y-2">
+          {streak.currentCount > 0 && (
+            <div className="flex justify-center">
+              <StreakBadge
+                currentCount={streak.currentCount}
+                longestCount={streak.longestCount}
+                variant="compact"
+              />
+            </div>
+          )}
+          {!streak.currentCount && streak.justReset && (
+            <p className="text-center text-xs font-medium text-amber-800">
+              Every day is a fresh start.
+            </p>
+          )}
+        </div>
+      )}
     </section>
   );
 }

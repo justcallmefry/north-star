@@ -26,7 +26,7 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
     <>
       <div
         id="app-scroll"
-        className={`flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto pt-4 md:min-h-0 md:pt-6 ${
+        className={`flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto pt-3 md:min-h-0 md:pt-5 ${
           isFocusMode ? "pb-6" : "pb-36 md:pb-6"
         }`}
         style={{
@@ -80,7 +80,7 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
             </aside>
           )}
           <main
-            className={`ns-card relative min-w-0 flex-1 border-slate-200/90 px-4 py-5 shadow-lg sm:px-6 md:py-6 ${
+            className={`ns-card relative min-w-0 flex-1 border-slate-200/90 px-4 py-4 shadow-lg sm:px-6 md:py-5 ${
               isFocusMode ? "max-w-2xl md:mx-auto md:w-full" : ""
             }`}
           >

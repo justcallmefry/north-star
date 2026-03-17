@@ -91,7 +91,7 @@ export function NotifyPartnerQuizButton({ variant, relationshipId, size = "sm" }
   const className =
     size === "sm"
       ? "ns-btn-primary inline-flex !px-3 !py-1.5 text-sm"
-      : "ns-btn-primary inline-flex";
+      : "ns-btn-primary flex w-full justify-center items-center gap-2 !py-2.5 text-sm";
 
   return (
     <button type="button" onClick={handleClick} className={className}>

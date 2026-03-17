@@ -290,7 +290,7 @@ export function AgreementClient({
             We&apos;ll show results once you&apos;ve both answered.
           </p>
           <div className="flex flex-col gap-3">
-            <NotifyPartnerQuizButton variant="agreement" relationshipId={relationshipId} size="sm" />
+            <NotifyPartnerQuizButton variant="agreement" relationshipId={relationshipId} size="md" />
             <button
               type="button"
               disabled={yesterdayLoading}
@@ -436,22 +436,20 @@ export function AgreementClient({
     ? `How would ${data.partnerName} answer?`
     : "How would your partner answer?";
 
-  // —— One statement at a time: your answer only (steps 0–4), then your guess only (5–9), same format as quiz ——
-  const progressLabel = isAnswerPhase
-    ? `Statement ${questionIndex + 1} of ${TOTAL_QUESTIONS}`
-    : `Guess ${questionIndex + 1} of ${TOTAL_QUESTIONS}`;
-
   return (
     <div className="flex flex-col pt-0" id="agreement-step-container">
-      <div className="mb-3 flex items-center justify-between gap-2">
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-          {progressLabel}
-        </span>
+      {/* Progress — label above dots, mirrors quiz */}
+      <div className="mb-3 space-y-2">
+        <p className="text-sm font-semibold uppercase tracking-wide text-slate-600 text-center">
+          {isAnswerPhase
+            ? `Statement ${questionIndex + 1} of ${TOTAL_QUESTIONS}`
+            : `Guess ${questionIndex + 1} of ${TOTAL_QUESTIONS}`}
+        </p>
         <div className="flex gap-1" aria-hidden>
           {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
-              className={`h-1 flex-1 rounded-full min-w-[14px] max-w-[22px] transition-colors duration-200 ${
+              className={`h-1.5 flex-1 rounded-full min-w-[14px] max-w-[22px] transition-colors duration-200 ${
                 i < step ? "bg-brand-500" : i === step ? "bg-brand-400" : "bg-slate-200"
               }`}
             />
@@ -461,14 +459,14 @@ export function AgreementClient({
 
       <div
         key={step}
-        className={`flex flex-col rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-6 sm:p-7 ${
+        className={`flex flex-col rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-5 sm:p-6 ${
           exiting ? "animate-quiz-card-exit" : "animate-quiz-card-enter"
         }`}
       >
         <p className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl">
           {currentQuestion.text}
         </p>
-        <div className="mt-5">
+        <div className="mt-4">
           <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-500">
             {isAnswerPhase ? "Your answer" : guessLabel}
           </p>
@@ -537,6 +535,16 @@ export function AgreementClient({
             "Yesterday's results"
           )}
         </button>
+      </div>
+
+      <div className="mt-3 w-full">
+        <Link
+          href="/app"
+          className="ns-btn-secondary flex w-full justify-center items-center gap-1.5 !py-2.5 text-sm"
+        >
+          <ChevronLeft className="h-4 w-4" />
+          Exit check-in
+        </Link>
       </div>
     </div>
   );

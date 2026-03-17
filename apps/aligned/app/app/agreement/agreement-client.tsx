@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Check, ChevronLeft, Scale, X } from "lucide-react";
 import { toast } from "sonner";

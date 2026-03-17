@@ -446,7 +446,7 @@ export function AgreementClient({
             ? `Statement ${questionIndex + 1} of ${TOTAL_QUESTIONS}`
             : `Guess ${questionIndex + 1} of ${TOTAL_QUESTIONS}`}
         </p>
-        <div className="flex gap-1" aria-hidden>
+        <div className="flex justify-center gap-1" aria-hidden>
           {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
@@ -509,16 +509,18 @@ export function AgreementClient({
         </div>
       </div>
 
-      <div className="mt-4 w-full">
-        <button
-          type="button"
-          onClick={goBack}
-          className="ns-btn-secondary flex w-full justify-center items-center gap-1.5 !py-2.5 text-sm"
-        >
-          <ChevronLeft className="h-4 w-4" />
-          Back
-        </button>
-      </div>
+      {step > 0 && (
+        <div className="mt-4 w-full">
+          <button
+            type="button"
+            onClick={goBack}
+            className="ns-btn-secondary flex w-full justify-center items-center gap-1.5 !py-2.5 text-sm"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back
+          </button>
+        </div>
+      )}
 
       <div className="mt-3 w-full">
         <button

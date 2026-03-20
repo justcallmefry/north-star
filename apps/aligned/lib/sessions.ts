@@ -644,8 +644,8 @@ export async function setReactions(responseId: string, emojiList: string[]) {
     update: { reactions: reactionsValue },
   });
 
-  // History list is refreshed via client router.refresh() to avoid brittle RSC revalidation errors on /app/history.
-  revalidatePath(`/app/session/${sessionId}`);
+  // No revalidatePath: it was correlated with RSC digest errors on /app/history after Save/React + router.refresh().
+  // History updates via client router.refresh(); session pages are force-dynamic and load fresh on visit.
 }
 
 export async function setAcknowledgment(responseId: string, text: string) {
@@ -662,6 +662,4 @@ export async function setAcknowledgment(responseId: string, text: string) {
     create: { responseId, userId: session.user.id, reactions: null, acknowledgment: acknowledgmentValue },
     update: { acknowledgment: acknowledgmentValue },
   });
-
-  revalidatePath(`/app/session/${sessionId}`);
 }

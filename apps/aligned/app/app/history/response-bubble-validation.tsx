@@ -44,11 +44,14 @@ export function ResponseBubbleValidation({
   const [ackText, setAckText] = useState(validation?.acknowledgment ?? "");
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const popoverRef = useRef<HTMLDivElement>(null);
+  const validationInteractionRef = useRef<HTMLDivElement>(null);
   const ackInputRef = useRef<HTMLInputElement>(null);
 
   const currentReactions = parseValidationReactions(validation?.reactions ?? null);
-  const displayReactions = validation?.reactions ? parseValidationReactions(validation.reactions) : [];
+  const rawReactions = validation?.reactions?.trim() ?? "";
+  /** Prefer prefix/allowlist parse; if DB string didn’t parse, still show something. */
+  const displayReactionTokens =
+    currentReactions.length > 0 ? currentReactions : rawReactions ? [rawReactions] : [];
   const displayAck = validation?.acknowledgment?.trim() ?? "";
 
   useEffect(() => {
@@ -57,11 +60,16 @@ export function ResponseBubbleValidation({
 
   useEffect(() => {
     if (!popoverOpen) return;
-    function handleClickOutside(e: MouseEvent) {
-      if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) setPopoverOpen(false);
+    function handlePointerDown(e: PointerEvent) {
+      if (
+        validationInteractionRef.current &&
+        !validationInteractionRef.current.contains(e.target as Node)
+      ) {
+        setPopoverOpen(false);
+      }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("pointerdown", handlePointerDown, true);
+    return () => document.removeEventListener("pointerdown", handlePointerDown, true);
   }, [popoverOpen]);
 
   useEffect(() => {
@@ -164,10 +172,10 @@ export function ResponseBubbleValidation({
       </p>
 
       <div className="flex flex-col gap-1.5 pl-1">
-        {displayReactions.length > 0 && (
-          <p className="flex items-center gap-2 text-slate-600" aria-label="Reactions">
-            {displayReactions.map((emoji, i) => (
-              <span key={`${emoji}-${i}`} className="text-2xl leading-none" role="img">
+        {displayReactionTokens.length > 0 && (
+          <p className="flex flex-row flex-wrap items-center gap-2 text-slate-600" aria-label="Reactions">
+            {displayReactionTokens.map((emoji, i) => (
+              <span key={`${emoji}-${i}`} className="inline-flex text-2xl leading-none" role="img">
                 {emoji}
               </span>
             ))}
@@ -178,47 +186,54 @@ export function ResponseBubbleValidation({
         )}
 
         {canValidate && (
-          <div className="mt-1 flex flex-wrap items-center gap-2">
-            <div className="relative" ref={popoverRef}>
+          <div ref={validationInteractionRef} className="mt-1 space-y-2">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
               <button
                 type="button"
                 onClick={() => setPopoverOpen((o) => !o)}
                 disabled={!!loading}
                 className="text-xs font-medium text-slate-500 underline decoration-slate-300 hover:text-slate-700 hover:decoration-slate-400"
+                aria-expanded={popoverOpen}
               >
-                React
+                {popoverOpen ? "Hide reactions" : "React"}
               </button>
-              {popoverOpen && (
-                <div
-                  className="absolute left-0 top-full z-50 mt-1 grid grid-cols-5 gap-1 rounded-xl border border-slate-200 bg-white p-2 shadow-lg"
-                  role="listbox"
-                  aria-label="Pick a reaction"
+              {!ackOpen && (
+                <button
+                  type="button"
+                  onClick={() => setAckOpen(true)}
+                  className="text-xs font-medium text-slate-500 underline decoration-slate-300 hover:text-slate-700 hover:decoration-slate-400"
                 >
-                  {VALIDATION_ALLOWED_EMOJIS.map((emoji) => (
-                    <button
-                      key={emoji}
-                      type="button"
-                      onClick={() => handleReactionSelect(emoji)}
-                      className={`flex h-11 w-11 items-center justify-center rounded-lg text-2xl leading-none transition hover:bg-slate-100 sm:h-12 sm:w-12 sm:text-[1.75rem] ${
-                        currentReactions.includes(emoji) ? "bg-brand-50 ring-2 ring-brand-300" : ""
-                      }`}
-                      aria-pressed={currentReactions.includes(emoji)}
-                    >
-                      <span className="select-none">{emoji}</span>
-                    </button>
-                  ))}
-                </div>
+                  {displayAck ? "Edit acknowledgment" : "Add acknowledgment"}
+                </button>
               )}
             </div>
-            {!ackOpen ? (
-              <button
-                type="button"
-                onClick={() => setAckOpen(true)}
-                className="text-xs font-medium text-slate-500 underline decoration-slate-300 hover:text-slate-700 hover:decoration-slate-400"
+            {popoverOpen && (
+              <div
+                className="flex w-full flex-row flex-wrap items-center justify-start gap-2 rounded-xl border border-slate-200 bg-white p-2 shadow-sm"
+                role="group"
+                aria-label="Pick a reaction"
               >
-                {displayAck ? "Edit acknowledgment" : "Add acknowledgment"}
-              </button>
-            ) : (
+                {VALIDATION_ALLOWED_EMOJIS.map((emoji) => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      void handleReactionSelect(emoji);
+                    }}
+                    disabled={!!loading}
+                    className={`flex h-12 min-w-[3rem] shrink-0 items-center justify-center rounded-lg border border-slate-100 bg-slate-50/80 px-2 text-2xl leading-none transition hover:bg-slate-100 active:scale-95 disabled:opacity-50 ${
+                      currentReactions.includes(emoji) ? "bg-brand-50 ring-2 ring-brand-400" : ""
+                    }`}
+                    aria-pressed={currentReactions.includes(emoji)}
+                    aria-label={`Reaction ${emoji}`}
+                  >
+                    <span className="select-none">{emoji}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+            {ackOpen && (
               <div className="flex flex-1 flex-wrap items-center gap-2">
                 <input
                   ref={ackInputRef}

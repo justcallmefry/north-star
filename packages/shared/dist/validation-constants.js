@@ -10,11 +10,24 @@ const ALLOWED_REACTION_SET = new Set(exports.VALIDATION_ALLOWED_EMOJIS);
 const EMOJIS_LONGEST_FIRST = [...exports.VALIDATION_ALLOWED_EMOJIS].sort((a, b) => b.length - a.length || [...b].length - [...a].length);
 /**
  * Parse stored reaction string (concatenated emojis, no separator) into up to 2 allowed emojis.
- * Uses grapheme segmentation when available so DB / font normalization quirks don’t clip emojis.
+ * Prefer longest-prefix matching first (matches how we save `emojiList.join("")`); some runtimes'
+ * Intl.Segmenter splits codepoints in ways that no longer match our allowlist exactly, which
+ * previously hid reactions in the UI.
  */
 function parseValidationReactions(s) {
     if (!s)
         return [];
+    const result = [];
+    let rest = s.trim();
+    while (rest.length > 0 && result.length < 2) {
+        const found = EMOJIS_LONGEST_FIRST.find((e) => rest.startsWith(e));
+        if (!found)
+            break;
+        result.push(found);
+        rest = rest.slice(found.length);
+    }
+    if (result.length > 0)
+        return result;
     if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
         try {
             const { Segmenter } = Intl;
@@ -34,17 +47,8 @@ function parseValidationReactions(s) {
                 return out;
         }
         catch (_a) {
-            // fall through to prefix parse
+            // ignore
         }
     }
-    const result = [];
-    let rest = s;
-    while (rest.length > 0 && result.length < 2) {
-        const found = EMOJIS_LONGEST_FIRST.find((e) => rest.startsWith(e));
-        if (!found)
-            break;
-        result.push(found);
-        rest = rest.slice(found.length);
-    }
-    return result;
+    return [];
 }

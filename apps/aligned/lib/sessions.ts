@@ -644,7 +644,7 @@ export async function setReactions(responseId: string, emojiList: string[]) {
     update: { reactions: reactionsValue },
   });
 
-  revalidatePath("/app/history");
+  // History list is refreshed via client router.refresh() to avoid brittle RSC revalidation errors on /app/history.
   revalidatePath(`/app/session/${sessionId}`);
 }
 
@@ -663,6 +663,5 @@ export async function setAcknowledgment(responseId: string, text: string) {
     update: { acknowledgment: acknowledgmentValue },
   });
 
-  revalidatePath("/app/history");
   revalidatePath(`/app/session/${sessionId}`);
 }

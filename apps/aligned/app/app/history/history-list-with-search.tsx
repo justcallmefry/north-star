@@ -41,11 +41,16 @@ type Props = {
  * date parts so we show "March 6" not "March 5" for users in timezones behind UTC.
  */
 function formatSessionCalendarDate(isoOrDate: string | Date): string {
-  const d = typeof isoOrDate === "string" ? new Date(isoOrDate) : isoOrDate;
-  const y = d.getUTCFullYear();
-  const m = d.getUTCMonth();
-  const day = d.getUTCDate();
-  return format(new Date(y, m, day), "PPP");
+  try {
+    const d = typeof isoOrDate === "string" ? new Date(isoOrDate) : isoOrDate;
+    if (Number.isNaN(d.getTime())) return "Unknown date";
+    const y = d.getUTCFullYear();
+    const m = d.getUTCMonth();
+    const day = d.getUTCDate();
+    return format(new Date(y, m, day), "PPP");
+  } catch {
+    return "Unknown date";
+  }
 }
 
 function itemMatchesQuery(item: HistoryItemForClient, q: string): boolean {

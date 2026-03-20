@@ -1,25 +1,14 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { setReactions, setAcknowledgment } from "@/lib/sessions";
 import {
   VALIDATION_ACK_MAX_LENGTH,
   VALIDATION_ALLOWED_EMOJIS,
+  parseValidationReactions,
   type ResponseValidationData,
 } from "@north-star/shared";
-
-function parseReactions(s: string | null): string[] {
-  if (!s) return [];
-  const result: string[] = [];
-  let rest = s;
-  while (rest && result.length < 2) {
-    const found = VALIDATION_ALLOWED_EMOJIS.find((e) => rest.startsWith(e));
-    if (!found) break;
-    result.push(found);
-    rest = rest.slice(found.length);
-  }
-  return result;
-}
 
 type Props = {
   responseId: string;
@@ -49,6 +38,7 @@ export function ResponseBubbleValidation({
   hasPartnerResponse,
   noResponse = false,
 }: Props) {
+  const router = useRouter();
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [ackOpen, setAckOpen] = useState(false);
   const [ackText, setAckText] = useState(validation?.acknowledgment ?? "");
@@ -57,8 +47,8 @@ export function ResponseBubbleValidation({
   const popoverRef = useRef<HTMLDivElement>(null);
   const ackInputRef = useRef<HTMLInputElement>(null);
 
-  const currentReactions = parseReactions(validation?.reactions ?? null);
-  const displayReactions = validation?.reactions ? parseReactions(validation.reactions) : [];
+  const currentReactions = parseValidationReactions(validation?.reactions ?? null);
+  const displayReactions = validation?.reactions ? parseValidationReactions(validation.reactions) : [];
   const displayAck = validation?.acknowledgment?.trim() ?? "";
 
   useEffect(() => {
@@ -87,6 +77,7 @@ export function ResponseBubbleValidation({
     try {
       await setReactions(responseId, next);
       setPopoverOpen(false);
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save");
     } finally {
@@ -102,6 +93,7 @@ export function ResponseBubbleValidation({
       await setAcknowledgment(responseId, trimmed);
       setAckOpen(false);
       setAckText(trimmed);
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save");
     } finally {
@@ -173,9 +165,11 @@ export function ResponseBubbleValidation({
 
       <div className="flex flex-col gap-1.5 pl-1">
         {displayReactions.length > 0 && (
-          <p className="flex items-center gap-1.5 text-base text-slate-600" aria-label="Reactions">
+          <p className="flex items-center gap-2 text-slate-600" aria-label="Reactions">
             {displayReactions.map((emoji, i) => (
-              <span key={`${emoji}-${i}`}>{emoji}</span>
+              <span key={`${emoji}-${i}`} className="text-2xl leading-none" role="img">
+                {emoji}
+              </span>
             ))}
           </p>
         )}
@@ -195,18 +189,22 @@ export function ResponseBubbleValidation({
                 React
               </button>
               {popoverOpen && (
-                <div className="absolute left-0 top-full z-10 mt-1 flex gap-1">
+                <div
+                  className="absolute left-0 top-full z-50 mt-1 grid grid-cols-5 gap-1 rounded-xl border border-slate-200 bg-white p-2 shadow-lg"
+                  role="listbox"
+                  aria-label="Pick a reaction"
+                >
                   {VALIDATION_ALLOWED_EMOJIS.map((emoji) => (
                     <button
                       key={emoji}
                       type="button"
                       onClick={() => handleReactionSelect(emoji)}
-                      className={`rounded p-1.5 text-xl transition hover:bg-slate-100 ${
-                        currentReactions.includes(emoji) ? "bg-brand-50 ring-1 ring-brand-200" : ""
+                      className={`flex h-11 w-11 items-center justify-center rounded-lg text-2xl leading-none transition hover:bg-slate-100 sm:h-12 sm:w-12 sm:text-[1.75rem] ${
+                        currentReactions.includes(emoji) ? "bg-brand-50 ring-2 ring-brand-300" : ""
                       }`}
                       aria-pressed={currentReactions.includes(emoji)}
                     >
-                      {emoji}
+                      <span className="select-none">{emoji}</span>
                     </button>
                   ))}
                 </div>

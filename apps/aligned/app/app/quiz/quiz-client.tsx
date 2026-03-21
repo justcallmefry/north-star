@@ -476,9 +476,9 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
                   className={`min-h-[3.5rem] rounded-xl border-2 px-4 py-4 text-left text-lg font-medium leading-snug transition-all disabled:opacity-70 sm:min-h-[3.75rem] sm:py-4 sm:text-xl ${
                     selected
                       ? isAnswerPhase
-                        ? "border-brand-600 bg-brand-600 text-white shadow-sm"
-                        : "border-emerald-600 bg-emerald-600 text-white shadow-sm"
-                      : "border-slate-200 bg-white text-slate-700 hover:border-brand-200 hover:bg-brand-50/60"
+                        ? "border-brand-600 bg-brand-600 text-white shadow-md ring-1 ring-brand-700/30"
+                        : "border-violet-600 bg-violet-600 text-white shadow-md ring-1 ring-violet-800/25"
+                      : "border-amber-100/90 bg-[#f9f7f4] text-slate-800 hover:border-brand-300 hover:bg-brand-50/80 active:scale-[0.99]"
                   }`}
                 >
                   {opt}

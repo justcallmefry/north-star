@@ -60,6 +60,11 @@ export function AgreementClient({
     setGuesses(initialData.myParticipation?.guessIndices ?? DEFAULT_INDICES);
   }, [initialData]);
 
+  useEffect(() => {
+    if (!pathname.startsWith("/app/agreement")) return;
+    if (searchParams.get("playing") === "1") setCheckInStarted(true);
+  }, [pathname, searchParams]);
+
   // After exit animation, advance to next step and scroll to top (quiz-style)
   useEffect(() => {
     if (!exiting) return;
@@ -358,6 +363,9 @@ export function AgreementClient({
             type="button"
             onClick={() => {
               setCheckInStarted(true);
+              const p = new URLSearchParams(searchParams.toString());
+              p.set("playing", "1");
+              router.replace(`${pathname}?${p.toString()}`, { scroll: false });
               requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
             }}
             className="ns-btn-primary w-full py-3.5 text-lg ring-2 ring-brand-300/50 ring-offset-2 shadow-lg shadow-brand-200/40"

@@ -16,12 +16,14 @@ const NAV_ITEMS: Array<{ href: string; label: string; icon: typeof Home; hidden?
 export function BottomNav() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const isFocusMode =
+  /** Hide nav only while actively in quiz/alignment flow (?playing=1), not on the start gate. */
+  const hideForPlayingFlow =
     (pathname.startsWith("/app/quiz") || pathname.startsWith("/app/agreement")) &&
-    searchParams.get("done") !== "1";
+    searchParams.get("done") !== "1" &&
+    searchParams.get("playing") === "1";
 
   if (!pathname.startsWith("/app")) return null;
-  if (isFocusMode) return null;
+  if (hideForPlayingFlow) return null;
 
   return (
     <nav

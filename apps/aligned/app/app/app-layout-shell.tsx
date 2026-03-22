@@ -18,9 +18,11 @@ const SIDEBAR_NAV = [
 export function AppLayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  /** Match bottom nav: focus chrome only after Start (?playing=1), not on quiz/alignment intro. */
   const isFocusMode =
     (pathname.startsWith("/app/quiz") || pathname.startsWith("/app/agreement")) &&
-    searchParams.get("done") !== "1";
+    searchParams.get("done") !== "1" &&
+    searchParams.get("playing") === "1";
 
   return (
     <>

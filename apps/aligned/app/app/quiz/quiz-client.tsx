@@ -50,6 +50,12 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
     setGuesses(initialData.myParticipation?.guessIndices ?? [-1, -1, -1, -1, -1]);
   }, [initialData]);
 
+  // Resume in-flow if URL has ?playing=1 (keeps bottom nav hidden until Start otherwise)
+  useEffect(() => {
+    if (!pathname.startsWith("/app/quiz")) return;
+    if (searchParams.get("playing") === "1") setQuizStarted(true);
+  }, [pathname, searchParams]);
+
   // Show bottom nav when viewing results or waiting for partner (set ?done=1)
   const showResultsOrWaiting =
     data.state === "revealed" || (!!data.myParticipation && !data.partnerSubmitted);
@@ -349,6 +355,9 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
             type="button"
             onClick={() => {
               setQuizStarted(true);
+              const p = new URLSearchParams(searchParams.toString());
+              p.set("playing", "1");
+              router.replace(`${pathname}?${p.toString()}`, { scroll: false });
               requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "auto" }));
             }}
             className="ns-btn-primary w-full py-3.5 text-lg ring-2 ring-brand-300/50 ring-offset-2 shadow-lg shadow-brand-200/40"

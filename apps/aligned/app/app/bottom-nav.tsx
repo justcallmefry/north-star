@@ -25,9 +25,8 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 md:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t-2 border-amber-200/90 bg-gradient-to-b from-[#faf6f0] to-[#f0e8dc] shadow-[0_-8px_24px_-4px_rgba(43,140,190,0.12)] md:hidden"
       style={{
-        backgroundColor: "#2b8cbe",
         paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))",
         transform: "translateZ(0)",
         WebkitTransform: "translateZ(0)",
@@ -36,7 +35,7 @@ export function BottomNav() {
         right: 0,
       }}
     >
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-2 py-3">
+      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-2 py-2.5">
         {NAV_ITEMS.filter((item) => !item.hidden).map(({ href, label, icon: Icon }) => {
           const isActive =
             href === "/app"
@@ -51,20 +50,22 @@ export function BottomNav() {
               key={href}
               href={href}
               prefetch={true}
-              className={`relative flex flex-1 flex-col items-center gap-1 min-w-0 px-1 py-1 rounded-lg transition-colors active:opacity-80 ${
-                isActive ? "bg-white/25" : ""
+              className={`relative flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl px-1 py-1 transition-all active:scale-[0.98] ${
+                isActive ? "bg-white/90 shadow-md ring-2 ring-[#2b8cbe]/35" : ""
               }`}
             >
               <span
                 className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors ${
-                  isActive ? "bg-white text-[#2b8cbe]" : "bg-white/20 text-white"
+                  isActive
+                    ? "bg-[#2b8cbe] text-white shadow-sm"
+                    : "bg-white/80 text-slate-500 shadow-sm ring-1 ring-amber-200/60"
                 }`}
               >
                 <Icon className="h-5 w-5" strokeWidth={2.5} />
               </span>
               <span
-                className={`text-[10px] font-bold leading-tight text-center truncate w-full ${
-                  isActive ? "text-white" : "text-white/90"
+                className={`w-full truncate text-center text-[10px] font-bold leading-tight ${
+                  isActive ? "text-[#1e6b9e]" : "text-slate-600"
                 }`}
               >
                 {label}

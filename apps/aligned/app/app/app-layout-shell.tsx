@@ -26,7 +26,7 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
     <>
       <div
         id="app-scroll"
-        className={`flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto pt-3 md:min-h-0 md:pt-5 ${
+        className={`flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto bg-gradient-to-b from-sky-100/40 via-[#f5f2ee] to-[#f0ebe3] pt-3 md:min-h-0 md:pt-5 ${
           isFocusMode ? "pb-6" : "pb-36 md:pb-6"
         }`}
         style={{
@@ -80,11 +80,22 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
             </aside>
           )}
           <main
-            className={`ns-card relative min-w-0 flex-1 border-slate-200/90 px-4 py-4 shadow-lg sm:px-6 md:py-5 ${
+            className={`relative min-w-0 flex-1 overflow-hidden rounded-2xl border-2 border-brand-300/50 bg-[#fefdfb] shadow-lg ring-1 ring-brand-100/60 ${
               isFocusMode ? "max-w-2xl md:mx-auto md:w-full" : ""
             }`}
           >
-            {children}
+            <header className="bg-gradient-to-r from-[#2b8cbe] via-[#2680b0] to-[#1e6b9e] px-4 py-3.5 text-white shadow-sm sm:px-6 sm:py-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/85">
+                Aligned
+              </p>
+              <p className="mt-1 text-base font-semibold leading-snug text-white sm:text-lg">
+                One question a day — together
+              </p>
+              <p className="mt-1 text-xs text-white/80 sm:text-sm">
+                A calm place for the two of you.
+              </p>
+            </header>
+            <div className="px-4 py-4 sm:px-6 md:py-5">{children}</div>
           </main>
         </div>
       </div>

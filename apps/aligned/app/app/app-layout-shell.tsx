@@ -84,18 +84,28 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
               isFocusMode ? "max-w-2xl md:mx-auto md:w-full" : ""
             }`}
           >
-            <header className="relative bg-gradient-to-r from-[#2b8cbe] via-[#2680b0] to-[#1e6b9e] px-4 py-3.5 text-white shadow-sm after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#69BE28] after:content-[''] sm:px-6 sm:py-4">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/85">
-                Aligned
-              </p>
-              <p className="mt-1 text-base font-semibold leading-snug text-white sm:text-lg">
-                One question a day — together
-              </p>
-              <p className="mt-1 text-xs text-white/80 sm:text-sm">
-                A calm place for the two of you.
-              </p>
-            </header>
-            <div className="px-4 py-4 sm:px-6 md:py-5">{children}</div>
+            {!isFocusMode && (
+              <header className="relative bg-gradient-to-r from-[#2b8cbe] via-[#2680b0] to-[#1e6b9e] px-4 py-3.5 text-white shadow-sm after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#69BE28] after:content-[''] sm:px-6 sm:py-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/85">
+                  Aligned
+                </p>
+                <p className="mt-1 text-base font-semibold leading-snug text-white sm:text-lg">
+                  One question a day — together
+                </p>
+                <p className="mt-1 text-xs text-white/80 sm:text-sm">
+                  A calm place for the two of you.
+                </p>
+              </header>
+            )}
+            <div
+              className={
+                isFocusMode
+                  ? "px-4 pb-4 pt-0 sm:px-6 sm:pb-5 md:pb-6"
+                  : "px-4 py-4 sm:px-6 md:py-5"
+              }
+            >
+              {children}
+            </div>
           </main>
         </div>
       </div>

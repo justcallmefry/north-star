@@ -439,9 +439,9 @@ export function AgreementClient({
 
   return (
     <div className="flex flex-col pt-0" id="agreement-step-container">
-      {/* Progress — label above dots, mirrors quiz */}
-      <div className="mb-3 space-y-2">
-        <p className="text-sm font-semibold uppercase tracking-wide text-slate-600 text-center">
+      {/* Progress — cool blue band, white type (matches quiz; shell header hidden in focus mode) */}
+      <div className="-mx-4 mb-3 space-y-2.5 bg-gradient-to-r from-[#2b8cbe] via-[#2680b0] to-[#1e6b9e] px-4 py-3 shadow-sm sm:-mx-6 sm:px-6 sm:py-3.5">
+        <p className="text-center text-sm font-semibold uppercase tracking-wide text-white">
           {isAnswerPhase
             ? `Statement ${questionIndex + 1} of ${TOTAL_QUESTIONS}`
             : `Guess ${questionIndex + 1} of ${TOTAL_QUESTIONS}`}
@@ -450,8 +450,8 @@ export function AgreementClient({
           {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
-              className={`h-1.5 flex-1 rounded-full min-w-[14px] max-w-[22px] transition-colors duration-200 ${
-                i < step ? "bg-brand-500" : i === step ? "bg-brand-400" : "bg-slate-200"
+              className={`h-1.5 min-w-[14px] max-w-[22px] flex-1 rounded-full transition-colors duration-200 ${
+                i < step ? "bg-white" : i === step ? "bg-[#69BE28] shadow-[0_0_0_1px_rgba(255,255,255,0.5)]" : "bg-white/35"
               }`}
             />
           ))}

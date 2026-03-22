@@ -11,9 +11,9 @@ export function TodayCard({ today }: Props) {
   if (!today) {
     return (
       <section className="ns-card">
-        <div className="inline-flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700 sm:text-sm">
+        <div className="inline-flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-1 ring-1 ring-emerald-200/60">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#69BE28]" />
+          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-800 sm:text-sm">
             Daily check-in
           </h2>
         </div>
@@ -28,11 +28,11 @@ export function TodayCard({ today }: Props) {
   const done = hasUserResponded || state === "revealed" || (state === "open" && canReveal);
 
   return (
-    <section className="relative animate-calm-fade-in rounded-2xl border border-amber-100/70 bg-gradient-to-br from-amber-50/60 to-[#fefdfb] p-5 shadow-sm ring-1 ring-amber-50/60 sm:p-6">
+    <section className="relative animate-calm-fade-in rounded-2xl border border-emerald-200/70 bg-gradient-to-br from-emerald-50/70 via-[#f0f7f2] to-[#f6faf7] p-5 shadow-sm ring-1 ring-emerald-100/70 sm:p-6">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="inline-flex items-center gap-2 rounded-lg bg-amber-100/80 px-3 py-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-800 sm:text-sm">
+        <div className="inline-flex items-center gap-2 rounded-lg bg-emerald-100/90 px-3 py-1 ring-1 ring-emerald-200/60">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#69BE28]" />
+          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-900 sm:text-sm">
             Daily check-in
           </h2>
         </div>
@@ -79,7 +79,7 @@ export function TodayCard({ today }: Props) {
         {state === "open" && !hasUserResponded && (
           <Link
             href={`/app/session/${sessionId}`}
-            className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-white shadow-lg shadow-brand-200/40"
+            className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-[#f6faf7] shadow-lg shadow-brand-200/40"
           >
             Answer today&apos;s question
           </Link>
@@ -101,7 +101,7 @@ export function TodayCard({ today }: Props) {
           <div className="space-y-2">
             <Link
               href={`/app/session/${sessionId}`}
-              className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-white shadow-lg shadow-brand-200/40"
+              className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-[#f6faf7] shadow-lg shadow-brand-200/40"
             >
               Reveal answers
             </Link>
@@ -128,7 +128,7 @@ export function TodayCard({ today }: Props) {
             </div>
           )}
           {!streak.currentCount && streak.justReset && (
-            <p className="text-center text-xs font-medium text-amber-800">
+            <p className="text-center text-xs font-medium text-emerald-800">
               Every day is a fresh start.
             </p>
           )}

@@ -25,7 +25,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-50 border-t-2 border-amber-200/90 bg-gradient-to-b from-[#faf6f0] to-[#f0e8dc] shadow-[0_-8px_24px_-4px_rgba(43,140,190,0.12)] md:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t-2 border-[#69BE28]/45 bg-gradient-to-b from-[#edf5ef] to-[#dceee1] shadow-[0_-8px_28px_-6px_rgba(22,83,42,0.12)] md:hidden"
       style={{
         paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))",
         transform: "translateZ(0)",
@@ -51,21 +51,21 @@ export function BottomNav() {
               href={href}
               prefetch={true}
               className={`relative flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl px-1 py-1 transition-all active:scale-[0.98] ${
-                isActive ? "bg-white/90 shadow-md ring-2 ring-[#2b8cbe]/35" : ""
+                isActive ? "bg-white/95 shadow-md ring-2 ring-[#69BE28]/55" : ""
               }`}
             >
               <span
                 className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors ${
                   isActive
-                    ? "bg-[#2b8cbe] text-white shadow-sm"
-                    : "bg-white/80 text-slate-500 shadow-sm ring-1 ring-amber-200/60"
+                    ? "bg-[#69BE28] text-white shadow-sm ring-1 ring-emerald-900/20"
+                    : "bg-white/90 text-slate-600 shadow-sm ring-1 ring-emerald-800/12"
                 }`}
               >
                 <Icon className="h-5 w-5" strokeWidth={2.5} />
               </span>
               <span
                 className={`w-full truncate text-center text-[10px] font-bold leading-tight ${
-                  isActive ? "text-[#1e6b9e]" : "text-slate-600"
+                  isActive ? "text-emerald-950" : "text-slate-600"
                 }`}
               >
                 {label}

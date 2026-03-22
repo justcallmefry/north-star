@@ -10,7 +10,7 @@ export default function AppSegmentLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden md:min-h-screen bg-[#f9f7f4]" style={{ overscrollBehaviorX: "none" }}>
+    <div className="flex h-screen h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden md:min-h-screen bg-[#e8f0ea]" style={{ overscrollBehaviorX: "none" }}>
       <NativePushRegistration />
       <ScrollToTopOnNav />
       <AppLayoutShell>{children}</AppLayoutShell>

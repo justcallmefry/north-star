@@ -488,7 +488,7 @@ export function AgreementClient({
                       ? isAnswerPhase
                         ? "border-brand-600 bg-brand-600 text-white shadow-md ring-1 ring-brand-700/30"
                         : "border-violet-600 bg-violet-600 text-white shadow-md ring-1 ring-violet-800/25"
-                      : "border-amber-100/90 bg-[#f9f7f4] text-slate-800 hover:border-brand-300 hover:bg-brand-50/80 active:scale-[0.99]"
+                      : "border-emerald-200/80 bg-[#f0f7f2] text-slate-800 hover:border-[#69BE28]/45 hover:bg-emerald-50/90 active:scale-[0.99]"
                   }`}
                 >
                   {opt}

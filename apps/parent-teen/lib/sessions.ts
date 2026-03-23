@@ -1,5 +1,6 @@
 "use server";
 
+import { randomInt } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -17,33 +18,49 @@ async function requireSessionMembership(userId: string, sessionId: string) {
   return session;
 }
 
-/** Pick a prompt not used in the last 7 sessions for this relationship. */
+const PROMPT_LOOKBACK_CAP = 200;
+
+/** Avoid repeating prompts until the pool has mostly rotated; pick randomly among eligible. */
 async function pickPromptForSession(relationshipId: string): Promise<string | null> {
-  const recent = await prisma.dailySession.findMany({
-    where: { relationshipId },
-    orderBy: { sessionDate: "desc" },
-    take: 7,
-    select: { promptId: true },
-  });
-  const usedIds = recent.map((s) => s.promptId).filter(Boolean) as string[];
-  let prompt = await prisma.prompt.findFirst({
+  const [recentRows, poolCount] = await Promise.all([
+    prisma.dailySession.findMany({
+      where: { relationshipId },
+      orderBy: { sessionDate: "desc" },
+      take: PROMPT_LOOKBACK_CAP,
+      select: { promptId: true },
+    }),
+    prisma.prompt.count({ where: { active: true, type: "daily" } }),
+  ]);
+
+  const lookback =
+    poolCount <= 1 ? 0 : Math.min(poolCount - 1, PROMPT_LOOKBACK_CAP, recentRows.length);
+  const usedIds = [
+    ...new Set(
+      recentRows
+        .slice(0, lookback)
+        .map((s) => s.promptId)
+        .filter((id): id is string => Boolean(id))
+    ),
+  ];
+
+  let eligible = await prisma.prompt.findMany({
     where: {
       active: true,
       type: "daily",
-      // later: isPremium: false if not subscribed
-      id: usedIds.length > 0 ? { notIn: usedIds } : undefined,
+      ...(usedIds.length > 0 ? { id: { notIn: usedIds } } : {}),
     },
-    orderBy: { createdAt: "asc" },
     select: { id: true },
   });
-  if (!prompt) {
-    prompt = await prisma.prompt.findFirst({
+
+  if (eligible.length === 0) {
+    eligible = await prisma.prompt.findMany({
       where: { active: true, type: "daily" },
-      orderBy: { createdAt: "asc" },
       select: { id: true },
     });
   }
-  return prompt?.id ?? null;
+
+  if (eligible.length === 0) return null;
+  return eligible[randomInt(eligible.length)].id;
 }
 
 export type GetTodayResult = {

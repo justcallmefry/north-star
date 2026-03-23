@@ -1,5 +1,6 @@
 "use server";
 
+import { randomInt } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -19,48 +20,83 @@ async function requireSessionMembership(userId: string, sessionId: string) {
   return session;
 }
 
-/** Pick a prompt not used in the last 7 sessions for this relationship. */
+/** Max recent sessions to load when avoiding repeat prompts (cap for query size). */
+const PROMPT_LOOKBACK_CAP = 200;
+
+/**
+ * Pick a daily prompt for this relationship: avoid repeating prompts until the pool has
+ * mostly rotated, then choose randomly among eligible prompts (not always the same order).
+ */
 async function pickPromptForSession(relationshipId: string): Promise<string | null> {
-  const [recent, totalCount] = await Promise.all([
+  const [sessionCount, recentRows, fullPoolCount, introPoolCount] = await Promise.all([
+    prisma.dailySession.count({ where: { relationshipId } }),
     prisma.dailySession.findMany({
       where: { relationshipId },
       orderBy: { sessionDate: "desc" },
-      take: 7,
+      take: PROMPT_LOOKBACK_CAP,
       select: { promptId: true },
     }),
-    prisma.dailySession.count({
-      where: { relationshipId },
-    }),
-  ]);
-  const usedIds = recent.map((s) => s.promptId).filter(Boolean) as string[];
-  const isIntroPhase = totalCount < 7;
-
-  let prompt = await prisma.prompt.findFirst({
-    where: {
-      active: true,
-      type: "daily",
-      // Guided first week: favor light, connection-focused prompts for the first few sessions.
-      ...(isIntroPhase && {
-        category: { in: ["gratitude", "fun", "reflection", "growth"] },
-        tone: { in: ["light", "playful"] },
-      }),
-      // later: isPremium: false if not subscribed
-      id: usedIds.length > 0 ? { notIn: usedIds } : undefined,
-    },
-    orderBy: { createdAt: "asc" },
-    select: { id: true },
-  });
-  if (!prompt) {
-    prompt = await prisma.prompt.findFirst({
+    prisma.prompt.count({ where: { active: true, type: "daily" } }),
+    prisma.prompt.count({
       where: {
         active: true,
         type: "daily",
+        category: { in: ["gratitude", "fun", "reflection", "growth"] },
+        tone: { in: ["light", "playful"] },
       },
-      orderBy: { createdAt: "asc" },
+    }),
+  ]);
+
+  const isIntroPhase = sessionCount < 7;
+  const poolSize = isIntroPhase ? introPoolCount : fullPoolCount;
+  const lookback =
+    poolSize <= 1
+      ? 0
+      : Math.min(poolSize - 1, PROMPT_LOOKBACK_CAP, recentRows.length);
+  const usedIds = [
+    ...new Set(
+      recentRows
+        .slice(0, lookback)
+        .map((s) => s.promptId)
+        .filter((id): id is string => Boolean(id))
+    ),
+  ];
+
+  const notIn = usedIds.length > 0 ? { notIn: usedIds } : undefined;
+  const introWhere = {
+    active: true as const,
+    type: "daily" as const,
+    category: { in: ["gratitude", "fun", "reflection", "growth"] as const },
+    tone: { in: ["light", "playful"] as const },
+    ...(notIn ? { id: notIn } : {}),
+  };
+  const defaultWhere = {
+    active: true as const,
+    type: "daily" as const,
+    ...(notIn ? { id: notIn } : {}),
+  };
+
+  let eligible = await prisma.prompt.findMany({
+    where: isIntroPhase ? introWhere : defaultWhere,
+    select: { id: true },
+  });
+
+  if (eligible.length === 0 && isIntroPhase) {
+    eligible = await prisma.prompt.findMany({
+      where: defaultWhere,
       select: { id: true },
     });
   }
-  return prompt?.id ?? null;
+
+  if (eligible.length === 0) {
+    eligible = await prisma.prompt.findMany({
+      where: { active: true, type: "daily" },
+      select: { id: true },
+    });
+  }
+
+  if (eligible.length === 0) return null;
+  return eligible[randomInt(eligible.length)].id;
 }
 
 export type GetTodayResult = {

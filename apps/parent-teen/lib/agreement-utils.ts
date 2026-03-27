@@ -15,17 +15,22 @@ export function loadAgreementDays(): AgreementDayContent[] {
   return agreementDaysCache;
 }
 
-/** Day of year 1–366 (UTC) mapped to agreement day index 1–30 (cycles). Uses UTC for consistency with session dates. */
+/** Day of year 1–366 (UTC) mapped to agreement day index 1..N (cycles). Legacy fallback when contentDayIndex is unset. */
 export function getAgreementDayIndex(date: Date): number {
+  const maxDay = loadAgreementDays().length || 30;
   const start = new Date(Date.UTC(date.getUTCFullYear(), 0, 0));
   const end = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
   const oneDay = 24 * 60 * 60 * 1000;
   const dayOfYear = Math.floor((end.getTime() - start.getTime()) / oneDay);
-  return (dayOfYear % 30) + 1;
+  return (dayOfYear % maxDay) + 1;
 }
 
 export function getAgreementQuestions(dayIndex: number): AgreementQuestion[] {
   const days = loadAgreementDays();
   const day = days.find((d) => d.day === dayIndex) ?? days[0];
   return day.questions;
+}
+
+export function getAgreementDayCount(): number {
+  return loadAgreementDays().length;
 }

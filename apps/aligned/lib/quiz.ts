@@ -1,14 +1,22 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { pickNextContentDayIndex, resolveContentDayIndex } from "@north-star/shared";
 import { Prisma } from "@/generated/prisma";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { requireActiveMember, todayUTC } from "@/lib/relationship-members";
 import type { QuizQuestion } from "@/lib/quiz-utils";
-import { getQuizDayIndex, getQuizQuestions } from "@/lib/quiz-utils";
+import { getQuizDayCount, getQuizDayIndex, getQuizQuestions } from "@/lib/quiz-utils";
 
 export type { QuizQuestion } from "@/lib/quiz-utils";
+
+async function quizContentSnapshots(relationshipId: string) {
+  return prisma.quizSession.findMany({
+    where: { relationshipId },
+    select: { sessionDate: true, contentDayIndex: true },
+  });
+}
 
 export type QuizForTodayResult = {
   quizSessionId: string;
@@ -80,13 +88,14 @@ export async function getQuizForToday(
   const latestDateStr = latestSession?.sessionDate.toISOString().slice(0, 10);
   if (latestSession && latestSession.state === "open" && latestDateStr === todayStr) {
     quizSession = latestSession;
-    dayIndex = getQuizDayIndex(quizSession.sessionDate);
+    dayIndex = resolveContentDayIndex(
+      quizSession.sessionDate,
+      quizSession.contentDayIndex,
+      getQuizDayCount(),
+      getQuizDayIndex
+    );
     questions = getQuizQuestions(dayIndex);
   } else {
-    // No session yet, or previous one is revealed — get or create today's quiz (one per UTC day)
-    dayIndex = getQuizDayIndex(today);
-    questions = getQuizQuestions(dayIndex);
-
     let session = await prisma.quizSession.findUnique({
       where: {
         relationshipId_sessionDate: { relationshipId, sessionDate: today },
@@ -99,12 +108,19 @@ export async function getQuizForToday(
     });
 
     if (!session) {
+      const snapshots = await quizContentSnapshots(relationshipId);
+      const contentDayIndex = pickNextContentDayIndex({
+        maxDay: getQuizDayCount(),
+        sessions: snapshots,
+        fallbackFromDate: getQuizDayIndex,
+      });
       try {
         session = await prisma.quizSession.create({
           data: {
             relationshipId,
             sessionDate: today,
             state: "open",
+            contentDayIndex,
           },
           include: {
             participations: {
@@ -129,6 +145,13 @@ export async function getQuizForToday(
       }
     }
     quizSession = session;
+    dayIndex = resolveContentDayIndex(
+      quizSession.sessionDate,
+      quizSession.contentDayIndex,
+      getQuizDayCount(),
+      getQuizDayIndex
+    );
+    questions = getQuizQuestions(dayIndex);
   }
 
   const myPart = quizSession.participations.find(
@@ -282,7 +305,12 @@ export async function getQuizForDate(
   });
   if (!quizSession) return null;
 
-  const dayIndex = getQuizDayIndex(quizSession.sessionDate);
+  const dayIndex = resolveContentDayIndex(
+    quizSession.sessionDate,
+    quizSession.contentDayIndex,
+    getQuizDayCount(),
+    getQuizDayIndex
+  );
   const questions = getQuizQuestions(dayIndex);
   const myPart = quizSession.participations.find((p) => p.userId === session.user!.id);
   const partnerPart = quizSession.participations.find((p) => p.userId !== session.user!.id);
@@ -362,15 +390,20 @@ export async function submitQuiz(
       ? new Date(localDateStr + "T00:00:00.000Z")
       : todayUTC();
 
-  // Same logic as getQuizForToday: submit to the open session if one exists, else today's
+  const todayStr = localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr)
+    ? localDateStr
+    : today.toISOString().slice(0, 10);
+
   const latestSession = await prisma.quizSession.findFirst({
     where: { relationshipId },
     orderBy: { sessionDate: "desc" },
     include: { participations: true },
   });
 
+  const latestDateStr = latestSession?.sessionDate.toISOString().slice(0, 10);
+
   let quizSession: NonNullable<typeof latestSession>;
-  if (latestSession && latestSession.state === "open") {
+  if (latestSession && latestSession.state === "open" && latestDateStr === todayStr) {
     quizSession = latestSession;
   } else {
     let s = await prisma.quizSession.findUnique({
@@ -380,12 +413,19 @@ export async function submitQuiz(
       include: { participations: true },
     });
     if (!s) {
+      const snapshots = await quizContentSnapshots(relationshipId);
+      const contentDayIndex = pickNextContentDayIndex({
+        maxDay: getQuizDayCount(),
+        sessions: snapshots,
+        fallbackFromDate: getQuizDayIndex,
+      });
       try {
         s = await prisma.quizSession.create({
           data: {
             relationshipId,
             sessionDate: today,
             state: "open",
+            contentDayIndex,
           },
           include: { participations: true },
         });

@@ -19939,8 +19939,18 @@ export namespace Prisma {
 
   export type AggregateQuizSession = {
     _count: QuizSessionCountAggregateOutputType | null
+    _avg: QuizSessionAvgAggregateOutputType | null
+    _sum: QuizSessionSumAggregateOutputType | null
     _min: QuizSessionMinAggregateOutputType | null
     _max: QuizSessionMaxAggregateOutputType | null
+  }
+
+  export type QuizSessionAvgAggregateOutputType = {
+    contentDayIndex: number | null
+  }
+
+  export type QuizSessionSumAggregateOutputType = {
+    contentDayIndex: number | null
   }
 
   export type QuizSessionMinAggregateOutputType = {
@@ -19948,6 +19958,7 @@ export namespace Prisma {
     relationshipId: string | null
     sessionDate: Date | null
     state: $Enums.QuizState | null
+    contentDayIndex: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -19957,6 +19968,7 @@ export namespace Prisma {
     relationshipId: string | null
     sessionDate: Date | null
     state: $Enums.QuizState | null
+    contentDayIndex: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -19966,17 +19978,27 @@ export namespace Prisma {
     relationshipId: number
     sessionDate: number
     state: number
+    contentDayIndex: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
+  export type QuizSessionAvgAggregateInputType = {
+    contentDayIndex?: true
+  }
+
+  export type QuizSessionSumAggregateInputType = {
+    contentDayIndex?: true
+  }
+
   export type QuizSessionMinAggregateInputType = {
     id?: true
     relationshipId?: true
     sessionDate?: true
     state?: true
+    contentDayIndex?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19986,6 +20008,7 @@ export namespace Prisma {
     relationshipId?: true
     sessionDate?: true
     state?: true
+    contentDayIndex?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19995,6 +20018,7 @@ export namespace Prisma {
     relationshipId?: true
     sessionDate?: true
     state?: true
+    contentDayIndex?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -20038,6 +20062,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: QuizSessionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: QuizSessionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: QuizSessionMinAggregateInputType
@@ -20068,6 +20104,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: QuizSessionCountAggregateInputType | true
+    _avg?: QuizSessionAvgAggregateInputType
+    _sum?: QuizSessionSumAggregateInputType
     _min?: QuizSessionMinAggregateInputType
     _max?: QuizSessionMaxAggregateInputType
   }
@@ -20077,9 +20115,12 @@ export namespace Prisma {
     relationshipId: string
     sessionDate: Date
     state: $Enums.QuizState
+    contentDayIndex: number | null
     createdAt: Date
     updatedAt: Date
     _count: QuizSessionCountAggregateOutputType | null
+    _avg: QuizSessionAvgAggregateOutputType | null
+    _sum: QuizSessionSumAggregateOutputType | null
     _min: QuizSessionMinAggregateOutputType | null
     _max: QuizSessionMaxAggregateOutputType | null
   }
@@ -20103,6 +20144,7 @@ export namespace Prisma {
     relationshipId?: boolean
     sessionDate?: boolean
     state?: boolean
+    contentDayIndex?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
@@ -20115,6 +20157,7 @@ export namespace Prisma {
     relationshipId?: boolean
     sessionDate?: boolean
     state?: boolean
+    contentDayIndex?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
@@ -20125,6 +20168,7 @@ export namespace Prisma {
     relationshipId?: boolean
     sessionDate?: boolean
     state?: boolean
+    contentDayIndex?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
@@ -20149,6 +20193,7 @@ export namespace Prisma {
       relationshipId: string
       sessionDate: Date
       state: $Enums.QuizState
+      contentDayIndex: number | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["quizSession"]>
@@ -20550,6 +20595,7 @@ export namespace Prisma {
     readonly relationshipId: FieldRef<"QuizSession", 'String'>
     readonly sessionDate: FieldRef<"QuizSession", 'DateTime'>
     readonly state: FieldRef<"QuizSession", 'QuizState'>
+    readonly contentDayIndex: FieldRef<"QuizSession", 'Int'>
     readonly createdAt: FieldRef<"QuizSession", 'DateTime'>
     readonly updatedAt: FieldRef<"QuizSession", 'DateTime'>
   }
@@ -21873,8 +21919,18 @@ export namespace Prisma {
 
   export type AggregateAgreementSession = {
     _count: AgreementSessionCountAggregateOutputType | null
+    _avg: AgreementSessionAvgAggregateOutputType | null
+    _sum: AgreementSessionSumAggregateOutputType | null
     _min: AgreementSessionMinAggregateOutputType | null
     _max: AgreementSessionMaxAggregateOutputType | null
+  }
+
+  export type AgreementSessionAvgAggregateOutputType = {
+    contentDayIndex: number | null
+  }
+
+  export type AgreementSessionSumAggregateOutputType = {
+    contentDayIndex: number | null
   }
 
   export type AgreementSessionMinAggregateOutputType = {
@@ -21882,6 +21938,7 @@ export namespace Prisma {
     relationshipId: string | null
     sessionDate: Date | null
     state: $Enums.AgreementState | null
+    contentDayIndex: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -21891,6 +21948,7 @@ export namespace Prisma {
     relationshipId: string | null
     sessionDate: Date | null
     state: $Enums.AgreementState | null
+    contentDayIndex: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -21900,17 +21958,27 @@ export namespace Prisma {
     relationshipId: number
     sessionDate: number
     state: number
+    contentDayIndex: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
+  export type AgreementSessionAvgAggregateInputType = {
+    contentDayIndex?: true
+  }
+
+  export type AgreementSessionSumAggregateInputType = {
+    contentDayIndex?: true
+  }
+
   export type AgreementSessionMinAggregateInputType = {
     id?: true
     relationshipId?: true
     sessionDate?: true
     state?: true
+    contentDayIndex?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -21920,6 +21988,7 @@ export namespace Prisma {
     relationshipId?: true
     sessionDate?: true
     state?: true
+    contentDayIndex?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -21929,6 +21998,7 @@ export namespace Prisma {
     relationshipId?: true
     sessionDate?: true
     state?: true
+    contentDayIndex?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -21972,6 +22042,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: AgreementSessionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AgreementSessionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AgreementSessionMinAggregateInputType
@@ -22002,6 +22084,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: AgreementSessionCountAggregateInputType | true
+    _avg?: AgreementSessionAvgAggregateInputType
+    _sum?: AgreementSessionSumAggregateInputType
     _min?: AgreementSessionMinAggregateInputType
     _max?: AgreementSessionMaxAggregateInputType
   }
@@ -22011,9 +22095,12 @@ export namespace Prisma {
     relationshipId: string
     sessionDate: Date
     state: $Enums.AgreementState
+    contentDayIndex: number | null
     createdAt: Date
     updatedAt: Date
     _count: AgreementSessionCountAggregateOutputType | null
+    _avg: AgreementSessionAvgAggregateOutputType | null
+    _sum: AgreementSessionSumAggregateOutputType | null
     _min: AgreementSessionMinAggregateOutputType | null
     _max: AgreementSessionMaxAggregateOutputType | null
   }
@@ -22037,6 +22124,7 @@ export namespace Prisma {
     relationshipId?: boolean
     sessionDate?: boolean
     state?: boolean
+    contentDayIndex?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
@@ -22049,6 +22137,7 @@ export namespace Prisma {
     relationshipId?: boolean
     sessionDate?: boolean
     state?: boolean
+    contentDayIndex?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
@@ -22059,6 +22148,7 @@ export namespace Prisma {
     relationshipId?: boolean
     sessionDate?: boolean
     state?: boolean
+    contentDayIndex?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
@@ -22083,6 +22173,7 @@ export namespace Prisma {
       relationshipId: string
       sessionDate: Date
       state: $Enums.AgreementState
+      contentDayIndex: number | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["agreementSession"]>
@@ -22484,6 +22575,7 @@ export namespace Prisma {
     readonly relationshipId: FieldRef<"AgreementSession", 'String'>
     readonly sessionDate: FieldRef<"AgreementSession", 'DateTime'>
     readonly state: FieldRef<"AgreementSession", 'AgreementState'>
+    readonly contentDayIndex: FieldRef<"AgreementSession", 'Int'>
     readonly createdAt: FieldRef<"AgreementSession", 'DateTime'>
     readonly updatedAt: FieldRef<"AgreementSession", 'DateTime'>
   }
@@ -24040,6 +24132,7 @@ export namespace Prisma {
     relationshipId: 'relationshipId',
     sessionDate: 'sessionDate',
     state: 'state',
+    contentDayIndex: 'contentDayIndex',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -24065,6 +24158,7 @@ export namespace Prisma {
     relationshipId: 'relationshipId',
     sessionDate: 'sessionDate',
     state: 'state',
+    contentDayIndex: 'contentDayIndex',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -25508,6 +25602,7 @@ export namespace Prisma {
     relationshipId?: StringFilter<"QuizSession"> | string
     sessionDate?: DateTimeFilter<"QuizSession"> | Date | string
     state?: EnumQuizStateFilter<"QuizSession"> | $Enums.QuizState
+    contentDayIndex?: IntNullableFilter<"QuizSession"> | number | null
     createdAt?: DateTimeFilter<"QuizSession"> | Date | string
     updatedAt?: DateTimeFilter<"QuizSession"> | Date | string
     relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
@@ -25519,6 +25614,7 @@ export namespace Prisma {
     relationshipId?: SortOrder
     sessionDate?: SortOrder
     state?: SortOrder
+    contentDayIndex?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     relationship?: RelationshipOrderByWithRelationInput
@@ -25534,6 +25630,7 @@ export namespace Prisma {
     relationshipId?: StringFilter<"QuizSession"> | string
     sessionDate?: DateTimeFilter<"QuizSession"> | Date | string
     state?: EnumQuizStateFilter<"QuizSession"> | $Enums.QuizState
+    contentDayIndex?: IntNullableFilter<"QuizSession"> | number | null
     createdAt?: DateTimeFilter<"QuizSession"> | Date | string
     updatedAt?: DateTimeFilter<"QuizSession"> | Date | string
     relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
@@ -25545,11 +25642,14 @@ export namespace Prisma {
     relationshipId?: SortOrder
     sessionDate?: SortOrder
     state?: SortOrder
+    contentDayIndex?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: QuizSessionCountOrderByAggregateInput
+    _avg?: QuizSessionAvgOrderByAggregateInput
     _max?: QuizSessionMaxOrderByAggregateInput
     _min?: QuizSessionMinOrderByAggregateInput
+    _sum?: QuizSessionSumOrderByAggregateInput
   }
 
   export type QuizSessionScalarWhereWithAggregatesInput = {
@@ -25560,6 +25660,7 @@ export namespace Prisma {
     relationshipId?: StringWithAggregatesFilter<"QuizSession"> | string
     sessionDate?: DateTimeWithAggregatesFilter<"QuizSession"> | Date | string
     state?: EnumQuizStateWithAggregatesFilter<"QuizSession"> | $Enums.QuizState
+    contentDayIndex?: IntNullableWithAggregatesFilter<"QuizSession"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"QuizSession"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"QuizSession"> | Date | string
   }
@@ -25641,6 +25742,7 @@ export namespace Prisma {
     relationshipId?: StringFilter<"AgreementSession"> | string
     sessionDate?: DateTimeFilter<"AgreementSession"> | Date | string
     state?: EnumAgreementStateFilter<"AgreementSession"> | $Enums.AgreementState
+    contentDayIndex?: IntNullableFilter<"AgreementSession"> | number | null
     createdAt?: DateTimeFilter<"AgreementSession"> | Date | string
     updatedAt?: DateTimeFilter<"AgreementSession"> | Date | string
     relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
@@ -25652,6 +25754,7 @@ export namespace Prisma {
     relationshipId?: SortOrder
     sessionDate?: SortOrder
     state?: SortOrder
+    contentDayIndex?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     relationship?: RelationshipOrderByWithRelationInput
@@ -25667,6 +25770,7 @@ export namespace Prisma {
     relationshipId?: StringFilter<"AgreementSession"> | string
     sessionDate?: DateTimeFilter<"AgreementSession"> | Date | string
     state?: EnumAgreementStateFilter<"AgreementSession"> | $Enums.AgreementState
+    contentDayIndex?: IntNullableFilter<"AgreementSession"> | number | null
     createdAt?: DateTimeFilter<"AgreementSession"> | Date | string
     updatedAt?: DateTimeFilter<"AgreementSession"> | Date | string
     relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
@@ -25678,11 +25782,14 @@ export namespace Prisma {
     relationshipId?: SortOrder
     sessionDate?: SortOrder
     state?: SortOrder
+    contentDayIndex?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: AgreementSessionCountOrderByAggregateInput
+    _avg?: AgreementSessionAvgOrderByAggregateInput
     _max?: AgreementSessionMaxOrderByAggregateInput
     _min?: AgreementSessionMinOrderByAggregateInput
+    _sum?: AgreementSessionSumOrderByAggregateInput
   }
 
   export type AgreementSessionScalarWhereWithAggregatesInput = {
@@ -25693,6 +25800,7 @@ export namespace Prisma {
     relationshipId?: StringWithAggregatesFilter<"AgreementSession"> | string
     sessionDate?: DateTimeWithAggregatesFilter<"AgreementSession"> | Date | string
     state?: EnumAgreementStateWithAggregatesFilter<"AgreementSession"> | $Enums.AgreementState
+    contentDayIndex?: IntNullableWithAggregatesFilter<"AgreementSession"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"AgreementSession"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AgreementSession"> | Date | string
   }
@@ -27029,6 +27137,7 @@ export namespace Prisma {
     id?: string
     sessionDate: Date | string
     state?: $Enums.QuizState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     relationship: RelationshipCreateNestedOneWithoutQuizSessionsInput
@@ -27040,6 +27149,7 @@ export namespace Prisma {
     relationshipId: string
     sessionDate: Date | string
     state?: $Enums.QuizState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     participations?: QuizParticipationUncheckedCreateNestedManyWithoutQuizSessionInput
@@ -27049,6 +27159,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumQuizStateFieldUpdateOperationsInput | $Enums.QuizState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     relationship?: RelationshipUpdateOneRequiredWithoutQuizSessionsNestedInput
@@ -27060,6 +27171,7 @@ export namespace Prisma {
     relationshipId?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumQuizStateFieldUpdateOperationsInput | $Enums.QuizState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participations?: QuizParticipationUncheckedUpdateManyWithoutQuizSessionNestedInput
@@ -27070,6 +27182,7 @@ export namespace Prisma {
     relationshipId: string
     sessionDate: Date | string
     state?: $Enums.QuizState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -27078,6 +27191,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumQuizStateFieldUpdateOperationsInput | $Enums.QuizState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -27087,6 +27201,7 @@ export namespace Prisma {
     relationshipId?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumQuizStateFieldUpdateOperationsInput | $Enums.QuizState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -27163,6 +27278,7 @@ export namespace Prisma {
     id?: string
     sessionDate: Date | string
     state?: $Enums.AgreementState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     relationship: RelationshipCreateNestedOneWithoutAgreementSessionsInput
@@ -27174,6 +27290,7 @@ export namespace Prisma {
     relationshipId: string
     sessionDate: Date | string
     state?: $Enums.AgreementState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     participations?: AgreementParticipationUncheckedCreateNestedManyWithoutAgreementSessionInput
@@ -27183,6 +27300,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumAgreementStateFieldUpdateOperationsInput | $Enums.AgreementState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     relationship?: RelationshipUpdateOneRequiredWithoutAgreementSessionsNestedInput
@@ -27194,6 +27312,7 @@ export namespace Prisma {
     relationshipId?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumAgreementStateFieldUpdateOperationsInput | $Enums.AgreementState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participations?: AgreementParticipationUncheckedUpdateManyWithoutAgreementSessionNestedInput
@@ -27204,6 +27323,7 @@ export namespace Prisma {
     relationshipId: string
     sessionDate: Date | string
     state?: $Enums.AgreementState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -27212,6 +27332,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumAgreementStateFieldUpdateOperationsInput | $Enums.AgreementState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -27221,6 +27342,7 @@ export namespace Prisma {
     relationshipId?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumAgreementStateFieldUpdateOperationsInput | $Enums.AgreementState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28377,8 +28499,13 @@ export namespace Prisma {
     relationshipId?: SortOrder
     sessionDate?: SortOrder
     state?: SortOrder
+    contentDayIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type QuizSessionAvgOrderByAggregateInput = {
+    contentDayIndex?: SortOrder
   }
 
   export type QuizSessionMaxOrderByAggregateInput = {
@@ -28386,6 +28513,7 @@ export namespace Prisma {
     relationshipId?: SortOrder
     sessionDate?: SortOrder
     state?: SortOrder
+    contentDayIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -28395,8 +28523,13 @@ export namespace Prisma {
     relationshipId?: SortOrder
     sessionDate?: SortOrder
     state?: SortOrder
+    contentDayIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type QuizSessionSumOrderByAggregateInput = {
+    contentDayIndex?: SortOrder
   }
 
   export type EnumQuizStateWithAggregatesFilter<$PrismaModel = never> = {
@@ -28466,8 +28599,13 @@ export namespace Prisma {
     relationshipId?: SortOrder
     sessionDate?: SortOrder
     state?: SortOrder
+    contentDayIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type AgreementSessionAvgOrderByAggregateInput = {
+    contentDayIndex?: SortOrder
   }
 
   export type AgreementSessionMaxOrderByAggregateInput = {
@@ -28475,6 +28613,7 @@ export namespace Prisma {
     relationshipId?: SortOrder
     sessionDate?: SortOrder
     state?: SortOrder
+    contentDayIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -28484,8 +28623,13 @@ export namespace Prisma {
     relationshipId?: SortOrder
     sessionDate?: SortOrder
     state?: SortOrder
+    contentDayIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type AgreementSessionSumOrderByAggregateInput = {
+    contentDayIndex?: SortOrder
   }
 
   export type EnumAgreementStateWithAggregatesFilter<$PrismaModel = never> = {
@@ -31375,6 +31519,7 @@ export namespace Prisma {
     id?: string
     sessionDate: Date | string
     state?: $Enums.QuizState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     participations?: QuizParticipationCreateNestedManyWithoutQuizSessionInput
@@ -31384,6 +31529,7 @@ export namespace Prisma {
     id?: string
     sessionDate: Date | string
     state?: $Enums.QuizState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     participations?: QuizParticipationUncheckedCreateNestedManyWithoutQuizSessionInput
@@ -31403,6 +31549,7 @@ export namespace Prisma {
     id?: string
     sessionDate: Date | string
     state?: $Enums.AgreementState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     participations?: AgreementParticipationCreateNestedManyWithoutAgreementSessionInput
@@ -31412,6 +31559,7 @@ export namespace Prisma {
     id?: string
     sessionDate: Date | string
     state?: $Enums.AgreementState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     participations?: AgreementParticipationUncheckedCreateNestedManyWithoutAgreementSessionInput
@@ -31589,6 +31737,7 @@ export namespace Prisma {
     relationshipId?: StringFilter<"QuizSession"> | string
     sessionDate?: DateTimeFilter<"QuizSession"> | Date | string
     state?: EnumQuizStateFilter<"QuizSession"> | $Enums.QuizState
+    contentDayIndex?: IntNullableFilter<"QuizSession"> | number | null
     createdAt?: DateTimeFilter<"QuizSession"> | Date | string
     updatedAt?: DateTimeFilter<"QuizSession"> | Date | string
   }
@@ -31617,6 +31766,7 @@ export namespace Prisma {
     relationshipId?: StringFilter<"AgreementSession"> | string
     sessionDate?: DateTimeFilter<"AgreementSession"> | Date | string
     state?: EnumAgreementStateFilter<"AgreementSession"> | $Enums.AgreementState
+    contentDayIndex?: IntNullableFilter<"AgreementSession"> | number | null
     createdAt?: DateTimeFilter<"AgreementSession"> | Date | string
     updatedAt?: DateTimeFilter<"AgreementSession"> | Date | string
   }
@@ -33481,6 +33631,7 @@ export namespace Prisma {
     id?: string
     sessionDate: Date | string
     state?: $Enums.QuizState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     relationship: RelationshipCreateNestedOneWithoutQuizSessionsInput
@@ -33491,6 +33642,7 @@ export namespace Prisma {
     relationshipId: string
     sessionDate: Date | string
     state?: $Enums.QuizState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -33562,6 +33714,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumQuizStateFieldUpdateOperationsInput | $Enums.QuizState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     relationship?: RelationshipUpdateOneRequiredWithoutQuizSessionsNestedInput
@@ -33572,6 +33725,7 @@ export namespace Prisma {
     relationshipId?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumQuizStateFieldUpdateOperationsInput | $Enums.QuizState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -33753,6 +33907,7 @@ export namespace Prisma {
     id?: string
     sessionDate: Date | string
     state?: $Enums.AgreementState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     relationship: RelationshipCreateNestedOneWithoutAgreementSessionsInput
@@ -33763,6 +33918,7 @@ export namespace Prisma {
     relationshipId: string
     sessionDate: Date | string
     state?: $Enums.AgreementState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -33834,6 +33990,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumAgreementStateFieldUpdateOperationsInput | $Enums.AgreementState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     relationship?: RelationshipUpdateOneRequiredWithoutAgreementSessionsNestedInput
@@ -33844,6 +34001,7 @@ export namespace Prisma {
     relationshipId?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumAgreementStateFieldUpdateOperationsInput | $Enums.AgreementState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34375,6 +34533,7 @@ export namespace Prisma {
     id?: string
     sessionDate: Date | string
     state?: $Enums.QuizState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34383,6 +34542,7 @@ export namespace Prisma {
     id?: string
     sessionDate: Date | string
     state?: $Enums.AgreementState
+    contentDayIndex?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34510,6 +34670,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumQuizStateFieldUpdateOperationsInput | $Enums.QuizState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participations?: QuizParticipationUpdateManyWithoutQuizSessionNestedInput
@@ -34519,6 +34680,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumQuizStateFieldUpdateOperationsInput | $Enums.QuizState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participations?: QuizParticipationUncheckedUpdateManyWithoutQuizSessionNestedInput
@@ -34528,6 +34690,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumQuizStateFieldUpdateOperationsInput | $Enums.QuizState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34536,6 +34699,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumAgreementStateFieldUpdateOperationsInput | $Enums.AgreementState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participations?: AgreementParticipationUpdateManyWithoutAgreementSessionNestedInput
@@ -34545,6 +34709,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumAgreementStateFieldUpdateOperationsInput | $Enums.AgreementState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participations?: AgreementParticipationUncheckedUpdateManyWithoutAgreementSessionNestedInput
@@ -34554,6 +34719,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
     state?: EnumAgreementStateFieldUpdateOperationsInput | $Enums.AgreementState
+    contentDayIndex?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

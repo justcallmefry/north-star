@@ -81,9 +81,35 @@ model User {
   agreementParticipations AgreementParticipation[]
   meetingEntries          MeetingEntry[]
   subscriptions           Subscription[]
+  pushSubscriptions       PushSubscription[]
+  nativePushTokens        NativePushToken[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @unique
+  p256dhKey String   @map("p256dh_key")
+  authKey   String   @map("auth_key")
+  userAgent String?  @map("user_agent")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model NativePushToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  platform  String // "ios" | "android"
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model Account {
@@ -358,10 +384,12 @@ enum QuizState {
 }
 
 model QuizSession {
-  id             String    @id @default(cuid())
-  relationshipId String
-  sessionDate    DateTime  @db.Date
-  state          QuizState @default(open)
+  id              String    @id @default(cuid())
+  relationshipId  String
+  sessionDate     DateTime  @db.Date
+  state           QuizState @default(open)
+  /// 1-based index into data/quiz-days.json for this session (null = legacy: derived from sessionDate).
+  contentDayIndex Int?
 
   relationship   Relationship        @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
   participations QuizParticipation[]
@@ -398,10 +426,12 @@ enum AgreementState {
 }
 
 model AgreementSession {
-  id             String         @id @default(cuid())
-  relationshipId String
-  sessionDate    DateTime       @db.Date
-  state          AgreementState @default(open)
+  id              String         @id @default(cuid())
+  relationshipId  String
+  sessionDate     DateTime       @db.Date
+  state           AgreementState @default(open)
+  /// 1-based index into data/agreement-days.json for this session (null = legacy).
+  contentDayIndex Int?
 
   relationship   Relationship             @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
   participations AgreementParticipation[]

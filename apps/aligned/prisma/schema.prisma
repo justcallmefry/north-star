@@ -388,6 +388,8 @@ model QuizSession {
   relationshipId String
   sessionDate    DateTime  @db.Date
   state          QuizState @default(open)
+  /// 1-based index into data/quiz-days.json for this session (null = legacy: derived from sessionDate).
+  contentDayIndex Int?
 
   relationship Relationship        @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
   participations QuizParticipation[]
@@ -428,6 +430,8 @@ model AgreementSession {
   relationshipId String
   sessionDate    DateTime  @db.Date
   state          AgreementState @default(open)
+  /// 1-based index into data/agreement-days.json for this session (null = legacy).
+  contentDayIndex Int?
 
   relationship Relationship              @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
   participations AgreementParticipation[]

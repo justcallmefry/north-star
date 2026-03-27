@@ -296,6 +296,7 @@ exports.Prisma.QuizSessionScalarFieldEnum = {
   relationshipId: 'relationshipId',
   sessionDate: 'sessionDate',
   state: 'state',
+  contentDayIndex: 'contentDayIndex',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -315,6 +316,7 @@ exports.Prisma.AgreementSessionScalarFieldEnum = {
   relationshipId: 'relationshipId',
   sessionDate: 'sessionDate',
   state: 'state',
+  contentDayIndex: 'contentDayIndex',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

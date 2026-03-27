@@ -38,6 +38,7 @@ next-env.d.ts
 
 # Prisma
 prisma/migrations/**/migration_lock.toml
+apps/*/generated/prisma/query_engine*.tmp*
 
 # Generated Prisma client (regenerate with npx prisma generate)
 /generated

@@ -1,12 +1,24 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { pickNextContentDayIndex, resolveContentDayIndex } from "@north-star/shared";
 import { Prisma } from "@/generated/prisma";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import type { AgreementForTodayResult, AgreementQuestion } from "@/lib/agreement-shared";
-import { getAgreementDayIndex, getAgreementQuestions } from "@/lib/agreement-utils";
+import {
+  getAgreementDayCount,
+  getAgreementDayIndex,
+  getAgreementQuestions,
+} from "@/lib/agreement-utils";
 import { requireActiveMember, todayUTC } from "@/lib/relationship-members";
+
+async function agreementContentSnapshots(relationshipId: string) {
+  return prisma.agreementSession.findMany({
+    where: { relationshipId },
+    select: { sessionDate: true, contentDayIndex: true },
+  });
+}
 
 export async function getAgreementForToday(
   relationshipId: string,
@@ -39,12 +51,14 @@ export async function getAgreementForToday(
   const latestDateStr = latestSession?.sessionDate.toISOString().slice(0, 10);
   if (latestSession && latestSession.state === "open" && latestDateStr === todayStr) {
     agreementSession = latestSession;
-    dayIndex = getAgreementDayIndex(agreementSession.sessionDate);
+    dayIndex = resolveContentDayIndex(
+      agreementSession.sessionDate,
+      agreementSession.contentDayIndex,
+      getAgreementDayCount(),
+      getAgreementDayIndex
+    );
     questions = getAgreementQuestions(dayIndex);
   } else {
-    dayIndex = getAgreementDayIndex(today);
-    questions = getAgreementQuestions(dayIndex);
-
     let session = await prisma.agreementSession.findUnique({
       where: {
         relationshipId_sessionDate: { relationshipId, sessionDate: today },
@@ -57,12 +71,19 @@ export async function getAgreementForToday(
     });
 
     if (!session) {
+      const snapshots = await agreementContentSnapshots(relationshipId);
+      const contentDayIndex = pickNextContentDayIndex({
+        maxDay: getAgreementDayCount(),
+        sessions: snapshots,
+        fallbackFromDate: getAgreementDayIndex,
+      });
       try {
         session = await prisma.agreementSession.create({
           data: {
             relationshipId,
             sessionDate: today,
             state: "open",
+            contentDayIndex,
           },
           include: {
             participations: {
@@ -87,6 +108,13 @@ export async function getAgreementForToday(
       }
     }
     agreementSession = session;
+    dayIndex = resolveContentDayIndex(
+      agreementSession.sessionDate,
+      agreementSession.contentDayIndex,
+      getAgreementDayCount(),
+      getAgreementDayIndex
+    );
+    questions = getAgreementQuestions(dayIndex);
   }
 
   const myPart = agreementSession.participations.find(
@@ -215,7 +243,12 @@ export async function getAgreementForDate(
   });
   if (!agreementSession) return null;
 
-  const dayIndex = getAgreementDayIndex(agreementSession.sessionDate);
+  const dayIndex = resolveContentDayIndex(
+    agreementSession.sessionDate,
+    agreementSession.contentDayIndex,
+    getAgreementDayCount(),
+    getAgreementDayIndex
+  );
   const questions = getAgreementQuestions(dayIndex);
   const myPart = agreementSession.participations.find((p) => p.userId === authSession.user!.id);
   const partnerPart = agreementSession.participations.find((p) => p.userId !== authSession.user!.id);
@@ -322,14 +355,20 @@ export async function submitAgreement(
       ? new Date(localDateStr + "T00:00:00.000Z")
       : todayUTC();
 
+  const todayStr = localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr)
+    ? localDateStr
+    : today.toISOString().slice(0, 10);
+
   const latestSession = await prisma.agreementSession.findFirst({
     where: { relationshipId },
     orderBy: { sessionDate: "desc" },
     include: { participations: true },
   });
 
+  const latestDateStr = latestSession?.sessionDate.toISOString().slice(0, 10);
+
   let agreementSession: NonNullable<typeof latestSession>;
-  if (latestSession && latestSession.state === "open") {
+  if (latestSession && latestSession.state === "open" && latestDateStr === todayStr) {
     agreementSession = latestSession;
   } else {
     let s = await prisma.agreementSession.findUnique({
@@ -339,12 +378,19 @@ export async function submitAgreement(
       include: { participations: true },
     });
     if (!s) {
+      const snapshots = await agreementContentSnapshots(relationshipId);
+      const contentDayIndex = pickNextContentDayIndex({
+        maxDay: getAgreementDayCount(),
+        sessions: snapshots,
+        fallbackFromDate: getAgreementDayIndex,
+      });
       try {
         s = await prisma.agreementSession.create({
           data: {
             relationshipId,
             sessionDate: today,
             state: "open",
+            contentDayIndex,
           },
           include: { participations: true },
         });

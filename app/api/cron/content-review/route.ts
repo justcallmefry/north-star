@@ -42,8 +42,8 @@ export async function GET(request: Request) {
       <p>Consider refreshing or adding to:</p>
       <ul>
         <li><strong>Daily prompts</strong> (Today’s question) — prisma/update-daily-prompts.ts, prisma/seed.ts</li>
-        <li><strong>Quiz questions</strong> — data/quiz-days.json (30 days × 5 questions)</li>
-        <li><strong>Agreement statements</strong> — data/agreement-days.json (30 days × 5 statements)</li>
+        <li><strong>Quiz questions</strong> — data/quiz-days.json (bundles × 5 questions each; pool grows over time)</li>
+        <li><strong>Agreement statements</strong> — data/agreement-days.json (bundles × 5 statements each)</li>
       </ul>
       <p>App: <a href="${appUrl}">${appUrl}</a></p>
       <p>See docs/CONTENT-UPDATES.md for how to use the AI draft script or update content.</p>

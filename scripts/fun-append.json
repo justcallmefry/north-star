@@ -1,0 +1,762 @@
+{
+  "quizExtra": [
+    {
+      "questions": [
+        {
+          "text": "If airfare and hotels were covered, my dream two-week trip would be…",
+          "options": [
+            "Tropical islands and snorkeling",
+            "European cities and museums",
+            "US national parks road trip",
+            "A ski town in winter",
+            "A long train journey (Orient-style or scenic rail)"
+          ]
+        },
+        {
+          "text": "My fantasy “we’d look ridiculous but happy” vehicle for weekend fun would be…",
+          "options": [
+            "A vintage convertible",
+            "A big comfy camper van",
+            "A tiny electric city car",
+            "A pickup truck for adventures",
+            "Something fast and loud I’d never daily-drive"
+          ]
+        },
+        {
+          "text": "In our dream place someday, the one thing I’d splurge on is…",
+          "options": [
+            "A huge kitchen for cooking together",
+            "A view (water, mountains, or skyline)",
+            "A cozy reading nook / library wall",
+            "Outdoor space — porch, yard, or terrace",
+            "A killer shower or bath setup"
+          ]
+        },
+        {
+          "text": "The “we should totally do this together” activity I think about most is…",
+          "options": [
+            "Learning to dance or surf",
+            "Training for a 5K or hike together",
+            "Taking a cooking class abroad",
+            "Volunteering or a service trip",
+            "Starting a silly side project (podcast, garden, etc.)"
+          ]
+        },
+        {
+          "text": "If we got $20,000 labeled “fun only,” I’d want to…",
+          "options": [
+            "Book the trip we keep talking about",
+            "Upgrade something we use every day",
+            "Tickets to a dream concert or game series",
+            "A week off work with zero agenda",
+            "Split: part trip, part “we’ve earned this” treat"
+          ]
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "text": "My ideal “we’re out of the house” Saturday adventure is…",
+          "options": [
+            "Water — beach, lake, or boat",
+            "Mountains or hiking",
+            "A new city neighborhood to explore",
+            "Amusement park or fair energy",
+            "A food crawl with no reservations"
+          ]
+        },
+        {
+          "text": "For a random long weekend, I’d rather…",
+          "options": [
+            "Fly somewhere new",
+            "Drive somewhere within a few hours",
+            "Stay local but act like tourists",
+            "Hide in a cabin with snacks",
+            "Let my partner surprise me (within reason)"
+          ]
+        },
+        {
+          "text": "The kind of live event I’d be most excited to share tickets to is…",
+          "options": [
+            "Big concert or festival",
+            "Sports championship energy",
+            "Broadway / theater",
+            "Comedy show",
+            "Small intimate venue I’ve never heard of"
+          ]
+        },
+        {
+          "text": "When I picture “retirement us” (far away or not), I see us…",
+          "options": [
+            "Traveling often",
+            "In a cozy home with visits from people we love",
+            "Near water",
+            "Near mountains",
+            "Still trying new things together"
+          ]
+        },
+        {
+          "text": "A bucket-list destination I’ve barely said out loud is…",
+          "options": [
+            "Japan",
+            "Italy or Greece",
+            "Patagonia or New Zealand",
+            "Northern lights trip",
+            "Somewhere totally random from a documentary"
+          ]
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "text": "My dream “treat yourself” day together looks like…",
+          "options": [
+            "Spa or slow wellness day",
+            "Fancy lunch and wandering shops",
+            "Outdoor adventure with a great dinner after",
+            "Theme park or arcade kid energy",
+            "Blanket fort, takeout, and movies"
+          ]
+        },
+        {
+          "text": "If we could pick up a hobby as a duo next year, I’d vote for…",
+          "options": [
+            "Something physical — climbing, biking, tennis",
+            "Something creative — pottery, music, photography",
+            "Something culinary — bread, cocktails, BBQ",
+            "Games — board games, trivia league, pickleball",
+            "Something travel-adjacent — points hacking, language app streaks"
+          ]
+        },
+        {
+          "text": "The vacation pace that fits me best is…",
+          "options": [
+            "One main activity per day, then rest",
+            "Pack it in — we can sleep later",
+            "Slow mornings, late afternoons out",
+            "No schedule — follow the weather and mood",
+            "Mix of planned anchor events and free time"
+          ]
+        },
+        {
+          "text": "If we were choosing a “second home someday” purely for joy, I’d lean…",
+          "options": [
+            "Beach town",
+            "Mountain cabin",
+            "City apartment somewhere walkable",
+            "Lake house",
+            "Farm country with space"
+          ]
+        },
+        {
+          "text": "My dream date that’s a little over-the-top is…",
+          "options": [
+            "Helicopter or hot-air balloon",
+            "Private cooking lesson with a chef",
+            "Sunset sail or dinner cruise",
+            "Front-row or VIP something we both love",
+            "A full day trip somewhere we’ve never been"
+          ]
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "text": "For lodging on a dream trip, I’d rather…",
+          "options": [
+            "Boutique hotel with character",
+            "All-inclusive ease",
+            "Unique Airbnb — treehouse, dome, etc.",
+            "Camping or glamping",
+            "Mix stays to keep it interesting"
+          ]
+        },
+        {
+          "text": "The travel snack I’m stealing for the plane or road trip is…",
+          "options": [
+            "Something salty and crunchy",
+            "Chocolate something",
+            "Fresh fruit or fancy cheese",
+            "Gas-station guilty pleasure",
+            "I’m buying whatever looks new at the airport"
+          ]
+        },
+        {
+          "text": "If we had a free month and good budget, I’d want to…",
+          "options": [
+            "Slow travel through one region",
+            "Hit several countries fast",
+            "Pick one place and live like locals",
+            "Road trip with flexible stops",
+            "Follow a festival or season (fall leaves, cherry blossoms)"
+          ]
+        },
+        {
+          "text": "A “we should own one of these someday” thing I smile about is…",
+          "options": [
+            "A boat or kayak setup",
+            "A projector home theater",
+            "E-bikes or motorcycles",
+            "A great grill or pizza oven",
+            "A garage workshop for projects"
+          ]
+        },
+        {
+          "text": "When I think about celebrating a big win together, I imagine…",
+          "options": [
+            "A trip",
+            "A splurge dinner",
+            "Upgrading something practical we’ve waited on",
+            "A party with people we love",
+            "Quiet champagne and gratitude at home"
+          ]
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "text": "My ideal winter getaway together is…",
+          "options": [
+            "Ski or snowboard trip",
+            "Somewhere warm to escape the cold",
+            "City lights and cozy cafes",
+            "Cabin, fireplace, and books",
+            "I like winter at home if it’s festive"
+          ]
+        },
+        {
+          "text": "For summer, I get most excited about…",
+          "options": [
+            "Beach days",
+            "Camping or national parks",
+            "Outdoor concerts and patios",
+            "Long daylight walks and ice cream",
+            "Traveling somewhere cooler than where we live"
+          ]
+        },
+        {
+          "text": "A “random Tuesday” dream I’ve had is winning…",
+          "options": [
+            "A sweepstakes trip",
+            "Tickets to see my favorite artist",
+            "A shopping spree we’d mostly use on each other",
+            "A car giveaway (even if unrealistic)",
+            "A meet-and-greet experience"
+          ]
+        },
+        {
+          "text": "If we learned a language together for a future trip, I’d pick…",
+          "options": [
+            "Spanish",
+            "French",
+            "Japanese",
+            "Italian",
+            "Whatever matches our next dream destination"
+          ]
+        },
+        {
+          "text": "The souvenir I’m most likely to bring home is…",
+          "options": [
+            "Something edible",
+            "Art or a print",
+            "A piece of clothing",
+            "A mug or household item we’ll use",
+            "Photos and memories — skip the stuff"
+          ]
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "text": "Our dream “annual tradition” travel would be…",
+          "options": [
+            "Same favorite spot every year",
+            "A new country yearly",
+            "Visit friends in different cities",
+            "National park every summer",
+            "Stay flexible — no fixed rule"
+          ]
+        },
+        {
+          "text": "If we could take a class trip together (like school but fun), I’d choose…",
+          "options": [
+            "Scuba or sailing school",
+            "Wine or coffee origins",
+            "Photography on location",
+            "Woodworking or building something",
+            "Yoga or meditation retreat"
+          ]
+        },
+        {
+          "text": "On a dream road trip, I want the playlist to be…",
+          "options": [
+            "Classic road-trip singalongs",
+            "Podcasts and audiobooks",
+            "Partner’s picks — surprise me",
+            "Genre days — country Tuesday, 90s Wednesday",
+            "Silence and scenery sometimes"
+          ]
+        },
+        {
+          "text": "If money were silly and green flags only, I’d want us to try…",
+          "options": [
+            "A luxury train ride",
+            "A safari or wildlife trip",
+            "Sailing between islands",
+            "A culinary tour with Michelin stops",
+            "Space tourism… eventually"
+          ]
+        },
+        {
+          "text": "The “little upgrade” that would make everyday life feel dreamy is…",
+          "options": [
+            "House cleaner rhythm we don’t stress about",
+            "Better coffee setup",
+            "Comfier mattress or bedding",
+            "Nicer car seats for road trips",
+            "A bigger table for hosting"
+          ]
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "text": "If we planned a surprise trip for each other, I’d rather…",
+          "options": [
+            "They plan mine; I plan theirs later",
+            "We each get a hint before packing",
+            "One fully blind bag packed for me",
+            "A mystery envelope opened at the airport",
+            "Surprises are fun in theory — I need some input"
+          ]
+        },
+        {
+          "text": "My dream version of “let’s play hooky” together is…",
+          "options": [
+            "Day trip with snacks and no phones",
+            "Museum or zoo on a weekday",
+            "Brunch and bookstore wander",
+            "Be spontaneous with flights if they’re cheap",
+            "Stay home but order the good takeout and unplug"
+          ]
+        },
+        {
+          "text": "A place I romanticize but haven’t been yet is…",
+          "options": [
+            "Iceland or Norway",
+            "Morocco",
+            "Safari Africa",
+            "Thailand or Vietnam",
+            "The Pacific Northwest or California coast"
+          ]
+        },
+        {
+          "text": "If we moved for adventure (temporarily), I’d be curious about…",
+          "options": [
+            "Living abroad a year",
+            "Digital nomad months",
+            "Trying a new US city for a season",
+            "Near family for a chapter",
+            "I like the idea more than leaving — keep it as fantasy"
+          ]
+        },
+        {
+          "text": "When I think “dream team,” I picture us crushing…",
+          "options": [
+            "A renovation or big project",
+            "A fitness goal together",
+            "A financial milestone for a trip fund",
+            "Hosting the holidays",
+            "Building traditions our people love"
+          ]
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "text": "For food on vacation, I’m happiest when we…",
+          "options": [
+            "Mix fancy reservations and street food",
+            "Cook sometimes with local ingredients",
+            "Follow one viral list and laugh about misses",
+            "Ask locals and ignore Google stars",
+            "Repeat our favorite spot twice — no shame"
+          ]
+        },
+        {
+          "text": "My underwater / adventure comfort zone is…",
+          "options": [
+            "Snorkeling yes, diving maybe later",
+            "Zip-lines and mild adrenaline",
+            "Kayak or paddleboard days",
+            "Keep me on land — I’ll cheer",
+            "Push me — I trust us"
+          ]
+        },
+        {
+          "text": "A toy I’d love as an adult (responsibly) is…",
+          "options": [
+            "A nicer camera kit",
+            "A game console we actually use",
+            "A telescope for dark skies",
+            "A vinyl or speaker setup",
+            "Something we’d only buy if we used it weekly"
+          ]
+        },
+        {
+          "text": "The “someday wedding” or big party vibe I smile about is…",
+          "options": [
+            "Tiny and intimate",
+            "Big dance floor energy",
+            "Destination with our people",
+            "City rooftop moment",
+            "Low-key — amazing meal and letters"
+          ]
+        },
+        {
+          "text": "If we picked a mascot animal for our future adventures, it’d be…",
+          "options": [
+            "Fox — clever and quick trips",
+            "Otter — play in the water",
+            "Bear — cabin naps after hikes",
+            "Bird — always scouting the next view",
+            "Dog energy — loyal road trip buddies"
+          ]
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "text": "My favorite “city date” mini-trip energy is…",
+          "options": [
+            "Museums + long dinner",
+            "Shopping for something small we didn’t know we’d find",
+            "Night skyline or rooftop",
+            "Live music crawl",
+            "Walking until our feet flip us off"
+          ]
+        },
+        {
+          "text": "If we built a jar of “dream dates,” the first slip I’d add says…",
+          "options": [
+            "Sunrise somewhere pretty",
+            "Arcade night with prizes",
+            "Drive-in or outdoor movie",
+            "Picnic with too many cheeses",
+            "Recreate our first date with upgrades"
+          ]
+        },
+        {
+          "text": "A dream “we finally did it” moment I want is…",
+          "options": [
+            "Seeing something famous in person (landmark, show, park)",
+            "Finishing a trip with zero lost luggage drama",
+            "Meeting a goal that funds the next adventure",
+            "Learning one skill that unlocks trips (driving stick, etc.)",
+            "Making a tradition our future people talk about"
+          ]
+        },
+        {
+          "text": "When I window-shop online for fun, I’m usually looking at…",
+          "options": [
+            "Travel gear and packing hacks",
+            "Kitchen gadgets we’d actually use",
+            "Outdoor furniture for future yard",
+            "Experiences or giftable trips",
+            "I try not to — save the surprise for real planning"
+          ]
+        },
+        {
+          "text": "The soundtrack for our best summer memory (real or imagined) is…",
+          "options": [
+            "Pop anthems with windows down",
+            "Indie and sunsets",
+            "Country roads",
+            "Throwbacks we both know every word",
+            "Whatever was playing where we were — tied to the place"
+          ]
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "text": "If we had a loyalty program for “us time,” I’d redeem points for…",
+          "options": [
+            "One kid-free/no-obligation weekend quarterly",
+            "A nicer hotel than we’d normally pick",
+            "A surprise reservation they’d want",
+            "Gear that makes trips easier",
+            "Donating a duplicate “us weekend” to a friend couple"
+          ]
+        },
+        {
+          "text": "Dream boat situation (even if we never buy one)…",
+          "options": [
+            "Kayaks we actually use",
+            "Pontoon chill days",
+            "Sail lessons together",
+            "Charter once somewhere blue",
+            "Hard pass — I get seasick just thinking about it"
+          ]
+        },
+        {
+          "text": "The house project that would feel like a dream upgrade is…",
+          "options": [
+            "Better insulation / peace and quiet",
+            "Outdoor lights and seating",
+            "Closet that doesn’t wage war daily",
+            "Pet-friendly mudroom fantasy",
+            "Bigger table + hosting flow"
+          ]
+        },
+        {
+          "text": "If we won season tickets to something, I’d hope it’s…",
+          "options": [
+            "Our favorite sports team",
+            "Theater season",
+            "Symphony or outdoor music series",
+            "Comedy club pass",
+            "We’d gift them — not our rhythm"
+          ]
+        },
+        {
+          "text": "My “I’d brag to strangers” relationship flex would be…",
+          "options": [
+            "How we travel together",
+            "How we tackle projects",
+            "How we laugh at small disasters",
+            "How we plan surprises",
+            "How comfortable silence feels"
+          ]
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "text": "If aliens studied our best weekend, they’d document us…",
+          "options": [
+            "Eating something delicious",
+            "Outside moving our bodies",
+            "Curled up in soft clothes laughing",
+            "Exploring somewhere new on a whim",
+            "Building something — Lego, IKEA, or metaphorical"
+          ]
+        },
+        {
+          "text": "A “guilty pleasure” trip add-on I secretly want is…",
+          "options": [
+            "Airport lounge flex",
+            "More-legroom seats without debate",
+            "Matching dumb tourist hats",
+            "One ridiculously priced dessert",
+            "A photoshoot we’d never post all of"
+          ]
+        },
+        {
+          "text": "If we picked a dream trip around food, it’d center…",
+          "options": [
+            "Pasta and gelato energy",
+            "Tacos and sunshine",
+            "Sushi pilgrimage",
+            "BBQ trail",
+            "Pastry and coffee capitals"
+          ]
+        },
+        {
+          "text": "The perfect “we’re not broke but we’re not royalty” splurge trip length is…",
+          "options": [
+            "Long weekend",
+            "Five to seven nights",
+            "Ten days if we’re crossing an ocean",
+            "Two weeks once in a blue moon",
+            "Short and often beats rare and long"
+          ]
+        },
+        {
+          "text": "If we wrote a couple bucket list on a napkin, my handwriting adds…",
+          "options": [
+            "Northern lights",
+            "A championship game live",
+            "A hot spring somewhere scenic",
+            "Learning to ski or surf",
+            "Driving the whole coast someday"
+          ]
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "text": "When I mentally redecorate for fun, I’m pinning…",
+          "options": [
+            "Warm lighting everywhere",
+            "Plants I promise to keep alive",
+            "A reading corner with blanket ladder cosplay",
+            "Gallery wall of our adventures",
+            "Minimal calm — storage sorcery"
+          ]
+        },
+        {
+          "text": "My dream “let’s be cheesy tourists” activity is…",
+          "options": [
+            "Double-decker bus",
+            "Matching outfits ironically",
+            "Obvious landmark photos",
+            "Buying the overpriced keychain",
+            "I’d do all of it once for the bit"
+          ]
+        },
+        {
+          "text": "If we had passes to every museum in the world for a year, I’d drag us to…",
+          "options": [
+            "Art first",
+            "Science and nature",
+            "History deep dives",
+            "Weird niche museums only",
+            "We’d rotate who picks — fair game"
+          ]
+        },
+        {
+          "text": "The adventure sport I’d try once with hand-holding is…",
+          "options": [
+            "Paragliding",
+            "Whitewater mild rapids",
+            "Indoor skydiving",
+            "Horseback on a beach",
+            "I’m the blanket-and-cocoa correspondent"
+          ]
+        },
+        {
+          "text": "If we froze time for one perfect evening together, I’d spend it…",
+          "options": [
+            "Dancing in the kitchen",
+            "Stargazing somewhere dark",
+            "Trying a new restaurant we’d talked up",
+            "Replay our favorite movie with takeout",
+            "Planning the next adventure on a big map"
+          ]
+        }
+      ]
+    }
+  ],
+  "agreementExtra": [
+    {
+      "questions": [
+        { "text": "I’d rather save for a big dream trip together than buy lots of small upgrades this year." },
+        { "text": "I get genuinely excited when we talk about learning something new together (a skill, sport, or class)." },
+        { "text": "I’d pick memorable experiences (travel, shows, classes) over buying more stuff for our home most of the time." },
+        { "text": "Thinking about ‘someday’ adventures with my partner gives me energy, not stress." },
+        { "text": "I’m open to spontaneous trips if we can swing them responsibly." }
+      ]
+    },
+    {
+      "questions": [
+        { "text": "Owning a great road-trip vehicle someday sounds more fun to me than owning flashy cars we barely drive." },
+        { "text": "I’d happily spend money on concert or game tickets we’ll remember for years." },
+        { "text": "I care more about having outdoor space or a great kitchen in a future home than having the biggest square footage." },
+        { "text": "A week off together doing something novel beats a week off spent only on errands." },
+        { "text": "I like the idea of a shared ‘adventure fund’ even if it’s small." }
+      ]
+    },
+    {
+      "questions": [
+        { "text": "Beach vacations recharge me more than almost anything else." },
+        { "text": "Mountain or hiking trips are my ideal way to reset together." },
+        { "text": "City trips with museums, food, and walking are my favorite way to explore." },
+        { "text": "I’d rather do one longer trip per year than lots of rushed weekends." },
+        { "text": "I’m happiest when our travel mix includes both rest days and exploration days." }
+      ]
+    },
+    {
+      "questions": [
+        { "text": "I get excited imagining us hosting friends or family in a home that feels like ‘us.’" },
+        { "text": "I’d splurge on a really comfortable bed or bedding before most other furniture." },
+        { "text": "I’d rather spend on a cooking class together than on matching luxury accessories." },
+        { "text": "Dreaming about future trips is something I want to do openly with my partner." },
+        { "text": "I value photos or small souvenirs that remind us of places we’ve been together." }
+      ]
+    },
+    {
+      "questions": [
+        { "text": "Trying a new cuisine together on date night is one of my favorite kinds of joy." },
+        { "text": "I’m interested in a future trip that’s slightly outside our comfort zone (not reckless—just bold)." },
+        { "text": "I’d like us to celebrate milestones with an experience, not only a gift." },
+        { "text": "The idea of a train journey with my partner sounds romantic to me." },
+        { "text": "I’d rather have season passes or memberships we use than gadgets collecting dust." }
+      ]
+    },
+    {
+      "questions": [
+        { "text": "Water activities (boat, kayak, beach) are a dream weekend for me." },
+        { "text": "Snow trips—ski, cabin, cocoa—are a dream weekend for me." },
+        { "text": "Theme parks or festivals are totally my kind of guilty-fun trip." },
+        { "text": "Quiet cabin weekends with books and walks are my dream pace sometimes." },
+        { "text": "I want our relationship to include regular ‘we did something just because it sounded fun’ moments." }
+      ]
+    },
+    {
+      "questions": [
+        { "text": "I’d be willing to drive farther than most people would for a great meal or view." },
+        { "text": "I believe it’s worth paying a little extra for location when we travel (walkable, safer, happier)." },
+        { "text": "I’m interested in living abroad or doing a long sabbatical together someday." },
+        { "text": "I’d rather upgrade travel comfort (sleep, bags, timing) than eat every meal at Michelin spots." },
+        { "text": "I want a life where we sometimes say yes to the impractical memory." }
+      ]
+    },
+    {
+      "questions": [
+        { "text": "Owning a camper or van for weekend trips appeals to me." },
+        { "text": "Owning a small boat or kayaks appeals to me." },
+        { "text": "A great deck, porch, or patio matters a lot in my long-term happy-place picture." },
+        { "text": "I’d love annual traditions like ‘same weekend, new place’ or ‘one big summer trip.’" },
+        { "text": "Surprise trips sound fun as long as I have a tiny bit of practical heads-up (weather, rough dates)." }
+      ]
+    },
+    {
+      "questions": [
+        { "text": "I care about building memories I can retell at holidays when we’re older." },
+        { "text": "I’d rather take a budget trip together than wait years for a ‘perfect’ time." },
+        { "text": "Dream vehicles aside, reliable road-trip comfort matters more to me than car status." },
+        { "text": "I want us to cheer each other’s individual hobbies—even if I don’t share every one." },
+        { "text": "I like when we co-plan trips; it’s part of the fun for me." }
+      ]
+    },
+    {
+      "questions": [
+        { "text": "National parks or scenic drives are high on my couple bucket list." },
+        { "text": "International trips at least occasionally are important to my sense of a full life." },
+        { "text": "I get excited about ‘work-to-live’ trips where we unplug hard." },
+        { "text": "I’d rather spend on lessons (dance, surf, dive) than on jewelry." },
+        { "text": "I want our home someday to display traces of adventures we’ve actually taken." }
+      ]
+    },
+    {
+      "questions": [
+        { "text": "I’m more motivated by shared goals (trip fund, project) than by abstract saving." },
+        { "text": "Trying local food markets is a must when we travel together." },
+        { "text": "I’d say yes to a hot air balloon or helicopter ride once in my life with my partner." },
+        { "text": "I value slow mornings on vacation—even if we ‘lose’ a sight-seeing block." },
+        { "text": "Thinking about our future travel makes me feel closer, not competitive about money." }
+      ]
+    },
+    {
+      "questions": [
+        { "text": "I’d rather have a smaller wedding/elopement and put budget toward a honeymoon adventure." },
+        { "text": "Big family trips with kids (or someday kids) sound meaningful to me." },
+        { "text": "I want ‘dream’ talk with my partner—homes, trips, hobbies—to feel safe, not judged." },
+        { "text": "I enjoy daydreaming together about winning a lottery we don’t even play." },
+        { "text": "I believe fun and playfulness are essential in a serious long-term relationship." }
+      ]
+    }
+  ]
+}

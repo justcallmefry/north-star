@@ -358,10 +358,11 @@ enum QuizState {
 }
 
 model QuizSession {
-  id             String    @id @default(cuid())
-  relationshipId String
-  sessionDate    DateTime  @db.Date
-  state          QuizState @default(open)
+  id              String    @id @default(cuid())
+  relationshipId  String
+  sessionDate     DateTime  @db.Date
+  state           QuizState @default(open)
+  contentDayIndex Int?
 
   relationship   Relationship        @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
   participations QuizParticipation[]
@@ -398,10 +399,11 @@ enum AgreementState {
 }
 
 model AgreementSession {
-  id             String         @id @default(cuid())
-  relationshipId String
-  sessionDate    DateTime       @db.Date
-  state          AgreementState @default(open)
+  id              String         @id @default(cuid())
+  relationshipId  String
+  sessionDate     DateTime       @db.Date
+  state           AgreementState @default(open)
+  contentDayIndex Int?
 
   relationship   Relationship             @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
   participations AgreementParticipation[]

@@ -11,12 +11,105 @@ import {
   getAgreementDayIndex,
   getAgreementQuestions,
 } from "@/lib/agreement-utils";
+import { useAgreementContentDayIndexColumn } from "@/lib/content-day-column";
 import { requireActiveMember, todayUTC } from "@/lib/relationship-members";
 
-async function agreementContentSnapshots(relationshipId: string) {
-  return prisma.agreementSession.findMany({
+const agreementPartInclude = {
+  participations: {
+    include: { user: { select: { id: true, name: true, image: true } } },
+  },
+} as const;
+
+type AgreementSessionWithParticipations = Prisma.AgreementSessionGetPayload<{
+  include: typeof agreementPartInclude;
+}>;
+
+type AgreementRevealedStatsRow =
+  | Prisma.AgreementSessionGetPayload<{ include: { participations: true } }>
+  | Prisma.AgreementSessionGetPayload<{ select: { participations: true } }>;
+
+async function agreementContentSnapshots(
+  relationshipId: string,
+  withContentCol: boolean
+) {
+  if (withContentCol) {
+    return prisma.agreementSession.findMany({
+      where: { relationshipId },
+      select: { sessionDate: true, contentDayIndex: true },
+    });
+  }
+  const rows = await prisma.agreementSession.findMany({
     where: { relationshipId },
-    select: { sessionDate: true, contentDayIndex: true },
+    select: { sessionDate: true },
+  });
+  return rows.map((r) => ({
+    sessionDate: r.sessionDate,
+    contentDayIndex: null as number | null,
+  }));
+}
+
+async function loadLatestAgreementSession(
+  relationshipId: string,
+  withContentCol: boolean
+): Promise<AgreementSessionWithParticipations | null> {
+  if (withContentCol) {
+    return prisma.agreementSession.findFirst({
+      where: { relationshipId },
+      orderBy: { sessionDate: "desc" },
+      include: agreementPartInclude,
+    });
+  }
+  const row = await prisma.agreementSession.findFirst({
+    where: { relationshipId },
+    orderBy: { sessionDate: "desc" },
+    select: {
+      id: true,
+      sessionDate: true,
+      state: true,
+      participations: agreementPartInclude.participations,
+    },
+  });
+  if (!row) return null;
+  return { ...row, contentDayIndex: null } as AgreementSessionWithParticipations;
+}
+
+async function loadAgreementSessionForDate(
+  relationshipId: string,
+  sessionDate: Date,
+  withContentCol: boolean
+): Promise<AgreementSessionWithParticipations | null> {
+  if (withContentCol) {
+    return prisma.agreementSession.findUnique({
+      where: { relationshipId_sessionDate: { relationshipId, sessionDate } },
+      include: agreementPartInclude,
+    });
+  }
+  const row = await prisma.agreementSession.findUnique({
+    where: { relationshipId_sessionDate: { relationshipId, sessionDate } },
+    select: {
+      id: true,
+      sessionDate: true,
+      state: true,
+      participations: agreementPartInclude.participations,
+    },
+  });
+  if (!row) return null;
+  return { ...row, contentDayIndex: null } as AgreementSessionWithParticipations;
+}
+
+async function fetchRevealedAgreementForStats(
+  relationshipId: string,
+  withContentCol: boolean
+): Promise<AgreementRevealedStatsRow[]> {
+  if (withContentCol) {
+    return prisma.agreementSession.findMany({
+      where: { relationshipId, state: "revealed" },
+      include: { participations: true },
+    });
+  }
+  return prisma.agreementSession.findMany({
+    where: { relationshipId, state: "revealed" },
+    select: { participations: true },
   });
 }
 
@@ -28,22 +121,19 @@ export async function getAgreementForToday(
   if (!authSession?.user?.id) return null;
   await requireActiveMember(authSession.user.id, relationshipId);
 
+  const agreementCol = await useAgreementContentDayIndexColumn();
+
   const today =
     localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr)
       ? new Date(localDateStr + "T00:00:00.000Z")
       : todayUTC();
 
-  const latestSession = await prisma.agreementSession.findFirst({
-    where: { relationshipId },
-    orderBy: { sessionDate: "desc" },
-    include: {
-      participations: {
-        include: { user: { select: { id: true, name: true, image: true } } },
-      },
-    },
-  });
+  const latestSession = await loadLatestAgreementSession(
+    relationshipId,
+    agreementCol
+  );
 
-  let agreementSession: NonNullable<typeof latestSession>;
+  let agreementSession: AgreementSessionWithParticipations;
   let dayIndex: number;
   let questions: AgreementQuestion[];
 
@@ -59,50 +149,49 @@ export async function getAgreementForToday(
     );
     questions = getAgreementQuestions(dayIndex);
   } else {
-    let session = await prisma.agreementSession.findUnique({
-      where: {
-        relationshipId_sessionDate: { relationshipId, sessionDate: today },
-      },
-      include: {
-        participations: {
-          include: { user: { select: { id: true, name: true, image: true } } },
-        },
-      },
-    });
+    let session = await loadAgreementSessionForDate(
+      relationshipId,
+      today,
+      agreementCol
+    );
 
     if (!session) {
-      const snapshots = await agreementContentSnapshots(relationshipId);
+      const snapshots = await agreementContentSnapshots(relationshipId, agreementCol);
       const contentDayIndex = pickNextContentDayIndex({
         maxDay: getAgreementDayCount(),
         sessions: snapshots,
         fallbackFromDate: getAgreementDayIndex,
       });
+      const createSelect = {
+        id: true,
+        sessionDate: true,
+        state: true,
+        ...(agreementCol ? { contentDayIndex: true as const } : {}),
+        participations: agreementPartInclude.participations,
+      } as const;
       try {
-        session = await prisma.agreementSession.create({
-          data: {
-            relationshipId,
-            sessionDate: today,
-            state: "open",
-            contentDayIndex,
-          },
-          include: {
-            participations: {
-              include: { user: { select: { id: true, name: true, image: true } } },
-            },
-          },
-        });
+        session = (await prisma.agreementSession.create({
+          data: agreementCol
+            ? {
+                relationshipId,
+                sessionDate: today,
+                state: "open",
+                contentDayIndex,
+              }
+            : {
+                relationshipId,
+                sessionDate: today,
+                state: "open",
+              },
+          select: createSelect,
+        })) as unknown as AgreementSessionWithParticipations;
       } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
-          session = await prisma.agreementSession.findUnique({
-            where: {
-              relationshipId_sessionDate: { relationshipId, sessionDate: today },
-            },
-            include: {
-              participations: {
-                include: { user: { select: { id: true, name: true, image: true } } },
-              },
-            },
-          });
+          session = await loadAgreementSessionForDate(
+            relationshipId,
+            today,
+            agreementCol
+          );
         }
         if (!session) throw e;
       }
@@ -180,10 +269,10 @@ export async function getAgreementForToday(
       if (partnerGuesses[i] === myAnswers[i]) partnerScore++;
     }
 
-    const allRevealed = await prisma.agreementSession.findMany({
-      where: { relationshipId, state: "revealed" },
-      include: { participations: true },
-    });
+    const allRevealed = await fetchRevealedAgreementForStats(
+      relationshipId,
+      agreementCol
+    );
     let overallMyScore = 0;
     let overallPartnerScore = 0;
     for (const s of allRevealed) {
@@ -230,18 +319,14 @@ export async function getAgreementForDate(
     if (!authSession?.user?.id) return null;
     await requireActiveMember(authSession.user.id, relationshipId);
 
+    const agreementCol = await useAgreementContentDayIndexColumn();
     const sessionDate = new Date(dateStr + "T00:00:00.000Z");
-  const agreementSession = await prisma.agreementSession.findUnique({
-    where: {
-      relationshipId_sessionDate: { relationshipId, sessionDate },
-    },
-    include: {
-      participations: {
-        include: { user: { select: { id: true, name: true, image: true } } },
-      },
-    },
-  });
-  if (!agreementSession) return null;
+    const agreementSession = await loadAgreementSessionForDate(
+      relationshipId,
+      sessionDate,
+      agreementCol
+    );
+    if (!agreementSession) return null;
 
   const dayIndex = resolveContentDayIndex(
     agreementSession.sessionDate,
@@ -291,10 +376,10 @@ export async function getAgreementForDate(
       if (myGuesses[i] === partnerAnswers[i]) myScore++;
       if (partnerGuesses[i] === myAnswers[i]) partnerScore++;
     }
-    const allRevealed = await prisma.agreementSession.findMany({
-      where: { relationshipId, state: "revealed" },
-      include: { participations: true },
-    });
+    const allRevealed = await fetchRevealedAgreementForStats(
+      relationshipId,
+      agreementCol
+    );
     let overallMyScore = 0;
     let overallPartnerScore = 0;
     for (const s of allRevealed) {
@@ -350,6 +435,8 @@ export async function submitAgreement(
 
   await requireActiveMember(session.user.id, relationshipId);
 
+  const agreementCol = await useAgreementContentDayIndexColumn();
+
   const today =
     localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr)
       ? new Date(localDateStr + "T00:00:00.000Z")
@@ -359,49 +446,59 @@ export async function submitAgreement(
     ? localDateStr
     : today.toISOString().slice(0, 10);
 
-  const latestSession = await prisma.agreementSession.findFirst({
-    where: { relationshipId },
-    orderBy: { sessionDate: "desc" },
-    include: { participations: true },
-  });
+  const latestSession = await loadLatestAgreementSession(
+    relationshipId,
+    agreementCol
+  );
 
   const latestDateStr = latestSession?.sessionDate.toISOString().slice(0, 10);
 
-  let agreementSession: NonNullable<typeof latestSession>;
+  let agreementSession: AgreementSessionWithParticipations;
   if (latestSession && latestSession.state === "open" && latestDateStr === todayStr) {
     agreementSession = latestSession;
   } else {
-    let s = await prisma.agreementSession.findUnique({
-      where: {
-        relationshipId_sessionDate: { relationshipId, sessionDate: today },
-      },
-      include: { participations: true },
-    });
+    let s = await loadAgreementSessionForDate(
+      relationshipId,
+      today,
+      agreementCol
+    );
     if (!s) {
-      const snapshots = await agreementContentSnapshots(relationshipId);
+      const snapshots = await agreementContentSnapshots(relationshipId, agreementCol);
       const contentDayIndex = pickNextContentDayIndex({
         maxDay: getAgreementDayCount(),
         sessions: snapshots,
         fallbackFromDate: getAgreementDayIndex,
       });
+      const createSelect = {
+        id: true,
+        sessionDate: true,
+        state: true,
+        ...(agreementCol ? { contentDayIndex: true as const } : {}),
+        participations: agreementPartInclude.participations,
+      } as const;
       try {
-        s = await prisma.agreementSession.create({
-          data: {
-            relationshipId,
-            sessionDate: today,
-            state: "open",
-            contentDayIndex,
-          },
-          include: { participations: true },
-        });
+        s = (await prisma.agreementSession.create({
+          data: agreementCol
+            ? {
+                relationshipId,
+                sessionDate: today,
+                state: "open",
+                contentDayIndex,
+              }
+            : {
+                relationshipId,
+                sessionDate: today,
+                state: "open",
+              },
+          select: createSelect,
+        })) as unknown as AgreementSessionWithParticipations;
       } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
-          s = await prisma.agreementSession.findUnique({
-            where: {
-              relationshipId_sessionDate: { relationshipId, sessionDate: today },
-            },
-            include: { participations: true },
-          });
+          s = await loadAgreementSessionForDate(
+            relationshipId,
+            today,
+            agreementCol
+          );
         }
         if (!s) throw e;
       }
@@ -431,10 +528,28 @@ export async function submitAgreement(
     },
   });
 
-  const updated = await prisma.agreementSession.findUnique({
-    where: { id: agreementSession.id },
-    include: { participations: true, relationship: { include: { members: { where: { leftAt: null } } } } },
-  });
+  const updated = agreementCol
+    ? await prisma.agreementSession.findUnique({
+        where: { id: agreementSession.id },
+        include: {
+          participations: true,
+          relationship: { include: { members: { where: { leftAt: null } } } },
+        },
+      })
+    : await prisma.agreementSession.findUnique({
+        where: { id: agreementSession.id },
+        select: {
+          participations: true,
+          relationship: {
+            select: {
+              members: {
+                where: { leftAt: null },
+                select: { userId: true },
+              },
+            },
+          },
+        },
+      });
   if (updated) {
     const activeMemberIds = updated.relationship.members.map((m) => m.userId);
     const allAnswered =

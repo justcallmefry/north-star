@@ -5,16 +5,106 @@ import { pickNextContentDayIndex, resolveContentDayIndex } from "@north-star/sha
 import { Prisma } from "@/generated/prisma";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { useQuizContentDayIndexColumn } from "@/lib/content-day-column";
 import { requireActiveMember, todayUTC } from "@/lib/relationship-members";
 import type { QuizQuestion } from "@/lib/quiz-utils";
 import { getQuizDayCount, getQuizDayIndex, getQuizQuestions } from "@/lib/quiz-utils";
 
 export type { QuizQuestion } from "@/lib/quiz-utils";
 
-async function quizContentSnapshots(relationshipId: string) {
-  return prisma.quizSession.findMany({
+const quizPartInclude = {
+  participations: {
+    include: { user: { select: { id: true, name: true, image: true } } },
+  },
+} as const;
+
+type QuizSessionWithParticipations = Prisma.QuizSessionGetPayload<{
+  include: typeof quizPartInclude;
+}>;
+
+type QuizRevealedStatsRow =
+  | Prisma.QuizSessionGetPayload<{ include: { participations: true } }>
+  | Prisma.QuizSessionGetPayload<{ select: { participations: true } }>;
+
+async function quizContentSnapshots(relationshipId: string, withContentCol: boolean) {
+  if (withContentCol) {
+    return prisma.quizSession.findMany({
+      where: { relationshipId },
+      select: { sessionDate: true, contentDayIndex: true },
+    });
+  }
+  const rows = await prisma.quizSession.findMany({
     where: { relationshipId },
-    select: { sessionDate: true, contentDayIndex: true },
+    select: { sessionDate: true },
+  });
+  return rows.map((r) => ({
+    sessionDate: r.sessionDate,
+    contentDayIndex: null as number | null,
+  }));
+}
+
+async function loadLatestQuizSession(
+  relationshipId: string,
+  withContentCol: boolean
+): Promise<QuizSessionWithParticipations | null> {
+  if (withContentCol) {
+    return prisma.quizSession.findFirst({
+      where: { relationshipId },
+      orderBy: { sessionDate: "desc" },
+      include: quizPartInclude,
+    });
+  }
+  const row = await prisma.quizSession.findFirst({
+    where: { relationshipId },
+    orderBy: { sessionDate: "desc" },
+    select: {
+      id: true,
+      sessionDate: true,
+      state: true,
+      participations: quizPartInclude.participations,
+    },
+  });
+  if (!row) return null;
+  return { ...row, contentDayIndex: null } as QuizSessionWithParticipations;
+}
+
+async function loadQuizSessionForDate(
+  relationshipId: string,
+  sessionDate: Date,
+  withContentCol: boolean
+): Promise<QuizSessionWithParticipations | null> {
+  if (withContentCol) {
+    return prisma.quizSession.findUnique({
+      where: { relationshipId_sessionDate: { relationshipId, sessionDate } },
+      include: quizPartInclude,
+    });
+  }
+  const row = await prisma.quizSession.findUnique({
+    where: { relationshipId_sessionDate: { relationshipId, sessionDate } },
+    select: {
+      id: true,
+      sessionDate: true,
+      state: true,
+      participations: quizPartInclude.participations,
+    },
+  });
+  if (!row) return null;
+  return { ...row, contentDayIndex: null } as QuizSessionWithParticipations;
+}
+
+async function fetchRevealedQuizForStats(
+  relationshipId: string,
+  withContentCol: boolean
+): Promise<QuizRevealedStatsRow[]> {
+  if (withContentCol) {
+    return prisma.quizSession.findMany({
+      where: { relationshipId, state: "revealed" },
+      include: { participations: true },
+    });
+  }
+  return prisma.quizSession.findMany({
+    where: { relationshipId, state: "revealed" },
+    select: { participations: true },
   });
 }
 
@@ -64,23 +154,16 @@ export async function getQuizForToday(
   if (!session?.user?.id) return null;
   await requireActiveMember(session.user.id, relationshipId);
 
+  const quizCol = await useQuizContentDayIndexColumn();
+
   const today =
     localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr)
       ? new Date(localDateStr + "T00:00:00.000Z")
       : todayUTC();
 
-  // Same quiz until both complete. Use the latest session if it's still open.
-  const latestSession = await prisma.quizSession.findFirst({
-    where: { relationshipId },
-    orderBy: { sessionDate: "desc" },
-    include: {
-      participations: {
-        include: { user: { select: { id: true, name: true, image: true } } },
-      },
-    },
-  });
+  const latestSession = await loadLatestQuizSession(relationshipId, quizCol);
 
-  let quizSession: NonNullable<typeof latestSession>;
+  let quizSession: QuizSessionWithParticipations;
   let dayIndex: number;
   let questions: QuizQuestion[];
 
@@ -96,50 +179,41 @@ export async function getQuizForToday(
     );
     questions = getQuizQuestions(dayIndex);
   } else {
-    let session = await prisma.quizSession.findUnique({
-      where: {
-        relationshipId_sessionDate: { relationshipId, sessionDate: today },
-      },
-      include: {
-        participations: {
-          include: { user: { select: { id: true, name: true, image: true } } },
-        },
-      },
-    });
+    let session = await loadQuizSessionForDate(relationshipId, today, quizCol);
 
     if (!session) {
-      const snapshots = await quizContentSnapshots(relationshipId);
+      const snapshots = await quizContentSnapshots(relationshipId, quizCol);
       const contentDayIndex = pickNextContentDayIndex({
         maxDay: getQuizDayCount(),
         sessions: snapshots,
         fallbackFromDate: getQuizDayIndex,
       });
+      const createSelect = {
+        id: true,
+        sessionDate: true,
+        state: true,
+        ...(quizCol ? { contentDayIndex: true as const } : {}),
+        participations: quizPartInclude.participations,
+      } as const;
       try {
-        session = await prisma.quizSession.create({
-          data: {
-            relationshipId,
-            sessionDate: today,
-            state: "open",
-            contentDayIndex,
-          },
-          include: {
-            participations: {
-              include: { user: { select: { id: true, name: true, image: true } } },
-            },
-          },
-        });
+        session = (await prisma.quizSession.create({
+          data: quizCol
+            ? {
+                relationshipId,
+                sessionDate: today,
+                state: "open",
+                contentDayIndex,
+              }
+            : {
+                relationshipId,
+                sessionDate: today,
+                state: "open",
+              },
+          select: createSelect,
+        })) as unknown as QuizSessionWithParticipations;
       } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
-          session = await prisma.quizSession.findUnique({
-            where: {
-              relationshipId_sessionDate: { relationshipId, sessionDate: today },
-            },
-            include: {
-              participations: {
-                include: { user: { select: { id: true, name: true, image: true } } },
-              },
-            },
-          });
+          session = await loadQuizSessionForDate(relationshipId, today, quizCol);
         }
         if (!session) throw e;
       }
@@ -213,10 +287,7 @@ export async function getQuizForToday(
       if (partnerGuesses[i] === myAnswers[i]) partnerScore++;
     }
 
-    const allRevealed = await prisma.quizSession.findMany({
-      where: { relationshipId, state: "revealed" },
-      include: { participations: true },
-    });
+    const allRevealed = await fetchRevealedQuizForStats(relationshipId, quizCol);
     let overallMyScore = 0;
     let overallPartnerScore = 0;
     for (const s of allRevealed) {
@@ -248,11 +319,7 @@ export async function getQuizForToday(
       overallTotal,
     };
   } else {
-    // Today's session is open — still return overall stats from past revealed sessions so history is visible.
-    const allRevealed = await prisma.quizSession.findMany({
-      where: { relationshipId, state: "revealed" },
-      include: { participations: true },
-    });
+    const allRevealed = await fetchRevealedQuizForStats(relationshipId, quizCol);
     if (allRevealed.length > 0) {
       let overallMyScore = 0;
       let overallPartnerScore = 0;
@@ -292,18 +359,14 @@ export async function getQuizForDate(
     if (!session?.user?.id) return null;
     await requireActiveMember(session.user.id, relationshipId);
 
+    const quizCol = await useQuizContentDayIndexColumn();
     const sessionDate = new Date(dateStr + "T00:00:00.000Z");
-  const quizSession = await prisma.quizSession.findUnique({
-    where: {
-      relationshipId_sessionDate: { relationshipId, sessionDate },
-    },
-    include: {
-      participations: {
-        include: { user: { select: { id: true, name: true, image: true } } },
-      },
-    },
-  });
-  if (!quizSession) return null;
+    const quizSession = await loadQuizSessionForDate(
+      relationshipId,
+      sessionDate,
+      quizCol
+    );
+    if (!quizSession) return null;
 
   const dayIndex = resolveContentDayIndex(
     quizSession.sessionDate,
@@ -385,6 +448,8 @@ export async function submitQuiz(
 
   await requireActiveMember(session.user.id, relationshipId);
 
+  const quizCol = await useQuizContentDayIndexColumn();
+
   const today =
     localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr)
       ? new Date(localDateStr + "T00:00:00.000Z")
@@ -394,49 +459,48 @@ export async function submitQuiz(
     ? localDateStr
     : today.toISOString().slice(0, 10);
 
-  const latestSession = await prisma.quizSession.findFirst({
-    where: { relationshipId },
-    orderBy: { sessionDate: "desc" },
-    include: { participations: true },
-  });
+  const latestSession = await loadLatestQuizSession(relationshipId, quizCol);
 
   const latestDateStr = latestSession?.sessionDate.toISOString().slice(0, 10);
 
-  let quizSession: NonNullable<typeof latestSession>;
+  let quizSession: QuizSessionWithParticipations;
   if (latestSession && latestSession.state === "open" && latestDateStr === todayStr) {
     quizSession = latestSession;
   } else {
-    let s = await prisma.quizSession.findUnique({
-      where: {
-        relationshipId_sessionDate: { relationshipId, sessionDate: today },
-      },
-      include: { participations: true },
-    });
+    let s = await loadQuizSessionForDate(relationshipId, today, quizCol);
     if (!s) {
-      const snapshots = await quizContentSnapshots(relationshipId);
+      const snapshots = await quizContentSnapshots(relationshipId, quizCol);
       const contentDayIndex = pickNextContentDayIndex({
         maxDay: getQuizDayCount(),
         sessions: snapshots,
         fallbackFromDate: getQuizDayIndex,
       });
+      const createSelect = {
+        id: true,
+        sessionDate: true,
+        state: true,
+        ...(quizCol ? { contentDayIndex: true as const } : {}),
+        participations: quizPartInclude.participations,
+      } as const;
       try {
-        s = await prisma.quizSession.create({
-          data: {
-            relationshipId,
-            sessionDate: today,
-            state: "open",
-            contentDayIndex,
-          },
-          include: { participations: true },
-        });
+        s = (await prisma.quizSession.create({
+          data: quizCol
+            ? {
+                relationshipId,
+                sessionDate: today,
+                state: "open",
+                contentDayIndex,
+              }
+            : {
+                relationshipId,
+                sessionDate: today,
+                state: "open",
+              },
+          select: createSelect,
+        })) as unknown as QuizSessionWithParticipations;
       } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
-          s = await prisma.quizSession.findUnique({
-            where: {
-              relationshipId_sessionDate: { relationshipId, sessionDate: today },
-            },
-            include: { participations: true },
-          });
+          s = await loadQuizSessionForDate(relationshipId, today, quizCol);
         }
         if (!s) throw e;
       }
@@ -466,10 +530,28 @@ export async function submitQuiz(
     },
   });
 
-  const updated = await prisma.quizSession.findUnique({
-    where: { id: quizSession.id },
-    include: { participations: true, relationship: { include: { members: { where: { leftAt: null } } } } },
-  });
+  const updated = quizCol
+    ? await prisma.quizSession.findUnique({
+        where: { id: quizSession.id },
+        include: {
+          participations: true,
+          relationship: { include: { members: { where: { leftAt: null } } } },
+        },
+      })
+    : await prisma.quizSession.findUnique({
+        where: { id: quizSession.id },
+        select: {
+          participations: true,
+          relationship: {
+            select: {
+              members: {
+                where: { leftAt: null },
+                select: { userId: true },
+              },
+            },
+          },
+        },
+      });
   if (updated) {
     const activeMemberIds = updated.relationship.members.map((m) => m.userId);
     const allAnswered =

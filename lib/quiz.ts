@@ -1,10 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { Prisma } from "@/generated/prisma";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { requireActiveMember, todayUTC } from "@/lib/relationship-members";
+import { getActiveMemberIds, requireActiveMember, todayUTC } from "@/lib/relationship-members";
 import type { QuizQuestion } from "@/lib/quiz-utils";
 import { getQuizDayIndex, getQuizQuestions } from "@/lib/quiz-utils";
 
@@ -304,18 +303,22 @@ export async function submitQuiz(
     },
   });
 
-  const updated = await prisma.quizSession.findUnique({
-    where: { id: quizSession.id },
-    include: { participations: true },
+  const participationRows = await prisma.quizParticipation.findMany({
+    where: { quizSessionId: quizSession.id },
+    select: { userId: true },
   });
-  if (updated && updated.participations.length === 2) {
+  const activeMemberIds = await getActiveMemberIds(relationshipId);
+  const allAnswered =
+    activeMemberIds.length >= 2 &&
+    activeMemberIds.every((id) =>
+      participationRows.some((p) => p.userId === id)
+    );
+  if (allAnswered) {
     await prisma.quizSession.update({
       where: { id: quizSession.id },
       data: { state: "revealed" },
     });
   }
 
-  revalidatePath("/app");
-  revalidatePath("/app/quiz");
   return { ok: true };
 }

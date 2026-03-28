@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { pickNextContentDayIndex, resolveContentDayIndex } from "@north-star/shared";
 import { Prisma } from "@/generated/prisma";
 import { getServerAuthSession } from "@/lib/auth";
@@ -12,7 +11,7 @@ import {
   getAgreementQuestions,
 } from "@/lib/agreement-utils";
 import { useAgreementContentDayIndexColumn } from "@/lib/content-day-column";
-import { requireActiveMember, todayUTC } from "@/lib/relationship-members";
+import { getActiveMemberIds, requireActiveMember, todayUTC } from "@/lib/relationship-members";
 
 const agreementPartInclude = {
   participations: {
@@ -528,44 +527,24 @@ export async function submitAgreement(
     },
   });
 
-  const updated = agreementCol
-    ? await prisma.agreementSession.findUnique({
-        where: { id: agreementSession.id },
-        include: {
-          participations: true,
-          relationship: { include: { members: { where: { leftAt: null } } } },
-        },
-      })
-    : await prisma.agreementSession.findUnique({
-        where: { id: agreementSession.id },
-        select: {
-          participations: true,
-          relationship: {
-            select: {
-              members: {
-                where: { leftAt: null },
-                select: { userId: true },
-              },
-            },
-          },
-        },
-      });
-  if (updated) {
-    const activeMemberIds = updated.relationship.members.map((m) => m.userId);
-    const allAnswered =
-      activeMemberIds.length >= 2 &&
-      activeMemberIds.every((id) =>
-        updated.participations.some((p) => p.userId === id)
-      );
-    if (allAnswered) {
-      await prisma.agreementSession.update({
-        where: { id: agreementSession.id },
-        data: { state: "revealed" },
-      });
-    }
+  const participationRows = await prisma.agreementParticipation.findMany({
+    where: { agreementSessionId: agreementSession.id },
+    select: { userId: true },
+  });
+  const activeMemberIds = await getActiveMemberIds(relationshipId);
+  const allAnswered =
+    activeMemberIds.length >= 2 &&
+    activeMemberIds.every((id) =>
+      participationRows.some((p) => p.userId === id)
+    );
+  if (allAnswered) {
+    await prisma.agreementSession.update({
+      where: { id: agreementSession.id },
+      data: { state: "revealed" },
+    });
   }
 
-  revalidatePath("/app");
-  revalidatePath("/app/agreement");
+  // No revalidatePath: correlated with RSC digest errors when combined with router.refresh();
+  // app routes use force-dynamic and clients refresh after submit.
   return { ok: true };
 }

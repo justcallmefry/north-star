@@ -1,12 +1,11 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { Prisma } from "@/generated/prisma";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import type { AgreementForTodayResult, AgreementQuestion } from "@/lib/agreement-shared";
 import { getAgreementDayIndex, getAgreementQuestions } from "@/lib/agreement-utils";
-import { requireActiveMember, todayUTC } from "@/lib/relationship-members";
+import { getActiveMemberIds, requireActiveMember, todayUTC } from "@/lib/relationship-members";
 
 export async function getAgreementForToday(
   relationshipId: string,
@@ -281,18 +280,22 @@ export async function submitAgreement(
     },
   });
 
-  const updated = await prisma.agreementSession.findUnique({
-    where: { id: agreementSession.id },
-    include: { participations: true },
+  const participationRows = await prisma.agreementParticipation.findMany({
+    where: { agreementSessionId: agreementSession.id },
+    select: { userId: true },
   });
-  if (updated && updated.participations.length === 2) {
+  const activeMemberIds = await getActiveMemberIds(relationshipId);
+  const allAnswered =
+    activeMemberIds.length >= 2 &&
+    activeMemberIds.every((id) =>
+      participationRows.some((p) => p.userId === id)
+    );
+  if (allAnswered) {
     await prisma.agreementSession.update({
       where: { id: agreementSession.id },
       data: { state: "revealed" },
     });
   }
 
-  revalidatePath("/app");
-  revalidatePath("/app/agreement");
   return { ok: true };
 }

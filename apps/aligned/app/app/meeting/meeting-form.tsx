@@ -8,33 +8,33 @@ import type { MeetingEntryData } from "@/lib/meetings";
 const SECTIONS = [
   {
     key: "wins" as const,
-    label: "Wins",
-    description: "What went well.",
-    placeholder: "Big or small.",
+    label: "Bright spots",
+    description: "What gave you energy—even something small.",
+    placeholder: "A moment, a win, or a laugh you want to keep.",
   },
   {
     key: "stressors" as const,
-    label: "Stressors",
-    description: "What felt heavy or draining.",
-    placeholder: "Work, family, or anything on your mind.",
+    label: "Heavy stuff",
+    description: "What’s been on your chest.",
+    placeholder: "No fixing required—just name it if you want to.",
   },
   {
     key: "request" as const,
-    label: "Request",
-    description: "One simple thing you’d love from your partner this week.",
-    placeholder: "“Could you…?” requests, not complaints. Keep it small and concrete.",
+    label: "One wish",
+    description: "One doable thing that would help this week.",
+    placeholder: "A small “could you…?”—gentle and specific beats vague.",
   },
   {
     key: "plan" as const,
-    label: "Plan",
-    description: "Plans or boundaries for the week.",
-    placeholder: "Whatever you want to align on.",
+    label: "This week",
+    description: "Logistics, boundaries, or intentions—whatever helps you both.",
+    placeholder: "Schedules, needs, or a shared plan in one breath.",
   },
   {
     key: "appreciation" as const,
-    label: "Appreciation",
-    description: "One thing you’ value about your partner right now.",
-    placeholder: "A habit, a gesture, or something you don’t want to take for granted.",
+    label: "I’m glad",
+    description: "Something about them you don’t want to forget right now.",
+    placeholder: "A habit, a gesture, or how they showed up for you.",
   },
 ] as const;
 
@@ -98,7 +98,7 @@ export function MeetingForm({ meetingId, initial }: Props) {
         disabled={loading}
         className="ns-btn-primary w-full"
       >
-        {loading ? "Saving…" : "Save notes"}
+        {loading ? "Saving…" : "Save my snapshot"}
       </button>
       {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
     </form>

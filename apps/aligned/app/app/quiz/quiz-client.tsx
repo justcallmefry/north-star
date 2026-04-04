@@ -132,7 +132,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
       onQuizUpdated?.();
       setLoading(false);
       setShowDoneCelebration(true);
-      toast.success("Quiz submitted.");
+      toast.success("Submitted. Results unlock when your partner finishes.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to submit");
       setLoading(false);
@@ -338,10 +338,10 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
             <HelpCircle className="h-8 w-8" strokeWidth={2} />
           </div>
           <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
-            Quiz
+            Guess &amp; compare
           </h1>
           <p className="mt-1 max-w-md text-sm text-slate-600 sm:text-base">
-            Answer for yourself, then guess what your partner would pick.
+            Quick choices for you—then your best guess at theirs. See how in sync you are.
           </p>
           {data.overallStats && data.overallStats.overallTotal > 0 && (
             <p className="mt-4 text-base font-medium text-slate-700 sm:text-lg">
@@ -362,7 +362,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
             }}
             className="ns-btn-primary w-full py-3.5 text-lg ring-2 ring-brand-300/50 ring-offset-2 shadow-lg shadow-brand-200/40"
           >
-            Start quiz
+            Start
           </button>
           <button
             type="button"
@@ -396,7 +396,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
           disabled={loading || !allAnswered}
           className="ns-btn-primary mt-6 w-full py-3.5 text-lg disabled:opacity-50"
         >
-          {loading ? "Submitting…" : "Submit quiz"}
+          {loading ? "Submitting…" : "Submit"}
         </button>
         {error && (
           <p className="mt-4 text-sm text-red-600" role="alert">
@@ -547,7 +547,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
           className="ns-btn-secondary flex w-full justify-center items-center gap-1.5 !py-2.5 text-sm"
         >
           <ChevronLeft className="h-4 w-4" />
-          Exit quiz
+          Back to Today
         </Link>
       </div>
     </div>
@@ -561,10 +561,10 @@ function QuizPageHeader() {
         <HelpCircle className="h-9 w-9" strokeWidth={2} />
       </div>
       <h1 className="text-3xl font-semibold text-slate-900 sm:text-4xl">
-        Quiz
+        Guess &amp; compare
       </h1>
       <p className="mt-2 max-w-md text-base text-slate-600 sm:text-lg">
-        Answer for yourself, then guess what your partner would pick.
+        Quick choices for you—then your best guess at theirs.
       </p>
     </div>
   );

@@ -14,12 +14,15 @@ export function TodayCard({ today }: Props) {
         <div className="inline-flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-1 ring-1 ring-emerald-200/60">
           <span className="h-1.5 w-1.5 rounded-full bg-[#69BE28]" />
           <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-800 sm:text-sm">
-            Daily check-in
+            Today&apos;s question
           </h2>
         </div>
         <p className="mt-3 text-sm text-slate-600 sm:text-base">
-          No active relationship or no session for today.
+          We couldn&apos;t load today&apos;s question yet—or you haven&apos;t paired with your partner.
         </p>
+        <Link href="/app/pair" className="ns-btn-primary mt-4 block w-full py-3 text-center text-sm">
+          Pair or get invite link
+        </Link>
       </section>
     );
   }
@@ -33,7 +36,7 @@ export function TodayCard({ today }: Props) {
         <div className="inline-flex items-center gap-2 rounded-lg bg-emerald-100/90 px-3 py-1 ring-1 ring-emerald-200/60">
           <span className="h-1.5 w-1.5 rounded-full bg-[#69BE28]" />
           <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-900 sm:text-sm">
-            Daily check-in
+            Today&apos;s question
           </h2>
         </div>
       </div>
@@ -59,7 +62,7 @@ export function TodayCard({ today }: Props) {
       {momentText && (
         <div className="ns-card-inner mt-3 px-3 py-2.5">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-600 sm:text-[13px]">
-            Optional moment
+            If you want to go a little further
           </p>
           <p className="mt-1 text-lg leading-relaxed text-slate-700 sm:text-xl">
             {momentText}
@@ -73,7 +76,7 @@ export function TodayCard({ today }: Props) {
             href={`/app/session/${sessionId}`}
             className="ns-btn-primary block w-full text-center py-3.5"
           >
-            View Today&apos;s Answers
+            See today&apos;s answers
           </Link>
         )}
         {state === "open" && !hasUserResponded && (
@@ -81,13 +84,13 @@ export function TodayCard({ today }: Props) {
             href={`/app/session/${sessionId}`}
             className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-[#f6faf7] shadow-lg shadow-brand-200/40"
           >
-            Answer today&apos;s question
+            Answer privately
           </Link>
         )}
         {state === "open" && hasUserResponded && !canReveal && (
           <div className="space-y-4">
             <p className="text-center text-sm text-slate-500 leading-relaxed max-w-md mx-auto">
-              Your answer is saved. We&apos;ll reveal when your partner replies.
+              Your answer is saved. Locked until they reply—then you unlock together.
             </p>
             <div className="flex flex-col gap-2">
               <Link href={`/app/session/${sessionId}`} className="ns-btn-primary block w-full text-center py-3.5">
@@ -103,10 +106,10 @@ export function TodayCard({ today }: Props) {
               href={`/app/session/${sessionId}`}
               className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-[#f6faf7] shadow-lg shadow-brand-200/40"
             >
-              Reveal answers
+              Open our answers
             </Link>
             <p className="text-center text-sm text-slate-500">
-              Next question tomorrow.
+              A fresh question waits tomorrow.
             </p>
           </div>
         )}

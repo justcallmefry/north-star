@@ -6,13 +6,13 @@ import { requestPermissionAndSubscribe } from "@/lib/push-client";
 type Variant = "quiz" | "agreement";
 
 const MESSAGES: Record<Variant, string> = {
-  quiz: "I just finished the daily quiz — your turn! Think you can beat my score?",
-  agreement: "I just took the questions about being aligned. Take a look and let's see who gets closest to each other's answers.",
+  quiz: "I finished Guess & compare on Aligned—your turn. Let's see who reads who best.",
+  agreement: "I finished Same page? on Aligned—your turn when you have a minute.",
 };
 
 const TITLES: Record<Variant, string> = {
-  quiz: "Quiz — your turn",
-  agreement: "Alignment check-in — your turn",
+  quiz: "Your turn — compare",
+  agreement: "Your turn — same page",
 };
 
 const PATHS: Record<Variant, string> = {
@@ -21,8 +21,8 @@ const PATHS: Record<Variant, string> = {
 };
 
 const LABELS: Record<Variant, string> = {
-  quiz: "Notify partner",
-  agreement: "Notify partner",
+  quiz: "Nudge partner",
+  agreement: "Nudge partner",
 };
 
 type Props = {
@@ -61,7 +61,7 @@ export function NotifyPartnerQuizButton({ variant, relationshipId, size = "sm" }
           if (res.ok) {
             const data = (await res.json()) as { sent?: number };
             if (data.sent && data.sent > 0) {
-              toast.success("Notification sent.");
+              toast.success("They'll get a nudge.");
               return;
             }
           }

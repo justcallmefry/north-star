@@ -5,17 +5,17 @@ import Image from "next/image";
 
 const SLIDES = [
   {
-    headline: "One question a day.",
-    subtext: "Answer privately. Reveal together.",
+    headline: "One private answer.",
+    subtext: "One reveal together.",
     icon: "question",
   },
   {
-    headline: "A shared record of your week.",
-    subtext: "Capture moments as they happen.",
+    headline: "A gentle thread through your week.",
+    subtext: "Optional notes—highs, worries, one small wish—only between you two.",
     icon: "week",
   },
   {
-    headline: "Less friction. More connection.",
+    headline: "Less friction. More closeness.",
     subtext: "Private by design. Built for real life.",
     icon: "heart",
   },

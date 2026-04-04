@@ -29,9 +29,9 @@ export default async function JoinPage({ searchParams }: Props) {
     <main className="min-h-screen flex flex-col items-center justify-center p-8">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold">Join a relationship</h1>
+          <h1 className="text-2xl font-bold">You&apos;re invited</h1>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Enter the invite code your partner shared with you.
+            Aligned is one private question a day—you only see each other&apos;s answers after you&apos;ve both replied. Enter their code to pair.
           </p>
         </div>
         <JoinForm initialCode={initialCode} />

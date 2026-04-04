@@ -14,13 +14,15 @@ type Props = {
 };
 
 const MESSAGES = {
-  your_turn: "I answered today's question. It's your turn. I'm excited to see what you say.",
-  reveal: "I answered the question. We both did – come reveal so we can see what we said.",
+  your_turn:
+    "I'm in on today's Aligned question—your turn when you have a quiet minute. No peeking until we're both done.",
+  reveal:
+    "We both answered today on Aligned—want to open our answers together?",
 } as const;
 
 const TITLES = {
-  your_turn: "Your turn",
-  reveal: "Time to reveal",
+  your_turn: "Your turn today",
+  reveal: "Ready to open?",
 } as const;
 
 export function NotifyPartnerButton({
@@ -58,7 +60,7 @@ export function NotifyPartnerButton({
           if (res.ok) {
             const data = (await res.json()) as { sent?: number };
             if (data.sent && data.sent > 0) {
-              toast.success("Notification sent.");
+              toast.success("They'll get a nudge.");
               return;
             }
           }
@@ -91,7 +93,7 @@ export function NotifyPartnerButton({
 
   return (
     <button type="button" onClick={handleClick} className={className}>
-      Notify
+      Nudge them
     </button>
   );
 }

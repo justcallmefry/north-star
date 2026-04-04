@@ -43,7 +43,7 @@ export function SessionContent({ data, currentUserId }: Props) {
     setLoading("submit");
     try {
       await submitResponse(data.sessionId, text);
-      toast.success("Answer saved.");
+      toast.success("Saved. Still just between you until you both reveal.");
       router.refresh();
       // Keep loading as "submit" until refreshed data arrives (see useEffect below)
     } catch (err) {
@@ -59,7 +59,7 @@ export function SessionContent({ data, currentUserId }: Props) {
       const result = await revealSession(data.sessionId);
       setRevealData(result);
       setRevealed(true);
-      toast.success("Revealed.");
+      toast.success("Here are your answers.");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to reveal");
@@ -75,7 +75,7 @@ export function SessionContent({ data, currentUserId }: Props) {
     try {
       await submitReflection(data.sessionId, undefined, reaction.trim());
       setReaction("");
-      toast.success("Response sent.");
+      toast.success("They'll see your note.");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save");
@@ -248,8 +248,8 @@ export function SessionContent({ data, currentUserId }: Props) {
   const totalMembers = data.memberCount ?? 2;
   const respondedCount = data.respondedCount ?? ((data.hasUserResponded ? 1 : 0) + (data.hasPartnerResponded ? totalMembers - 1 : 0));
   const afterRevealLine = data.isFirstCompletedSession
-    ? "You just did the hard part — you showed up for each other. This can be your new daily rhythm."
-    : "You showed up for each other today.";
+    ? "That's the whole ritual: show up, be honest, see each other."
+    : "That's today—same time tomorrow.";
 
   return (
     <div className="space-y-10">
@@ -260,7 +260,7 @@ export function SessionContent({ data, currentUserId }: Props) {
       {data.momentText && (
         <div className="ns-card mx-auto max-w-xl">
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-500 sm:text-sm">
-            Optional moment
+            If you want to go a little further
           </p>
           <p className="mt-1.5 text-base leading-relaxed text-slate-700 sm:text-lg">
             {data.momentText}
@@ -274,7 +274,7 @@ export function SessionContent({ data, currentUserId }: Props) {
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder="Your answer..."
+              placeholder="Say it in your own words—no one sees this until you both reveal."
               rows={5}
               className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-4 text-lg leading-relaxed text-slate-900 placeholder:text-slate-500 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300"
               required
@@ -340,7 +340,7 @@ export function SessionContent({ data, currentUserId }: Props) {
 
       {data.hasUserResponded && data.state === "open" && data.canReveal && !isRevealed && (
         <div>
-          <p className="mb-2 text-base text-slate-700 sm:text-lg">Both of you have answered.</p>
+          <p className="mb-2 text-base text-slate-700 sm:text-lg">You&apos;re both in. Open when you&apos;re ready.</p>
           <div className="flex flex-col gap-2">
             <button
               type="button"
@@ -348,7 +348,7 @@ export function SessionContent({ data, currentUserId }: Props) {
               disabled={!!loading}
               className="ns-btn-primary w-full py-3.5 text-lg"
             >
-              {loading === "reveal" ? "Revealing…" : "Reveal answers"}
+              {loading === "reveal" ? "Opening…" : "Open our answers"}
             </button>
             <NotifyPartnerButton sessionId={data.sessionId} relationshipId={data.relationshipId} messageType="reveal" size="sm" className="w-full py-2.5" />
           </div>
@@ -417,17 +417,17 @@ export function SessionContent({ data, currentUserId }: Props) {
           <div className="space-y-3 border-t border-brand-100 pt-5">
             {data.isFirstCompletedSession && (
               <p className="text-sm text-slate-600">
-                Optional: What surprised you about your partner&apos;s answer, or what do you want to remember from today?
+                Optional: What landed for you in their answer—or what do you want to remember from today?
               </p>
             )}
             <label htmlFor="session-response" className="block text-sm font-medium text-slate-700">
-              Send a response back
+              Leave a note for them
             </label>
             <textarea
               id="session-response"
               value={reaction}
               onChange={(e) => setReaction(e.target.value)}
-              placeholder="A short note or emoji for your partner…"
+              placeholder="A line they&apos;ll want to reread."
               rows={3}
               className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-base text-slate-900 placeholder:text-slate-500 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300"
             />
@@ -437,7 +437,7 @@ export function SessionContent({ data, currentUserId }: Props) {
               disabled={!!loading || !reaction.trim()}
               className="ns-btn-primary w-full py-3.5"
             >
-              {loading === "reaction" ? "Saving…" : "Send response"}
+              {loading === "reaction" ? "Saving…" : "Send note"}
             </button>
           </div>
           {reflectionsToShow.length > 0 && (

@@ -60,8 +60,8 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
     try {
       if (navigator.share) {
         await navigator.share({
-          title: "Join me on Aligned",
-          text: "Use this link to pair with me on Aligned:",
+          title: "Let's do our daily question together",
+          text: "One private question a day on Aligned—we only see answers after we both reply. Pair here:",
           url: shareUrl,
         });
       } else {
@@ -82,7 +82,7 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
     return (
       <div className="ns-shadow-glow rounded-2xl border border-brand-100/80 bg-gradient-to-b from-white/90 to-brand-50/60 p-5 sm:p-6">
         <p className="text-sm text-slate-600">
-          Generate a code to text or share with your partner.
+          Get a link to send them—same private question ritual, answers unlock when you&apos;re both in.
         </p>
         <button
           type="button"
@@ -133,7 +133,7 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
           </button>
         </div>
         <p className="mt-3 text-xs text-slate-500">
-          Link expires in 7 days. Partner can open the link or enter the code on the pair screen.
+          Link expires in 7 days. They can tap the link or enter the code on the pair screen.
         </p>
       </div>
 

@@ -47,7 +47,7 @@ export default async function OnboardingPage() {
                 Welcome to Aligned
               </p>
               <p className="text-sm text-slate-300">
-                Set up your first relationship so we can send you both a daily prompt.
+                Name your space and invite your partner—then you&apos;ll get the same question each day, with answers that unlock together.
               </p>
             </div>
           </div>
@@ -68,8 +68,11 @@ export default async function OnboardingPage() {
               href="/app"
               className="block w-full rounded-lg border border-slate-700 bg-slate-950/80 px-4 py-2.5 text-center text-sm font-medium text-slate-200 hover:border-slate-500 hover:bg-slate-900"
             >
-              Go solo (skip for now)
+              I&apos;ll invite later—take me to Today
             </Link>
+            <p className="text-center text-xs text-slate-500">
+              You can explore extras, but the daily question needs a pair.
+            </p>
           </div>
         </div>
       </div>

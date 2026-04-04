@@ -130,7 +130,7 @@ export function AgreementClient({
       onAgreementUpdated?.();
       setLoading(false);
       setShowDoneCelebration(true);
-      toast.success("Alignment check-in submitted.");
+      toast.success("Submitted. Results unlock when your partner finishes.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to submit");
       setLoading(false);
@@ -323,7 +323,7 @@ export function AgreementClient({
       <div className="flex min-h-[50vh] items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <LoadingSpinner size="md" />
-          <p className="text-sm text-slate-600">Submitting your alignment check-in…</p>
+          <p className="text-sm text-slate-600">Saving your answers…</p>
         </div>
       </div>
     );
@@ -352,10 +352,10 @@ export function AgreementClient({
             <Scale className="h-8 w-8" strokeWidth={2} />
           </div>
           <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
-            Alignment check-in
+            Same page?
           </h1>
           <p className="mt-1 max-w-md text-sm text-slate-600 sm:text-base">
-            Rate each statement, then guess how your partner would answer.
+            Rate a few statements honestly—then guess theirs. No right answers, just clarity.
           </p>
         </div>
         <div className="mt-6 flex w-full flex-col gap-4">
@@ -370,7 +370,7 @@ export function AgreementClient({
             }}
             className="ns-btn-primary w-full py-3.5 text-lg ring-2 ring-brand-300/50 ring-offset-2 shadow-lg shadow-brand-200/40"
           >
-            Start check-in
+            Start
           </button>
           <button
             type="button"
@@ -555,7 +555,7 @@ export function AgreementClient({
           className="ns-btn-secondary flex w-full justify-center items-center gap-1.5 !py-2.5 text-sm"
         >
           <ChevronLeft className="h-4 w-4" />
-          Exit check-in
+          Back to Today
         </Link>
       </div>
     </div>
@@ -569,10 +569,10 @@ function AgreementPageHeader() {
         <Scale className="h-8 w-8" strokeWidth={2} />
       </div>
       <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
-        Alignment check-in
+        Same page?
       </h1>
       <p className="mt-1 max-w-md text-sm text-slate-600 sm:text-base">
-        Rate each statement, then guess how your partner would answer.
+        Rate a few statements—then compare when you&apos;re both done.
       </p>
     </div>
   );

@@ -1,10 +1,10 @@
 import { Clock, ThumbsUp, Heart, Lock } from "lucide-react";
 
 const BENEFITS = [
-  { icon: Clock, text: "Under 3 minutes a day." },
-  { icon: ThumbsUp, text: "Reluctant-partner approved." },
-  { icon: Heart, text: "The most valuable screen time you'll do today." },
-  { icon: Lock, text: "No gimmicks. Fully private. Always positive." },
+  { icon: Clock, text: "Under three minutes—built for busy days." },
+  { icon: Lock, text: "Your answers stay private until you both reply." },
+  { icon: ThumbsUp, text: "Made for couples who want closeness without homework." },
+  { icon: Heart, text: "Positive-by-design prompts—not a space for fights." },
 ] as const;
 
 export function WelcomeHero() {
@@ -14,19 +14,18 @@ export function WelcomeHero() {
         className="inline-flex items-center rounded-full bg-gradient-to-r from-brand-50 to-brand-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand-600 ring-1 ring-brand-100/80"
         aria-hidden
       >
-        3 min / day
+        About 3 min / day
       </span>
 
       <h2 className="mt-4 text-center text-xl font-semibold leading-snug text-slate-900 sm:text-2xl">
-        <span className="block">One question a day.</span>
-        <span className="mt-1 block">Answer privately.</span>
-        <span className="mt-1 block">Reveal together.</span>
+        <span className="block">One private answer.</span>
+        <span className="mt-1 block">One reveal together.</span>
       </h2>
       <p className="mt-2 text-center text-base text-slate-600">
-        Connect daily, effortlessly. Reflect positively. Grow stronger together.
+        Same question. Two hidden replies—until you&apos;re both ready.
       </p>
       <p className="mt-2 text-center text-sm font-medium text-brand-700">
-        Built for couples who don&apos;t want another chore.
+        No feed. No scores. Just you two.
       </p>
 
       <div
@@ -49,7 +48,7 @@ export function WelcomeHero() {
         Private by design • No ads • No social feed
       </p>
       <p className="mt-3 text-center text-xs font-medium text-brand-600">
-        Couples use Aligned to stay connected.
+        For couples who&apos;d rather feel close than stay busy.
       </p>
     </div>
   );

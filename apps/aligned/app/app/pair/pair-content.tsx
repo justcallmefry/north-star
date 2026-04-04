@@ -60,8 +60,8 @@ export function PairContent() {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: "Join me on Aligned",
-          text: "Use this link to pair with me on Aligned:",
+          title: "Let's do our daily question together",
+          text: "One private question a day on Aligned—we only see answers after we both reply. Pair here:",
           url: joinUrl,
         });
       } else {
@@ -105,7 +105,7 @@ export function PairContent() {
         {!inviteCode ? (
           <>
             <p className="mt-2 text-sm text-slate-600">
-              Get a link and code to send by text or email.
+              We&apos;ll give you a link and code to text or email—private answers until you both show up.
             </p>
             <button
               type="button"

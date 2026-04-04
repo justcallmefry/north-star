@@ -55,7 +55,7 @@ export default async function MeetingPage() {
               />
             </span>
             <span>
-              A shared snapshot of the week. Add when you like—highs, lows, or anything you want to remember.
+              A tiny weekly snapshot—only what you want to remember or say out loud. Add when it feels right.
             </span>
           </p>
           <p className="text-sm text-slate-500 sm:text-base">Week of {weekLabel}</p>
@@ -64,7 +64,7 @@ export default async function MeetingPage() {
         <div className="ns-stack-tight animate-calm-fade-in animate-calm-delay-header">
           <section className="ns-card">
             <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">This week so far</h2>
-            <p className="mt-1 text-sm text-slate-600">A read-only snapshot. You can add or edit your notes below.</p>
+            <p className="mt-1 text-sm text-slate-600">A quiet read-only view. Add or tweak your half below anytime.</p>
             <div className="mt-4">
               <MeetingView
                 ownEntry={meetingData?.ownEntry ?? null}
@@ -75,8 +75,8 @@ export default async function MeetingPage() {
           </section>
 
           <section className="ns-card">
-            <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Add to Our Week</h2>
-            <p className="mt-1 text-sm text-slate-600">Optional prompts. Write a little or a lot—whatever feels right.</p>
+            <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Your snapshot</h2>
+            <p className="mt-1 text-sm text-slate-600">Optional prompts—skip what doesn&apos;t fit. A sentence is enough.</p>
             <div className="mt-4">
               <MeetingForm meetingId={current.meetingId} initial={meetingData?.ownEntry ?? null} />
             </div>

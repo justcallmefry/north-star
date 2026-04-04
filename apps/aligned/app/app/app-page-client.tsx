@@ -64,13 +64,16 @@ export function AppPageClient({ initialData }: Props) {
           <TodaySection relationshipId={relationshipId!} />
 
           <section className="space-y-3">
+            <p className="text-center text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
+              Extra—still short
+            </p>
             <div className="space-y-3">
-              {/* Quiz card: row 1 = title + checkmark, row 2 = sentence | image, row 3 = button */}
+              {/* Guess & compare card */}
               <div className="ns-card w-full text-left !py-3 !pr-3 border-l-4 border-l-brand-500 bg-brand-50/30">
                 <div className="flex items-center justify-between gap-2 pb-2">
                   <Link href="/app/quiz" className="inline-flex items-center gap-2 hover:opacity-90 min-w-0">
                     <HelpCircle className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={2} />
-                    <span className="font-semibold text-slate-900 truncate">Quiz</span>
+                    <span className="font-semibold text-slate-900 truncate">Guess &amp; compare</span>
                   </Link>
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/90" aria-hidden>
                     {quizDoneToday === true ? (
@@ -83,23 +86,23 @@ export function AppPageClient({ initialData }: Props) {
                 <div className="grid grid-cols-[auto,1fr] gap-3 items-center">
                   <TodayRandomImage src={distinctImages[0]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg shrink-0" sizes="96px" />
                   <p className="text-sm text-slate-500 leading-snug min-w-0">
-                    Answer for yourself, then guess what your partner picked.
+                    Quick choices—then see how well you read each other.
                   </p>
                 </div>
                 <Link
                   href="/app/quiz"
                   className="ns-btn-primary block w-full text-center py-2.5 text-sm mt-3"
                 >
-                  {quizDoneToday === true ? "View Results" : "Take Quiz"}
+                  {quizDoneToday === true ? "View results" : "Start"}
                 </Link>
               </div>
 
-              {/* Alignment card: row 1 = title + checkmark, row 2 = sentence | image, row 3 = button */}
+              {/* Same page? card */}
               <div className="ns-card w-full text-left !py-3 !pr-3 border-l-4 border-l-brand-500 bg-brand-50/30">
                 <div className="flex items-center justify-between gap-2 pb-2">
                   <Link href="/app/agreement" className="inline-flex items-center gap-2 hover:opacity-90 min-w-0">
                     <Scale className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={2} />
-                    <span className="font-semibold text-slate-900 truncate">Alignment</span>
+                    <span className="font-semibold text-slate-900 truncate">Same page?</span>
                   </Link>
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/90" aria-hidden>
                     {agreementDoneToday === true ? (
@@ -111,7 +114,7 @@ export function AppPageClient({ initialData }: Props) {
                 </div>
                 <div className="grid grid-cols-[1fr,auto] gap-3 items-center">
                   <p className="text-sm text-slate-500 leading-snug min-w-0">
-                    Rate each statement, then guess how your partner would answer.
+                    Rate a few statements—then compare. No right answers, just clarity.
                   </p>
                   <TodayRandomImage src={distinctImages[1]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg shrink-0" sizes="96px" />
                 </div>
@@ -119,7 +122,7 @@ export function AppPageClient({ initialData }: Props) {
                   href="/app/agreement"
                   className="ns-btn-primary block w-full text-center py-2.5 text-sm mt-3"
                 >
-                  {agreementDoneToday === true ? "View Results" : "Take Alignment"}
+                  {agreementDoneToday === true ? "View results" : "Start"}
                 </Link>
               </div>
             </div>
@@ -132,24 +135,24 @@ export function AppPageClient({ initialData }: Props) {
               <EmptyTogetherIllustration className="w-28 h-28 sm:w-32 sm:h-32" />
             </div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-500 sm:text-sm">
-              Welcome
+              Almost there
             </p>
             <p className="mt-3 text-xl font-semibold text-slate-900 sm:text-2xl">
-              Create or join
+              Pair to unlock today&apos;s question
             </p>
             <p className="mt-2 text-sm text-slate-600 sm:text-base">
-              Create or join to get your first question. Invite your partner when you&apos;re ready.
+              One of you creates a space; the other joins with a link or code. Then your private answers unlock together.
             </p>
             <p className="mt-1 text-xs text-slate-500">
-              One question a day—the most valuable screen time you&apos;ll do together.
+              Same question. Two hidden replies—until you&apos;re both ready.
             </p>
             <p className="mt-1 text-xs text-slate-400">
-              Calm, private, no feed. Just you two.
+              No feed. About three minutes. Just you two.
             </p>
             <div className="mt-5 w-full">
               <Link href="/app/pair" className="ns-btn-primary flex w-full justify-center items-center gap-2 py-3.5" prefetch={false}>
                 <ArrowRight className="h-4 w-4" />
-                Pair with partner
+                Invite or join partner
               </Link>
             </div>
           </div>

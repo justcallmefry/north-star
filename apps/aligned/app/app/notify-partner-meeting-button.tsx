@@ -10,7 +10,8 @@ type Props = {
   size?: "sm" | "md";
 };
 
-const MESSAGE = "I updated Our Week. Please feel free to add your thoughts.";
+const MESSAGE =
+  "I added a few lines to Our Week on Aligned—no pressure, add yours when you want.";
 
 export function NotifyPartnerMeetingButton({
   meetingId,
@@ -36,7 +37,7 @@ export function NotifyPartnerMeetingButton({
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               relationshipId,
-              title: "Our Week",
+              title: "Our Week — your turn",
               body: MESSAGE,
               url: path,
             }),
@@ -44,7 +45,7 @@ export function NotifyPartnerMeetingButton({
           if (res.ok) {
             const data = (await res.json()) as { sent?: number };
             if (data.sent && data.sent > 0) {
-              toast.success("Notification sent.");
+              toast.success("They'll get a nudge.");
               return;
             }
           }
@@ -75,7 +76,7 @@ export function NotifyPartnerMeetingButton({
 
   return (
     <button type="button" onClick={handleClick} className={className}>
-      Notify
+      Nudge them
     </button>
   );
 }

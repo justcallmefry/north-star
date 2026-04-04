@@ -8,8 +8,8 @@ import { BottomNav } from "./bottom-nav";
 
 const SIDEBAR_NAV = [
   { href: "/app", label: "Today", icon: Home },
-  { href: "/app/quiz", label: "Quiz", icon: HelpCircle },
-  { href: "/app/agreement", label: "Alignment", icon: Scale },
+  { href: "/app/quiz", label: "Guess & compare", icon: HelpCircle },
+  { href: "/app/agreement", label: "Same page?", icon: Scale },
   { href: "/app/history", label: "Responses", icon: History },
   { href: "/app/meeting", label: "Our Week", icon: CalendarRange },
   { href: "/app/us", label: "Profile", icon: User },
@@ -53,10 +53,10 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
                     />
                   </div>
                   <p className="mt-3 text-xl font-semibold text-slate-900">
-                    One question a day
+                    One private answer a day
                   </p>
                   <p className="mt-1.5 text-sm text-slate-600">
-                    Answer privately. Reveal when you&apos;re both ready.
+                    Hidden until you&apos;re both in—then you open together.
                   </p>
                 </div>
                 <div className="h-px w-full border-t border-emerald-800/10" />
@@ -74,9 +74,9 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
                 </nav>
               </div>
               <div className="mt-6 space-y-2 text-sm text-slate-500">
-                <p>Calm, private, no feed.</p>
+                <p>No feed. No public scores.</p>
                 <p className="text-xs leading-snug">
-                  Your answers are only shared with your partner after you both answer.
+                  Answers stay hidden until you&apos;re both in—then you open together.
                 </p>
               </div>
             </aside>
@@ -92,10 +92,10 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
                   Aligned
                 </p>
                 <p className="mt-1 text-base font-semibold leading-snug text-white sm:text-lg">
-                  One question a day — together
+                  One private answer. One reveal together.
                 </p>
                 <p className="mt-1 text-xs text-white/80 sm:text-sm">
-                  A calm place for the two of you.
+                  About three minutes—calm, for just the two of you.
                 </p>
               </header>
             )}

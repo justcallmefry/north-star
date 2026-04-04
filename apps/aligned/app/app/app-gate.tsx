@@ -43,7 +43,7 @@ export function AppGate({ callbackUrl }: { callbackUrl?: string } = {}) {
 
   return (
     <main className="flex min-h-screen items-center justify-center p-8">
-      <p className="text-slate-500 text-sm">Loading…</p>
+      <p className="text-slate-500 text-sm">Checking you in…</p>
     </main>
   );
 }

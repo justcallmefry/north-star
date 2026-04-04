@@ -76,24 +76,19 @@ export function AppPageClient({ initialData }: Props) {
               <EmptyTogetherIllustration className="w-28 h-28 sm:w-32 sm:h-32" />
             </div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-500 sm:text-sm">
-              Almost there
+              Almost set
             </p>
             <p className="mt-3 text-xl font-semibold text-slate-900 sm:text-2xl">
-              Pair to unlock today&apos;s question
+              Pair to open today&apos;s prompt
             </p>
             <p className="mt-2 text-sm text-slate-600 sm:text-base">
-              One of you creates a space; the other joins with a link or code. Then your private answers unlock together.
-            </p>
-            <p className="mt-1 text-xs text-slate-500">
-              Same question. Two hidden replies—until you&apos;re both ready.
-            </p>
-            <p className="mt-1 text-xs text-slate-400">
-              No feed. About three minutes. Just you two.
+              One of you creates a space; the other joins with a link or code. Then you get the same daily prompt—and
+              your answers stay hidden until you&apos;ve both replied.
             </p>
             <div className="mt-5 w-full">
               <Link href="/app/pair" className="ns-btn-primary flex w-full justify-center items-center gap-2 py-3.5" prefetch={false}>
                 <ArrowRight className="h-4 w-4" />
-                Invite or join partner
+                Invite or join
               </Link>
             </div>
           </div>

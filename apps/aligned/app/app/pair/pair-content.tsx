@@ -60,8 +60,8 @@ export function PairContent() {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: "Let's do our daily question together",
-          text: "One private question a day on Aligned—we only see answers after we both reply. Pair here:",
+          title: "Join me on Aligned—one prompt a day",
+          text: "One private prompt a day on Aligned—we only see replies after we've both answered. Join me here:",
           url: joinUrl,
         });
       } else {
@@ -100,12 +100,12 @@ export function PairContent() {
       {/* Card 1: I want to invite my partner */}
       <section className="ns-shadow-glow rounded-2xl border border-brand-100/80 bg-gradient-to-b from-white/90 to-brand-50/60 p-5 sm:p-6">
         <h2 className="text-lg font-semibold text-slate-900">
-          I want to invite my partner
+          Send an invite
         </h2>
         {!inviteCode ? (
           <>
             <p className="mt-2 text-sm text-slate-600">
-              We&apos;ll give you a link and code to text or email—private answers until you both show up.
+              We&apos;ll give you a link and a short code—easy to text. Answers stay private until you&apos;re both in.
             </p>
             <button
               type="button"
@@ -113,7 +113,7 @@ export function PairContent() {
               disabled={inviteLoading}
               className="ns-btn-primary mt-4 w-full py-3 disabled:opacity-50"
             >
-              {inviteLoading ? "Creating…" : "Get my invite code"}
+              {inviteLoading ? "Making your invite…" : "Get invite link & code"}
             </button>
           </>
         ) : (
@@ -131,7 +131,7 @@ export function PairContent() {
                 className="inline-flex items-center gap-1.5 rounded-lg border border-brand-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-brand-50"
               >
                 <Copy className="h-4 w-4" />
-                {copied ? "Copied" : "Tap to copy"}
+                {copied ? "Copied" : "Copy"}
               </button>
             </div>
             <button
@@ -140,7 +140,7 @@ export function PairContent() {
               className="ns-btn-primary mt-4 flex w-full items-center justify-center gap-2 py-3"
             >
               <Share2 className="h-5 w-5" />
-              Share your invite code
+              Share invite
             </button>
           </>
         )}
@@ -156,10 +156,10 @@ export function PairContent() {
       {/* Card 2: I have a code from my partner */}
       <section className="rounded-2xl border border-slate-200 bg-slate-50/50 p-5 shadow-md shadow-slate-100/80 sm:p-6">
         <h2 className="text-lg font-semibold text-slate-900">
-          I have a code from my partner
+          I have their code
         </h2>
         <p className="mt-2 text-sm text-slate-600">
-          Enter the code they sent you to pair now.
+          Paste the code they sent—takes a moment.
         </p>
         <form onSubmit={handleClaim} className="mt-4 space-y-3">
           <div>
@@ -182,7 +182,7 @@ export function PairContent() {
             disabled={claimLoading || !partnerCode.trim()}
             className="ns-btn-primary w-full py-3 disabled:opacity-50"
           >
-            {claimLoading ? "Pairing…" : "Pair now"}
+            {claimLoading ? "Connecting you…" : "Pair us"}
           </button>
         </form>
       </section>

@@ -15,7 +15,7 @@ function generateInviteCode(): string {
 
 export async function createRelationship(name?: string) {
   const session = await getServerAuthSession();
-  if (!session?.user?.id) throw new Error("Not signed in");
+  if (!session?.user?.id) throw new Error("Sign in to continue.");
 
   const userId = session.user.id;
   const code = generateInviteCode();
@@ -55,7 +55,7 @@ export async function createRelationship(name?: string) {
 
 export async function createInvite(relationshipId: string) {
   const session = await getServerAuthSession();
-  if (!session?.user?.id) throw new Error("Not signed in");
+  if (!session?.user?.id) throw new Error("Sign in to continue.");
 
   await requireActiveMember(session.user.id, relationshipId);
 
@@ -77,7 +77,7 @@ export async function createInvite(relationshipId: string) {
 
 export async function claimInvite(code: string) {
   const session = await getServerAuthSession();
-  if (!session?.user?.id) throw new Error("Not signed in");
+  if (!session?.user?.id) throw new Error("Sign in to continue.");
 
   const trimmed = code.trim();
   const invite = await prisma.invite.findFirst({
@@ -129,7 +129,7 @@ export async function claimInvite(code: string) {
 
 export async function leaveRelationship(relationshipId: string) {
   const session = await getServerAuthSession();
-  if (!session?.user?.id) throw new Error("Not signed in");
+  if (!session?.user?.id) throw new Error("Sign in to continue.");
 
   const member = await prisma.relationshipMember.findFirst({
     where: {
@@ -151,7 +151,7 @@ export async function leaveRelationship(relationshipId: string) {
 
 export async function archiveRelationship(relationshipId: string) {
   const session = await getServerAuthSession();
-  if (!session?.user?.id) throw new Error("Not signed in");
+  if (!session?.user?.id) throw new Error("Sign in to continue.");
 
   await requireActiveMember(session.user.id, relationshipId);
 

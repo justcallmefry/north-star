@@ -72,7 +72,7 @@ export default async function InvitePage({ searchParams }: Props) {
           href="/app"
           className="text-sm font-medium text-slate-600 hover:text-slate-900"
         >
-          Back to app
+          Back to Today
         </Link>
       </header>
       <div className="mx-auto w-full max-w-md flex-1 py-6">
@@ -80,15 +80,15 @@ export default async function InvitePage({ searchParams }: Props) {
           Invite your partner
         </h1>
         <p className="mt-2 text-slate-600">
-          Share your code or link so they can join. Same code flow as the pair screen.
+          Share your code or link so they can join—same flow as the Pair screen.
         </p>
         {roundedAnswered > 0 && (
           <p className="mt-1 text-xs font-medium text-slate-500">
-            Couples have already answered{" "}
+            Couples have shared{" "}
             <span className="font-semibold text-slate-900">
               {roundedAnswered.toLocaleString()}
             </span>{" "}
-            questions with Aligned.
+            prompts on Aligned.
           </p>
         )}
         <div className="mt-8">

@@ -45,7 +45,7 @@ export function NotifyPartnerMeetingButton({
           if (res.ok) {
             const data = (await res.json()) as { sent?: number };
             if (data.sent && data.sent > 0) {
-              toast.success("They'll get a nudge.");
+              toast.success("Sent.");
               return;
             }
           }
@@ -76,7 +76,7 @@ export function NotifyPartnerMeetingButton({
 
   return (
     <button type="button" onClick={handleClick} className={className}>
-      Nudge them
+      Send a nudge
     </button>
   );
 }

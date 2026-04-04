@@ -130,7 +130,7 @@ export function AgreementClient({
       onAgreementUpdated?.();
       setLoading(false);
       setShowDoneCelebration(true);
-      toast.success("Submitted. Results unlock when your partner finishes.");
+      toast.success("Submitted. Results open when your partner finishes.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to submit");
       setLoading(false);

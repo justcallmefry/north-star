@@ -1,10 +1,10 @@
 import { Clock, ThumbsUp, Heart, Lock } from "lucide-react";
 
 const BENEFITS = [
-  { icon: Clock, text: "Under three minutes—built for busy days." },
-  { icon: Lock, text: "Your answers stay private until you both reply." },
-  { icon: ThumbsUp, text: "Made for couples who want closeness without homework." },
-  { icon: Heart, text: "Positive-by-design prompts—not a space for fights." },
+  { icon: Clock, text: "About three minutes—built for full schedules." },
+  { icon: Lock, text: "Replies stay private until you've both sent yours." },
+  { icon: ThumbsUp, text: "For couples who want connection without a workbook." },
+  { icon: Heart, text: "Prompts stay kind and forward-looking by design." },
 ] as const;
 
 /** Benefit list + proof below the fold on the welcome screen. */
@@ -30,9 +30,9 @@ export function WelcomeHero() {
         </ul>
       </div>
 
-      <p className="mt-5 text-center text-xs text-slate-500">Private by design • No ads</p>
+      <p className="mt-5 text-center text-xs text-slate-500">Built for privacy • No ads</p>
       <p className="mt-2 text-center text-xs font-medium text-brand-600">
-        For couples who&apos;d rather feel close than stay busy.
+        For couples who prefer showing up to performing.
       </p>
     </div>
   );

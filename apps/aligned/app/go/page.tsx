@@ -19,7 +19,7 @@ export default function GoPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center p-8">
-      <p className="text-slate-500 text-sm">Taking you there…</p>
+      <p className="text-slate-500 text-sm">Almost there…</p>
     </main>
   );
 }

@@ -43,11 +43,11 @@ export function SessionContent({ data, currentUserId }: Props) {
     setLoading("submit");
     try {
       await submitResponse(data.sessionId, text);
-      toast.success("Saved. Still just between you until you both reveal.");
+      toast.success("Saved. Yours stays private until you're both ready to open.");
       router.refresh();
       // Keep loading as "submit" until refreshed data arrives (see useEffect below)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to submit");
+      setError(err instanceof Error ? err.message : "Couldn't save. Check your connection and try again.");
       setLoading(null);
     }
   }
@@ -59,10 +59,10 @@ export function SessionContent({ data, currentUserId }: Props) {
       const result = await revealSession(data.sessionId);
       setRevealData(result);
       setRevealed(true);
-      toast.success("Here are your answers.");
+      toast.success("You're both in—here are your replies.");
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to reveal");
+      setError(err instanceof Error ? err.message : "Couldn't open replies. Try again.");
     } finally {
       setLoading(null);
     }
@@ -75,10 +75,10 @@ export function SessionContent({ data, currentUserId }: Props) {
     try {
       await submitReflection(data.sessionId, undefined, reaction.trim());
       setReaction("");
-      toast.success("They'll see your note.");
+      toast.success("They'll see this after you send.");
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save");
+      setError(err instanceof Error ? err.message : "Couldn't save. Try again.");
     } finally {
       setLoading(null);
     }
@@ -113,7 +113,7 @@ export function SessionContent({ data, currentUserId }: Props) {
       };
       recognition.onerror = (event: any) => {
         if (event.error !== "aborted" && event.error !== "no-speech") {
-          setError("We couldn't hear you clearly. You can try again or type instead.");
+          setError("We didn't catch that—try again, or type it out.");
         }
         setIsRecording(false);
       };
@@ -129,7 +129,7 @@ export function SessionContent({ data, currentUserId }: Props) {
     setError(null);
     const recognition = ensureRecognition();
     if (!recognition) {
-      setError("Voice input isn’t supported in this browser. You can still type your answer.");
+      setError("Voice isn't available in this browser—type your answer instead.");
       return;
     }
     try {
@@ -248,7 +248,7 @@ export function SessionContent({ data, currentUserId }: Props) {
   const totalMembers = data.memberCount ?? 2;
   const respondedCount = data.respondedCount ?? ((data.hasUserResponded ? 1 : 0) + (data.hasPartnerResponded ? totalMembers - 1 : 0));
   const afterRevealLine = data.isFirstCompletedSession
-    ? "That's the whole ritual: show up, be honest, see each other."
+    ? "That's the rhythm: show up, say what's true, read each other in."
     : "That's today—same time tomorrow.";
 
   return (
@@ -260,7 +260,7 @@ export function SessionContent({ data, currentUserId }: Props) {
       {data.momentText && (
         <div className="ns-card mx-auto max-w-xl">
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-500 sm:text-sm">
-            If you want to go a little further
+            Want to go one step further?
           </p>
           <p className="mt-1.5 text-base leading-relaxed text-slate-700 sm:text-lg">
             {data.momentText}
@@ -274,7 +274,7 @@ export function SessionContent({ data, currentUserId }: Props) {
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder="Say it in your own words—no one sees this until you both reveal."
+              placeholder="In your own words—hidden until you're both ready to open."
               rows={5}
               className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-4 text-lg leading-relaxed text-slate-900 placeholder:text-slate-500 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300"
               required
@@ -333,7 +333,10 @@ export function SessionContent({ data, currentUserId }: Props) {
 
       {data.hasUserResponded && data.state === "open" && !data.canReveal && (
         <div className="space-y-3 rounded-xl border border-brand-200 bg-brand-50 p-4 text-base text-brand-800 sm:text-lg">
-          <p>Waiting on {totalMembers === 2 ? "your partner" : "everyone"} to answer. You can reveal once all have responded.</p>
+          <p>
+            Still waiting on {totalMembers === 2 ? "your partner" : "everyone"}. When all replies are in, you can open
+            together.
+          </p>
           <NotifyPartnerButton sessionId={data.sessionId} relationshipId={data.relationshipId} className="w-full py-3.5" />
         </div>
       )}
@@ -348,7 +351,7 @@ export function SessionContent({ data, currentUserId }: Props) {
               disabled={!!loading}
               className="ns-btn-primary w-full py-3.5 text-lg"
             >
-              {loading === "reveal" ? "Opening…" : "Open our answers"}
+              {loading === "reveal" ? "Opening…" : "Open our replies"}
             </button>
             <NotifyPartnerButton sessionId={data.sessionId} relationshipId={data.relationshipId} messageType="reveal" size="sm" className="w-full py-2.5" />
           </div>
@@ -371,7 +374,7 @@ export function SessionContent({ data, currentUserId }: Props) {
 
       {isRevealed && afterRevealReady && (
         <div className="animate-calm-fade-in ns-card ns-stack-tight">
-          <h3 className="text-lg font-semibold text-slate-900 sm:text-xl">Answers</h3>
+          <h3 className="text-lg font-semibold text-slate-900 sm:text-xl">Replies</h3>
 
           <div className="space-y-2">
             {responsesToShow.map((resp) => (

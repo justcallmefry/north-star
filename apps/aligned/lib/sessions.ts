@@ -160,7 +160,7 @@ export async function getToday(
   localDateStr?: string
 ): Promise<GetTodayResult | null> {
   const session = await getServerAuthSession();
-  if (!session?.user?.id) throw new Error("Not signed in");
+  if (!session?.user?.id) throw new Error("Sign in to continue.");
 
   await requireActiveMember(session.user.id, relationshipId);
   const memberIds = await getActiveMemberIds(relationshipId);
@@ -262,13 +262,13 @@ export async function getToday(
 
 export async function submitResponse(sessionId: string, text: string) {
   const session = await getServerAuthSession();
-  if (!session?.user?.id) throw new Error("Not signed in");
+  if (!session?.user?.id) throw new Error("Sign in to continue.");
 
   const dailySession = await requireSessionMembership(session.user.id, sessionId);
 
   if (dailySession.state !== "open") {
     throw new Error(
-      "This question is closed—answers can't be changed after it's revealed or archived for the day."
+      "This prompt is closed—replies can't be edited after you've opened together."
     );
   }
 
@@ -300,7 +300,7 @@ export type RevealResult = {
 
 export async function revealSession(sessionId: string): Promise<RevealResult> {
   const session = await getServerAuthSession();
-  if (!session?.user?.id) throw new Error("Not signed in");
+  if (!session?.user?.id) throw new Error("Sign in to continue.");
 
   const base = await requireSessionMembership(session.user.id, sessionId);
 
@@ -322,7 +322,7 @@ export async function revealSession(sessionId: string): Promise<RevealResult> {
 
   const memberIds = await getActiveMemberIds(base.relationshipId);
   if (memberIds.length < 2)
-    throw new Error("This space needs at least 2 active people.");
+    throw new Error("You need two people in this space to open replies together.");
   const withResponses = await prisma.dailySession.findUnique({
     where: { id: sessionId },
     include: { responses: { select: { userId: true } } },
@@ -331,7 +331,7 @@ export async function revealSession(sessionId: string): Promise<RevealResult> {
     memberIds.length >= 2 &&
     withResponses &&
     memberIds.every((id) => withResponses.responses.some((r) => r.userId === id));
-  if (!allResponded) throw new Error("Everyone needs to answer before revealing.");
+  if (!allResponded) throw new Error("Everyone needs to reply before you can open.");
 
   await prisma.dailySession.update({
     where: { id: sessionId },
@@ -399,7 +399,7 @@ export type GetSessionResult = {
 
 export async function getSession(sessionId: string): Promise<GetSessionResult | null> {
   const session = await getServerAuthSession();
-  if (!session?.user?.id) throw new Error("Not signed in");
+  if (!session?.user?.id) throw new Error("Sign in to continue.");
 
   // Membership-first: no sensitive data until we know user belongs
   await requireSessionMembership(session.user.id, sessionId);
@@ -530,7 +530,7 @@ export async function getHistory(
   hasNext: boolean;
 }> {
   const session = await getServerAuthSession();
-  if (!session?.user?.id) throw new Error("Not signed in");
+  if (!session?.user?.id) throw new Error("Sign in to continue.");
 
   await requireActiveMember(session.user.id, relationshipId);
 
@@ -650,7 +650,7 @@ export async function submitReflection(
   content?: string
 ) {
   const session = await getServerAuthSession();
-  if (!session?.user?.id) throw new Error("Not signed in");
+  if (!session?.user?.id) throw new Error("Sign in to continue.");
 
   const dailySession = await requireSessionMembership(session.user.id, sessionId);
   if (dailySession.state !== "revealed")
@@ -689,7 +689,7 @@ async function requireResponseForValidation(responseId: string, currentUserId: s
 
 export async function setReactions(responseId: string, emojiList: string[]) {
   const session = await getServerAuthSession();
-  if (!session?.user?.id) throw new Error("Not signed in");
+  if (!session?.user?.id) throw new Error("Sign in to continue.");
 
   if (emojiList.length > 2) throw new Error("Maximum 2 reactions allowed.");
   const allowed = new Set<string>(VALIDATION_ALLOWED_EMOJIS);
@@ -712,7 +712,7 @@ export async function setReactions(responseId: string, emojiList: string[]) {
 
 export async function setAcknowledgment(responseId: string, text: string) {
   const session = await getServerAuthSession();
-  if (!session?.user?.id) throw new Error("Not signed in");
+  if (!session?.user?.id) throw new Error("Sign in to continue.");
 
   if (text.length > VALIDATION_ACK_MAX_LENGTH) throw new Error("Acknowledgment must be 100 characters or less.");
   const acknowledgmentValue = text.trim().length > 0 ? text.trim() : null;

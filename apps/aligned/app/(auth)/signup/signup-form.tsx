@@ -78,7 +78,7 @@ export function SignupForm() {
       <form onSubmit={handleStep2Submit} className="flex flex-col flex-1">
         <div className="ns-auth-card flex flex-1 flex-col">
           <h1 className="mb-2 text-2xl font-semibold tracking-tight text-slate-900">What should we call you?</h1>
-          <p className="mb-8 text-sm text-slate-600 sm:text-base">Your first name is all we need.</p>
+          <p className="mb-8 text-sm text-slate-600 sm:text-base">First name is enough.</p>
 
           <div className="space-y-5">
             <div>
@@ -144,7 +144,7 @@ export function SignupForm() {
       <div className="ns-auth-card flex flex-1 flex-col">
         <h1 className="mb-2 text-2xl font-semibold tracking-tight text-slate-900">Create your account</h1>
         <p className="mb-8 text-sm leading-relaxed text-slate-600">
-          Takes about a minute. Next, you&apos;ll invite your partner so you can answer today&apos;s question together.
+          About a minute here—then we&apos;ll get you to pairing so today&apos;s prompt can go live.
         </p>
 
         {showApple && (

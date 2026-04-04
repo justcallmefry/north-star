@@ -74,10 +74,10 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
                     />
                   </div>
                   <p className="mt-3 text-xl font-semibold text-slate-900">
-                    One private answer a day
+                    One private prompt a day
                   </p>
                   <p className="mt-1.5 text-sm text-slate-600">
-                    Hidden until you&apos;re both in—then you open together.
+                    Replies stay hidden until you&apos;re both in—then you open together.
                   </p>
                 </div>
                 <div className="h-px w-full border-t border-emerald-800/10" />
@@ -105,7 +105,7 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
               <div className="mt-6 space-y-2 text-sm text-slate-500">
                 <p>No feed. No public scores.</p>
                 <p className="text-xs leading-snug">
-                  Answers stay hidden until you&apos;re both in—then you open together.
+                  Same rhythm every day: reply separately, open together.
                 </p>
               </div>
             </aside>
@@ -121,10 +121,10 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
                   Aligned
                 </p>
                 <p className="mt-1 text-base font-semibold leading-snug text-white sm:text-lg">
-                  One private answer. One reveal together.
+                  One private prompt. Open when you&apos;re both ready.
                 </p>
                 <p className="mt-1 text-xs text-white/80 sm:text-sm">
-                  About three minutes—calm, for just the two of you.
+                  About three minutes—unhurried, for just the two of you.
                 </p>
               </header>
             )}

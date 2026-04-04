@@ -60,8 +60,8 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
     try {
       if (navigator.share) {
         await navigator.share({
-          title: "Let's do our daily question together",
-          text: "One private question a day on Aligned—we only see answers after we both reply. Pair here:",
+          title: "Join me on Aligned—one prompt a day",
+          text: "One private prompt a day on Aligned—we only see replies after we've both answered. Join me here:",
           url: shareUrl,
         });
       } else {
@@ -82,7 +82,7 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
     return (
       <div className="ns-shadow-glow rounded-2xl border border-brand-100/80 bg-gradient-to-b from-white/90 to-brand-50/60 p-5 sm:p-6">
         <p className="text-sm text-slate-600">
-          Get a link to send them—same private question ritual, answers unlock when you&apos;re both in.
+          Get a link to send them—same daily prompt, replies stay hidden until you&apos;re both in.
         </p>
         <button
           type="button"
@@ -90,7 +90,7 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
           disabled={loading}
           className="ns-btn-primary mt-4 w-full py-3 disabled:opacity-50"
         >
-          {loading ? "Creating…" : "Get my invite code"}
+          {loading ? "Making your invite…" : "Get invite link & code"}
         </button>
         {error && (
           <p className="mt-3 text-sm text-red-600">{error}</p>
@@ -121,7 +121,7 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
             className="inline-flex items-center gap-1.5 rounded-lg border border-brand-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-brand-50"
           >
             <Copy className="h-4 w-4" />
-            {copied ? "Copied" : "Tap to copy link"}
+            {copied ? "Copied" : "Copy link"}
           </button>
           <button
             type="button"
@@ -129,7 +129,7 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
             className="ns-btn-primary inline-flex items-center gap-2 py-2"
           >
             <Share2 className="h-4 w-4" />
-            Share your invite code
+            Share invite
           </button>
         </div>
         <p className="mt-3 text-xs text-slate-500">
@@ -144,7 +144,7 @@ export function InviteContent({ relationshipId, relationshipName, code: initialC
         className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
       >
         <RefreshCw className="h-4 w-4" />
-        {loading ? "Creating…" : "Generate new code"}
+        {loading ? "Making…" : "New code"}
       </button>
 
       {error && (

@@ -40,7 +40,7 @@ export function JoinForm({ initialCode }: Props) {
           value={code}
           onChange={(e) => setCode(e.target.value)}
           className="w-full rounded-xl border border-emerald-200/90 bg-white px-3 py-3 text-base font-mono text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200/60"
-          placeholder="e.g. Abc12XyZ"
+          placeholder="Paste their code"
           autoComplete="off"
         />
       </div>
@@ -50,7 +50,7 @@ export function JoinForm({ initialCode }: Props) {
         disabled={loading || !code.trim()}
         className="ns-btn-primary w-full py-3 text-sm font-semibold disabled:opacity-50"
       >
-        {loading ? "Pairing…" : "Pair with partner"}
+        {loading ? "Connecting you…" : "Pair us"}
       </button>
     </form>
   );

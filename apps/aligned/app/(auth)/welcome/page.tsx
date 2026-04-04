@@ -49,16 +49,16 @@ export function WelcomeContent() {
 
           <div className="mt-4 w-full max-w-md text-center">
             <span className="inline-flex items-center rounded-full bg-gradient-to-r from-brand-50 to-brand-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand-600 ring-1 ring-brand-100/80">
-              One question · Two private answers · Open together
+              One prompt · Two private replies · Open when you&apos;re both ready
             </span>
             <h1 className="mt-4 text-xl font-semibold leading-snug text-slate-900 sm:text-2xl">
-              The 3-minute ritual that keeps you close—without the heavy stuff.
+              A three-minute daily rhythm—close, light, and on your terms.
             </h1>
             <p className="mt-3 text-base leading-relaxed text-slate-600">
-              You each answer the same prompt on your own; nothing unlocks until you&apos;re both done—then you read it
-              together.
+              You each answer the same prompt on your own. Nothing appears until you&apos;ve both replied—then you open
+              it together.
             </p>
-            <p className="mt-2 text-sm font-medium text-slate-700">No feed. Just you two.</p>
+            <p className="mt-2 text-sm font-medium text-slate-700">No feed. No audience. Just the two of you.</p>
           </div>
 
           <div className="mt-8 w-full max-w-sm space-y-3">
@@ -66,14 +66,14 @@ export function WelcomeContent() {
               href={signupHref}
               className="ns-btn-accent block w-full py-3.5 text-center text-base font-medium"
             >
-              Start free — invite your partner
+              Start free — set up your space
             </a>
-            <p className="text-center text-xs text-slate-500">Free · Private · No social feed</p>
+            <p className="text-center text-xs text-slate-500">Free · Private · Ad-free</p>
             <p className="text-center text-sm">
               <Link href={joinHref} className="font-medium text-brand-700 underline-offset-2 hover:underline">
-                Have an invite code?
+                Have a code?
               </Link>
-              <span className="text-slate-600"> — join your partner&apos;s space</span>
+              <span className="text-slate-600"> Join your partner&apos;s space</span>
             </p>
           </div>
         </section>
@@ -87,13 +87,13 @@ export function WelcomeContent() {
           style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom) + 0.5rem)" }}
         >
           <p className="text-center text-xs leading-relaxed text-slate-500">
-            By continuing, you agree to our{" "}
+            Continuing means you agree to our{" "}
             <Link href="/terms" className="underline hover:text-slate-700">
               Terms
             </Link>{" "}
             and{" "}
             <Link href="/privacy" className="underline hover:text-slate-700">
-              Privacy
+              Privacy Policy
             </Link>
             .
           </p>

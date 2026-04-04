@@ -67,7 +67,7 @@ function LoginFormInner() {
         role="status"
         aria-live="polite"
       >
-        <p className="text-sm font-medium text-slate-700">Taking you to the app…</p>
+        <p className="text-sm font-medium text-slate-700">Heading to Today…</p>
       </div>
     );
   }

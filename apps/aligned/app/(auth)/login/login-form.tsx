@@ -22,7 +22,8 @@ function LoginFormInner() {
   const [sent, setSent] = useState(sentParam);
   const [error, setError] = useState<string | null>(() => {
     if (errorParam) return "We couldn't send the sign-in link. Try again below.";
-    if (authError) return "Invalid email or password.";
+    if (authError === "CredentialsSignin") return "Invalid email or password.";
+    if (authError) return "Sign-in didn’t complete. Try again or use another method.";
     return null;
   });
 

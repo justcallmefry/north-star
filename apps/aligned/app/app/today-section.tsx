@@ -25,6 +25,8 @@ function msUntilNextMidnight(): number {
 
 export function TodaySection({ relationshipId }: Props) {
   const [today, setToday] = useState<GetTodayResult | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [retryNonce, setRetryNonce] = useState(0);
   const [loading, setLoading] = useState(true);
   // Set only on client after mount so we never use the server's date (avoids timezone bug
   // where history showed sessions one day behind for users ahead of server TZ).
@@ -41,10 +43,16 @@ export function TodaySection({ relationshipId }: Props) {
     if (localDateStr == null) return;
     let cancelled = false;
     setLoading(true);
+    setLoadError(null);
     getToday(relationshipId, localDateStr)
       .then((result) => {
         if (!cancelled) {
           setToday(result);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setLoadError(err instanceof Error ? err.message : "Could not load today’s question.");
         }
       })
       .finally(() => {
@@ -53,7 +61,7 @@ export function TodaySection({ relationshipId }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [relationshipId, localDateStr]);
+  }, [relationshipId, localDateStr, retryNonce]);
 
   // At local midnight, update localDateStr so we refetch and show the new day's question.
   useEffect(() => {
@@ -78,6 +86,21 @@ export function TodaySection({ relationshipId }: Props) {
         <div className="mt-4 h-8 w-full rounded bg-slate-200" />
         <div className="mt-3 h-4 w-2/3 rounded bg-slate-100" />
         <div className="mt-6 h-12 w-full rounded-xl bg-slate-100" />
+      </section>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <section className="ns-card border-red-100 bg-red-50/50">
+        <p className="text-sm text-red-800">{loadError}</p>
+        <button
+          type="button"
+          className="ns-btn-secondary mt-4 w-full py-2.5 text-sm font-semibold"
+          onClick={() => setRetryNonce((n) => n + 1)}
+        >
+          Try again
+        </button>
       </section>
     );
   }

@@ -10,9 +10,12 @@ type Props = { params: Promise<{ id: string }> };
 
 export default async function SessionPage({ params }: Props) {
   const session = await getServerAuthSession();
-  if (!session?.user) redirect("/");
-
   const { id } = await params;
+
+  if (!session?.user) {
+    redirect(`/login?callbackUrl=${encodeURIComponent(`/app/session/${id}`)}`);
+  }
+
   const data = await getSession(id);
   if (!data) notFound();
 

@@ -5,6 +5,15 @@ import { getPartnerUserId, sendPushToUser } from "@/lib/push";
 
 export const dynamic = "force-dynamic";
 
+function absoluteNotifyUrl(req: Request, pathOrUrl: string): string {
+  if (pathOrUrl.startsWith("http://") || pathOrUrl.startsWith("https://")) return pathOrUrl;
+  const path = pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`;
+  const base =
+    process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ??
+    new URL(req.url).origin;
+  return `${base}${path}`;
+}
+
 function validateBody(body: unknown): { relationshipId: string; title: string; body?: string; url: string } | null {
   if (!body || typeof body !== "object") return null;
   const b = body as Record<string, unknown>;
@@ -43,7 +52,7 @@ export async function POST(req: Request) {
   const sent = await sendPushToUser(partnerId, {
     title: parsed.title,
     body: parsed.body,
-    url: parsed.url.startsWith("http") ? parsed.url : `${process.env.NEXT_PUBLIC_APP_URL ?? ""}${parsed.url}`,
+    url: absoluteNotifyUrl(req, parsed.url),
   });
 
   return NextResponse.json({ ok: true, sent });

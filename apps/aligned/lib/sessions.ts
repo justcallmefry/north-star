@@ -2,6 +2,7 @@
 
 import { randomInt } from "node:crypto";
 import { revalidatePath } from "next/cache";
+import { Prisma } from "@/generated/prisma";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getDedication } from "@/lib/dedication";
@@ -22,6 +23,39 @@ async function requireSessionMembership(userId: string, sessionId: string) {
 
 /** Max recent sessions to load when avoiding repeat prompts (cap for query size). */
 const PROMPT_LOOKBACK_CAP = 200;
+
+const dailySessionDayInclude = {
+  prompt: true,
+  responses: { select: { userId: true, content: true } },
+} as const;
+
+/** Create today's row or return the existing one if another request won the race (unique on relationship + date). */
+async function createDailySessionForDate(
+  relationshipId: string,
+  sessionDate: Date,
+  promptId: string | null
+) {
+  try {
+    return await prisma.dailySession.create({
+      data: {
+        relationshipId,
+        sessionDate,
+        promptId,
+        state: "open",
+      },
+      include: dailySessionDayInclude,
+    });
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
+      const existing = await prisma.dailySession.findUnique({
+        where: { relationshipId_sessionDate: { relationshipId, sessionDate } },
+        include: dailySessionDayInclude,
+      });
+      if (existing) return existing;
+    }
+    throw e;
+  }
+}
 
 /**
  * Pick a daily prompt for this relationship: avoid repeating prompts until the pool has
@@ -152,18 +186,7 @@ export async function getToday(
   let dailySession: typeof latestSession;
   if (!latestSession) {
     const promptId = await pickPromptForSession(relationshipId);
-    dailySession = await prisma.dailySession.create({
-      data: {
-        relationshipId,
-        sessionDate: today,
-        promptId,
-        state: "open",
-      },
-      include: {
-        prompt: true,
-        responses: { select: { userId: true, content: true } },
-      },
-    });
+    dailySession = await createDailySessionForDate(relationshipId, today, promptId);
   } else if (latestSession.state === "open" || latestSession.state === "expired") {
     const todayStr = localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr) ? localDateStr : today.toISOString().slice(0, 10);
     const latestDateStr = latestSession.sessionDate.toISOString().slice(0, 10);
@@ -182,18 +205,7 @@ export async function getToday(
       });
       if (!dailySession) {
         const promptId = await pickPromptForSession(relationshipId);
-        dailySession = await prisma.dailySession.create({
-          data: {
-            relationshipId,
-            sessionDate: today,
-            promptId,
-            state: "open",
-          },
-          include: {
-            prompt: true,
-            responses: { select: { userId: true, content: true } },
-          },
-        });
+        dailySession = await createDailySessionForDate(relationshipId, today, promptId);
       }
     }
   } else {
@@ -209,18 +221,7 @@ export async function getToday(
     });
     if (!dailySession) {
       const promptId = await pickPromptForSession(relationshipId);
-      dailySession = await prisma.dailySession.create({
-        data: {
-          relationshipId,
-          sessionDate: today,
-          promptId,
-          state: "open",
-        },
-        include: {
-          prompt: true,
-          responses: { select: { userId: true, content: true } },
-        },
-      });
+      dailySession = await createDailySessionForDate(relationshipId, today, promptId);
     }
   }
 
@@ -238,8 +239,10 @@ export async function getToday(
     hasPartnerResponded &&
     memberIds.length >= 2;
 
+  const streakCalendarDay =
+    localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr) ? localDateStr : null;
   const [streak, dedication] = await Promise.all([
-    getStreak(relationshipId),
+    getStreak(relationshipId, streakCalendarDay),
     getDedication(relationshipId, session.user.id),
   ]);
 
@@ -262,6 +265,12 @@ export async function submitResponse(sessionId: string, text: string) {
   if (!session?.user?.id) throw new Error("Not signed in");
 
   const dailySession = await requireSessionMembership(session.user.id, sessionId);
+
+  if (dailySession.state !== "open") {
+    throw new Error(
+      "This question is closed—answers can't be changed after it's revealed or archived for the day."
+    );
+  }
 
   await prisma.response.upsert({
     where: {
@@ -294,6 +303,23 @@ export async function revealSession(sessionId: string): Promise<RevealResult> {
   if (!session?.user?.id) throw new Error("Not signed in");
 
   const base = await requireSessionMembership(session.user.id, sessionId);
+
+  if (base.state === "revealed") {
+    const snapshot = await prisma.dailySession.findUnique({
+      where: { id: sessionId },
+      include: {
+        prompt: true,
+        responses: { select: { userId: true, content: true } },
+        reflections: { select: { userId: true, content: true, reaction: true } },
+      },
+    });
+    return {
+      promptText: snapshot?.prompt?.text ?? "",
+      responses: snapshot?.responses ?? [],
+      reflections: snapshot?.reflections ?? [],
+    };
+  }
+
   const memberIds = await getActiveMemberIds(base.relationshipId);
   if (memberIds.length < 2)
     throw new Error("This space needs at least 2 active people.");

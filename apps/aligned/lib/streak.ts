@@ -21,15 +21,24 @@ export type StreakInfo = {
   justReset?: boolean;
 };
 
-export async function getStreak(relationshipId: string): Promise<StreakInfo | null> {
+/**
+ * @param calendarDay - Optional `YYYY-MM-DD` for the viewer's "today" (e.g. from the browser).
+ *   When omitted, uses the server's UTC calendar day (e.g. session detail page).
+ */
+export async function getStreak(
+  relationshipId: string,
+  calendarDay?: string | null
+): Promise<StreakInfo | null> {
   const row = await prisma.streak.findUnique({
     where: { relationshipId },
     select: { currentCount: true, longestCount: true, lastCompletedDate: true },
   });
   if (!row) return null;
 
-  const today = new Date();
-  const todayStr = toDateString(today);
+  const todayStr =
+    calendarDay && /^\d{4}-\d{2}-\d{2}$/.test(calendarDay)
+      ? calendarDay
+      : toDateString(new Date());
   const lastStr = row.lastCompletedDate ? toDateString(row.lastCompletedDate) : null;
 
   let isStillCurrent = false;

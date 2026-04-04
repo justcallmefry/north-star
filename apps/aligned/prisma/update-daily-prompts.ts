@@ -1,53 +1,12 @@
 /**
- * One-off script to update existing daily prompts to the new "anytime" wording.
+ * Updates existing daily prompts in `createdAt` order to match `daily-prompts-data.ts`.
  * Run with: npx tsx prisma/update-daily-prompts.ts
  */
+import "./load-env";
 import { PrismaClient } from "../generated/prisma";
+import { DAILY_PROMPTS } from "./daily-prompts-data";
 
 const prisma = new PrismaClient();
-
-const DAILY_PROMPTS = [
-  { text: "What's one small thing that made you smile lately?", momentText: "If you want, tell your partner one thing you appreciate about them right now." },
-  { text: "What's a moment from roughly the last 24 hours you'd want to remember?", momentText: "If it feels right, share something that's been on your mind lately." },
-  { text: "Who or what felt like a gift to you lately?", momentText: null },
-  { text: "What's something tiny you noticed today that you might otherwise forget?", momentText: null },
-  { text: "What's something simple you're thankful for right now?", momentText: null },
-  { text: "What's felt good lately, even if it was small?", momentText: null },
-  { text: "What's one thing about your partner you're glad for recently?", momentText: "If you'd like, name one small way they showed up for you lately." },
-  { text: "What's a part of your routine that you actually enjoy?", momentText: null },
-  { text: "What surprised you in a good way lately?", momentText: null },
-  { text: "What's made you feel a little lighter lately?", momentText: null },
-  { text: "What's something you appreciated about us lately?", momentText: null },
-  { text: "What's one thing you'd want your partner to know about how you're doing?", momentText: "If it feels right, share something that's been on your mind lately." },
-  { text: "What's been on your mind more than you expected lately?", momentText: null },
-  { text: "What's a moment recently when you felt really heard?", momentText: null },
-  { text: "What do you wish you had more time to talk about together?", momentText: null },
-  { text: "What's something small that made you feel connected to your partner recently?", momentText: null },
-  { text: "What's one thing you're looking forward to doing together?", momentText: null },
-  { text: "What's a question you've been curious to ask your partner?", momentText: null },
-  { text: "What felt easy between you two lately?", momentText: null },
-  { text: "What's something you'd want to do more of as a couple?", momentText: null },
-  { text: "What's one small thing that's brought you comfort lately?", momentText: null },
-  { text: "What's been taking up more of your energy than you expected?", momentText: "If you want, share one thing that's felt heavy or light lately." },
-  { text: "What's something you've been thinking about that you haven't said yet?", momentText: null },
-  { text: "What's one way you've been kind to yourself lately?", momentText: null },
-  { text: "What's a moment lately when you felt like yourself?", momentText: null },
-  { text: "What's something that's been on repeat in your head?", momentText: null },
-  { text: "If you could redo one moment from the last few days, what would you change?", momentText: null },
-  { text: "What's been feeling heavy or light lately?", momentText: null },
-  { text: "What's a small win lately that no one else might notice?", momentText: null },
-  { text: "What's something you're still figuring out?", momentText: null },
-  { text: "What's something that made you laugh recently?", momentText: null },
-  { text: "What's a silly or fun moment lately?", momentText: null },
-  { text: "What's something you'd love to do together just for fun?", momentText: null },
-  { text: "What's a show, song, or game you've been into lately?", momentText: null },
-  { text: "What's something that gave you a spark of joy, even briefly?", momentText: null },
-  { text: "What's a place you'd love to go with your partner when you get the chance?", momentText: null },
-  { text: "What's something you used to do for fun that you'd like to try again?", momentText: null },
-  { text: "What's a memory of the two of you that still makes you smile?", momentText: null },
-  { text: "What's something that made you feel playful lately?", momentText: null },
-  { text: "What's one thing you're looking forward to that's just for you?", momentText: null },
-];
 
 async function main() {
   const prompts = await prisma.prompt.findMany({
@@ -67,10 +26,15 @@ async function main() {
     const row = DAILY_PROMPTS[i];
     await prisma.prompt.update({
       where: { id: prompts[i].id },
-      data: { text: row.text, momentText: row.momentText },
+      data: {
+        text: row.text,
+        momentText: row.momentText ?? null,
+        category: row.category,
+        tone: row.tone,
+      },
     });
   }
-  console.log(`Updated ${toUpdate} daily prompt(s) to the new "anytime" wording.`);
+  console.log(`Updated ${toUpdate} daily prompt(s) from daily-prompts-data.`);
 }
 
 main()

@@ -79,11 +79,11 @@ export function AgreementSection({
     return (
       <div className="space-y-6 rounded-2xl bg-gradient-to-b from-brand-50/40 via-white to-brand-50/30 py-6 px-4 -mx-4 -my-5 sm:px-6 sm:-mx-6 sm:-my-6">
         <div className="flex flex-col items-center text-center">
-          <div className="mb-3 flex h-14 w-14 animate-pulse rounded-2xl bg-slate-200" />
-          <div className="h-8 w-48 animate-pulse rounded bg-slate-200" />
-          <div className="mt-2 h-4 w-64 animate-pulse rounded bg-slate-100" />
+          <div className="mb-3 flex h-14 w-14 motion-safe:animate-pulse rounded-2xl bg-slate-200" />
+          <div className="h-8 w-48 motion-safe:animate-pulse rounded bg-slate-200" />
+          <div className="mt-2 h-4 w-64 motion-safe:animate-pulse rounded bg-slate-100" />
         </div>
-        <div className="h-64 animate-pulse rounded-xl bg-slate-100" />
+        <div className="h-64 motion-safe:animate-pulse rounded-xl bg-slate-100" />
       </div>
     );
   }

@@ -35,6 +35,20 @@ export default async function MeetingPage() {
     const weekLabel = `${format(weekStart, "MMMM d")}–${format(weekEnd, "d, yyyy")}`;
     return (
       <div className="ns-stack">
+        <nav className="flex items-center justify-between gap-3 text-sm" aria-label="Section">
+          <Link
+            href="/app/together"
+            className="font-medium text-brand-600 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-200 rounded"
+          >
+            ← Together
+          </Link>
+          <Link
+            href="/app"
+            className="font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-200 rounded"
+          >
+            Today
+          </Link>
+        </nav>
         <header className="animate-calm-fade-in space-y-2">
           <div className="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 ring-1 ring-brand-200">
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-brand-500">
@@ -65,6 +79,10 @@ export default async function MeetingPage() {
           <section className="ns-card">
             <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">This week so far</h2>
             <p className="mt-1 text-sm text-slate-600">A quiet read-only view. Add or tweak your half below anytime.</p>
+            <p className="mt-2 text-xs leading-relaxed text-slate-500">
+              When you&apos;ve both saved something this week, you&apos;ll see each other&apos;s notes—private between you
+              two, same spirit as your daily reveal.
+            </p>
             <div className="mt-4">
               <MeetingView
                 ownEntry={meetingData?.ownEntry ?? null}

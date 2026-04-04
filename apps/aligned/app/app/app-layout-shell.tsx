@@ -3,21 +3,42 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Home, CalendarRange, History, User, HelpCircle, Scale } from "lucide-react";
+import { Home, FolderHeart, User, HelpCircle, Scale } from "lucide-react";
 import { BottomNav } from "./bottom-nav";
 
 const SIDEBAR_NAV = [
   { href: "/app", label: "Today", icon: Home },
+  { href: "/app/together", label: "Together", icon: FolderHeart },
   { href: "/app/quiz", label: "Guess & compare", icon: HelpCircle },
   { href: "/app/agreement", label: "Same page?", icon: Scale },
-  { href: "/app/history", label: "Responses", icon: History },
-  { href: "/app/meeting", label: "Our Week", icon: CalendarRange },
-  { href: "/app/us", label: "Profile", icon: User },
+  { href: "/app/us", label: "You", icon: User },
 ] as const;
+
+function isSidebarActive(pathname: string, href: string): boolean {
+  if (href === "/app") {
+    if (pathname === "/app" || pathname.startsWith("/app?")) return true;
+    if (pathname.startsWith("/app/quiz")) return true;
+    if (pathname.startsWith("/app/agreement")) return true;
+    if (pathname.startsWith("/app/session/")) return true;
+    return false;
+  }
+  if (href === "/app/together") {
+    return (
+      pathname.startsWith("/app/together") ||
+      pathname.startsWith("/app/history") ||
+      pathname.startsWith("/app/meeting")
+    );
+  }
+  if (href === "/app/us") return pathname.startsWith("/app/us");
+  if (href === "/app/quiz") return pathname.startsWith("/app/quiz");
+  if (href === "/app/agreement") return pathname.startsWith("/app/agreement");
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export function AppLayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const pathForNav = pathname ?? "";
   /** Match bottom nav: focus chrome only after Start (?playing=1), not on quiz/alignment intro. */
   const isFocusMode =
     (pathname.startsWith("/app/quiz") || pathname.startsWith("/app/agreement")) &&
@@ -61,16 +82,24 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
                 </div>
                 <div className="h-px w-full border-t border-emerald-800/10" />
                 <nav className="space-y-1" aria-label="App navigation">
-                  {SIDEBAR_NAV.map(({ href, label, icon: Icon }) => (
-                    <Link
-                      key={href}
-                      href={href}
-                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors duration-150 hover:bg-white/80 hover:text-slate-900"
-                    >
-                      <Icon className="h-4 w-4 shrink-0" strokeWidth={2} />
-                      {label}
-                    </Link>
-                  ))}
+                  {SIDEBAR_NAV.map(({ href, label, icon: Icon }) => {
+                    const active = isSidebarActive(pathForNav, href);
+                    return (
+                      <Link
+                        key={href}
+                        href={href}
+                        aria-current={active ? "page" : undefined}
+                        className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150 ${
+                          active
+                            ? "bg-white/95 text-slate-900 shadow-sm ring-1 ring-emerald-200/70"
+                            : "text-slate-700 hover:bg-white/80 hover:text-slate-900"
+                        }`}
+                      >
+                        <Icon className="h-4 w-4 shrink-0" strokeWidth={2} />
+                        {label}
+                      </Link>
+                    );
+                  })}
                 </nav>
               </div>
               <div className="mt-6 space-y-2 text-sm text-slate-500">
@@ -87,7 +116,7 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
             }`}
           >
             {!isFocusMode && (
-              <header className="relative bg-gradient-to-r from-[#2b8cbe] via-[#2680b0] to-[#1e6b9e] px-4 py-3.5 text-white shadow-sm after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#69BE28] after:content-[''] sm:px-6 sm:py-4">
+              <header className="relative bg-gradient-to-r from-[#4a7a8c] via-[#3d6b7d] to-[#355d6e] px-4 py-3.5 text-white shadow-sm after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#69BE28] after:content-[''] sm:px-6 sm:py-4">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/85">
                   Aligned
                 </p>

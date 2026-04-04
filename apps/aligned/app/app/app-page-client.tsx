@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Circle, HelpCircle, Scale } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { getQuizForToday } from "@/lib/quiz";
 import { getAgreementForToday } from "@/lib/agreement";
 import { TodaySection } from "./today-section";
-import { TodayRandomImage } from "./today-random-image";
+import { MoreTodaySection } from "./components/more-today-section";
 
 export type Relationship = { id: string; name: string | null; status: string };
 export type AppPageInitialData = {
@@ -63,70 +63,11 @@ export function AppPageClient({ initialData }: Props) {
         <div className="ns-stack animate-fade-in-ease">
           <TodaySection relationshipId={relationshipId!} />
 
-          <section className="space-y-3">
-            <p className="text-center text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
-              Extra—still short
-            </p>
-            <div className="space-y-3">
-              {/* Guess & compare card */}
-              <div className="ns-card w-full text-left !py-3 !pr-3 border-l-4 border-l-brand-500 bg-brand-50/30">
-                <div className="flex items-center justify-between gap-2 pb-2">
-                  <Link href="/app/quiz" className="inline-flex items-center gap-2 hover:opacity-90 min-w-0">
-                    <HelpCircle className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={2} />
-                    <span className="font-semibold text-slate-900 truncate">Guess &amp; compare</span>
-                  </Link>
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/90" aria-hidden>
-                    {quizDoneToday === true ? (
-                      <CheckCircle className="h-5 w-5 text-emerald-600" strokeWidth={2} aria-label="Done today" />
-                    ) : (
-                      <Circle className="h-5 w-5 text-slate-400" strokeWidth={2} aria-label="Not done today" />
-                    )}
-                  </span>
-                </div>
-                <div className="grid grid-cols-[auto,1fr] gap-3 items-center">
-                  <TodayRandomImage src={distinctImages[0]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg shrink-0" sizes="96px" />
-                  <p className="text-sm text-slate-500 leading-snug min-w-0">
-                    Quick choices—then see how well you read each other.
-                  </p>
-                </div>
-                <Link
-                  href="/app/quiz"
-                  className="ns-btn-primary block w-full text-center py-2.5 text-sm mt-3"
-                >
-                  {quizDoneToday === true ? "View results" : "Start"}
-                </Link>
-              </div>
-
-              {/* Same page? card */}
-              <div className="ns-card w-full text-left !py-3 !pr-3 border-l-4 border-l-brand-500 bg-brand-50/30">
-                <div className="flex items-center justify-between gap-2 pb-2">
-                  <Link href="/app/agreement" className="inline-flex items-center gap-2 hover:opacity-90 min-w-0">
-                    <Scale className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={2} />
-                    <span className="font-semibold text-slate-900 truncate">Same page?</span>
-                  </Link>
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/90" aria-hidden>
-                    {agreementDoneToday === true ? (
-                      <CheckCircle className="h-5 w-5 text-emerald-600" strokeWidth={2} aria-label="Done today" />
-                    ) : (
-                      <Circle className="h-5 w-5 text-slate-400" strokeWidth={2} aria-label="Not done today" />
-                    )}
-                  </span>
-                </div>
-                <div className="grid grid-cols-[1fr,auto] gap-3 items-center">
-                  <p className="text-sm text-slate-500 leading-snug min-w-0">
-                    Rate a few statements—then compare. No right answers, just clarity.
-                  </p>
-                  <TodayRandomImage src={distinctImages[1]} className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg shrink-0" sizes="96px" />
-                </div>
-                <Link
-                  href="/app/agreement"
-                  className="ns-btn-primary block w-full text-center py-2.5 text-sm mt-3"
-                >
-                  {agreementDoneToday === true ? "View results" : "Start"}
-                </Link>
-              </div>
-            </div>
-          </section>
+          <MoreTodaySection
+            distinctImages={distinctImages}
+            quizDoneToday={quizDoneToday}
+            agreementDoneToday={agreementDoneToday}
+          />
         </div>
       ) : (
         <section className="mt-4 flex flex-1 items-center justify-center">

@@ -21,9 +21,9 @@ export default async function SessionPage({ params }: Props) {
       <p>
         <Link
           href="/app"
-          className="text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-200 rounded"
+          className="text-sm font-medium text-brand-600 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-200 rounded"
         >
-          ← Back to today
+          ← Today
         </Link>
       </p>
       <SessionContent data={data} currentUserId={session.user.id} />

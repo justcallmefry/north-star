@@ -26,17 +26,18 @@ export default async function JoinPage({ searchParams }: Props) {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-8">
+    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-sky-100/50 via-[#e2ebe4] to-[#d4e2d9] px-4 py-10 text-slate-900">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold">You&apos;re invited</h1>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Aligned is one private question a day—you only see each other&apos;s answers after you&apos;ve both replied. Enter their code to pair.
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">You&apos;re invited</h1>
+          <p className="mt-2 text-sm text-slate-600 sm:text-base leading-relaxed">
+            Aligned is one private question a day—you only see each other&apos;s answers after you&apos;ve both replied.
+            Enter their code to pair. Takes about a minute.
           </p>
         </div>
         <JoinForm initialCode={initialCode} />
-        <p className="text-center text-sm text-gray-500">
-          <Link href="/app" className="underline hover:no-underline">
+        <p className="text-center text-sm text-slate-500">
+          <Link href="/app" className="font-medium text-brand-600 hover:text-brand-700">
             Back to app
           </Link>
         </p>

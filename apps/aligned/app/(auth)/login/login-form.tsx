@@ -61,8 +61,12 @@ function LoginFormInner() {
 
   if (status === "authenticated") {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-slate-600">
-        <p className="text-sm">Taking you to the app…</p>
+      <div
+        className="ns-auth-card flex flex-col items-center justify-center py-10 text-slate-600"
+        role="status"
+        aria-live="polite"
+      >
+        <p className="text-sm font-medium text-slate-700">Taking you to the app…</p>
       </div>
     );
   }
@@ -109,7 +113,12 @@ function LoginFormInner() {
 
   if (sent) {
     return (
-      <div className="ns-shadow-glow rounded-2xl border border-brand-100/80 bg-white px-5 py-6">
+      <div
+        className="ns-auth-card px-5 py-6"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 ring-1 ring-brand-200">
             <Image
@@ -145,12 +154,12 @@ function LoginFormInner() {
   const showApple = process.env.NEXT_PUBLIC_APPLE_SIGNIN_ENABLED === "true";
 
   return (
-    <div className="space-y-6">
+    <div className="ns-auth-card space-y-6">
       <div>
         <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">
           Log in
         </h1>
-        <p className="mt-2 text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 sm:text-base">
           Use your email and password, or get a one-time link.
         </p>
       </div>
@@ -160,7 +169,7 @@ function LoginFormInner() {
           <button
             type="button"
             onClick={() => signIn("apple", { callbackUrl })}
-            className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-800 bg-slate-900 px-4 py-3.5 text-base font-medium text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+            className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-800 bg-slate-900 px-4 py-3.5 text-base font-medium text-white shadow-sm hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
               <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13 1.86 1.12 2.57 1.81 4.39 1.73 1.77-.07 2.88-.67 3.99-1.36 1.2-.84 2.35-1.8 3.57-2.88.24-.21.46-.44.68-.67.02-.02.04-.03.05-.05v.02c-.01 0-.01.01 0 .02-.02.02-.04.04-.06.06-.22.23-.44.46-.68.67-1.22 1.08-2.37 2.04-3.57 2.88-1.11.69-2.22 1.29-3.99 1.36-1.82.08-2.53-.61-4.39-1.73-2.86-1.15-3.6-5.26-.48-7.13zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
@@ -169,10 +178,10 @@ function LoginFormInner() {
           </button>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-slate-200" />
+              <span className="w-full border-t border-emerald-800/10" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-3 text-slate-500">or</span>
+              <span className="ns-auth-divider-label rounded-md text-sm">or</span>
             </div>
           </div>
         </>
@@ -187,7 +196,7 @@ function LoginFormInner() {
         <input type="hidden" name="csrfToken" value={csrfToken} />
         <input type="hidden" name="callbackUrl" value={callbackUrl} />
         <div>
-          <label htmlFor="login-email" className="block text-sm font-medium text-slate-700 mb-1">
+          <label htmlFor="login-email" className="mb-1 block text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
             Email
           </label>
           <input
@@ -198,12 +207,12 @@ function LoginFormInner() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-brand-300 focus:outline-none focus:ring-2 focus:ring-brand-200/60"
+            className="ns-input"
             placeholder="you@example.com"
           />
         </div>
         <div>
-          <label htmlFor="login-password" className="block text-sm font-medium text-slate-700 mb-1">
+          <label htmlFor="login-password" className="mb-1 block text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
             Password
           </label>
           <input
@@ -214,15 +223,17 @@ function LoginFormInner() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-brand-300 focus:outline-none focus:ring-2 focus:ring-brand-200/60"
+            className="ns-input"
             placeholder="Your password"
           />
         </div>
-        {error && (
-          <p className="text-sm text-red-600" role="alert">
-            {error}
-          </p>
-        )}
+        <div aria-live="polite">
+          {error && (
+            <p className="text-sm text-red-600" role="alert">
+              {error}
+            </p>
+          )}
+        </div>
         <button
           type="submit"
           disabled={!credentialsReady || !email.trim() || !password}
@@ -234,10 +245,10 @@ function LoginFormInner() {
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-slate-200" />
+          <span className="w-full border-t border-emerald-800/10" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="bg-white px-3 text-slate-500">or</span>
+          <span className="ns-auth-divider-label rounded-md text-sm">or</span>
         </div>
       </div>
 
@@ -248,7 +259,7 @@ function LoginFormInner() {
         <button
           type="submit"
           disabled={magicLoading || !email.trim()}
-          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+          className="ns-btn-secondary block w-full !normal-case py-3 text-sm font-semibold tracking-normal disabled:opacity-50"
         >
           {magicLoading ? "Sending…" : "Email me a sign-in link"}
         </button>
@@ -256,7 +267,7 @@ function LoginFormInner() {
 
       <p className="text-center text-sm text-slate-500">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="font-medium text-brand-600 hover:text-brand-700 underline">
+        <Link href="/signup" className="font-medium text-brand-600 underline hover:text-brand-700">
           Sign up
         </Link>
       </p>
@@ -266,11 +277,11 @@ function LoginFormInner() {
 
 function LoginFallback() {
   return (
-    <div className="space-y-6">
-      <div className="h-8 w-48 animate-pulse rounded bg-slate-200" />
+    <div className="ns-auth-card space-y-6" role="status" aria-label="Loading sign-in" aria-live="polite">
+      <div className="h-8 w-48 motion-safe:animate-pulse rounded bg-slate-200/80" />
       <div className="space-y-4">
-        <div className="h-12 animate-pulse rounded-xl bg-slate-200" />
-        <div className="h-12 animate-pulse rounded-xl bg-slate-200" />
+        <div className="h-12 motion-safe:animate-pulse rounded-xl bg-slate-200/80" />
+        <div className="h-12 motion-safe:animate-pulse rounded-xl bg-slate-200/80" />
       </div>
     </div>
   );

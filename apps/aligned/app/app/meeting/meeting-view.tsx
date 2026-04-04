@@ -1,11 +1,11 @@
 import type { MeetingEntryData } from "@/lib/meetings";
 
 const SECTIONS = [
-  { key: "wins" as const, label: "Wins" },
-  { key: "stressors" as const, label: "Stressors" },
-  { key: "request" as const, label: "Request" },
-  { key: "plan" as const, label: "Plan" },
-  { key: "appreciation" as const, label: "Appreciation" },
+  { key: "wins" as const, label: "Bright spots" },
+  { key: "stressors" as const, label: "Heavy stuff" },
+  { key: "request" as const, label: "One wish" },
+  { key: "plan" as const, label: "This week" },
+  { key: "appreciation" as const, label: "I'm glad" },
 ] as const;
 
 type Props = {
@@ -54,7 +54,7 @@ export function MeetingView({ ownEntry, partnerEntry, canViewPartner }: Props) {
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-slate-500">Your partner&apos;s notes will appear here as they add to them.</p>
+            <p className="text-sm text-slate-500">Your partner&apos;s notes will appear here after you&apos;ve both saved this week.</p>
           )}
         </section>
       </div>

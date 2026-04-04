@@ -42,16 +42,27 @@ export default async function HistoryPage({ searchParams }: Props) {
     }));
 
     return (
-      <main className="min-h-screen bg-white p-3 sm:p-4">
-        <div className="mb-4">
-          <Link href="/app" className="ns-btn-primary block w-full text-center !py-2.5 text-sm">
-            Answer today&apos;s question
+      <main className="flex flex-col gap-4">
+        <nav className="flex items-center justify-between gap-3 text-sm" aria-label="Section">
+          <Link
+            href="/app/together"
+            className="font-medium text-brand-600 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-200 rounded"
+          >
+            ← Together
           </Link>
-        </div>
-        <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Our history</h1>
-        <p className="mt-1.5 text-sm text-slate-600 sm:text-base">
-          Questions you&apos;ve answered together.
-        </p>
+          <Link
+            href="/app"
+            className="font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-200 rounded"
+          >
+            Today
+          </Link>
+        </nav>
+        <header>
+          <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Our history</h1>
+          <p className="mt-1.5 text-sm text-slate-600 sm:text-base">
+            Moments you&apos;ve already shared—questions and reveals in one place.
+          </p>
+        </header>
         <div className="mt-4">
           <HistoryListWithSearch
             items={itemsForClient}

@@ -356,8 +356,16 @@ export function SessionContent({ data, currentUserId }: Props) {
       )}
 
       {isRevealed && !afterRevealReady && (
-        <div className="flex min-h-[12rem] items-center justify-center" aria-hidden="true">
-          <p className="text-slate-400 text-lg">—</p>
+        <div
+          className="flex min-h-[12rem] flex-col items-center justify-center gap-3 px-4"
+          aria-live="polite"
+          aria-busy="true"
+        >
+          <p className="text-center text-sm font-medium text-slate-500">Opening your answers…</p>
+          <p className="text-center text-xs text-slate-400">Take a breath—almost there.</p>
+          <div className="h-1.5 w-28 overflow-hidden rounded-full bg-slate-200" aria-hidden>
+            <div className="h-full w-2/3 rounded-full bg-brand-400/80 motion-safe:animate-pulse" />
+          </div>
         </div>
       )}
 

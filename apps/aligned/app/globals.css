@@ -145,6 +145,29 @@ body {
   animation: quiz-card-enter 350ms ease-out forwards;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-fade-in-ease,
+  .animate-calm-fade-in,
+  .animate-quiz-card-exit,
+  .animate-quiz-card-enter {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .animate-delay-1,
+  .animate-delay-2,
+  .animate-delay-3,
+  .animate-calm-delay-1,
+  .animate-calm-delay-2,
+  .animate-calm-delay-header {
+    animation-delay: 0s !important;
+  }
+  .animate-loading-spin {
+    animation: none !important;
+  }
+}
+
 /* Focus rings: visible for keyboard navigation */
 @layer base {
   :where(button:focus-visible, [role="button"]:focus-visible, a:focus-visible) {
@@ -209,5 +232,18 @@ body {
   /* Glowy blue shadow for cards/panels (use with border + bg as needed) */
   .ns-shadow-glow {
     box-shadow: 0 4px 6px -1px rgb(43 140 190 / 0.15), 0 2px 4px -2px rgb(43 140 190 / 0.1);
+  }
+  /** Auth / settings fields — matches invite & onboarding */
+  .ns-input {
+    @apply w-full rounded-xl border border-emerald-200/90 bg-white px-4 py-3.5 text-base text-slate-900 placeholder:text-slate-400 shadow-sm transition-colors;
+    @apply focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200/60;
+  }
+  /** Card shell for login / signup on gradient backgrounds */
+  .ns-auth-card {
+    @apply rounded-2xl border-2 border-emerald-800/10 bg-[#f6faf7]/95 p-5 shadow-lg shadow-emerald-900/5 ring-1 ring-emerald-900/5 sm:p-6;
+  }
+  /** “or” divider text — readable on sage gradients */
+  .ns-auth-divider-label {
+    @apply bg-white/70 px-3 text-slate-500 backdrop-blur-sm;
   }
 }

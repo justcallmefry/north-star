@@ -17,7 +17,7 @@ const sizeClasses = {
 export function LoadingSpinner({ size = "md", className = "" }: Props) {
   return (
     <Loader2
-      className={`${sizeClasses[size]} animate-loading-spin text-brand-500 ${className}`}
+      className={`${sizeClasses[size]} animate-loading-spin text-brand-500 motion-reduce:animate-none ${className}`}
       strokeWidth={2.5}
       aria-hidden
     />

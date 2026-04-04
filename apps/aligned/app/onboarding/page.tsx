@@ -28,11 +28,11 @@ export default async function OnboardingPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 px-4 py-6 sm:px-6">
-      <div className="mx-auto flex min-h-[calc(100vh-3rem)] max-w-3xl items-center justify-center">
-        <div className="w-full space-y-6 rounded-2xl border border-slate-800 bg-slate-950/90 px-4 py-6 shadow-[0_24px_80px_rgba(15,23,42,0.9)] sm:px-6 sm:py-7">
+    <main className="min-h-screen bg-gradient-to-b from-sky-100/50 via-[#e2ebe4] to-[#d4e2d9] px-4 py-8 text-slate-900 sm:px-6">
+      <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-lg items-center justify-center">
+        <div className="w-full space-y-6 rounded-2xl border-2 border-emerald-800/10 bg-[#f6faf7] px-4 py-6 shadow-lg shadow-emerald-900/5 ring-1 ring-emerald-900/5 sm:px-6 sm:py-7">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900/80 ring-1 ring-slate-700/80">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white ring-1 ring-emerald-200/80 shadow-sm">
               <Image
                 src="/aligned-icon.png"
                 alt="Aligned"
@@ -43,11 +43,12 @@ export default async function OnboardingPage() {
               />
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
                 Welcome to Aligned
               </p>
-              <p className="text-sm text-slate-300">
-                Name your space and invite your partner—then you&apos;ll get the same question each day, with answers that unlock together.
+              <p className="text-sm text-slate-600">
+                Name your space and invite your partner—then you&apos;ll get the same question each day, with answers
+                that unlock together.
               </p>
             </div>
           </div>
@@ -57,16 +58,16 @@ export default async function OnboardingPage() {
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-slate-800" />
+                <span className="w-full border-t border-emerald-800/10" />
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="bg-slate-950 px-3 text-slate-500">or</span>
+                <span className="bg-[#f6faf7] px-3 text-slate-500">or</span>
               </div>
             </div>
 
             <Link
               href="/app"
-              className="block w-full rounded-lg border border-slate-700 bg-slate-950/80 px-4 py-2.5 text-center text-sm font-medium text-slate-200 hover:border-slate-500 hover:bg-slate-900"
+              className="block w-full rounded-xl border border-slate-300/90 bg-white/90 px-4 py-2.5 text-center text-sm font-medium text-slate-700 shadow-sm hover:border-slate-400 hover:bg-white"
             >
               I&apos;ll invite later—take me to Today
             </Link>

@@ -439,7 +439,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
   return (
     <div className="flex flex-col pt-0" id="quiz-step-container">
       {/* Progress — cool blue band, white type (shell header hidden in focus mode) */}
-      <div className="-mx-4 mb-3 space-y-2.5 bg-gradient-to-r from-[#2b8cbe] via-[#2680b0] to-[#1e6b9e] px-4 py-3 shadow-sm sm:-mx-6 sm:px-6 sm:py-3.5">
+      <div className="-mx-4 mb-3 space-y-2.5 bg-gradient-to-r from-emerald-800/88 via-emerald-900/92 to-emerald-800/88 px-4 py-3 shadow-sm sm:-mx-6 sm:px-6 sm:py-3.5">
         <p className="text-center text-sm font-semibold uppercase tracking-wide text-white">
           {isAnswerPhase
             ? `Question ${questionIndex + 1} of ${TOTAL_QUESTIONS}`

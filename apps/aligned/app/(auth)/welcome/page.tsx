@@ -60,7 +60,7 @@ export function WelcomeContent() {
               href={signupHref}
               className="ns-btn-accent block w-full py-3.5 text-center text-base font-medium"
             >
-              CREATE ACCOUNT
+              Create account
             </a>
           </div>
         </section>

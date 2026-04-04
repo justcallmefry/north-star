@@ -17,7 +17,7 @@ export default async function SignupPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white text-slate-900 flex flex-col">
+    <main className="min-h-screen flex flex-col bg-gradient-to-b from-sky-100/50 via-[#e2ebe4] to-[#d4e2d9] text-slate-900">
       <header className="flex items-center justify-between px-4 py-4 sm:px-6">
         <div className="relative h-9 w-9 shrink-0" aria-hidden>
           <Image

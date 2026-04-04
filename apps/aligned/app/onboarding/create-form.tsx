@@ -28,29 +28,26 @@ export function CreateRelationshipForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="name" className="block text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-          Relationship name (optional)
+        <label
+          htmlFor="name"
+          className="block text-xs font-semibold uppercase tracking-[0.18em] text-slate-500"
+        >
+          Name your space (optional)
         </label>
         <p className="mt-1 text-xs text-slate-500">
-          This is just for you two (e.g. &quot;Chris & Partner&quot;). You can change it later.
+          Just for you two (e.g. &quot;Chris &amp; Alex&quot;). You can change it later.
         </p>
         <input
           id="name"
           name="name"
           type="text"
-          className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+          className="mt-2 w-full rounded-xl border border-emerald-200/90 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200/60"
           placeholder="e.g. Chris & Partner"
         />
       </div>
-      {error && (
-        <p className="text-sm text-red-400">{error}</p>
-      )}
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full rounded-lg bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-emerald-950 shadow-sm shadow-emerald-500/30 hover:bg-emerald-400 disabled:opacity-50"
-      >
-        {loading ? "Creating…" : "Start as a couple"}
+      {error && <p className="text-sm text-red-600">{error}</p>}
+      <button type="submit" disabled={loading} className="ns-btn-primary w-full py-3 text-sm font-semibold disabled:opacity-50">
+        {loading ? "Creating…" : "Continue — invite next"}
       </button>
     </form>
   );

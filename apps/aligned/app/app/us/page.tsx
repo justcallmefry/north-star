@@ -4,7 +4,6 @@ import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { prisma } from "@/lib/prisma";
-import { RelationshipActions } from "../relationship-actions";
 import { ProfileForm } from "./profile-form";
 import { PasswordForm } from "./password-form";
 import { SignOutButton } from "./sign-out-button";
@@ -80,17 +79,43 @@ export default async function UsPage() {
     <main className="flex h-full flex-col ns-stack">
       <header className="space-y-1">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-500 sm:text-sm">
-          Profile
+          You
         </p>
         <h1 className="font-display text-2xl font-semibold text-slate-900 sm:text-3xl">
-          You & your relationship
+          You &amp; your space
         </h1>
         <p className="mt-1 text-sm text-slate-600 sm:text-base">
-          Update your name and icon. Manage your relationship.
+          How you show up in the app—and how Aligned treats your words.
         </p>
       </header>
 
       <section className="ns-stack-tight">
+        <div className="ns-card border-emerald-200/60 bg-emerald-50/25">
+          <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-900/80 sm:text-xs">
+            Privacy in plain language
+          </h2>
+          <p className="mt-2 text-sm font-medium text-slate-900">How your answers work</p>
+          <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-slate-700 sm:text-base marker:text-emerald-600">
+            <li>
+              Daily answers stay <span className="font-medium text-slate-900">hidden from your partner</span> until
+              you&apos;ve both replied—then you open together.
+            </li>
+            <li>
+              Nudges only go to <span className="font-medium text-slate-900">your linked partner</span>, not a feed or
+              public list.
+            </li>
+            <li>
+              Our Week notes show each side when <span className="font-medium text-slate-900">you&apos;ve both saved</span>{" "}
+              that week—same private spirit as your daily reveal.
+            </li>
+          </ul>
+          <p className="mt-4 text-sm text-slate-600">
+            <Link href="/privacy" className="font-medium text-brand-600 hover:text-brand-700">
+              Full privacy policy →
+            </Link>
+          </p>
+        </div>
+
         <div className="ns-card">
           <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
             Your profile
@@ -123,74 +148,53 @@ export default async function UsPage() {
 
       {primary ? (
         <section className="space-y-4">
-          <div className="ns-shadow-glow rounded-2xl border border-brand-100/80 bg-white px-4 py-4 sm:px-5 sm:py-5">
-            <div className="flex items-center justify-between gap-3">
-              <div className="space-y-2">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-sm">
-                  Relationship
-                </p>
-                <p className="mt-1 text-xl font-semibold text-slate-900 sm:text-2xl">
-                  {primary.name ?? "Your relationship"}
-                </p>
-                <p className="text-sm text-slate-600 sm:text-base">
-                  Invite your partner, see status, manage or leave the relationship.
-                </p>
-              </div>
-              <div className="hidden shrink-0 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 sm:inline-flex">
-                Connected
-              </div>
+          <div className="ns-card flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Relationship</p>
+              <p className="mt-1 text-lg font-semibold text-slate-900 sm:text-xl">
+                {primary.name ?? "Your relationship"}
+              </p>
+              <p className="mt-1 text-sm text-slate-600">
+                Invites, pairing, and leaving this space live in one place.
+              </p>
             </div>
-
-            <div className="mt-4 flex flex-col gap-2">
-              <Link
-                href="/invite"
-                className="ns-btn-primary block w-full text-center py-3"
-              >
-                Invite partner
-              </Link>
-              <Link
-                href="/app/us/relationship"
-                className="ns-btn-secondary block w-full text-center py-3"
-              >
-                Manage relationship
-              </Link>
-            </div>
-
-            <div className="mt-4 border-t border-brand-100 pt-3">
-              <RelationshipActions relationshipId={primary.id} />
-            </div>
+            <span className="inline-flex w-fit shrink-0 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-800 ring-1 ring-emerald-200/80">
+              Connected
+            </span>
           </div>
 
+          <Link
+            href="/app/us/relationship"
+            className="ns-btn-primary block w-full text-center py-3.5 text-sm font-semibold"
+          >
+            Manage relationship &amp; invites
+          </Link>
+
           {insights && (
-            <div className="ns-card">
+            <div className="ns-card bg-white/80">
               <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
-                How you&apos;ve been showing up
+                A little context
               </h2>
-              <div className="mt-3 space-y-1.5 text-sm text-slate-700 sm:text-base">
+              <div className="mt-3 space-y-2 text-sm text-slate-700 sm:text-base leading-relaxed">
                 <p>
-                  You&apos;ve answered{" "}
-                  <span className="font-semibold text-slate-900">
-                    {insights.answeredCount}
-                  </span>{" "}
-                  questions together.
+                  You&apos;ve shown up for{" "}
+                  <span className="font-semibold text-slate-900">{insights.answeredCount}</span> questions together—small
+                  moments that add up.
                 </p>
                 {insights.topCategory && (
                   <p>
-                    You tend to lean toward{" "}
-                    <span className="font-semibold text-slate-900">
-                      {insights.topCategory}
-                    </span>{" "}
-                    questions.
+                    Lately, many of your prompts made space for{" "}
+                    <span className="font-semibold text-slate-900">{insights.topCategory}</span>
+                    —that&apos;s a thread worth noticing, not a score.
                   </p>
                 )}
                 {insights.longestStreak > 0 && (
                   <p>
-                    Your longest streak so far is{" "}
+                    Your longest run so far:{" "}
                     <span className="font-semibold text-slate-900">
-                      {insights.longestStreak} day
-                      {insights.longestStreak === 1 ? "" : "s"}
-                    </span>
-                    .
+                      {insights.longestStreak} day{insights.longestStreak === 1 ? "" : "s"}
+                    </span>{" "}
+                    in a row. Every week is a fresh start if you need it.
                   </p>
                 )}
               </div>

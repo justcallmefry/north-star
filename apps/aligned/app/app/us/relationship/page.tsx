@@ -19,15 +19,15 @@ export default async function ManageRelationshipPage() {
       <header className="space-y-1">
         <Link
           href="/app/us"
-          className="text-sm font-medium text-brand-600 underline hover:text-brand-500"
+          className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-200 rounded"
         >
-          ← Back to Profile
+          <span aria-hidden>←</span> You
         </Link>
         <h1 className="font-display text-2xl font-semibold text-slate-900 sm:text-3xl">
-          Manage relationship
+          Relationship &amp; invites
         </h1>
         <p className="mt-1 text-sm text-slate-600 sm:text-base">
-          Invite your partner, see status, or leave this relationship.
+          Invite your partner, refresh a link, or leave this space if you need to.
         </p>
       </header>
 

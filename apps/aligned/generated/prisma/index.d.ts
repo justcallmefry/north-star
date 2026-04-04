@@ -9278,6 +9278,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     status: $Enums.RelationshipStatus | null
+    sharedCalendarTimezone: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9286,6 +9287,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     status: $Enums.RelationshipStatus | null
+    sharedCalendarTimezone: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9294,6 +9296,7 @@ export namespace Prisma {
     id: number
     name: number
     status: number
+    sharedCalendarTimezone: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -9304,6 +9307,7 @@ export namespace Prisma {
     id?: true
     name?: true
     status?: true
+    sharedCalendarTimezone?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9312,6 +9316,7 @@ export namespace Prisma {
     id?: true
     name?: true
     status?: true
+    sharedCalendarTimezone?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9320,6 +9325,7 @@ export namespace Prisma {
     id?: true
     name?: true
     status?: true
+    sharedCalendarTimezone?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -9401,6 +9407,7 @@ export namespace Prisma {
     id: string
     name: string | null
     status: $Enums.RelationshipStatus
+    sharedCalendarTimezone: string | null
     createdAt: Date
     updatedAt: Date
     _count: RelationshipCountAggregateOutputType | null
@@ -9426,6 +9433,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     status?: boolean
+    sharedCalendarTimezone?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     members?: boolean | Relationship$membersArgs<ExtArgs>
@@ -9443,6 +9451,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     status?: boolean
+    sharedCalendarTimezone?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["relationship"]>
@@ -9451,6 +9460,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     status?: boolean
+    sharedCalendarTimezone?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
@@ -9484,6 +9494,10 @@ export namespace Prisma {
       id: string
       name: string | null
       status: $Enums.RelationshipStatus
+      /**
+       * IANA timezone (e.g. America/New_York). When set, daily prompts use one calendar day for both partners.
+       */
+      sharedCalendarTimezone: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["relationship"]>
@@ -9890,6 +9904,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Relationship", 'String'>
     readonly name: FieldRef<"Relationship", 'String'>
     readonly status: FieldRef<"Relationship", 'RelationshipStatus'>
+    readonly sharedCalendarTimezone: FieldRef<"Relationship", 'String'>
     readonly createdAt: FieldRef<"Relationship", 'DateTime'>
     readonly updatedAt: FieldRef<"Relationship", 'DateTime'>
   }
@@ -26120,6 +26135,7 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     status: 'status',
+    sharedCalendarTimezone: 'sharedCalendarTimezone',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -26977,6 +26993,7 @@ export namespace Prisma {
     id?: StringFilter<"Relationship"> | string
     name?: StringNullableFilter<"Relationship"> | string | null
     status?: EnumRelationshipStatusFilter<"Relationship"> | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: StringNullableFilter<"Relationship"> | string | null
     createdAt?: DateTimeFilter<"Relationship"> | Date | string
     updatedAt?: DateTimeFilter<"Relationship"> | Date | string
     members?: RelationshipMemberListRelationFilter
@@ -26993,6 +27010,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrderInput | SortOrder
     status?: SortOrder
+    sharedCalendarTimezone?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     members?: RelationshipMemberOrderByRelationAggregateInput
@@ -27012,6 +27030,7 @@ export namespace Prisma {
     NOT?: RelationshipWhereInput | RelationshipWhereInput[]
     name?: StringNullableFilter<"Relationship"> | string | null
     status?: EnumRelationshipStatusFilter<"Relationship"> | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: StringNullableFilter<"Relationship"> | string | null
     createdAt?: DateTimeFilter<"Relationship"> | Date | string
     updatedAt?: DateTimeFilter<"Relationship"> | Date | string
     members?: RelationshipMemberListRelationFilter
@@ -27028,6 +27047,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrderInput | SortOrder
     status?: SortOrder
+    sharedCalendarTimezone?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: RelationshipCountOrderByAggregateInput
@@ -27042,6 +27062,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Relationship"> | string
     name?: StringNullableWithAggregatesFilter<"Relationship"> | string | null
     status?: EnumRelationshipStatusWithAggregatesFilter<"Relationship"> | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: StringNullableWithAggregatesFilter<"Relationship"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Relationship"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Relationship"> | Date | string
   }
@@ -28609,6 +28630,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -28625,6 +28647,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -28641,6 +28664,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -28657,6 +28681,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -28673,6 +28698,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28681,6 +28707,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28689,6 +28716,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30359,6 +30387,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     status?: SortOrder
+    sharedCalendarTimezone?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -30367,6 +30396,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     status?: SortOrder
+    sharedCalendarTimezone?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -30375,6 +30405,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     status?: SortOrder
+    sharedCalendarTimezone?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -34783,6 +34814,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     invites?: InviteCreateNestedManyWithoutRelationshipInput
@@ -34798,6 +34830,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     invites?: InviteUncheckedCreateNestedManyWithoutRelationshipInput
@@ -34880,6 +34913,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     invites?: InviteUpdateManyWithoutRelationshipNestedInput
@@ -34895,6 +34929,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     invites?: InviteUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -34967,6 +35002,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -34982,6 +35018,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -35064,6 +35101,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -35079,6 +35117,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -35199,6 +35238,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -35214,6 +35254,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -35332,6 +35373,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -35347,6 +35389,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -35967,6 +36010,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -35982,6 +36026,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -36047,6 +36092,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -36062,6 +36108,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -36249,6 +36296,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -36264,6 +36312,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -36295,6 +36344,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -36310,6 +36360,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -36376,6 +36427,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -36391,6 +36443,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -36479,6 +36532,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -36494,6 +36548,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -36509,6 +36564,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -36524,6 +36580,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -36583,6 +36640,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -36598,6 +36656,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -36793,6 +36852,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -36808,6 +36868,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    sharedCalendarTimezone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -36867,6 +36928,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -36882,6 +36944,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    sharedCalendarTimezone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput

@@ -17,7 +17,13 @@ export function JoinForm({ initialCode }: Props) {
     setError(null);
     setLoading(true);
     try {
-      await claimInvite(code);
+      let tz: string | undefined;
+      try {
+        tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      } catch {
+        /* ignore */
+      }
+      await claimInvite(code, tz);
       router.push("/app");
       router.refresh();
     } catch (err) {

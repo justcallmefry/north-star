@@ -7,6 +7,10 @@ import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getDedication } from "@/lib/dedication";
 import { getStreak, updateStreakOnReveal } from "@/lib/streak";
+import {
+  formatYyyyMmDdInTimeZone,
+  isValidIanaTimeZone,
+} from "@/lib/calendar-timezone";
 import { getActiveMemberIds, requireActiveMember, todayUTC } from "@/lib/relationship-members";
 import { VALIDATION_ACK_MAX_LENGTH, VALIDATION_ALLOWED_EMOJIS } from "@north-star/shared";
 
@@ -146,18 +150,21 @@ export type GetTodayResult = {
   streak?: { currentCount: number; longestCount: number; justReset?: boolean } | null;
   /** This user's total daily check-ins in this relationship (never resets). */
   dedication?: { totalCheckIns: number } | null;
+  /** When set, both partners share this IANA timezone for the daily prompt day boundary. */
+  sharedCalendarTimezone?: string | null;
 };
 
 /**
  * Get today's session for a relationship.
  * @param relationshipId - Relationship to get session for.
  * @param localDateStr - Optional "YYYY-MM-DD" from the user's local timezone (e.g. from the browser).
- *   When provided, "today" is this date (midnight UTC for that calendar day), so the new question
- *   appears at midnight in their local area. When omitted, uses midnight UTC.
+ *   When `sharedCalendarTimezone` is set on the relationship, this is ignored for the session date.
+ * @param deviceTimeZone - Optional IANA zone from the browser; used once to set shared calendar TZ when paired.
  */
 export async function getToday(
   relationshipId: string,
-  localDateStr?: string
+  localDateStr?: string,
+  deviceTimeZone?: string | null
 ): Promise<GetTodayResult | null> {
   const session = await getServerAuthSession();
   if (!session?.user?.id) throw new Error("Sign in to continue.");
@@ -166,11 +173,50 @@ export async function getToday(
   const memberIds = await getActiveMemberIds(relationshipId);
   if (memberIds.length === 0) return null;
 
-  // Use local date when provided (midnight in their area = this calendar day in UTC for lookup).
-  const today =
-    localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr)
-      ? new Date(localDateStr + "T00:00:00.000Z")
-      : todayUTC();
+  const relRow = await prisma.relationship.findUnique({
+    where: { id: relationshipId },
+    select: { sharedCalendarTimezone: true },
+  });
+  if (!relRow) return null;
+
+  let sharedTz = relRow.sharedCalendarTimezone?.trim() || null;
+  if (sharedTz && !isValidIanaTimeZone(sharedTz)) sharedTz = null;
+
+  const deviceTz = deviceTimeZone?.trim() ?? null;
+  if (
+    !sharedTz &&
+    memberIds.length >= 2 &&
+    deviceTz &&
+    isValidIanaTimeZone(deviceTz)
+  ) {
+    await prisma.relationship.updateMany({
+      where: { id: relationshipId, sharedCalendarTimezone: null },
+      data: { sharedCalendarTimezone: deviceTz },
+    });
+    const again = await prisma.relationship.findUnique({
+      where: { id: relationshipId },
+      select: { sharedCalendarTimezone: true },
+    });
+    const fromDb = again?.sharedCalendarTimezone?.trim() || null;
+    sharedTz = fromDb && isValidIanaTimeZone(fromDb) ? fromDb : deviceTz;
+  }
+
+  let today: Date;
+  let todayStr: string;
+  if (sharedTz) {
+    todayStr = formatYyyyMmDdInTimeZone(new Date(), sharedTz);
+    today = new Date(todayStr + "T00:00:00.000Z");
+  } else {
+    const validLocal =
+      localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr) ? localDateStr : null;
+    if (validLocal) {
+      todayStr = validLocal;
+      today = new Date(validLocal + "T00:00:00.000Z");
+    } else {
+      today = todayUTC();
+      todayStr = today.toISOString().slice(0, 10);
+    }
+  }
 
   // Don't advance to a new question until the current one is done (revealed or expired).
   // So if the most recent session is still open, show that; otherwise use/create today's.
@@ -188,7 +234,6 @@ export async function getToday(
     const promptId = await pickPromptForSession(relationshipId);
     dailySession = await createDailySessionForDate(relationshipId, today, promptId);
   } else if (latestSession.state === "open" || latestSession.state === "expired") {
-    const todayStr = localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr) ? localDateStr : today.toISOString().slice(0, 10);
     const latestDateStr = latestSession.sessionDate.toISOString().slice(0, 10);
     if (latestDateStr === todayStr) {
       dailySession = latestSession;
@@ -239,10 +284,8 @@ export async function getToday(
     hasPartnerResponded &&
     memberIds.length >= 2;
 
-  const streakCalendarDay =
-    localDateStr && /^\d{4}-\d{2}-\d{2}$/.test(localDateStr) ? localDateStr : null;
   const [streak, dedication] = await Promise.all([
-    getStreak(relationshipId, streakCalendarDay),
+    getStreak(relationshipId, todayStr),
     getDedication(relationshipId, session.user.id),
   ]);
 
@@ -257,6 +300,7 @@ export async function getToday(
     canReveal,
     streak: streak ?? undefined,
     dedication: dedication.totalCheckIns > 0 ? dedication : undefined,
+    sharedCalendarTimezone: sharedTz ?? null,
   };
 }
 

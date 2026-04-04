@@ -183,6 +183,7 @@ exports.Prisma.RelationshipScalarFieldEnum = {
   id: 'id',
   name: 'name',
   status: 'status',
+  sharedCalendarTimezone: 'sharedCalendarTimezone',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

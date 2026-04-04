@@ -7,12 +7,14 @@ import { prisma } from "@/lib/prisma";
 import { ProfileForm } from "./profile-form";
 import { PasswordForm } from "./password-form";
 import { SignOutButton } from "./sign-out-button";
+import { DeleteAccountForm } from "./delete-account-form";
 
 export const dynamic = "force-dynamic";
 
 export default async function UsPage() {
   const session = await getServerAuthSession();
   if (!session?.user) redirect("/login");
+  if (!session.user.email) redirect("/login");
 
   const relationships = await getMyActiveRelationships();
   const primary = relationships[0] ?? null;
@@ -143,6 +145,14 @@ export default async function UsPage() {
           </p>
           <PasswordForm hasPassword={hasPassword} />
           <SignOutButton />
+        </div>
+
+        <div className="ns-card mt-6 border-red-100/80 bg-red-50/20">
+          <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-red-900/70 sm:text-xs">
+            Delete account
+          </h2>
+          <p className="mt-1 text-lg font-semibold text-slate-900 sm:text-xl">Leave and remove your data</p>
+          <DeleteAccountForm userEmail={session.user.email} hasPassword={hasPassword} />
         </div>
       </section>
 

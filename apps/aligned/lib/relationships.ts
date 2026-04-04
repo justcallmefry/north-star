@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { isValidIanaTimeZone } from "@/lib/calendar-timezone";
 import { requireActiveMember } from "@/lib/relationship-members";
 import { InviteStatus } from "@/generated/prisma";
 import crypto from "crypto";
@@ -75,7 +76,7 @@ export async function createInvite(relationshipId: string) {
   return { code };
 }
 
-export async function claimInvite(code: string) {
+export async function claimInvite(code: string, deviceTimeZone?: string | null) {
   const session = await getServerAuthSession();
   if (!session?.user?.id) throw new Error("Sign in to continue.");
 
@@ -122,9 +123,47 @@ export async function claimInvite(code: string) {
     }),
   ]);
 
+  const tz = deviceTimeZone?.trim() ?? null;
+  if (tz && isValidIanaTimeZone(tz)) {
+    const pairedCount = await prisma.relationshipMember.count({
+      where: { relationshipId: invite.relationshipId, leftAt: null },
+    });
+    if (pairedCount >= 2) {
+      await prisma.relationship.updateMany({
+        where: { id: invite.relationshipId, sharedCalendarTimezone: null },
+        data: { sharedCalendarTimezone: tz },
+      });
+    }
+  }
+
   revalidatePath("/join");
   revalidatePath("/app");
   return { relationshipId: invite.relationshipId };
+}
+
+export async function updateSharedCalendarTimezone(relationshipId: string, timeZone: string) {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) throw new Error("Sign in to continue.");
+
+  await requireActiveMember(session.user.id, relationshipId);
+  const tz = timeZone.trim();
+  if (!tz) {
+    await prisma.relationship.update({
+      where: { id: relationshipId },
+      data: { sharedCalendarTimezone: null },
+    });
+  } else {
+    if (!isValidIanaTimeZone(tz)) throw new Error("Choose a valid time zone (IANA name).");
+
+    await prisma.relationship.update({
+      where: { id: relationshipId },
+      data: { sharedCalendarTimezone: tz },
+    });
+  }
+
+  revalidatePath("/app");
+  revalidatePath("/app/us");
+  revalidatePath("/app/us/relationship");
 }
 
 export async function leaveRelationship(relationshipId: string) {

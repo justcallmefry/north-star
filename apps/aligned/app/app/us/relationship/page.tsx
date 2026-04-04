@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { RelationshipActions } from "../../relationship-actions";
+import { SharedCalendarTimezoneForm } from "./shared-calendar-timezone-form";
 
 export const dynamic = "force-dynamic";
 
@@ -59,6 +60,14 @@ export default async function ManageRelationshipPage() {
         </div>
 
         <div className="mt-4 border-t border-brand-100 pt-3">
+          <p className="text-sm font-semibold text-slate-900">Shared calendar day</p>
+          <SharedCalendarTimezoneForm
+            relationshipId={primary.id}
+            initialTimeZone={primary.sharedCalendarTimezone ?? null}
+          />
+        </div>
+
+        <div className="mt-6 border-t border-brand-100 pt-3">
           <RelationshipActions relationshipId={primary.id} />
         </div>
       </section>

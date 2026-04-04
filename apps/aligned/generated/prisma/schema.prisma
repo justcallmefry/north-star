@@ -149,9 +149,11 @@ model VerificationToken {
 // ============== App models ==============
 
 model Relationship {
-  id     String             @id @default(cuid())
-  name   String?
-  status RelationshipStatus @default(active)
+  id                     String             @id @default(cuid())
+  name                   String?
+  status                 RelationshipStatus @default(active)
+  /// IANA timezone (e.g. America/New_York). When set, daily prompts use one calendar day for both partners.
+  sharedCalendarTimezone String?
 
   members           RelationshipMember[]
   invites           Invite[]

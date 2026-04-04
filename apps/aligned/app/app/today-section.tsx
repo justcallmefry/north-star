@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { getToday } from "@/lib/sessions";
 import type { GetTodayResult } from "@/lib/sessions";
+import { msUntilNextMidnightInTimeZone } from "@/lib/calendar-timezone";
 import { TodayCard } from "./today-card";
 
 type Props = { relationshipId: string };
@@ -28,23 +29,25 @@ export function TodaySection({ relationshipId }: Props) {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [retryNonce, setRetryNonce] = useState(0);
   const [loading, setLoading] = useState(true);
-  // Set only on client after mount so we never use the server's date (avoids timezone bug
-  // where history showed sessions one day behind for users ahead of server TZ).
   const [localDateStr, setLocalDateStr] = useState<string | null>(null);
+  const [deviceTimeZone, setDeviceTimeZone] = useState<string | null | undefined>(undefined);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Initialize local date on client so it's always the user's calendar day, not the server's.
   useEffect(() => {
     setLocalDateStr(getLocalDateString());
+    try {
+      setDeviceTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
+    } catch {
+      setDeviceTimeZone(null);
+    }
   }, []);
 
-  // Fetch today's session when relationship or local date changes. Skip until we have client date.
   useEffect(() => {
-    if (localDateStr == null) return;
+    if (localDateStr == null || deviceTimeZone === undefined) return;
     let cancelled = false;
     setLoading(true);
     setLoadError(null);
-    getToday(relationshipId, localDateStr)
+    getToday(relationshipId, localDateStr, deviceTimeZone)
       .then((result) => {
         if (!cancelled) {
           setToday(result);
@@ -61,25 +64,28 @@ export function TodaySection({ relationshipId }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [relationshipId, localDateStr, retryNonce]);
+  }, [relationshipId, localDateStr, deviceTimeZone, retryNonce]);
 
-  // At local midnight, update localDateStr so we refetch and show the new day's question.
+  const sharedTz = today?.sharedCalendarTimezone ?? null;
+
   useEffect(() => {
     if (localDateStr == null) return;
+
     function scheduleNextMidnight() {
-      const ms = msUntilNextMidnight();
+      const ms = sharedTz ? msUntilNextMidnightInTimeZone(sharedTz) : msUntilNextMidnight();
       timeoutRef.current = setTimeout(() => {
         setLocalDateStr(getLocalDateString());
         scheduleNextMidnight();
       }, ms);
     }
+
     scheduleNextMidnight();
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [localDateStr]);
+  }, [localDateStr, sharedTz]);
 
-  if (localDateStr == null || loading) {
+  if (localDateStr == null || deviceTimeZone === undefined || loading) {
     return (
       <section className="ns-card motion-safe:animate-pulse">
         <div className="h-4 w-32 rounded bg-slate-200" />

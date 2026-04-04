@@ -85,7 +85,13 @@ export function PairContent() {
     setError(null);
     setClaimLoading(true);
     try {
-      await claimInvite(trimmed);
+      let tz: string | undefined;
+      try {
+        tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      } catch {
+        /* ignore */
+      }
+      await claimInvite(trimmed, tz);
       router.push("/app");
       router.refresh();
     } catch (err) {

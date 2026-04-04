@@ -6,15 +6,14 @@ import { WelcomeHero } from "./welcome-hero";
 
 export const dynamic = "force-dynamic";
 
-const loginHref =
+const root =
   typeof process.env.NEXT_PUBLIC_APP_URL === "string" && process.env.NEXT_PUBLIC_APP_URL
-    ? `${process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/login`
-    : "/login";
+    ? process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")
+    : "";
 
-const signupHref =
-  typeof process.env.NEXT_PUBLIC_APP_URL === "string" && process.env.NEXT_PUBLIC_APP_URL
-    ? `${process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/signup`
-    : "/signup";
+const loginHref = root ? `${root}/login` : "/login";
+const signupHref = root ? `${root}/signup` : "/signup";
+const joinHref = root ? `${root}/join` : "/join";
 
 /**
  * Welcome (landing) content. Rendered at / (main page). /welcome redirects to /.
@@ -24,9 +23,7 @@ const signupHref =
 export function WelcomeContent() {
   return (
     <RedirectIfAuthenticated>
-      {/* Gradient: white → soft blue for depth */}
-      <main className="min-h-screen flex flex-col bg-gradient-to-b from-white via-brand-50/40 to-brand-100/50 text-slate-900">
-        {/* Sign In — top right, visible secondary action */}
+      <main className="flex min-h-screen flex-col bg-gradient-to-b from-white via-brand-50/40 to-brand-100/50 text-slate-900">
         <header className="flex justify-end px-4 pt-4 sm:px-6 sm:pt-5">
           <a
             href={loginHref}
@@ -36,13 +33,8 @@ export function WelcomeContent() {
           </a>
         </header>
 
-        {/* Hero: big logo + CREATE ACCOUNT */}
-        <section className="flex flex-col items-center px-4 pt-4 pb-6 sm:px-6 sm:pt-6 sm:pb-8">
-          {/* Big logo — full wordmark from welcome screen */}
-          <div
-            className="flex h-48 w-full max-w-sm items-center justify-center sm:h-56"
-            aria-hidden
-          >
+        <section className="flex flex-col items-center px-4 pb-4 pt-2 sm:px-6 sm:pb-6 sm:pt-4">
+          <div className="flex h-44 w-full max-w-sm items-center justify-center sm:h-52" aria-hidden>
             <div className="relative h-full w-full">
               <Image
                 src="/aligned-connecting-couples-logo.png"
@@ -54,28 +46,47 @@ export function WelcomeContent() {
               />
             </div>
           </div>
-          {/* Primary CTA */}
-          <div className="mt-8 w-full max-w-sm">
+
+          <div className="mt-4 w-full max-w-md text-center">
+            <span className="inline-flex items-center rounded-full bg-gradient-to-r from-brand-50 to-brand-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand-600 ring-1 ring-brand-100/80">
+              One question · Two private answers · Open together
+            </span>
+            <h1 className="mt-4 text-xl font-semibold leading-snug text-slate-900 sm:text-2xl">
+              The 3-minute ritual that keeps you close—without the heavy stuff.
+            </h1>
+            <p className="mt-3 text-base leading-relaxed text-slate-600">
+              You each answer the same prompt on your own; nothing unlocks until you&apos;re both done—then you read it
+              together.
+            </p>
+            <p className="mt-2 text-sm font-medium text-slate-700">No feed. Just you two.</p>
+          </div>
+
+          <div className="mt-8 w-full max-w-sm space-y-3">
             <a
               href={signupHref}
               className="ns-btn-accent block w-full py-3.5 text-center text-base font-medium"
             >
-              Create account
+              Start free — invite your partner
             </a>
+            <p className="text-center text-xs text-slate-500">Free · Private · No social feed</p>
+            <p className="text-center text-sm">
+              <Link href={joinHref} className="font-medium text-brand-700 underline-offset-2 hover:underline">
+                Have an invite code?
+              </Link>
+              <span className="text-slate-600"> — join your partner&apos;s space</span>
+            </p>
           </div>
         </section>
 
-        {/* Benefits + extra copy below */}
-        <section className="flex-1 flex flex-col items-center px-4 pb-6 sm:px-6 sm:pb-8">
+        <section className="flex flex-1 flex-col items-center px-4 pb-6 sm:px-6 sm:pb-8">
           <WelcomeHero />
         </section>
 
-        {/* Legal — bottom */}
         <footer
           className="px-4 py-4 sm:px-6 sm:py-5"
           style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom) + 0.5rem)" }}
         >
-          <p className="text-center text-xs text-slate-500 leading-relaxed">
+          <p className="text-center text-xs leading-relaxed text-slate-500">
             By continuing, you agree to our{" "}
             <Link href="/terms" className="underline hover:text-slate-700">
               Terms

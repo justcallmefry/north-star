@@ -59,6 +59,12 @@ export function TodayCard({ today }: Props) {
         {promptText}
       </p>
 
+      {state === "open" && !hasUserResponded && (
+        <p className="mt-3 text-sm leading-relaxed text-slate-600">
+          Just for you right now—they won&apos;t see yours until they&apos;ve answered too.
+        </p>
+      )}
+
       {momentText && (
         <div className="ns-card-inner mt-3 px-3 py-2.5">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-600 sm:text-[13px]">

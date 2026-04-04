@@ -142,7 +142,10 @@ export function SignupForm() {
   return (
     <form onSubmit={handleStep1Submit} className="flex flex-col flex-1">
       <div className="ns-auth-card flex flex-1 flex-col">
-        <h1 className="mb-8 text-2xl font-semibold tracking-tight text-slate-900">Create your account</h1>
+        <h1 className="mb-2 text-2xl font-semibold tracking-tight text-slate-900">Create your account</h1>
+        <p className="mb-8 text-sm leading-relaxed text-slate-600">
+          Takes about a minute. Next, you&apos;ll invite your partner so you can answer today&apos;s question together.
+        </p>
 
         {showApple && (
           <div className="mb-6">
@@ -216,7 +219,7 @@ export function SignupForm() {
             disabled={!canSubmitStep1}
             className="ns-btn-primary block w-full cursor-not-allowed py-3.5 text-center disabled:opacity-50 [&:not(:disabled)]:cursor-pointer"
           >
-            Next
+            Continue
           </button>
           <p className="mt-4 text-center text-xs leading-relaxed text-slate-500">
             By continuing, you agree to our{" "}

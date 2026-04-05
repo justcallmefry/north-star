@@ -9,6 +9,7 @@ import { LoadingSpinner } from "@/components/loading-spinner";
 import type { QuizForTodayResult, QuizQuestion } from "@/lib/quiz";
 import { getQuizForDate, submitQuiz } from "@/lib/quiz";
 import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
+import { FlowStepProgress } from "../flow-step-progress";
 
 type Props = {
   relationshipId: string;
@@ -434,39 +435,34 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
   if (!currentQuestion) return null;
 
   const guessLabel = data.partnerName ? `How would ${data.partnerName} answer?` : "How would your partner answer?";
+  const totalFlowSteps = TOTAL_QUESTIONS * 2;
+  const progressTitle = isAnswerPhase
+    ? `Question ${questionIndex + 1} of ${TOTAL_QUESTIONS}`
+    : `Guess ${questionIndex + 1} of ${TOTAL_QUESTIONS}`;
+  const phaseBlurb = isAnswerPhase
+    ? "Choose your own answer. Your partner still can't see it."
+    : data.partnerName
+      ? `Now guess how ${data.partnerName} answered this same question.`
+      : "Now guess how your partner answered this same question.";
 
-  // —— One question at a time: exit link, progress + single card with exit/enter ——
+  // —— One question at a time: labeled progress + animated question body ——
   return (
     <div className="flex flex-col pt-0" id="quiz-step-container">
-      {/* Progress — emerald band; question # always visible below shell header */}
-      <div className="-mx-4 mb-3 space-y-2.5 bg-gradient-to-r from-emerald-800/88 via-emerald-900/92 to-emerald-800/88 px-4 py-3 shadow-sm sm:-mx-6 sm:px-6 sm:py-3.5">
-        <p
-          className="text-center text-base font-bold uppercase tracking-wide text-white drop-shadow-sm sm:text-lg"
-          aria-live="polite"
-        >
-          {isAnswerPhase
-            ? `Question ${questionIndex + 1} of ${TOTAL_QUESTIONS}`
-            : `Guess ${questionIndex + 1} of ${TOTAL_QUESTIONS}`}
-        </p>
-        <div className="flex justify-center gap-1" aria-hidden>
-          {Array.from({ length: 10 }).map((_, i) => (
-            <div
-              key={i}
-              className={`h-1.5 min-w-[14px] max-w-[22px] flex-1 rounded-full transition-colors duration-200 ${
-                i < step ? "bg-white" : i === step ? "bg-[#69BE28] shadow-[0_0_0_1px_rgba(255,255,255,0.5)]" : "bg-white/35"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
+      <div className="rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-5 sm:p-7">
+        <FlowStepProgress
+          progressTitle={progressTitle}
+          phaseDescription={phaseBlurb}
+          step={step}
+          totalSteps={totalFlowSteps}
+          pairCount={TOTAL_QUESTIONS}
+        />
 
-      {/* Single question card — larger type for focus */}
-      <div
-        key={step}
-        className={`flex flex-col rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-5 sm:p-7 ${
-          exiting ? "animate-quiz-card-exit" : "animate-quiz-card-enter"
-        }`}
-      >
+        <div
+          key={step}
+          className={`flex flex-col ${
+            exiting ? "animate-quiz-card-exit" : "animate-quiz-card-enter"
+          }`}
+        >
         <p className="text-2xl font-bold leading-snug text-slate-900 sm:text-3xl">
           {currentQuestion.text}
         </p>
@@ -509,6 +505,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
               </button>
             </p>
           )}
+        </div>
         </div>
       </div>
 

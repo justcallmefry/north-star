@@ -440,10 +440,10 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
     ? `Question ${questionIndex + 1} of ${TOTAL_QUESTIONS}`
     : `Guess ${questionIndex + 1} of ${TOTAL_QUESTIONS}`;
   const phaseBlurb = isAnswerPhase
-    ? "Choose your own answer. Your partner still can't see it."
+    ? "Private until you're both done."
     : data.partnerName
-      ? `Now guess how ${data.partnerName} answered this same question.`
-      : "Now guess how your partner answered this same question.";
+      ? `Guess ${data.partnerName}'s pick.`
+      : "Guess your partner's pick.";
 
   // —— One question at a time: labeled progress + animated question body ——
   return (
@@ -454,7 +454,6 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
           phaseDescription={phaseBlurb}
           step={step}
           totalSteps={totalFlowSteps}
-          pairCount={TOTAL_QUESTIONS}
         />
 
         <div

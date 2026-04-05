@@ -451,10 +451,10 @@ export function AgreementClient({
     ? `Statement ${questionIndex + 1} of ${TOTAL_QUESTIONS}`
     : `Guess ${questionIndex + 1} of ${TOTAL_QUESTIONS}`;
   const phaseBlurb = isAnswerPhase
-    ? "Rate this for yourself. Your partner won't see it yet."
+    ? "Private until you're both done."
     : data.partnerName
-      ? `Guess how ${data.partnerName} would rate the same statement.`
-      : "Guess how your partner would rate the same statement.";
+      ? `Guess ${data.partnerName}'s rating.`
+      : "Guess your partner's rating.";
 
   return (
     <div className="flex flex-col pt-0" id="agreement-step-container">
@@ -464,7 +464,6 @@ export function AgreementClient({
           phaseDescription={phaseBlurb}
           step={step}
           totalSteps={totalFlowSteps}
-          pairCount={TOTAL_QUESTIONS}
         />
 
         <div

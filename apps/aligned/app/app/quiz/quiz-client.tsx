@@ -438,9 +438,12 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
   // —— One question at a time: exit link, progress + single card with exit/enter ——
   return (
     <div className="flex flex-col pt-0" id="quiz-step-container">
-      {/* Progress — cool blue band, white type (shell header hidden in focus mode) */}
+      {/* Progress — emerald band; question # always visible below shell header */}
       <div className="-mx-4 mb-3 space-y-2.5 bg-gradient-to-r from-emerald-800/88 via-emerald-900/92 to-emerald-800/88 px-4 py-3 shadow-sm sm:-mx-6 sm:px-6 sm:py-3.5">
-        <p className="text-center text-sm font-semibold uppercase tracking-wide text-white">
+        <p
+          className="text-center text-base font-bold uppercase tracking-wide text-white drop-shadow-sm sm:text-lg"
+          aria-live="polite"
+        >
           {isAnswerPhase
             ? `Question ${questionIndex + 1} of ${TOTAL_QUESTIONS}`
             : `Guess ${questionIndex + 1} of ${TOTAL_QUESTIONS}`}

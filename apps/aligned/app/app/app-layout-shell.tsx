@@ -39,11 +39,13 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const pathForNav = pathname ?? "";
-  /** Match bottom nav: focus chrome only after Start (?playing=1), not on quiz/alignment intro. */
+  /** Match bottom nav: hide sidebar + bottom nav after Start (?playing=1), not on quiz/alignment intro. */
   const isFocusMode =
     (pathname.startsWith("/app/quiz") || pathname.startsWith("/app/agreement")) &&
     searchParams.get("done") !== "1" &&
     searchParams.get("playing") === "1";
+
+  const focusFlowTitle = pathname.startsWith("/app/agreement") ? "Same page?" : "Guess & compare";
 
   return (
     <>
@@ -115,23 +117,34 @@ export function AppLayoutShell({ children }: { children: React.ReactNode }) {
               isFocusMode ? "max-w-2xl md:mx-auto md:w-full" : ""
             }`}
           >
-            {!isFocusMode && (
-              <header className="relative bg-gradient-to-r from-[#4a7a8c] via-[#3d6b7d] to-[#355d6e] px-4 py-3.5 text-white shadow-sm after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#69BE28] after:content-[''] sm:px-6 sm:py-4">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/85">
-                  Aligned
-                </p>
-                <p className="mt-1 text-base font-semibold leading-snug text-white sm:text-lg">
-                  One private prompt. Open when you&apos;re both ready.
-                </p>
-                <p className="mt-1 text-xs text-white/80 sm:text-sm">
-                  About three minutes—unhurried, for just the two of you.
-                </p>
-              </header>
-            )}
+            <header
+              className={`relative bg-gradient-to-r from-[#4a7a8c] via-[#3d6b7d] to-[#355d6e] text-white shadow-sm after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#69BE28] after:content-[''] ${
+                isFocusMode ? "px-4 py-2.5 sm:px-6 sm:py-3" : "px-4 py-3.5 sm:px-6 sm:py-4"
+              }`}
+              style={{
+                paddingTop: isFocusMode
+                  ? "max(0.625rem, env(safe-area-inset-top, 0px))"
+                  : "max(0.875rem, env(safe-area-inset-top, 0px))",
+              }}
+            >
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/85">Aligned</p>
+              {isFocusMode ? (
+                <p className="mt-0.5 text-sm font-semibold leading-snug text-white sm:text-base">{focusFlowTitle}</p>
+              ) : (
+                <>
+                  <p className="mt-1 text-base font-semibold leading-snug text-white sm:text-lg">
+                    One private prompt. Open when you&apos;re both ready.
+                  </p>
+                  <p className="mt-1 text-xs text-white/80 sm:text-sm">
+                    About three minutes—unhurried, for just the two of you.
+                  </p>
+                </>
+              )}
+            </header>
             <div
               className={
                 isFocusMode
-                  ? "px-4 pb-4 pt-0 sm:px-6 sm:pb-5 md:pb-6"
+                  ? "px-4 pb-4 pt-3 sm:px-6 sm:pb-5 sm:pt-4 md:pb-6"
                   : "px-4 py-4 sm:px-6 md:py-5"
               }
             >

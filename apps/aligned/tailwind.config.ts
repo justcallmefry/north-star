@@ -75,6 +75,13 @@ const config: Config = {
       },
     },
   },
+  safelist: [
+    // Gradient classes used dynamically from lib/couple-types.ts
+    "from-brand-400", "to-brand-600",
+    "from-emerald-400", "to-brand-500",
+    "from-amber-400",
+    "from-violet-400", "to-rose-500",
+  ],
   plugins: [],
 };
 

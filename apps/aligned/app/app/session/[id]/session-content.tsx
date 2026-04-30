@@ -14,6 +14,8 @@ import { StreakShareCard } from "./streak-share-card";
 import { RevealStamp } from "@/components/reveal-stamp";
 import { haptic } from "@/lib/haptics";
 import { WaitingForPartner } from "./waiting-for-partner";
+import { PreRevealGuess, readGuess } from "./pre-reveal-guess";
+import { StreakCelebration, isStreakMilestone } from "@/components/streak-celebration";
 
 const AFTER_REVEAL_PAUSE_MS = 1100;
 
@@ -196,6 +198,7 @@ export function SessionContent({ data, currentUserId }: Props) {
           icon: myIcon,
           bubbleClass: "border-brand-200 bg-brand-50 text-slate-900",
           content: data.userResponse ?? null,
+          isMe: true,
         },
         {
           key: "partner",
@@ -203,6 +206,7 @@ export function SessionContent({ data, currentUserId }: Props) {
           icon: partnerIcon,
           bubbleClass: "border-violet-100 bg-violet-50 text-slate-900",
           content: data.partnerResponse ?? null,
+          isMe: false,
         },
       ];
     }
@@ -245,9 +249,15 @@ export function SessionContent({ data, currentUserId }: Props) {
         icon,
         bubbleClass,
         content: r.content ?? null,
+        isMe,
       };
     });
   }, [isRevealed, revealData, data.userResponse, data.partnerResponse, data.allResponses, data.partnerName, data.currentUserName, data.currentUserImage, data.partnerImage, currentUserId]);
+
+  const savedGuess = useMemo(() => {
+    if (!isRevealed) return null;
+    return readGuess(data.sessionId);
+  }, [isRevealed, data.sessionId]);
   const reflectionsToShow = revealData?.reflections ?? data.reflections ?? [];
 
   const totalMembers = data.memberCount ?? 2;
@@ -347,8 +357,12 @@ export function SessionContent({ data, currentUserId }: Props) {
       )}
 
       {data.hasUserResponded && data.state === "open" && data.canReveal && !isRevealed && (
-        <div>
-          <p className="mb-2 text-base text-slate-700 sm:text-lg">Both of you have answered.</p>
+        <div className="space-y-3">
+          <p className="text-base text-slate-700 sm:text-lg">Both of you have answered.</p>
+          <PreRevealGuess
+            sessionId={data.sessionId}
+            partnerName={data.partnerName ?? null}
+          />
           <div className="flex flex-col gap-2">
             <button
               type="button"
@@ -378,14 +392,18 @@ export function SessionContent({ data, currentUserId }: Props) {
 
       {isRevealed && afterRevealReady && (
         <div className="ns-stack-tight">
-          <RevealStamp
-            eyebrow={
-              data.streak?.currentCount && data.streak.currentCount > 0
-                ? `Day ${data.streak.currentCount}`
-                : null
-            }
-            totalMembers={totalMembers}
-          />
+          {isStreakMilestone(data.streak?.currentCount) ? (
+            <StreakCelebration count={data.streak!.currentCount} />
+          ) : (
+            <RevealStamp
+              eyebrow={
+                data.streak?.currentCount && data.streak.currentCount > 0
+                  ? `Day ${data.streak.currentCount}`
+                  : null
+              }
+              totalMembers={totalMembers}
+            />
+          )}
 
           <div className="animate-calm-fade-in ns-card ns-stack-tight">
           <h3 className="text-lg font-semibold text-slate-900 sm:text-xl">Answers</h3>
@@ -421,6 +439,12 @@ export function SessionContent({ data, currentUserId }: Props) {
                 <p className="ns-card-inner px-3 py-3 text-2xl leading-relaxed text-slate-900 sm:text-3xl">
                   {resp.content ?? "—"}
                 </p>
+                {!resp.isMe && savedGuess && (
+                  <p className="px-3 text-sm italic text-slate-500 sm:text-base">
+                    <span className="font-medium not-italic text-slate-600">You guessed: </span>
+                    {savedGuess}
+                  </p>
+                )}
               </div>
             ))}
           </div>

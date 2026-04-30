@@ -46,6 +46,7 @@ export function SessionContent({ data, currentUserId }: Props) {
     setLoading("submit");
     try {
       await submitResponse(data.sessionId, text);
+      void haptic("success");
       toast.success("Answer saved.");
       router.refresh();
       // Keep loading as "submit" until refreshed data arrives (see useEffect below)
@@ -78,6 +79,7 @@ export function SessionContent({ data, currentUserId }: Props) {
     try {
       await submitReflection(data.sessionId, undefined, reaction.trim());
       setReaction("");
+      void haptic("tap");
       toast.success("Response sent.");
       router.refresh();
     } catch (err) {

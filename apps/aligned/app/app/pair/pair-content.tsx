@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronDown, Copy, Send } from "lucide-react";
 import { createRelationship, claimInvite } from "@/lib/relationships";
+import { haptic } from "@/lib/haptics";
 
 /** Format 12-char code as 4-4-4 for display */
 function formatCode(code: string): string {
@@ -83,6 +84,7 @@ export function PairContent({ userFirstName }: Props) {
     // the link twice in the same SMS body — that's the duplicate-link bug.
     try {
       if (typeof nav.share === "function") {
+        void haptic("tap");
         await nav.share({ title: "Join me on Aligned", text: message });
         return;
       }

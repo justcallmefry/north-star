@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Home, CalendarRange, History, User, HelpCircle, Scale } from "lucide-react";
 import { BottomNav } from "./bottom-nav";
 import { ScrollToTopOnNav } from "./scroll-to-top-on-nav";
+import { RouteTransition } from "./route-transition";
 
 export const dynamic = "force-dynamic";
 
@@ -81,7 +82,7 @@ export default function AppSegmentLayout({
 
           {/* Main app surface */}
           <main className="ns-card relative min-w-0 flex-1 border-slate-200 px-4 py-5 shadow-lg sm:px-6 md:py-6">
-            {children}
+            <RouteTransition>{children}</RouteTransition>
           </main>
         </div>
       </div>

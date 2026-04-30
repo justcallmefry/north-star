@@ -215,6 +215,20 @@ body {
   animation: thinking-breath 2.4s ease-in-out infinite;
 }
 
+/* Route cross-fade — fires on every route change in the app shell. */
+@keyframes route-fade-in {
+  from { opacity: 0; transform: translateY(2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-route-fade-in {
+  animation: route-fade-in 200ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-route-fade-in {
+    animation: none;
+  }
+}
+
 /* Quiz: card exit (disappear) then next card enters */
 @keyframes quiz-card-exit {
   to {

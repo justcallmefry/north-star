@@ -5,6 +5,7 @@ import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { getCoupleInsights } from "@/lib/insights";
 import { InsightsShareButton } from "./insights-share-button";
+import { CountUp } from "@/components/count-up";
 
 export const dynamic = "force-dynamic";
 
@@ -79,7 +80,11 @@ export default async function InsightsPage() {
                   Alignment
                 </p>
                 <p className="mt-0.5 text-2xl font-bold sm:text-3xl">
-                  {Math.round(insights.alignmentPct)}%
+                  <CountUp
+                    to={Math.round(insights.alignmentPct)}
+                    suffix="%"
+                    storageKey={`insights-alignment:${insights.sessionsCompleted}`}
+                  />
                 </p>
               </div>
               <div>
@@ -87,7 +92,11 @@ export default async function InsightsPage() {
                   Mind-reading
                 </p>
                 <p className="mt-0.5 text-2xl font-bold sm:text-3xl">
-                  {Math.round(insights.mindReadingPct)}%
+                  <CountUp
+                    to={Math.round(insights.mindReadingPct)}
+                    suffix="%"
+                    storageKey={`insights-mindreading:${insights.sessionsCompleted}`}
+                  />
                 </p>
               </div>
             </div>

@@ -56,6 +56,33 @@ const FOLLOW_UP_PROMPTS: Record<string, string[]> = {
   ],
 };
 
+const STOP_WORDS = new Set([
+  "a","an","the","and","or","but","in","on","at","to","for","of","with","by","from","is","are",
+  "was","were","be","been","being","have","has","had","do","does","did","will","would","could",
+  "should","may","might","i","you","we","they","he","she","it","my","your","our","their","his",
+  "her","its","this","that","these","those","what","when","where","how","why","just","so","up",
+  "about","like","than","then","into","also","more","not","no","if","as","me","him","us","them",
+  "very","really","its","get","got","go","some","any","out","all","can","one","two","your","my",
+]);
+
+function extractWords(text: string): Set<string> {
+  return new Set(
+    text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, "")
+      .split(/\s+/)
+      .filter((w) => w.length > 3 && !STOP_WORDS.has(w))
+  );
+}
+
+function findSharedWords(responses: { content: string | null }[]): string[] {
+  const nonEmpty = responses.map((r) => r.content ?? "").filter(Boolean);
+  if (nonEmpty.length < 2) return [];
+  const sets = nonEmpty.map(extractWords);
+  const shared = [...sets[0]!].filter((w) => sets.slice(1).every((s) => s.has(w)));
+  return shared.slice(0, 3);
+}
+
 function pickFollowUp(category: string | null | undefined, sessionId: string): string {
   const pool = FOLLOW_UP_PROMPTS[category ?? "other"] ?? FOLLOW_UP_PROMPTS.other;
   // Deterministic pick so it doesn't jump on re-render
@@ -548,6 +575,27 @@ export function SessionContent({ data, currentUserId }: Props) {
               </button>
             )}
           </div>
+
+          {/* Shared-word highlight */}
+          {(partnerRevealed || data.state === "revealed") && (() => {
+            const shared = findSharedWords(responsesToShow);
+            if (shared.length === 0) return null;
+            return (
+              <div className="flex flex-wrap items-center justify-center gap-2 py-1">
+                <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+                  You both mentioned
+                </span>
+                {shared.map((w) => (
+                  <span
+                    key={w}
+                    className="rounded-full bg-brand-100 px-3 py-1 text-sm font-semibold text-brand-700"
+                  >
+                    {w}
+                  </span>
+                ))}
+              </div>
+            );
+          })()}
 
           <p className="text-center text-lg font-medium text-brand-700 sm:text-xl">
             {afterRevealLine}

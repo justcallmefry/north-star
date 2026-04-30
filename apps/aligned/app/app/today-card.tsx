@@ -4,6 +4,7 @@ import type { GetTodayResult } from "@/lib/sessions";
 import { DedicationBadge } from "./dedication-badge";
 import { NotifyPartnerButton } from "./notify-partner-button";
 import { StreakBadge } from "./streak-badge";
+import { ConnectionDots } from "./connection-dots";
 
 type Props = { today: GetTodayResult | null };
 
@@ -67,6 +68,9 @@ export function TodayCard({ today }: Props) {
           <DedicationBadge totalCheckIns={dedication.totalCheckIns} variant="compact" />
         </div>
       )}
+      <div className="mt-3">
+        <ConnectionDots relationshipId={relationshipId} />
+      </div>
       <span
         className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-sm"
         aria-hidden

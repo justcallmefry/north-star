@@ -696,3 +696,43 @@ export async function setAcknowledgment(responseId: string, text: string) {
   revalidatePath("/app/history");
   revalidatePath(`/app/session/${sessionId}`);
 }
+
+export type WeekActivity = {
+  /** YYYY-MM-DD for each of the last 7 days (oldest first) */
+  days: { date: string; completed: boolean }[];
+};
+
+/** Returns revealed/completed status for each of the last 7 calendar days (user's local). */
+export async function getWeekActivity(
+  relationshipId: string,
+  localDateStr: string
+): Promise<WeekActivity> {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) throw new Error("Not signed in");
+  await requireActiveMember(session.user.id, relationshipId);
+
+  const days: { date: string; completed: boolean }[] = [];
+  const anchor = new Date(localDateStr + "T00:00:00.000Z");
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(anchor);
+    d.setUTCDate(anchor.getUTCDate() - i);
+    days.push({ date: d.toISOString().slice(0, 10), completed: false });
+  }
+
+  const from = new Date(days[0]!.date + "T00:00:00.000Z");
+  const to = new Date(days[days.length - 1]!.date + "T23:59:59.999Z");
+
+  const sessions = await prisma.dailySession.findMany({
+    where: {
+      relationshipId,
+      state: "revealed",
+      sessionDate: { gte: from, lte: to },
+    },
+    select: { sessionDate: true },
+  });
+
+  const completedDates = new Set(sessions.map((s) => s.sessionDate.toISOString().slice(0, 10)));
+  return {
+    days: days.map((d) => ({ ...d, completed: completedDates.has(d.date) })),
+  };
+}

@@ -83,6 +83,8 @@ model User {
   subscriptions      Subscription[]
   pushSubscriptions  PushSubscription[]
   memories           Memory[]
+  appreciationsSent     Appreciation[] @relation("AppreciationSent")
+  appreciationsReceived Appreciation[] @relation("AppreciationReceived")
 
   // Soft delete: when set, the account is anonymized (email/name/image cleared);
   // partner-visible historical content stays attached to this row by id.
@@ -161,6 +163,7 @@ model Relationship {
   streak        Streak?
   subscriptions Subscription[]
   memories     Memory[]
+  appreciations Appreciation[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -444,6 +447,28 @@ model Memory {
   @@index([relationshipId])
   @@index([savedByUserId])
   @@index([savedAt])
+}
+
+/// A prompted appreciation one partner sends to the other once per week.
+model Appreciation {
+  id             String   @id @default(cuid())
+  relationshipId String
+  fromUserId     String
+  toUserId       String
+  content        String   @db.Text
+  /// ISO week key e.g. "2026-W18" — enforces one send per person per week
+  weekKey        String
+
+  relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  fromUser     User         @relation("AppreciationSent", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser       User         @relation("AppreciationReceived", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([relationshipId, fromUserId, weekKey])
+  @@index([relationshipId])
+  @@index([toUserId])
+  @@index([weekKey])
 }
 
 model BetaSignup {

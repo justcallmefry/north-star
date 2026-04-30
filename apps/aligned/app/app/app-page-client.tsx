@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Circle, HelpCircle, Scale } from "lucide-react";
+import { ArrowRight, CheckCircle, Circle, Heart, HelpCircle, Scale } from "lucide-react";
 import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { getQuizForToday } from "@/lib/quiz";
 import { getAgreementForToday } from "@/lib/agreement";
+import { getAppreciationStatus } from "@/lib/appreciation";
+import type { AppreciationStatus } from "@/lib/appreciation";
 import { TodaySection } from "./today-section";
 import { AnniversaryBanner, isAnniversaryToday } from "./anniversary-banner";
 import { MilestonePromptCard } from "./milestone-prompt-card";
@@ -41,6 +43,7 @@ export function AppPageClient({ initialData }: Props) {
   const [localDateStr, setLocalDateStr] = useState<string | null>(null);
   const [quizDoneToday, setQuizDoneToday] = useState<boolean | null>(null);
   const [agreementDoneToday, setAgreementDoneToday] = useState<boolean | null>(null);
+  const [appreciationStatus, setAppreciationStatus] = useState<AppreciationStatus | null>(null);
 
   useEffect(() => {
     setLocalDateStr(getLocalDateString());
@@ -52,10 +55,12 @@ export function AppPageClient({ initialData }: Props) {
     Promise.all([
       getQuizForToday(relationshipId, localDateStr),
       getAgreementForToday(relationshipId, localDateStr),
-    ]).then(([quiz, agreement]) => {
+      getAppreciationStatus(relationshipId),
+    ]).then(([quiz, agreement, appreciation]) => {
       if (cancelled) return;
       setQuizDoneToday(quiz?.myParticipation != null);
       setAgreementDoneToday(agreement?.myParticipation != null);
+      setAppreciationStatus(appreciation);
     });
     return () => {
       cancelled = true;
@@ -103,6 +108,35 @@ export function AppPageClient({ initialData }: Props) {
                 <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
               )}
             </Link>
+
+            {/* Appreciation row */}
+            {appreciationStatus && appreciationStatus.type !== "none" && (
+              <Link
+                href="/app/appreciation"
+                className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 transition active:scale-[0.99] hover:border-dusk-300/70"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600">
+                  <Heart className="h-5 w-5" strokeWidth={2} aria-hidden />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-slate-900">Appreciation</p>
+                  <p className="truncate text-sm text-slate-500">
+                    {appreciationStatus.type === "received"
+                      ? `${appreciationStatus.fromName ?? "Your partner"} left you something.`
+                      : appreciationStatus.type === "sent"
+                        ? "You sent one this week."
+                        : "Tell them something you noticed."}
+                  </p>
+                </div>
+                {appreciationStatus.type === "received" ? (
+                  <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-brand-500 animate-pulse" aria-label="New" />
+                ) : appreciationStatus.type === "sent" ? (
+                  <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Sent" />
+                ) : (
+                  <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                )}
+              </Link>
+            )}
 
             {/* Alignment row — same compact style */}
             <Link

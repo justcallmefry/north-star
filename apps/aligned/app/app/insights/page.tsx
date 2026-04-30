@@ -39,27 +39,107 @@ export default async function InsightsPage() {
       </header>
 
       {!insights.ready ? (
-        <section className="ns-card animate-calm-fade-in animate-calm-delay-1 text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-50 text-brand-500">
-            <Sparkles className="h-7 w-7" strokeWidth={1.8} />
+        <>
+          {/* Progress hero */}
+          <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand-50 via-white to-dusk-50 border border-brand-100 p-6 animate-calm-fade-in animate-calm-delay-1 sm:p-7">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex-1">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
+                  Your portrait is forming
+                </p>
+                <p className="mt-1 font-display text-2xl font-semibold text-slate-900 sm:text-3xl">
+                  {insights.sessionsCompleted} of {insights.sessionsRequired} check-ins
+                </p>
+                <p className="mt-1 text-sm text-slate-600">
+                  {insights.sessionsRequired - insights.sessionsCompleted === 1
+                    ? "One more and your couple type is revealed."
+                    : insights.sessionsRequired - insights.sessionsCompleted <= 3
+                    ? `Only ${insights.sessionsRequired - insights.sessionsCompleted} more — you're almost there.`
+                    : "Each check-in sharpens the picture."}
+                </p>
+              </div>
+              {/* Progress ring */}
+              <div className="shrink-0" aria-hidden>
+                <svg width="72" height="72" viewBox="0 0 72 72">
+                  <circle cx="36" cy="36" r="30" fill="none" stroke="#e2e8f0" strokeWidth="6" />
+                  <circle
+                    cx="36" cy="36" r="30"
+                    fill="none"
+                    stroke="#1f4e73"
+                    strokeWidth="6"
+                    strokeLinecap="round"
+                    strokeDasharray={`${Math.round((insights.sessionsCompleted / insights.sessionsRequired) * 188)} 188`}
+                    transform="rotate(-90 36 36)"
+                  />
+                  <text x="36" y="41" textAnchor="middle" className="font-bold" fontSize="16" fontWeight="700" fill="#1f4e73">
+                    {Math.round((insights.sessionsCompleted / insights.sessionsRequired) * 100)}%
+                  </text>
+                </svg>
+              </div>
+            </div>
+            {/* Progress bar */}
+            <div className="mt-4 h-2 w-full rounded-full bg-brand-100 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-brand-400 to-brand-600 transition-all duration-700"
+                style={{ width: `${Math.round((insights.sessionsCompleted / insights.sessionsRequired) * 100)}%` }}
+              />
+            </div>
+            <Link
+              href="/app/agreement"
+              className="ns-btn-primary mt-5 inline-flex w-full items-center justify-center gap-2 py-3 transition active:scale-[0.98]"
+            >
+              <Sparkles className="h-4 w-4" />
+              Do today&apos;s alignment check-in
+            </Link>
+          </section>
+
+          {/* Locked preview cards — tease what's coming */}
+          <div className="space-y-3 animate-calm-fade-in animate-calm-delay-2">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 px-1">
+              Coming soon for you two
+            </p>
+            {/* Couple type teaser */}
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-200 to-slate-300 p-6 sm:p-7 select-none">
+              <div className="blur-[3px] opacity-60">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/80">You two are</p>
+                <p className="mt-1 font-display text-3xl font-semibold text-white">The ·····</p>
+                <p className="mt-2 text-base text-white/90">Your tagline goes here.</p>
+                <div className="mt-5 grid grid-cols-2 gap-3 border-t border-white/20 pt-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-white/70">Alignment</p>
+                    <p className="mt-0.5 text-2xl font-bold text-white">··%</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-white/70">Mind-reading</p>
+                    <p className="mt-0.5 text-2xl font-bold text-white">··%</p>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-slate-500 shadow">
+                  <Sparkles className="h-5 w-5" />
+                </span>
+                <p className="text-sm font-semibold text-white drop-shadow">Unlocks at {insights.sessionsRequired} check-ins</p>
+              </div>
+            </div>
+
+            {/* Where you land closest — locked */}
+            <div className="relative rounded-2xl border border-slate-200 bg-white p-4 overflow-hidden select-none">
+              <div className="blur-sm opacity-40 pointer-events-none space-y-2">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="h-4 w-4 text-emerald-600" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Where you land closest</p>
+                </div>
+                {["················", "···············", "··················"].map((s, i) => (
+                  <div key={i} className="rounded-xl border border-emerald-200/60 bg-emerald-50/40 p-3 text-base text-transparent">{s}</div>
+                ))}
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <p className="text-xs font-semibold text-slate-400">Your top agreements — coming soon</p>
+              </div>
+            </div>
           </div>
-          <p className="mt-4 text-lg font-semibold text-slate-900 sm:text-xl">
-            Still learning about you two
-          </p>
-          <p className="mt-1.5 text-sm text-slate-600 sm:text-base">
-            Your couple type unlocks after{" "}
-            <span className="font-semibold text-slate-900">
-              {insights.sessionsRequired} alignment check-ins
-            </span>
-            . You&apos;ve done {insights.sessionsCompleted} so far.
-          </p>
-          <Link
-            href="/app/agreement"
-            className="ns-btn-primary mt-5 inline-flex w-full items-center justify-center gap-2 py-3 sm:w-auto sm:px-6"
-          >
-            Do today&apos;s alignment
-          </Link>
-        </section>
+        </>
       ) : (
         <>
           <section

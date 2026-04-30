@@ -176,6 +176,7 @@ exports.Prisma.RelationshipScalarFieldEnum = {
   id: 'id',
   name: 'name',
   status: 'status',
+  anniversaryDate: 'anniversaryDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

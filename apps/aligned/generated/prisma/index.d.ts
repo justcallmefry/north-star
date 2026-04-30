@@ -8238,6 +8238,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     status: $Enums.RelationshipStatus | null
+    anniversaryDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -8246,6 +8247,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     status: $Enums.RelationshipStatus | null
+    anniversaryDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -8254,6 +8256,7 @@ export namespace Prisma {
     id: number
     name: number
     status: number
+    anniversaryDate: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -8264,6 +8267,7 @@ export namespace Prisma {
     id?: true
     name?: true
     status?: true
+    anniversaryDate?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -8272,6 +8276,7 @@ export namespace Prisma {
     id?: true
     name?: true
     status?: true
+    anniversaryDate?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -8280,6 +8285,7 @@ export namespace Prisma {
     id?: true
     name?: true
     status?: true
+    anniversaryDate?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -8361,6 +8367,7 @@ export namespace Prisma {
     id: string
     name: string | null
     status: $Enums.RelationshipStatus
+    anniversaryDate: Date | null
     createdAt: Date
     updatedAt: Date
     _count: RelationshipCountAggregateOutputType | null
@@ -8386,6 +8393,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     status?: boolean
+    anniversaryDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     members?: boolean | Relationship$membersArgs<ExtArgs>
@@ -8403,6 +8411,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     status?: boolean
+    anniversaryDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["relationship"]>
@@ -8411,6 +8420,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     status?: boolean
+    anniversaryDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
@@ -8444,6 +8454,12 @@ export namespace Prisma {
       id: string
       name: string | null
       status: $Enums.RelationshipStatus
+      /**
+       * The day this couple started — optional. When set, the app uses
+       * it to compute "Day N together" on Today and to trigger an
+       * anniversary banner on the day-of-month.
+       */
+      anniversaryDate: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["relationship"]>
@@ -8850,6 +8866,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Relationship", 'String'>
     readonly name: FieldRef<"Relationship", 'String'>
     readonly status: FieldRef<"Relationship", 'RelationshipStatus'>
+    readonly anniversaryDate: FieldRef<"Relationship", 'DateTime'>
     readonly createdAt: FieldRef<"Relationship", 'DateTime'>
     readonly updatedAt: FieldRef<"Relationship", 'DateTime'>
   }
@@ -24972,6 +24989,7 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     status: 'status',
+    anniversaryDate: 'anniversaryDate',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -25774,6 +25792,7 @@ export namespace Prisma {
     id?: StringFilter<"Relationship"> | string
     name?: StringNullableFilter<"Relationship"> | string | null
     status?: EnumRelationshipStatusFilter<"Relationship"> | $Enums.RelationshipStatus
+    anniversaryDate?: DateTimeNullableFilter<"Relationship"> | Date | string | null
     createdAt?: DateTimeFilter<"Relationship"> | Date | string
     updatedAt?: DateTimeFilter<"Relationship"> | Date | string
     members?: RelationshipMemberListRelationFilter
@@ -25790,6 +25809,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrderInput | SortOrder
     status?: SortOrder
+    anniversaryDate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     members?: RelationshipMemberOrderByRelationAggregateInput
@@ -25809,6 +25829,7 @@ export namespace Prisma {
     NOT?: RelationshipWhereInput | RelationshipWhereInput[]
     name?: StringNullableFilter<"Relationship"> | string | null
     status?: EnumRelationshipStatusFilter<"Relationship"> | $Enums.RelationshipStatus
+    anniversaryDate?: DateTimeNullableFilter<"Relationship"> | Date | string | null
     createdAt?: DateTimeFilter<"Relationship"> | Date | string
     updatedAt?: DateTimeFilter<"Relationship"> | Date | string
     members?: RelationshipMemberListRelationFilter
@@ -25825,6 +25846,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrderInput | SortOrder
     status?: SortOrder
+    anniversaryDate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: RelationshipCountOrderByAggregateInput
@@ -25839,6 +25861,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Relationship"> | string
     name?: StringNullableWithAggregatesFilter<"Relationship"> | string | null
     status?: EnumRelationshipStatusWithAggregatesFilter<"Relationship"> | $Enums.RelationshipStatus
+    anniversaryDate?: DateTimeNullableWithAggregatesFilter<"Relationship"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Relationship"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Relationship"> | Date | string
   }
@@ -27340,6 +27363,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -27356,6 +27380,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -27372,6 +27397,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -27388,6 +27414,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -27404,6 +27431,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -27412,6 +27440,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -27420,6 +27449,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29045,6 +29075,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     status?: SortOrder
+    anniversaryDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -29053,6 +29084,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     status?: SortOrder
+    anniversaryDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -29061,6 +29093,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     status?: SortOrder
+    anniversaryDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -33226,6 +33259,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     invites?: InviteCreateNestedManyWithoutRelationshipInput
@@ -33241,6 +33275,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     invites?: InviteUncheckedCreateNestedManyWithoutRelationshipInput
@@ -33323,6 +33358,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     invites?: InviteUpdateManyWithoutRelationshipNestedInput
@@ -33338,6 +33374,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     invites?: InviteUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -33410,6 +33447,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -33425,6 +33463,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -33507,6 +33546,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -33522,6 +33562,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -33642,6 +33683,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -33657,6 +33699,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -33775,6 +33818,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -33790,6 +33834,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -34410,6 +34455,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -34425,6 +34471,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -34490,6 +34537,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -34505,6 +34553,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -34692,6 +34741,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -34707,6 +34757,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -34738,6 +34789,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -34753,6 +34805,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -34819,6 +34872,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -34834,6 +34888,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -34922,6 +34977,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -34937,6 +34993,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -34952,6 +35009,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -34967,6 +35025,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -35026,6 +35085,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -35041,6 +35101,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -35232,6 +35293,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -35247,6 +35309,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -35306,6 +35369,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -35321,6 +35385,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput

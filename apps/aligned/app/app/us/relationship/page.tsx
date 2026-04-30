@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { RelationshipActions } from "../../relationship-actions";
+import { AnniversaryForm } from "./anniversary-form";
 
 export const dynamic = "force-dynamic";
 
@@ -62,6 +63,15 @@ export default async function ManageRelationshipPage() {
           <RelationshipActions relationshipId={primary.id} />
         </div>
       </section>
+
+      <AnniversaryForm
+        relationshipId={primary.id}
+        initial={
+          primary.anniversaryDate
+            ? primary.anniversaryDate.toISOString().slice(0, 10)
+            : null
+        }
+      />
     </main>
   );
 }

@@ -7,8 +7,14 @@ import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { getQuizForToday } from "@/lib/quiz";
 import { getAgreementForToday } from "@/lib/agreement";
 import { TodaySection } from "./today-section";
+import { AnniversaryBanner } from "./anniversary-banner";
 
-export type Relationship = { id: string; name: string | null; status: string };
+export type Relationship = {
+  id: string;
+  name: string | null;
+  status: string;
+  anniversaryISO?: string | null;
+};
 export type AppPageInitialData = {
   session: { user: { id: string; email?: string | null; name?: string | null; image?: string | null } };
   relationships: Relationship[];
@@ -59,6 +65,9 @@ export function AppPageClient({ initialData }: Props) {
     <main className="flex flex-col gap-2">
       {relationships.length > 0 ? (
         <div className="ns-stack animate-fade-in-ease">
+          <AnniversaryBanner
+            anniversaryISO={relationships[0]?.anniversaryISO ?? null}
+          />
           <TodaySection relationshipId={relationshipId!} />
 
           <section className="space-y-2">

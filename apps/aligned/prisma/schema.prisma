@@ -143,9 +143,13 @@ model VerificationToken {
 // ============== App models ==============
 
 model Relationship {
-  id     String             @id @default(cuid())
-  name   String?
-  status RelationshipStatus @default(active)
+  id              String             @id @default(cuid())
+  name            String?
+  status          RelationshipStatus @default(active)
+  /// The day this couple started — optional. When set, the app uses
+  /// it to compute "Day N together" on Today and to trigger an
+  /// anniversary banner on the day-of-month.
+  anniversaryDate DateTime?          @db.Date
 
   members       RelationshipMember[]
   invites       Invite[]

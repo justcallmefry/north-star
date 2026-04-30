@@ -84,7 +84,7 @@ export function AppPageClient({ initialData }: Props) {
   useEffect(() => {
     if (!relationshipId || localDateStr == null) return;
     let cancelled = false;
-    Promise.all([
+    Promise.allSettled([
       getQuizForToday(relationshipId, localDateStr),
       getAgreementForToday(relationshipId, localDateStr),
       getAppreciationStatus(relationshipId),
@@ -93,12 +93,12 @@ export function AppPageClient({ initialData }: Props) {
       getDareForWeek(relationshipId),
     ]).then(([quiz, agreement, appreciation, wyr, spotlight, dare]) => {
       if (cancelled) return;
-      setQuizDoneToday(quiz?.myParticipation != null);
-      setAgreementDoneToday(agreement?.myParticipation != null);
-      setAppreciationStatus(appreciation);
-      setWyrData(wyr);
-      setSpotlightStatus(spotlight);
-      setDareData(dare);
+      if (quiz.status === "fulfilled") setQuizDoneToday(quiz.value?.myParticipation != null);
+      if (agreement.status === "fulfilled") setAgreementDoneToday(agreement.value?.myParticipation != null);
+      if (appreciation.status === "fulfilled") setAppreciationStatus(appreciation.value);
+      if (wyr.status === "fulfilled") setWyrData(wyr.value);
+      if (spotlight.status === "fulfilled") setSpotlightStatus(spotlight.value);
+      if (dare.status === "fulfilled") setDareData(dare.value);
     });
     return () => {
       cancelled = true;

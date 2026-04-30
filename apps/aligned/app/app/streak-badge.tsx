@@ -42,7 +42,7 @@ export function StreakBadge({ currentCount, longestCount, variant = "compact" }:
       >
         <Icon className="h-4 w-4 text-amber-600" strokeWidth={2} aria-hidden />
         <span>
-          {currentCount} day{currentCount === 1 ? "" : "s"} in a row, together
+          {currentCount} day{currentCount === 1 ? "" : "s"} in a row
         </span>
       </div>
     );
@@ -60,7 +60,7 @@ export function StreakBadge({ currentCount, longestCount, variant = "compact" }:
         </span>
         <div className="text-left">
           <p className="text-lg font-semibold text-amber-900">
-            {currentCount} day{currentCount === 1 ? "" : "s"} in a row, together
+            {currentCount} day{currentCount === 1 ? "" : "s"} in a row
           </p>
           {longestCount != null && longestCount > currentCount && (
             <p className="text-sm text-amber-700">Longest: {longestCount} days</p>

@@ -13,6 +13,7 @@ import { StreakBadge } from "../../streak-badge";
 import { StreakShareCard } from "./streak-share-card";
 import { RevealStamp } from "@/components/reveal-stamp";
 import { haptic } from "@/lib/haptics";
+import { WaitingForPartner } from "./waiting-for-partner";
 
 const AFTER_REVEAL_PAUSE_MS = 1100;
 
@@ -334,10 +335,13 @@ export function SessionContent({ data, currentUserId }: Props) {
       )}
 
       {data.hasUserResponded && data.state === "open" && !data.canReveal && (
-        <div className="space-y-3 rounded-xl border border-brand-200 bg-brand-50 p-4 text-base text-brand-800 sm:text-lg">
-          <p>Waiting on {totalMembers === 2 ? "your partner" : "everyone"} to answer. You can reveal once all have responded.</p>
-          <NotifyPartnerButton sessionId={data.sessionId} relationshipId={data.relationshipId} className="w-full py-3.5" />
-        </div>
+        <WaitingForPartner
+          sessionId={data.sessionId}
+          relationshipId={data.relationshipId}
+          partnerName={data.partnerName ?? null}
+          partnerImage={(data.partnerImage as string | null) ?? null}
+          totalMembers={totalMembers}
+        />
       )}
 
       {data.hasUserResponded && data.state === "open" && data.canReveal && !isRevealed && (

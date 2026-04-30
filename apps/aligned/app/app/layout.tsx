@@ -21,7 +21,7 @@ export default function AppSegmentLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden md:min-h-screen" style={{ backgroundColor: "#eef6f8", overscrollBehaviorX: "none" }}>
+    <div className="flex h-screen h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden md:min-h-screen" style={{ backgroundColor: "#FAF6F0", overscrollBehaviorX: "none" }}>
       <ScrollToTopOnNav />
       {/* Only this area scrolls so fixed bottom nav stays viewport-locked on mobile */}
       <div

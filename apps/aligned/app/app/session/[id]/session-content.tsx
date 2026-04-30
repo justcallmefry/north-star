@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AlertCircle, Mic } from "lucide-react";
 import { toast } from "sonner";
 import { LoadingSpinner } from "@/components/loading-spinner";
+import { LoadingDots } from "../../loading-dots";
 import { submitResponse, revealSession, submitReflection } from "@/lib/sessions";
 import type { GetSessionResult } from "@/lib/sessions";
 import { DedicationBadge } from "../../dedication-badge";
@@ -139,6 +140,7 @@ export function SessionContent({ data, currentUserId }: Props) {
     }
   }
   const recognitionRef = useRef<any | null>(null);
+  const partnerAnswerRef = useRef<HTMLDivElement | null>(null);
   const [revealData, setRevealData] = useState<{
     promptText: string;
     responses: { userId: string; content: string | null }[];
@@ -281,6 +283,12 @@ export function SessionContent({ data, currentUserId }: Props) {
     const t = setTimeout(() => setAfterRevealReady(true), AFTER_REVEAL_PAUSE_MS);
     return () => clearTimeout(t);
   }, [isRevealed]);
+
+  useEffect(() => {
+    if (partnerRevealed && partnerAnswerRef.current) {
+      partnerAnswerRef.current.focus();
+    }
+  }, [partnerRevealed]);
 
   const responsesToShow = useMemo(() => {
     if (!isRevealed) return [];
@@ -592,6 +600,8 @@ export function SessionContent({ data, currentUserId }: Props) {
               return (
                 <div
                   key={resp.key}
+                  ref={!resp.isMe ? partnerAnswerRef : undefined}
+                  tabIndex={!resp.isMe ? -1 : undefined}
                   className={`${useSlowReveal ? "animate-partner-reveal" : "animate-reveal-cascade"} space-y-1.5 ${
                     idx === 0
                       ? "reveal-cascade-delay-1"
@@ -637,15 +647,11 @@ export function SessionContent({ data, currentUserId }: Props) {
                     </p>
                   )}
                   {!resp.isMe && (partnerRevealed || data.state === "revealed") && (() => {
-                    // resp.key equals userId in the multi-response path (key is set to r.userId there)
                     const partnerResp = data.allResponses?.find((r) => r.userId === resp.key);
-                    // resp.userId may be derived; if allResponses doesn't expose an id-on-Response, skip.
-                    // We use Response.id from data.allResponses if available; otherwise nothing.
-                    const respId = (partnerResp as unknown as { id?: string } | undefined)?.id;
-                    if (!respId) return null;
+                    if (!partnerResp?.id) return null;
                     return (
                       <div className="px-1 pt-1">
-                        <QuickReactRow responseId={respId} initialReactions={null} />
+                        <QuickReactRow responseId={partnerResp.id} initialReactions={null} />
                       </div>
                     );
                   })()}
@@ -765,9 +771,9 @@ export function SessionContent({ data, currentUserId }: Props) {
               type="button"
               onClick={handleReaction}
               disabled={!!loading || !reaction.trim()}
-              className="ns-btn-primary w-full py-3.5"
+              className="ns-btn-primary w-full py-3.5 transition active:scale-[0.98]"
             >
-              {loading === "reaction" ? "Saving…" : "Send response"}
+              {loading === "reaction" ? <LoadingDots /> : "Send response"}
             </button>
           </div>
           {reflectionsToShow.length > 0 && (

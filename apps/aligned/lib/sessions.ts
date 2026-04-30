@@ -449,6 +449,7 @@ export type GetSessionResult = {
   partnerImage?: string | null;
   /** All revealed responses with names/images when available (2 or 3 people). */
   allResponses?: {
+    id: string;
     userId: string;
     name: string | null;
     image: string | null;
@@ -573,6 +574,7 @@ export async function getSession(sessionId: string): Promise<GetSessionResult | 
     result.allResponses = dailySession.responses.map((r) => {
       const u = userMap.get(r.userId);
       return {
+        id: r.id,
         userId: r.userId,
         name: u?.name ?? null,
         image: u?.image ?? null,

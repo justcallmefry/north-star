@@ -2,6 +2,7 @@
 
 import { toast } from "sonner";
 import { requestPermissionAndSubscribe } from "@/lib/push-client";
+import { haptic } from "@/lib/haptics";
 
 type Props = {
   sessionId: string;
@@ -58,6 +59,7 @@ export function NotifyPartnerButton({
 
   async function handleClick(e: React.MouseEvent) {
     e.preventDefault();
+    void haptic("tap");
 
     if (relationshipId && process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
       try {
@@ -108,7 +110,7 @@ export function NotifyPartnerButton({
   const className = [baseClass, sizeClass, extraClass].filter(Boolean).join(" ");
 
   return (
-    <button type="button" onClick={handleClick} className={className}>
+    <button type="button" onClick={handleClick} className={`${className} transition active:scale-[0.98]`}>
       Notify
     </button>
   );

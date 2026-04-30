@@ -7,7 +7,8 @@ import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { getQuizForToday } from "@/lib/quiz";
 import { getAgreementForToday } from "@/lib/agreement";
 import { TodaySection } from "./today-section";
-import { AnniversaryBanner } from "./anniversary-banner";
+import { AnniversaryBanner, isAnniversaryToday } from "./anniversary-banner";
+import { MilestonePromptCard } from "./milestone-prompt-card";
 
 export type Relationship = {
   id: string;
@@ -68,6 +69,13 @@ export function AppPageClient({ initialData }: Props) {
           <AnniversaryBanner
             anniversaryISO={relationships[0]?.anniversaryISO ?? null}
           />
+          {isAnniversaryToday(relationships[0]?.anniversaryISO ?? null) && (
+            <MilestonePromptCard
+              relationshipId={relationshipId!}
+              context="anniversary"
+              eyebrow="Anniversary question"
+            />
+          )}
           <TodaySection relationshipId={relationshipId!} />
 
           <section className="space-y-2">

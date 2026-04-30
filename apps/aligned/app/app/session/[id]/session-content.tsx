@@ -18,8 +18,25 @@ import { PreRevealGuess, readGuess } from "./pre-reveal-guess";
 import { StreakCelebration, isStreakMilestone } from "@/components/streak-celebration";
 import { SaveMemoryButton } from "./save-memory-button";
 import { StickerRow } from "./sticker-row";
+import { MilestonePromptCard } from "../../milestone-prompt-card";
+import type { MilestoneContext } from "@/lib/milestones";
 
 const AFTER_REVEAL_PAUSE_MS = 1100;
+
+function streakMilestoneContext(count: number | null | undefined): MilestoneContext | null {
+  if (count === 7) return "streak-7";
+  if (count === 30) return "streak-30";
+  if (count === 100) return "streak-100";
+  if (count === 365) return "streak-365";
+  return null;
+}
+
+const STREAK_MILESTONE_EYEBROW: Record<string, string> = {
+  "streak-7": "One week milestone",
+  "streak-30": "30-day milestone",
+  "streak-100": "100-day milestone",
+  "streak-365": "One year milestone",
+};
 
 type Props = { data: GetSessionResult; currentUserId: string };
 
@@ -397,7 +414,16 @@ export function SessionContent({ data, currentUserId }: Props) {
       {isRevealed && afterRevealReady && (
         <div className="ns-stack-tight">
           {isStreakMilestone(data.streak?.currentCount) ? (
-            <StreakCelebration count={data.streak!.currentCount} />
+            <>
+              <StreakCelebration count={data.streak!.currentCount} />
+              {streakMilestoneContext(data.streak!.currentCount) && (
+                <MilestonePromptCard
+                  relationshipId={data.relationshipId}
+                  context={streakMilestoneContext(data.streak!.currentCount)!}
+                  eyebrow={STREAK_MILESTONE_EYEBROW[streakMilestoneContext(data.streak!.currentCount)!] ?? "Milestone question"}
+                />
+              )}
+            </>
           ) : (
             <RevealStamp
               eyebrow={

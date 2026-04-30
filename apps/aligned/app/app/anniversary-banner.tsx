@@ -6,6 +6,19 @@ type Props = {
   anniversaryISO: string | null;
 };
 
+/** Returns true when today is the exact anniversary day (month+day match, year > start). */
+export function isAnniversaryToday(anniversaryISO: string | null): boolean {
+  if (!anniversaryISO) return false;
+  const anniversary = parseIsoDate(anniversaryISO);
+  if (!anniversary) return false;
+  const today = todayInUtc();
+  return (
+    today.getUTCMonth() === anniversary.getUTCMonth() &&
+    today.getUTCDate() === anniversary.getUTCDate() &&
+    today.getTime() > anniversary.getTime()
+  );
+}
+
 function parseIsoDate(iso: string): Date | null {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
   if (!m) return null;

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Home, CalendarRange, History, User, HelpCircle, Scale } from "lucide-react";
+import { Home, CalendarRange, User, Sparkles, Bookmark } from "lucide-react";
 import { BottomNav } from "./bottom-nav";
 import { ScrollToTopOnNav } from "./scroll-to-top-on-nav";
 import { RouteTransition } from "./route-transition";
@@ -9,11 +9,10 @@ export const dynamic = "force-dynamic";
 
 const SIDEBAR_NAV = [
   { href: "/app", label: "Today", icon: Home },
-  { href: "/app/quiz", label: "Quiz", icon: HelpCircle },
-  { href: "/app/agreement", label: "Alignment", icon: Scale },
-  { href: "/app/history", label: "Responses", icon: History },
-  { href: "/app/meeting", label: "Our Week", icon: CalendarRange },
-  { href: "/app/us", label: "Profile", icon: User },
+  { href: "/app/insights", label: "Us", icon: Sparkles },
+  { href: "/app/memories", label: "Memories", icon: Bookmark },
+  { href: "/app/meeting", label: "Week", icon: CalendarRange },
+  { href: "/app/us", label: "You", icon: User },
 ] as const;
 
 export default function AppSegmentLayout({

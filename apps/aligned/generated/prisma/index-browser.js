@@ -297,6 +297,16 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.MemoryScalarFieldEnum = {
+  id: 'id',
+  relationshipId: 'relationshipId',
+  savedByUserId: 'savedByUserId',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  snapshot: 'snapshot',
+  savedAt: 'savedAt'
+};
+
 exports.Prisma.BetaSignupScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -346,6 +356,10 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -354,6 +368,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.RelationshipStatus = exports.$Enums.RelationshipStatus = {
   active: 'active',
@@ -428,6 +448,7 @@ exports.Prisma.ModelName = {
   MeetingEntry: 'MeetingEntry',
   Streak: 'Streak',
   Subscription: 'Subscription',
+  Memory: 'Memory',
   BetaSignup: 'BetaSignup',
   QuizSession: 'QuizSession',
   QuizParticipation: 'QuizParticipation',

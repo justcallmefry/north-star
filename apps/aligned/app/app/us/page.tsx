@@ -121,6 +121,26 @@ export default async function UsPage() {
           <SignOutButton />
         </div>
 
+        {primary && (
+          <Link
+            href="/app/history"
+            className="ns-card flex items-center justify-between gap-3 transition active:scale-[0.99] hover:border-dusk-300/70"
+          >
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-sm">
+                Your story so far
+              </p>
+              <p className="mt-1 text-base font-semibold text-slate-900 sm:text-lg">
+                Past responses
+              </p>
+              <p className="mt-1 text-sm text-slate-600">
+                Browse everything you&apos;ve answered together.
+              </p>
+            </div>
+            <span className="text-xl text-slate-400" aria-hidden>→</span>
+          </Link>
+        )}
+
         <AccountDataSection />
       </section>
 

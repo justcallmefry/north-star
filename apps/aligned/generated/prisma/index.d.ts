@@ -99,6 +99,12 @@ export type Streak = $Result.DefaultSelection<Prisma.$StreakPayload>
  */
 export type Subscription = $Result.DefaultSelection<Prisma.$SubscriptionPayload>
 /**
+ * Model Memory
+ * A frozen snapshot of a meaningful moment a couple chooses to keep.
+ * Stored as denormalized JSON so source deletions don't destroy the memory.
+ */
+export type Memory = $Result.DefaultSelection<Prisma.$MemoryPayload>
+/**
  * Model BetaSignup
  * 
  */
@@ -539,6 +545,16 @@ export class PrismaClient<
     * ```
     */
   get subscription(): Prisma.SubscriptionDelegate<ExtArgs>;
+
+  /**
+   * `prisma.memory`: Exposes CRUD operations for the **Memory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Memories
+    * const memories = await prisma.memory.findMany()
+    * ```
+    */
+  get memory(): Prisma.MemoryDelegate<ExtArgs>;
 
   /**
    * `prisma.betaSignup`: Exposes CRUD operations for the **BetaSignup** model.
@@ -1047,6 +1063,7 @@ export namespace Prisma {
     MeetingEntry: 'MeetingEntry',
     Streak: 'Streak',
     Subscription: 'Subscription',
+    Memory: 'Memory',
     BetaSignup: 'BetaSignup',
     QuizSession: 'QuizSession',
     QuizParticipation: 'QuizParticipation',
@@ -1067,7 +1084,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation"
+      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "memory" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2261,6 +2278,76 @@ export namespace Prisma {
           }
         }
       }
+      Memory: {
+        payload: Prisma.$MemoryPayload<ExtArgs>
+        fields: Prisma.MemoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MemoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MemoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>
+          }
+          findFirst: {
+            args: Prisma.MemoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MemoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>
+          }
+          findMany: {
+            args: Prisma.MemoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>[]
+          }
+          create: {
+            args: Prisma.MemoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>
+          }
+          createMany: {
+            args: Prisma.MemoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MemoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>[]
+          }
+          delete: {
+            args: Prisma.MemoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>
+          }
+          update: {
+            args: Prisma.MemoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.MemoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MemoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MemoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>
+          }
+          aggregate: {
+            args: Prisma.MemoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMemory>
+          }
+          groupBy: {
+            args: Prisma.MemoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MemoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MemoryCountArgs<ExtArgs>
+            result: $Utils.Optional<MemoryCountAggregateOutputType> | number
+          }
+        }
+      }
       BetaSignup: {
         payload: Prisma.$BetaSignupPayload<ExtArgs>
         fields: Prisma.BetaSignupFieldRefs
@@ -2784,6 +2871,7 @@ export namespace Prisma {
     meetingEntries: number
     subscriptions: number
     pushSubscriptions: number
+    memories: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2799,6 +2887,7 @@ export namespace Prisma {
     meetingEntries?: boolean | UserCountOutputTypeCountMeetingEntriesArgs
     subscriptions?: boolean | UserCountOutputTypeCountSubscriptionsArgs
     pushSubscriptions?: boolean | UserCountOutputTypeCountPushSubscriptionsArgs
+    memories?: boolean | UserCountOutputTypeCountMemoriesArgs
   }
 
   // Custom InputTypes
@@ -2896,6 +2985,13 @@ export namespace Prisma {
     where?: PushSubscriptionWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMemoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MemoryWhereInput
+  }
+
 
   /**
    * Count Type RelationshipCountOutputType
@@ -2909,6 +3005,7 @@ export namespace Prisma {
     agreementSessions: number
     meetings: number
     subscriptions: number
+    memories: number
   }
 
   export type RelationshipCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2919,6 +3016,7 @@ export namespace Prisma {
     agreementSessions?: boolean | RelationshipCountOutputTypeCountAgreementSessionsArgs
     meetings?: boolean | RelationshipCountOutputTypeCountMeetingsArgs
     subscriptions?: boolean | RelationshipCountOutputTypeCountSubscriptionsArgs
+    memories?: boolean | RelationshipCountOutputTypeCountMemoriesArgs
   }
 
   // Custom InputTypes
@@ -2979,6 +3077,13 @@ export namespace Prisma {
    */
   export type RelationshipCountOutputTypeCountSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SubscriptionWhereInput
+  }
+
+  /**
+   * RelationshipCountOutputType without action
+   */
+  export type RelationshipCountOutputTypeCountMemoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MemoryWhereInput
   }
 
 
@@ -3389,6 +3494,7 @@ export namespace Prisma {
     meetingEntries?: boolean | User$meetingEntriesArgs<ExtArgs>
     subscriptions?: boolean | User$subscriptionsArgs<ExtArgs>
     pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
+    memories?: boolean | User$memoriesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3429,6 +3535,7 @@ export namespace Prisma {
     meetingEntries?: boolean | User$meetingEntriesArgs<ExtArgs>
     subscriptions?: boolean | User$subscriptionsArgs<ExtArgs>
     pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
+    memories?: boolean | User$memoriesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3448,6 +3555,7 @@ export namespace Prisma {
       meetingEntries: Prisma.$MeetingEntryPayload<ExtArgs>[]
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
       pushSubscriptions: Prisma.$PushSubscriptionPayload<ExtArgs>[]
+      memories: Prisma.$MemoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3835,6 +3943,7 @@ export namespace Prisma {
     meetingEntries<T extends User$meetingEntriesArgs<ExtArgs> = {}>(args?: Subset<T, User$meetingEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingEntryPayload<ExtArgs>, T, "findMany"> | Null>
     subscriptions<T extends User$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
     pushSubscriptions<T extends User$pushSubscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$pushSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
+    memories<T extends User$memoriesArgs<ExtArgs> = {}>(args?: Subset<T, User$memoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4424,6 +4533,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PushSubscriptionScalarFieldEnum | PushSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * User.memories
+   */
+  export type User$memoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    where?: MemoryWhereInput
+    orderBy?: MemoryOrderByWithRelationInput | MemoryOrderByWithRelationInput[]
+    cursor?: MemoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MemoryScalarFieldEnum | MemoryScalarFieldEnum[]
   }
 
   /**
@@ -8404,6 +8533,7 @@ export namespace Prisma {
     meetings?: boolean | Relationship$meetingsArgs<ExtArgs>
     streak?: boolean | Relationship$streakArgs<ExtArgs>
     subscriptions?: boolean | Relationship$subscriptionsArgs<ExtArgs>
+    memories?: boolean | Relationship$memoriesArgs<ExtArgs>
     _count?: boolean | RelationshipCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["relationship"]>
 
@@ -8434,6 +8564,7 @@ export namespace Prisma {
     meetings?: boolean | Relationship$meetingsArgs<ExtArgs>
     streak?: boolean | Relationship$streakArgs<ExtArgs>
     subscriptions?: boolean | Relationship$subscriptionsArgs<ExtArgs>
+    memories?: boolean | Relationship$memoriesArgs<ExtArgs>
     _count?: boolean | RelationshipCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RelationshipIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -8449,6 +8580,7 @@ export namespace Prisma {
       meetings: Prisma.$MeetingPayload<ExtArgs>[]
       streak: Prisma.$StreakPayload<ExtArgs> | null
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
+      memories: Prisma.$MemoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8834,6 +8966,7 @@ export namespace Prisma {
     meetings<T extends Relationship$meetingsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$meetingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany"> | Null>
     streak<T extends Relationship$streakArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$streakArgs<ExtArgs>>): Prisma__StreakClient<$Result.GetResult<Prisma.$StreakPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     subscriptions<T extends Relationship$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
+    memories<T extends Relationship$memoriesArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$memoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9335,6 +9468,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SubscriptionScalarFieldEnum | SubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * Relationship.memories
+   */
+  export type Relationship$memoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    where?: MemoryWhereInput
+    orderBy?: MemoryOrderByWithRelationInput | MemoryOrderByWithRelationInput[]
+    cursor?: MemoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MemoryScalarFieldEnum | MemoryScalarFieldEnum[]
   }
 
   /**
@@ -20185,6 +20338,975 @@ export namespace Prisma {
 
 
   /**
+   * Model Memory
+   */
+
+  export type AggregateMemory = {
+    _count: MemoryCountAggregateOutputType | null
+    _min: MemoryMinAggregateOutputType | null
+    _max: MemoryMaxAggregateOutputType | null
+  }
+
+  export type MemoryMinAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    savedByUserId: string | null
+    sourceType: string | null
+    sourceId: string | null
+    savedAt: Date | null
+  }
+
+  export type MemoryMaxAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    savedByUserId: string | null
+    sourceType: string | null
+    sourceId: string | null
+    savedAt: Date | null
+  }
+
+  export type MemoryCountAggregateOutputType = {
+    id: number
+    relationshipId: number
+    savedByUserId: number
+    sourceType: number
+    sourceId: number
+    snapshot: number
+    savedAt: number
+    _all: number
+  }
+
+
+  export type MemoryMinAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    savedByUserId?: true
+    sourceType?: true
+    sourceId?: true
+    savedAt?: true
+  }
+
+  export type MemoryMaxAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    savedByUserId?: true
+    sourceType?: true
+    sourceId?: true
+    savedAt?: true
+  }
+
+  export type MemoryCountAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    savedByUserId?: true
+    sourceType?: true
+    sourceId?: true
+    snapshot?: true
+    savedAt?: true
+    _all?: true
+  }
+
+  export type MemoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Memory to aggregate.
+     */
+    where?: MemoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Memories to fetch.
+     */
+    orderBy?: MemoryOrderByWithRelationInput | MemoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MemoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Memories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Memories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Memories
+    **/
+    _count?: true | MemoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MemoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MemoryMaxAggregateInputType
+  }
+
+  export type GetMemoryAggregateType<T extends MemoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateMemory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMemory[P]>
+      : GetScalarType<T[P], AggregateMemory[P]>
+  }
+
+
+
+
+  export type MemoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MemoryWhereInput
+    orderBy?: MemoryOrderByWithAggregationInput | MemoryOrderByWithAggregationInput[]
+    by: MemoryScalarFieldEnum[] | MemoryScalarFieldEnum
+    having?: MemoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MemoryCountAggregateInputType | true
+    _min?: MemoryMinAggregateInputType
+    _max?: MemoryMaxAggregateInputType
+  }
+
+  export type MemoryGroupByOutputType = {
+    id: string
+    relationshipId: string
+    savedByUserId: string
+    sourceType: string
+    sourceId: string | null
+    snapshot: JsonValue
+    savedAt: Date
+    _count: MemoryCountAggregateOutputType | null
+    _min: MemoryMinAggregateOutputType | null
+    _max: MemoryMaxAggregateOutputType | null
+  }
+
+  type GetMemoryGroupByPayload<T extends MemoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MemoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MemoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MemoryGroupByOutputType[P]>
+            : GetScalarType<T[P], MemoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MemorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    savedByUserId?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    snapshot?: boolean
+    savedAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    savedByUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["memory"]>
+
+  export type MemorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    savedByUserId?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    snapshot?: boolean
+    savedAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    savedByUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["memory"]>
+
+  export type MemorySelectScalar = {
+    id?: boolean
+    relationshipId?: boolean
+    savedByUserId?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    snapshot?: boolean
+    savedAt?: boolean
+  }
+
+  export type MemoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    savedByUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type MemoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    savedByUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $MemoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Memory"
+    objects: {
+      relationship: Prisma.$RelationshipPayload<ExtArgs>
+      savedByUser: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      relationshipId: string
+      savedByUserId: string
+      /**
+       * "session_reveal" | "quiz_reveal" | "agreement_reveal" | "appreciation"
+       */
+      sourceType: string
+      /**
+       * Optional pointer back to the original (e.g. DailySession.id). May be null
+       * if the source was deleted; the snapshot keeps the content alive.
+       */
+      sourceId: string | null
+      /**
+       * Frozen content — prompt text, both answers, date, etc. Schema-by-convention.
+       */
+      snapshot: Prisma.JsonValue
+      savedAt: Date
+    }, ExtArgs["result"]["memory"]>
+    composites: {}
+  }
+
+  type MemoryGetPayload<S extends boolean | null | undefined | MemoryDefaultArgs> = $Result.GetResult<Prisma.$MemoryPayload, S>
+
+  type MemoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<MemoryFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: MemoryCountAggregateInputType | true
+    }
+
+  export interface MemoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Memory'], meta: { name: 'Memory' } }
+    /**
+     * Find zero or one Memory that matches the filter.
+     * @param {MemoryFindUniqueArgs} args - Arguments to find a Memory
+     * @example
+     * // Get one Memory
+     * const memory = await prisma.memory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MemoryFindUniqueArgs>(args: SelectSubset<T, MemoryFindUniqueArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one Memory that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {MemoryFindUniqueOrThrowArgs} args - Arguments to find a Memory
+     * @example
+     * // Get one Memory
+     * const memory = await prisma.memory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MemoryFindUniqueOrThrowArgs>(args: SelectSubset<T, MemoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first Memory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemoryFindFirstArgs} args - Arguments to find a Memory
+     * @example
+     * // Get one Memory
+     * const memory = await prisma.memory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MemoryFindFirstArgs>(args?: SelectSubset<T, MemoryFindFirstArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first Memory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemoryFindFirstOrThrowArgs} args - Arguments to find a Memory
+     * @example
+     * // Get one Memory
+     * const memory = await prisma.memory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MemoryFindFirstOrThrowArgs>(args?: SelectSubset<T, MemoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more Memories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Memories
+     * const memories = await prisma.memory.findMany()
+     * 
+     * // Get first 10 Memories
+     * const memories = await prisma.memory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const memoryWithIdOnly = await prisma.memory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MemoryFindManyArgs>(args?: SelectSubset<T, MemoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a Memory.
+     * @param {MemoryCreateArgs} args - Arguments to create a Memory.
+     * @example
+     * // Create one Memory
+     * const Memory = await prisma.memory.create({
+     *   data: {
+     *     // ... data to create a Memory
+     *   }
+     * })
+     * 
+     */
+    create<T extends MemoryCreateArgs>(args: SelectSubset<T, MemoryCreateArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many Memories.
+     * @param {MemoryCreateManyArgs} args - Arguments to create many Memories.
+     * @example
+     * // Create many Memories
+     * const memory = await prisma.memory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MemoryCreateManyArgs>(args?: SelectSubset<T, MemoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Memories and returns the data saved in the database.
+     * @param {MemoryCreateManyAndReturnArgs} args - Arguments to create many Memories.
+     * @example
+     * // Create many Memories
+     * const memory = await prisma.memory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Memories and only return the `id`
+     * const memoryWithIdOnly = await prisma.memory.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MemoryCreateManyAndReturnArgs>(args?: SelectSubset<T, MemoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a Memory.
+     * @param {MemoryDeleteArgs} args - Arguments to delete one Memory.
+     * @example
+     * // Delete one Memory
+     * const Memory = await prisma.memory.delete({
+     *   where: {
+     *     // ... filter to delete one Memory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MemoryDeleteArgs>(args: SelectSubset<T, MemoryDeleteArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one Memory.
+     * @param {MemoryUpdateArgs} args - Arguments to update one Memory.
+     * @example
+     * // Update one Memory
+     * const memory = await prisma.memory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MemoryUpdateArgs>(args: SelectSubset<T, MemoryUpdateArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more Memories.
+     * @param {MemoryDeleteManyArgs} args - Arguments to filter Memories to delete.
+     * @example
+     * // Delete a few Memories
+     * const { count } = await prisma.memory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MemoryDeleteManyArgs>(args?: SelectSubset<T, MemoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Memories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Memories
+     * const memory = await prisma.memory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MemoryUpdateManyArgs>(args: SelectSubset<T, MemoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Memory.
+     * @param {MemoryUpsertArgs} args - Arguments to update or create a Memory.
+     * @example
+     * // Update or create a Memory
+     * const memory = await prisma.memory.upsert({
+     *   create: {
+     *     // ... data to create a Memory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Memory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MemoryUpsertArgs>(args: SelectSubset<T, MemoryUpsertArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of Memories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemoryCountArgs} args - Arguments to filter Memories to count.
+     * @example
+     * // Count the number of Memories
+     * const count = await prisma.memory.count({
+     *   where: {
+     *     // ... the filter for the Memories we want to count
+     *   }
+     * })
+    **/
+    count<T extends MemoryCountArgs>(
+      args?: Subset<T, MemoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MemoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Memory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MemoryAggregateArgs>(args: Subset<T, MemoryAggregateArgs>): Prisma.PrismaPromise<GetMemoryAggregateType<T>>
+
+    /**
+     * Group by Memory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MemoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MemoryGroupByArgs['orderBy'] }
+        : { orderBy?: MemoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MemoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMemoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Memory model
+   */
+  readonly fields: MemoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Memory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MemoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    relationship<T extends RelationshipDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RelationshipDefaultArgs<ExtArgs>>): Prisma__RelationshipClient<$Result.GetResult<Prisma.$RelationshipPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    savedByUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Memory model
+   */ 
+  interface MemoryFieldRefs {
+    readonly id: FieldRef<"Memory", 'String'>
+    readonly relationshipId: FieldRef<"Memory", 'String'>
+    readonly savedByUserId: FieldRef<"Memory", 'String'>
+    readonly sourceType: FieldRef<"Memory", 'String'>
+    readonly sourceId: FieldRef<"Memory", 'String'>
+    readonly snapshot: FieldRef<"Memory", 'Json'>
+    readonly savedAt: FieldRef<"Memory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Memory findUnique
+   */
+  export type MemoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Memory to fetch.
+     */
+    where: MemoryWhereUniqueInput
+  }
+
+  /**
+   * Memory findUniqueOrThrow
+   */
+  export type MemoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Memory to fetch.
+     */
+    where: MemoryWhereUniqueInput
+  }
+
+  /**
+   * Memory findFirst
+   */
+  export type MemoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Memory to fetch.
+     */
+    where?: MemoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Memories to fetch.
+     */
+    orderBy?: MemoryOrderByWithRelationInput | MemoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Memories.
+     */
+    cursor?: MemoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Memories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Memories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Memories.
+     */
+    distinct?: MemoryScalarFieldEnum | MemoryScalarFieldEnum[]
+  }
+
+  /**
+   * Memory findFirstOrThrow
+   */
+  export type MemoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Memory to fetch.
+     */
+    where?: MemoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Memories to fetch.
+     */
+    orderBy?: MemoryOrderByWithRelationInput | MemoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Memories.
+     */
+    cursor?: MemoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Memories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Memories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Memories.
+     */
+    distinct?: MemoryScalarFieldEnum | MemoryScalarFieldEnum[]
+  }
+
+  /**
+   * Memory findMany
+   */
+  export type MemoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Memories to fetch.
+     */
+    where?: MemoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Memories to fetch.
+     */
+    orderBy?: MemoryOrderByWithRelationInput | MemoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Memories.
+     */
+    cursor?: MemoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Memories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Memories.
+     */
+    skip?: number
+    distinct?: MemoryScalarFieldEnum | MemoryScalarFieldEnum[]
+  }
+
+  /**
+   * Memory create
+   */
+  export type MemoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Memory.
+     */
+    data: XOR<MemoryCreateInput, MemoryUncheckedCreateInput>
+  }
+
+  /**
+   * Memory createMany
+   */
+  export type MemoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Memories.
+     */
+    data: MemoryCreateManyInput | MemoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Memory createManyAndReturn
+   */
+  export type MemoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many Memories.
+     */
+    data: MemoryCreateManyInput | MemoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Memory update
+   */
+  export type MemoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Memory.
+     */
+    data: XOR<MemoryUpdateInput, MemoryUncheckedUpdateInput>
+    /**
+     * Choose, which Memory to update.
+     */
+    where: MemoryWhereUniqueInput
+  }
+
+  /**
+   * Memory updateMany
+   */
+  export type MemoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Memories.
+     */
+    data: XOR<MemoryUpdateManyMutationInput, MemoryUncheckedUpdateManyInput>
+    /**
+     * Filter which Memories to update
+     */
+    where?: MemoryWhereInput
+  }
+
+  /**
+   * Memory upsert
+   */
+  export type MemoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Memory to update in case it exists.
+     */
+    where: MemoryWhereUniqueInput
+    /**
+     * In case the Memory found by the `where` argument doesn't exist, create a new Memory with this data.
+     */
+    create: XOR<MemoryCreateInput, MemoryUncheckedCreateInput>
+    /**
+     * In case the Memory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MemoryUpdateInput, MemoryUncheckedUpdateInput>
+  }
+
+  /**
+   * Memory delete
+   */
+  export type MemoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * Filter which Memory to delete.
+     */
+    where: MemoryWhereUniqueInput
+  }
+
+  /**
+   * Memory deleteMany
+   */
+  export type MemoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Memories to delete
+     */
+    where?: MemoryWhereInput
+  }
+
+  /**
+   * Memory without action
+   */
+  export type MemoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model BetaSignup
    */
 
@@ -25146,6 +26268,19 @@ export namespace Prisma {
   export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
 
 
+  export const MemoryScalarFieldEnum: {
+    id: 'id',
+    relationshipId: 'relationshipId',
+    savedByUserId: 'savedByUserId',
+    sourceType: 'sourceType',
+    sourceId: 'sourceId',
+    snapshot: 'snapshot',
+    savedAt: 'savedAt'
+  };
+
+  export type MemoryScalarFieldEnum = (typeof MemoryScalarFieldEnum)[keyof typeof MemoryScalarFieldEnum]
+
+
   export const BetaSignupScalarFieldEnum: {
     id: 'id',
     email: 'email',
@@ -25213,6 +26348,13 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -25227,6 +26369,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -25382,6 +26533,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
    * Reference to a field of type 'QuizState'
    */
   export type EnumQuizStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuizState'>
@@ -25451,6 +26609,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryListRelationFilter
     subscriptions?: SubscriptionListRelationFilter
     pushSubscriptions?: PushSubscriptionListRelationFilter
+    memories?: MemoryListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -25475,6 +26634,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryOrderByRelationAggregateInput
     subscriptions?: SubscriptionOrderByRelationAggregateInput
     pushSubscriptions?: PushSubscriptionOrderByRelationAggregateInput
+    memories?: MemoryOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -25502,6 +26662,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryListRelationFilter
     subscriptions?: SubscriptionListRelationFilter
     pushSubscriptions?: PushSubscriptionListRelationFilter
+    memories?: MemoryListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -25803,6 +26964,7 @@ export namespace Prisma {
     meetings?: MeetingListRelationFilter
     streak?: XOR<StreakNullableRelationFilter, StreakWhereInput> | null
     subscriptions?: SubscriptionListRelationFilter
+    memories?: MemoryListRelationFilter
   }
 
   export type RelationshipOrderByWithRelationInput = {
@@ -25820,6 +26982,7 @@ export namespace Prisma {
     meetings?: MeetingOrderByRelationAggregateInput
     streak?: StreakOrderByWithRelationInput
     subscriptions?: SubscriptionOrderByRelationAggregateInput
+    memories?: MemoryOrderByRelationAggregateInput
   }
 
   export type RelationshipWhereUniqueInput = Prisma.AtLeast<{
@@ -25840,6 +27003,7 @@ export namespace Prisma {
     meetings?: MeetingListRelationFilter
     streak?: XOR<StreakNullableRelationFilter, StreakWhereInput> | null
     subscriptions?: SubscriptionListRelationFilter
+    memories?: MemoryListRelationFilter
   }, "id">
 
   export type RelationshipOrderByWithAggregationInput = {
@@ -26656,6 +27820,74 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
   }
 
+  export type MemoryWhereInput = {
+    AND?: MemoryWhereInput | MemoryWhereInput[]
+    OR?: MemoryWhereInput[]
+    NOT?: MemoryWhereInput | MemoryWhereInput[]
+    id?: StringFilter<"Memory"> | string
+    relationshipId?: StringFilter<"Memory"> | string
+    savedByUserId?: StringFilter<"Memory"> | string
+    sourceType?: StringFilter<"Memory"> | string
+    sourceId?: StringNullableFilter<"Memory"> | string | null
+    snapshot?: JsonFilter<"Memory">
+    savedAt?: DateTimeFilter<"Memory"> | Date | string
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+    savedByUser?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type MemoryOrderByWithRelationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    savedByUserId?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrderInput | SortOrder
+    snapshot?: SortOrder
+    savedAt?: SortOrder
+    relationship?: RelationshipOrderByWithRelationInput
+    savedByUser?: UserOrderByWithRelationInput
+  }
+
+  export type MemoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MemoryWhereInput | MemoryWhereInput[]
+    OR?: MemoryWhereInput[]
+    NOT?: MemoryWhereInput | MemoryWhereInput[]
+    relationshipId?: StringFilter<"Memory"> | string
+    savedByUserId?: StringFilter<"Memory"> | string
+    sourceType?: StringFilter<"Memory"> | string
+    sourceId?: StringNullableFilter<"Memory"> | string | null
+    snapshot?: JsonFilter<"Memory">
+    savedAt?: DateTimeFilter<"Memory"> | Date | string
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+    savedByUser?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type MemoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    savedByUserId?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrderInput | SortOrder
+    snapshot?: SortOrder
+    savedAt?: SortOrder
+    _count?: MemoryCountOrderByAggregateInput
+    _max?: MemoryMaxOrderByAggregateInput
+    _min?: MemoryMinOrderByAggregateInput
+  }
+
+  export type MemoryScalarWhereWithAggregatesInput = {
+    AND?: MemoryScalarWhereWithAggregatesInput | MemoryScalarWhereWithAggregatesInput[]
+    OR?: MemoryScalarWhereWithAggregatesInput[]
+    NOT?: MemoryScalarWhereWithAggregatesInput | MemoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Memory"> | string
+    relationshipId?: StringWithAggregatesFilter<"Memory"> | string
+    savedByUserId?: StringWithAggregatesFilter<"Memory"> | string
+    sourceType?: StringWithAggregatesFilter<"Memory"> | string
+    sourceId?: StringNullableWithAggregatesFilter<"Memory"> | string | null
+    snapshot?: JsonWithAggregatesFilter<"Memory">
+    savedAt?: DateTimeWithAggregatesFilter<"Memory"> | Date | string
+  }
+
   export type BetaSignupWhereInput = {
     AND?: BetaSignupWhereInput | BetaSignupWhereInput[]
     OR?: BetaSignupWhereInput[]
@@ -26986,6 +28218,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -27010,6 +28243,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUpdateInput = {
@@ -27034,6 +28268,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -27058,6 +28293,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -27374,6 +28610,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateInput = {
@@ -27391,6 +28628,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUpdateInput = {
@@ -27408,6 +28646,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateInput = {
@@ -27425,6 +28664,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipCreateManyInput = {
@@ -28268,6 +29508,74 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MemoryCreateInput = {
+    id?: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutMemoriesInput
+    savedByUser: UserCreateNestedOneWithoutMemoriesInput
+  }
+
+  export type MemoryUncheckedCreateInput = {
+    id?: string
+    relationshipId: string
+    savedByUserId: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
+  }
+
+  export type MemoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutMemoriesNestedInput
+    savedByUser?: UserUpdateOneRequiredWithoutMemoriesNestedInput
+  }
+
+  export type MemoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    savedByUserId?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemoryCreateManyInput = {
+    id?: string
+    relationshipId: string
+    savedByUserId: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
+  }
+
+  export type MemoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    savedByUserId?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type BetaSignupCreateInput = {
     id?: string
     email: string
@@ -28702,6 +30010,12 @@ export namespace Prisma {
     none?: PushSubscriptionWhereInput
   }
 
+  export type MemoryListRelationFilter = {
+    every?: MemoryWhereInput
+    some?: MemoryWhereInput
+    none?: MemoryWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -28752,6 +30066,10 @@ export namespace Prisma {
   }
 
   export type PushSubscriptionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MemoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -29672,6 +30990,81 @@ export namespace Prisma {
     _min?: NestedEnumSubscriptionStatusFilter<$PrismaModel>
     _max?: NestedEnumSubscriptionStatusFilter<$PrismaModel>
   }
+  export type JsonFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type MemoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    savedByUserId?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    snapshot?: SortOrder
+    savedAt?: SortOrder
+  }
+
+  export type MemoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    savedByUserId?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    savedAt?: SortOrder
+  }
+
+  export type MemoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    savedByUserId?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    savedAt?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
 
   export type BetaSignupCountOrderByAggregateInput = {
     id?: SortOrder
@@ -29953,6 +31346,13 @@ export namespace Prisma {
     connect?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
   }
 
+  export type MemoryCreateNestedManyWithoutSavedByUserInput = {
+    create?: XOR<MemoryCreateWithoutSavedByUserInput, MemoryUncheckedCreateWithoutSavedByUserInput> | MemoryCreateWithoutSavedByUserInput[] | MemoryUncheckedCreateWithoutSavedByUserInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutSavedByUserInput | MemoryCreateOrConnectWithoutSavedByUserInput[]
+    createMany?: MemoryCreateManySavedByUserInputEnvelope
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -30035,6 +31435,13 @@ export namespace Prisma {
     connectOrCreate?: PushSubscriptionCreateOrConnectWithoutUserInput | PushSubscriptionCreateOrConnectWithoutUserInput[]
     createMany?: PushSubscriptionCreateManyUserInputEnvelope
     connect?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+  }
+
+  export type MemoryUncheckedCreateNestedManyWithoutSavedByUserInput = {
+    create?: XOR<MemoryCreateWithoutSavedByUserInput, MemoryUncheckedCreateWithoutSavedByUserInput> | MemoryCreateWithoutSavedByUserInput[] | MemoryUncheckedCreateWithoutSavedByUserInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutSavedByUserInput | MemoryCreateOrConnectWithoutSavedByUserInput[]
+    createMany?: MemoryCreateManySavedByUserInputEnvelope
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -30221,6 +31628,20 @@ export namespace Prisma {
     deleteMany?: PushSubscriptionScalarWhereInput | PushSubscriptionScalarWhereInput[]
   }
 
+  export type MemoryUpdateManyWithoutSavedByUserNestedInput = {
+    create?: XOR<MemoryCreateWithoutSavedByUserInput, MemoryUncheckedCreateWithoutSavedByUserInput> | MemoryCreateWithoutSavedByUserInput[] | MemoryUncheckedCreateWithoutSavedByUserInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutSavedByUserInput | MemoryCreateOrConnectWithoutSavedByUserInput[]
+    upsert?: MemoryUpsertWithWhereUniqueWithoutSavedByUserInput | MemoryUpsertWithWhereUniqueWithoutSavedByUserInput[]
+    createMany?: MemoryCreateManySavedByUserInputEnvelope
+    set?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    disconnect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    delete?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    update?: MemoryUpdateWithWhereUniqueWithoutSavedByUserInput | MemoryUpdateWithWhereUniqueWithoutSavedByUserInput[]
+    updateMany?: MemoryUpdateManyWithWhereWithoutSavedByUserInput | MemoryUpdateManyWithWhereWithoutSavedByUserInput[]
+    deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -30389,6 +31810,20 @@ export namespace Prisma {
     deleteMany?: PushSubscriptionScalarWhereInput | PushSubscriptionScalarWhereInput[]
   }
 
+  export type MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput = {
+    create?: XOR<MemoryCreateWithoutSavedByUserInput, MemoryUncheckedCreateWithoutSavedByUserInput> | MemoryCreateWithoutSavedByUserInput[] | MemoryUncheckedCreateWithoutSavedByUserInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutSavedByUserInput | MemoryCreateOrConnectWithoutSavedByUserInput[]
+    upsert?: MemoryUpsertWithWhereUniqueWithoutSavedByUserInput | MemoryUpsertWithWhereUniqueWithoutSavedByUserInput[]
+    createMany?: MemoryCreateManySavedByUserInputEnvelope
+    set?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    disconnect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    delete?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    update?: MemoryUpdateWithWhereUniqueWithoutSavedByUserInput | MemoryUpdateWithWhereUniqueWithoutSavedByUserInput[]
+    updateMany?: MemoryUpdateManyWithWhereWithoutSavedByUserInput | MemoryUpdateManyWithWhereWithoutSavedByUserInput[]
+    deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutPushSubscriptionsInput = {
     create?: XOR<UserCreateWithoutPushSubscriptionsInput, UserUncheckedCreateWithoutPushSubscriptionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutPushSubscriptionsInput
@@ -30494,6 +31929,13 @@ export namespace Prisma {
     connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
   }
 
+  export type MemoryCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<MemoryCreateWithoutRelationshipInput, MemoryUncheckedCreateWithoutRelationshipInput> | MemoryCreateWithoutRelationshipInput[] | MemoryUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutRelationshipInput | MemoryCreateOrConnectWithoutRelationshipInput[]
+    createMany?: MemoryCreateManyRelationshipInputEnvelope
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+  }
+
   export type RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput = {
     create?: XOR<RelationshipMemberCreateWithoutRelationshipInput, RelationshipMemberUncheckedCreateWithoutRelationshipInput> | RelationshipMemberCreateWithoutRelationshipInput[] | RelationshipMemberUncheckedCreateWithoutRelationshipInput[]
     connectOrCreate?: RelationshipMemberCreateOrConnectWithoutRelationshipInput | RelationshipMemberCreateOrConnectWithoutRelationshipInput[]
@@ -30547,6 +31989,13 @@ export namespace Prisma {
     connectOrCreate?: SubscriptionCreateOrConnectWithoutRelationshipInput | SubscriptionCreateOrConnectWithoutRelationshipInput[]
     createMany?: SubscriptionCreateManyRelationshipInputEnvelope
     connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+  }
+
+  export type MemoryUncheckedCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<MemoryCreateWithoutRelationshipInput, MemoryUncheckedCreateWithoutRelationshipInput> | MemoryCreateWithoutRelationshipInput[] | MemoryUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutRelationshipInput | MemoryCreateOrConnectWithoutRelationshipInput[]
+    createMany?: MemoryCreateManyRelationshipInputEnvelope
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
   }
 
   export type EnumRelationshipStatusFieldUpdateOperationsInput = {
@@ -30661,6 +32110,20 @@ export namespace Prisma {
     deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
   }
 
+  export type MemoryUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<MemoryCreateWithoutRelationshipInput, MemoryUncheckedCreateWithoutRelationshipInput> | MemoryCreateWithoutRelationshipInput[] | MemoryUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutRelationshipInput | MemoryCreateOrConnectWithoutRelationshipInput[]
+    upsert?: MemoryUpsertWithWhereUniqueWithoutRelationshipInput | MemoryUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: MemoryCreateManyRelationshipInputEnvelope
+    set?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    disconnect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    delete?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    update?: MemoryUpdateWithWhereUniqueWithoutRelationshipInput | MemoryUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: MemoryUpdateManyWithWhereWithoutRelationshipInput | MemoryUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
+  }
+
   export type RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput = {
     create?: XOR<RelationshipMemberCreateWithoutRelationshipInput, RelationshipMemberUncheckedCreateWithoutRelationshipInput> | RelationshipMemberCreateWithoutRelationshipInput[] | RelationshipMemberUncheckedCreateWithoutRelationshipInput[]
     connectOrCreate?: RelationshipMemberCreateOrConnectWithoutRelationshipInput | RelationshipMemberCreateOrConnectWithoutRelationshipInput[]
@@ -30767,6 +32230,20 @@ export namespace Prisma {
     update?: SubscriptionUpdateWithWhereUniqueWithoutRelationshipInput | SubscriptionUpdateWithWhereUniqueWithoutRelationshipInput[]
     updateMany?: SubscriptionUpdateManyWithWhereWithoutRelationshipInput | SubscriptionUpdateManyWithWhereWithoutRelationshipInput[]
     deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
+  }
+
+  export type MemoryUncheckedUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<MemoryCreateWithoutRelationshipInput, MemoryUncheckedCreateWithoutRelationshipInput> | MemoryCreateWithoutRelationshipInput[] | MemoryUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutRelationshipInput | MemoryCreateOrConnectWithoutRelationshipInput[]
+    upsert?: MemoryUpsertWithWhereUniqueWithoutRelationshipInput | MemoryUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: MemoryCreateManyRelationshipInputEnvelope
+    set?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    disconnect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    delete?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    update?: MemoryUpdateWithWhereUniqueWithoutRelationshipInput | MemoryUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: MemoryUpdateManyWithWhereWithoutRelationshipInput | MemoryUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
   }
 
   export type RelationshipCreateNestedOneWithoutMembersInput = {
@@ -31271,6 +32748,34 @@ export namespace Prisma {
     update?: XOR<XOR<RelationshipUpdateToOneWithWhereWithoutSubscriptionsInput, RelationshipUpdateWithoutSubscriptionsInput>, RelationshipUncheckedUpdateWithoutSubscriptionsInput>
   }
 
+  export type RelationshipCreateNestedOneWithoutMemoriesInput = {
+    create?: XOR<RelationshipCreateWithoutMemoriesInput, RelationshipUncheckedCreateWithoutMemoriesInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutMemoriesInput
+    connect?: RelationshipWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutMemoriesInput = {
+    create?: XOR<UserCreateWithoutMemoriesInput, UserUncheckedCreateWithoutMemoriesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMemoriesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type RelationshipUpdateOneRequiredWithoutMemoriesNestedInput = {
+    create?: XOR<RelationshipCreateWithoutMemoriesInput, RelationshipUncheckedCreateWithoutMemoriesInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutMemoriesInput
+    upsert?: RelationshipUpsertWithoutMemoriesInput
+    connect?: RelationshipWhereUniqueInput
+    update?: XOR<XOR<RelationshipUpdateToOneWithWhereWithoutMemoriesInput, RelationshipUpdateWithoutMemoriesInput>, RelationshipUncheckedUpdateWithoutMemoriesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutMemoriesNestedInput = {
+    create?: XOR<UserCreateWithoutMemoriesInput, UserUncheckedCreateWithoutMemoriesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMemoriesInput
+    upsert?: UserUpsertWithoutMemoriesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMemoriesInput, UserUpdateWithoutMemoriesInput>, UserUncheckedUpdateWithoutMemoriesInput>
+  }
+
   export type RelationshipCreateNestedOneWithoutQuizSessionsInput = {
     create?: XOR<RelationshipCreateWithoutQuizSessionsInput, RelationshipUncheckedCreateWithoutQuizSessionsInput>
     connectOrCreate?: RelationshipCreateOrConnectWithoutQuizSessionsInput
@@ -31766,6 +33271,28 @@ export namespace Prisma {
     _min?: NestedEnumSubscriptionStatusFilter<$PrismaModel>
     _max?: NestedEnumSubscriptionStatusFilter<$PrismaModel>
   }
+  export type NestedJsonFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedEnumQuizStateFilter<$PrismaModel = never> = {
     equals?: $Enums.QuizState | EnumQuizStateFieldRefInput<$PrismaModel>
@@ -32159,6 +33686,34 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type MemoryCreateWithoutSavedByUserInput = {
+    id?: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutMemoriesInput
+  }
+
+  export type MemoryUncheckedCreateWithoutSavedByUserInput = {
+    id?: string
+    relationshipId: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
+  }
+
+  export type MemoryCreateOrConnectWithoutSavedByUserInput = {
+    where: MemoryWhereUniqueInput
+    create: XOR<MemoryCreateWithoutSavedByUserInput, MemoryUncheckedCreateWithoutSavedByUserInput>
+  }
+
+  export type MemoryCreateManySavedByUserInputEnvelope = {
+    data: MemoryCreateManySavedByUserInput | MemoryCreateManySavedByUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -32517,6 +34072,35 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"PushSubscription"> | Date | string
   }
 
+  export type MemoryUpsertWithWhereUniqueWithoutSavedByUserInput = {
+    where: MemoryWhereUniqueInput
+    update: XOR<MemoryUpdateWithoutSavedByUserInput, MemoryUncheckedUpdateWithoutSavedByUserInput>
+    create: XOR<MemoryCreateWithoutSavedByUserInput, MemoryUncheckedCreateWithoutSavedByUserInput>
+  }
+
+  export type MemoryUpdateWithWhereUniqueWithoutSavedByUserInput = {
+    where: MemoryWhereUniqueInput
+    data: XOR<MemoryUpdateWithoutSavedByUserInput, MemoryUncheckedUpdateWithoutSavedByUserInput>
+  }
+
+  export type MemoryUpdateManyWithWhereWithoutSavedByUserInput = {
+    where: MemoryScalarWhereInput
+    data: XOR<MemoryUpdateManyMutationInput, MemoryUncheckedUpdateManyWithoutSavedByUserInput>
+  }
+
+  export type MemoryScalarWhereInput = {
+    AND?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
+    OR?: MemoryScalarWhereInput[]
+    NOT?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
+    id?: StringFilter<"Memory"> | string
+    relationshipId?: StringFilter<"Memory"> | string
+    savedByUserId?: StringFilter<"Memory"> | string
+    sourceType?: StringFilter<"Memory"> | string
+    sourceId?: StringNullableFilter<"Memory"> | string | null
+    snapshot?: JsonFilter<"Memory">
+    savedAt?: DateTimeFilter<"Memory"> | Date | string
+  }
+
   export type UserCreateWithoutPushSubscriptionsInput = {
     id?: string
     email: string
@@ -32538,6 +34122,7 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -32561,6 +34146,7 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -32600,6 +34186,7 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -32623,6 +34210,7 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -32646,6 +34234,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -32669,6 +34258,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -32708,6 +34298,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -32731,6 +34322,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -32754,6 +34346,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -32777,6 +34370,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -32816,6 +34410,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -32839,6 +34434,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type RelationshipMemberCreateWithoutRelationshipInput = {
@@ -33072,6 +34668,34 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type MemoryCreateWithoutRelationshipInput = {
+    id?: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
+    savedByUser: UserCreateNestedOneWithoutMemoriesInput
+  }
+
+  export type MemoryUncheckedCreateWithoutRelationshipInput = {
+    id?: string
+    savedByUserId: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
+  }
+
+  export type MemoryCreateOrConnectWithoutRelationshipInput = {
+    where: MemoryWhereUniqueInput
+    create: XOR<MemoryCreateWithoutRelationshipInput, MemoryUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type MemoryCreateManyRelationshipInputEnvelope = {
+    data: MemoryCreateManyRelationshipInput | MemoryCreateManyRelationshipInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RelationshipMemberUpsertWithWhereUniqueWithoutRelationshipInput = {
     where: RelationshipMemberWhereUniqueInput
     update: XOR<RelationshipMemberUpdateWithoutRelationshipInput, RelationshipMemberUncheckedUpdateWithoutRelationshipInput>
@@ -33255,6 +34879,22 @@ export namespace Prisma {
     data: XOR<SubscriptionUpdateManyMutationInput, SubscriptionUncheckedUpdateManyWithoutRelationshipInput>
   }
 
+  export type MemoryUpsertWithWhereUniqueWithoutRelationshipInput = {
+    where: MemoryWhereUniqueInput
+    update: XOR<MemoryUpdateWithoutRelationshipInput, MemoryUncheckedUpdateWithoutRelationshipInput>
+    create: XOR<MemoryCreateWithoutRelationshipInput, MemoryUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type MemoryUpdateWithWhereUniqueWithoutRelationshipInput = {
+    where: MemoryWhereUniqueInput
+    data: XOR<MemoryUpdateWithoutRelationshipInput, MemoryUncheckedUpdateWithoutRelationshipInput>
+  }
+
+  export type MemoryUpdateManyWithWhereWithoutRelationshipInput = {
+    where: MemoryScalarWhereInput
+    data: XOR<MemoryUpdateManyMutationInput, MemoryUncheckedUpdateManyWithoutRelationshipInput>
+  }
+
   export type RelationshipCreateWithoutMembersInput = {
     id?: string
     name?: string | null
@@ -33269,6 +34909,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutMembersInput = {
@@ -33285,6 +34926,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutMembersInput = {
@@ -33313,6 +34955,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutRelationshipMembersInput = {
@@ -33336,6 +34979,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutRelationshipMembersInput = {
@@ -33368,6 +35012,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutMembersInput = {
@@ -33384,6 +35029,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type UserUpsertWithoutRelationshipMembersInput = {
@@ -33418,6 +35064,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRelationshipMembersInput = {
@@ -33441,6 +35088,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type RelationshipCreateWithoutInvitesInput = {
@@ -33457,6 +35105,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutInvitesInput = {
@@ -33473,6 +35122,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutInvitesInput = {
@@ -33501,6 +35151,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutInvitesSentInput = {
@@ -33524,6 +35175,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutInvitesSentInput = {
@@ -33556,6 +35208,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutInvitesInput = {
@@ -33572,6 +35225,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type UserUpsertWithoutInvitesSentInput = {
@@ -33606,6 +35260,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvitesSentInput = {
@@ -33629,6 +35284,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type DailySessionCreateWithoutPromptInput = {
@@ -33693,6 +35349,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutDailySessionsInput = {
@@ -33709,6 +35366,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutDailySessionsInput = {
@@ -33828,6 +35486,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutDailySessionsInput = {
@@ -33844,6 +35503,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type PromptUpsertWithoutDailySessionsInput = {
@@ -33963,6 +35623,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutResponsesInput = {
@@ -33986,6 +35647,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutResponsesInput = {
@@ -34082,6 +35744,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutResponsesInput = {
@@ -34105,6 +35768,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type ResponseValidationUpsertWithWhereUniqueWithoutResponseInput = {
@@ -34167,6 +35831,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutResponseValidationsInput = {
@@ -34190,6 +35855,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutResponseValidationsInput = {
@@ -34258,6 +35924,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutResponseValidationsInput = {
@@ -34281,6 +35948,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type DailySessionCreateWithoutReflectionsInput = {
@@ -34331,6 +35999,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutReflectionsInput = {
@@ -34354,6 +36023,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutReflectionsInput = {
@@ -34426,6 +36096,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReflectionsInput = {
@@ -34449,6 +36120,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type RelationshipCreateWithoutMeetingsInput = {
@@ -34465,6 +36137,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutMeetingsInput = {
@@ -34481,6 +36154,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutMeetingsInput = {
@@ -34547,6 +36221,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutMeetingsInput = {
@@ -34563,6 +36238,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type MeetingEntryUpsertWithWhereUniqueWithoutMeetingInput = {
@@ -34623,6 +36299,7 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutMeetingEntriesInput = {
@@ -34646,6 +36323,7 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutMeetingEntriesInput = {
@@ -34712,6 +36390,7 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMeetingEntriesInput = {
@@ -34735,6 +36414,7 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type RelationshipCreateWithoutStreakInput = {
@@ -34751,6 +36431,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutStreakInput = {
@@ -34767,6 +36448,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutStreakInput = {
@@ -34799,6 +36481,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutStreakInput = {
@@ -34815,6 +36498,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type UserCreateWithoutSubscriptionsInput = {
@@ -34838,6 +36522,7 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -34861,6 +36546,7 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -34882,6 +36568,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutSubscriptionsInput = {
@@ -34898,6 +36585,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutSubscriptionsInput = {
@@ -34937,6 +36625,7 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -34960,6 +36649,7 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type RelationshipUpsertWithoutSubscriptionsInput = {
@@ -34987,6 +36677,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutSubscriptionsInput = {
@@ -35003,6 +36694,203 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type RelationshipCreateWithoutMemoriesInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
+    invites?: InviteCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingCreateNestedManyWithoutRelationshipInput
+    streak?: StreakCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipUncheckedCreateWithoutMemoriesInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
+    invites?: InviteUncheckedCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionUncheckedCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
+    streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipCreateOrConnectWithoutMemoriesInput = {
+    where: RelationshipWhereUniqueInput
+    create: XOR<RelationshipCreateWithoutMemoriesInput, RelationshipUncheckedCreateWithoutMemoriesInput>
+  }
+
+  export type UserCreateWithoutMemoriesInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberCreateNestedManyWithoutUserInput
+    invitesSent?: InviteCreateNestedManyWithoutSenderInput
+    responses?: ResponseCreateNestedManyWithoutUserInput
+    reflections?: ReflectionCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutMemoriesInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutSenderInput
+    responses?: ResponseUncheckedCreateNestedManyWithoutUserInput
+    reflections?: ReflectionUncheckedCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationUncheckedCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationUncheckedCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutMemoriesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMemoriesInput, UserUncheckedCreateWithoutMemoriesInput>
+  }
+
+  export type RelationshipUpsertWithoutMemoriesInput = {
+    update: XOR<RelationshipUpdateWithoutMemoriesInput, RelationshipUncheckedUpdateWithoutMemoriesInput>
+    create: XOR<RelationshipCreateWithoutMemoriesInput, RelationshipUncheckedCreateWithoutMemoriesInput>
+    where?: RelationshipWhereInput
+  }
+
+  export type RelationshipUpdateToOneWithWhereWithoutMemoriesInput = {
+    where?: RelationshipWhereInput
+    data: XOR<RelationshipUpdateWithoutMemoriesInput, RelationshipUncheckedUpdateWithoutMemoriesInput>
+  }
+
+  export type RelationshipUpdateWithoutMemoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type RelationshipUncheckedUpdateWithoutMemoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUncheckedUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type UserUpsertWithoutMemoriesInput = {
+    update: XOR<UserUpdateWithoutMemoriesInput, UserUncheckedUpdateWithoutMemoriesInput>
+    create: XOR<UserCreateWithoutMemoriesInput, UserUncheckedCreateWithoutMemoriesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMemoriesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMemoriesInput, UserUncheckedUpdateWithoutMemoriesInput>
+  }
+
+  export type UserUpdateWithoutMemoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMemoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUncheckedUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUncheckedUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUncheckedUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUncheckedUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RelationshipCreateWithoutQuizSessionsInput = {
@@ -35019,6 +36907,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutQuizSessionsInput = {
@@ -35035,6 +36924,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutQuizSessionsInput = {
@@ -35095,6 +36985,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutQuizSessionsInput = {
@@ -35111,6 +37002,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type QuizParticipationUpsertWithWhereUniqueWithoutQuizSessionInput = {
@@ -35173,6 +37065,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutQuizParticipationsInput = {
@@ -35196,6 +37089,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutQuizParticipationsInput = {
@@ -35264,6 +37158,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutQuizParticipationsInput = {
@@ -35287,6 +37182,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type RelationshipCreateWithoutAgreementSessionsInput = {
@@ -35303,6 +37199,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutAgreementSessionsInput = {
@@ -35319,6 +37216,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutAgreementSessionsInput = {
@@ -35379,6 +37277,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutAgreementSessionsInput = {
@@ -35395,6 +37294,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type AgreementParticipationUpsertWithWhereUniqueWithoutAgreementSessionInput = {
@@ -35457,6 +37357,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutAgreementParticipationsInput = {
@@ -35480,6 +37381,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutAgreementParticipationsInput = {
@@ -35548,6 +37450,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAgreementParticipationsInput = {
@@ -35571,6 +37474,7 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -35689,6 +37593,15 @@ export namespace Prisma {
     authKey: string
     userAgent?: string | null
     createdAt?: Date | string
+  }
+
+  export type MemoryCreateManySavedByUserInput = {
+    id?: string
+    relationshipId: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -36047,6 +37960,33 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MemoryUpdateWithoutSavedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutMemoriesNestedInput
+  }
+
+  export type MemoryUncheckedUpdateWithoutSavedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemoryUncheckedUpdateManyWithoutSavedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type RelationshipMemberCreateManyRelationshipInput = {
     id?: string
     userId: string
@@ -36112,6 +38052,15 @@ export namespace Prisma {
     cancelAtPeriodEnd?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type MemoryCreateManyRelationshipInput = {
+    id?: string
+    savedByUserId: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
   }
 
   export type RelationshipMemberUpdateWithoutRelationshipInput = {
@@ -36323,6 +38272,33 @@ export namespace Prisma {
     cancelAtPeriodEnd?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemoryUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    savedByUser?: UserUpdateOneRequiredWithoutMemoriesNestedInput
+  }
+
+  export type MemoryUncheckedUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    savedByUserId?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemoryUncheckedUpdateManyWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    savedByUserId?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DailySessionCreateManyPromptInput = {
@@ -36688,6 +38664,10 @@ export namespace Prisma {
      * @deprecated Use SubscriptionDefaultArgs instead
      */
     export type SubscriptionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = SubscriptionDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use MemoryDefaultArgs instead
+     */
+    export type MemoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MemoryDefaultArgs<ExtArgs>
     /**
      * @deprecated Use BetaSignupDefaultArgs instead
      */

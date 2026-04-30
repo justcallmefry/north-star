@@ -82,6 +82,7 @@ model User {
   meetingEntries          MeetingEntry[]
   subscriptions           Subscription[]
   pushSubscriptions       PushSubscription[]
+  memories                Memory[]
 
   // Soft delete: when set, the account is anonymized (email/name/image cleared);
   // partner-visible historical content stays attached to this row by id.
@@ -159,6 +160,7 @@ model Relationship {
   meetings          Meeting[]
   streak            Streak?
   subscriptions     Subscription[]
+  memories          Memory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -364,6 +366,30 @@ model Subscription {
   @@index([userId])
   @@index([relationshipId])
   @@index([status])
+}
+
+/// A frozen snapshot of a meaningful moment a couple chooses to keep.
+/// Stored as denormalized JSON so source deletions don't destroy the memory.
+model Memory {
+  id             String  @id @default(cuid())
+  relationshipId String
+  savedByUserId  String
+  /// "session_reveal" | "quiz_reveal" | "agreement_reveal" | "appreciation"
+  sourceType     String
+  /// Optional pointer back to the original (e.g. DailySession.id). May be null
+  /// if the source was deleted; the snapshot keeps the content alive.
+  sourceId       String?
+  /// Frozen content — prompt text, both answers, date, etc. Schema-by-convention.
+  snapshot       Json
+
+  relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  savedByUser  User         @relation(fields: [savedByUserId], references: [id], onDelete: Cascade)
+
+  savedAt DateTime @default(now())
+
+  @@index([relationshipId])
+  @@index([savedByUserId])
+  @@index([savedAt])
 }
 
 model BetaSignup {

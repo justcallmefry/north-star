@@ -16,6 +16,7 @@ import { haptic } from "@/lib/haptics";
 import { WaitingForPartner } from "./waiting-for-partner";
 import { PreRevealGuess, readGuess } from "./pre-reveal-guess";
 import { StreakCelebration, isStreakMilestone } from "@/components/streak-celebration";
+import { SaveMemoryButton } from "./save-memory-button";
 
 const AFTER_REVEAL_PAUSE_MS = 1100;
 
@@ -473,6 +474,8 @@ export function SessionContent({ data, currentUserId }: Props) {
             (data.streak.currentCount === 7 || data.streak.currentCount === 30) && (
               <StreakShareCard currentCount={data.streak.currentCount} />
             )}
+
+          <SaveMemoryButton sessionId={data.sessionId} initialSaved={false} />
 
           <div className="space-y-3 border-t border-brand-100 pt-5">
             {data.isFirstCompletedSession && (

@@ -166,6 +166,9 @@ export default async function InsightsPage() {
                     storageKey={`insights-alignment:${insights.sessionsCompleted}`}
                   />
                 </p>
+                <p className="mt-0.5 text-xs text-white/60">
+                  How often you land in the same place
+                </p>
               </div>
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-white/70">

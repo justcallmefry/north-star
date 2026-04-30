@@ -52,7 +52,7 @@ export function SignupForm() {
         const res = await signIn("credentials", {
           email: email.trim(),
           password,
-          callbackUrl: "/app/pair",
+          callbackUrl: "/app/welcome",
           redirect: false,
         });
         if (res?.error) {
@@ -149,7 +149,7 @@ export function SignupForm() {
         <div className="mb-6">
           <button
             type="button"
-            onClick={() => signIn("apple", { callbackUrl: "/app/pair" })}
+            onClick={() => signIn("apple", { callbackUrl: "/app/welcome" })}
             className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-800 bg-slate-900 px-4 py-3.5 text-base font-medium text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
           >
             <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden>

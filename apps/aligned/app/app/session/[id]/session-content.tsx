@@ -16,8 +16,10 @@ import { haptic } from "@/lib/haptics";
 import { WaitingForPartner } from "./waiting-for-partner";
 import { PreRevealGuess, readGuess } from "./pre-reveal-guess";
 import { StreakCelebration, isStreakMilestone } from "@/components/streak-celebration";
-import { SaveMemoryButton } from "./save-memory-button";
 import { StickerRow } from "./sticker-row";
+import { QuickReactRow } from "./quick-react-row";
+import { PostRevealActionBar } from "./post-reveal-action-bar";
+import { saveSessionReveal } from "@/lib/memories";
 import { MilestonePromptCard } from "../../milestone-prompt-card";
 import type { MilestoneContext } from "@/lib/milestones";
 
@@ -120,6 +122,22 @@ export function SessionContent({ data, currentUserId }: Props) {
   const [afterRevealReady, setAfterRevealReady] = useState(false);
   const [partnerRevealed, setPartnerRevealed] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [memorySaved, setMemorySaved] = useState(false);
+  const [memorySaving, setMemorySaving] = useState(false);
+
+  async function handleSaveMemory() {
+    if (memorySaved || memorySaving) return;
+    setMemorySaving(true);
+    try {
+      await saveSessionReveal(data.sessionId);
+      setMemorySaved(true);
+      toast.success("Saved to your memories.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Couldn't save.");
+    } finally {
+      setMemorySaving(false);
+    }
+  }
   const recognitionRef = useRef<any | null>(null);
   const [revealData, setRevealData] = useState<{
     promptText: string;
@@ -535,7 +553,32 @@ export function SessionContent({ data, currentUserId }: Props) {
             />
           )}
 
-          <div className="animate-calm-fade-in ns-card ns-stack-tight">
+          <div className="animate-calm-fade-in ns-card ns-stack-tight" aria-live="polite">
+          {data.isThrowback && data.throwbackThen && data.throwbackThen.length > 0 && (
+            <section
+              className="rounded-2xl border border-peach-200 bg-peach-50/40 p-4"
+              aria-label="Then and now"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-peach-700">
+                {data.throwbackMonthsAgo
+                  ? `${data.throwbackMonthsAgo} months ago`
+                  : "Earlier"}
+              </p>
+              <div className="mt-2 space-y-2">
+                {data.throwbackThen.map((r) => (
+                  <div key={r.userId} className="rounded-xl bg-white px-3 py-2.5">
+                    <p className="text-xs font-semibold text-peach-700">
+                      {r.name ?? "They"} said:
+                    </p>
+                    <p className="mt-0.5 text-sm text-slate-700">
+                      {r.content ?? "(no answer saved)"}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3 text-xs text-slate-500">— and today —</p>
+            </section>
+          )}
           <h3 className="text-lg font-semibold text-slate-900 sm:text-xl">Answers</h3>
 
           <div className="space-y-2">
@@ -545,10 +588,11 @@ export function SessionContent({ data, currentUserId }: Props) {
               const isPartnerAnswer = !resp.isMe;
               const needsTap = isPartnerAnswer && revealed && !partnerRevealed && data.state !== "revealed";
               if (needsTap) return null;
+              const useSlowReveal = isPartnerAnswer && partnerRevealed && data.state !== "revealed";
               return (
                 <div
                   key={resp.key}
-                  className={`animate-reveal-cascade space-y-1.5 ${
+                  className={`${useSlowReveal ? "animate-partner-reveal" : "animate-reveal-cascade"} space-y-1.5 ${
                     idx === 0
                       ? "reveal-cascade-delay-1"
                       : idx === 1
@@ -577,12 +621,34 @@ export function SessionContent({ data, currentUserId }: Props) {
                       ? `${ftsPrefix} ${resp.content}${ftsSuffix ?? ""}`
                       : (resp.content ?? "—")}
                   </p>
+                  {!resp.isMe && data.noveltyTags && data.noveltyTags.length > 0 && (
+                    <p
+                      className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700"
+                      role="note"
+                    >
+                      <span aria-hidden>🌱</span>
+                      First time you&apos;ve heard this
+                    </p>
+                  )}
                   {!resp.isMe && savedGuess && (
                     <p className="px-3 text-sm italic text-slate-500 sm:text-base">
                       <span className="font-medium not-italic text-slate-600">You guessed: </span>
                       {savedGuess}
                     </p>
                   )}
+                  {!resp.isMe && (partnerRevealed || data.state === "revealed") && (() => {
+                    // resp.key equals userId in the multi-response path (key is set to r.userId there)
+                    const partnerResp = data.allResponses?.find((r) => r.userId === resp.key);
+                    // resp.userId may be derived; if allResponses doesn't expose an id-on-Response, skip.
+                    // We use Response.id from data.allResponses if available; otherwise nothing.
+                    const respId = (partnerResp as unknown as { id?: string } | undefined)?.id;
+                    if (!respId) return null;
+                    return (
+                      <div className="px-1 pt-1">
+                        <QuickReactRow responseId={respId} initialReactions={null} />
+                      </div>
+                    );
+                  })()}
                 </div>
               );
             })}
@@ -628,7 +694,7 @@ export function SessionContent({ data, currentUserId }: Props) {
 
           {/* Follow-up conversation prompt — bridges the app to a real conversation */}
           {(partnerRevealed || data.state === "revealed") && (
-            <div className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3.5">
+            <div id="talk-about-it" className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3.5">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
                 Talk about it
               </p>
@@ -659,7 +725,22 @@ export function SessionContent({ data, currentUserId }: Props) {
               <StreakShareCard currentCount={data.streak.currentCount} />
             )}
 
-          <SaveMemoryButton sessionId={data.sessionId} initialSaved={false} />
+          <PostRevealActionBar
+            onReact={() => {
+              const el = document.getElementById("session-response");
+              if (el) {
+                el.scrollIntoView({ behavior: "smooth", block: "center" });
+                (el as HTMLTextAreaElement).focus();
+              }
+            }}
+            onSave={() => void handleSaveMemory()}
+            onTalk={() => {
+              const el = document.getElementById("talk-about-it");
+              if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+            }}
+            saved={memorySaved}
+            saving={memorySaving}
+          />
 
           <div className="space-y-3 border-t border-brand-100 pt-5">
             <StickerRow sessionId={data.sessionId} />

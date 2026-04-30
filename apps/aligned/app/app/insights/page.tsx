@@ -178,6 +178,9 @@ export default async function InsightsPage() {
                     storageKey={`insights-mindreading:${insights.sessionsCompleted}`}
                   />
                 </p>
+                <p className="mt-0.5 text-xs text-white/60">
+                  How often you predicted each other&apos;s answer
+                </p>
               </div>
             </div>
           </section>

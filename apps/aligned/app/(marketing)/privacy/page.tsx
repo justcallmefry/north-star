@@ -15,7 +15,7 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
         <p className="mt-2 text-sm text-slate-500">
-          Last updated: February 2026
+          Last updated: April 2026
         </p>
 
         <div className="mt-8 space-y-8 text-base leading-relaxed text-slate-700">
@@ -39,6 +39,21 @@ export default function PrivacyPage() {
             <p className="mt-3 font-medium text-slate-800">Usage and device</p>
             <p>
               We may collect information about how you use the Service (e.g., pages or screens you open, actions you take) and basic device or browser data (e.g., type, language) to operate, secure, and improve the Service. We may use cookies or similar technologies for authentication and preferences.
+            </p>
+
+            <p className="mt-3 font-medium text-slate-800">Microphone (voice answers)</p>
+            <p>
+              If you tap “Speak answer,” your device uses speech recognition to transcribe what you say into the text field. Audio is processed by your device or your operating system’s on-device recognizer when available; we do not record, transmit, or store the audio itself. You can always type your answer instead.
+            </p>
+
+            <p className="mt-3 font-medium text-slate-800">Push notifications</p>
+            <p>
+              If you enable push notifications, we store a device-specific subscription token so we can send gentle reminders, partner nudges, and a category preview of tomorrow’s prompt. You can disable notifications at any time from your device settings, and we delete tokens for devices that unsubscribe.
+            </p>
+
+            <p className="mt-3 font-medium text-slate-800">Photos</p>
+            <p>
+              If you choose to set a profile picture, your device may ask for access to your photo library or camera. We only use the image you select; we do not browse your library.
             </p>
           </section>
 
@@ -76,7 +91,7 @@ export default function PrivacyPage() {
               We use industry-standard measures to protect your data (e.g., encryption in transit, access controls). No system is completely secure; we will notify you if we become aware of a breach that affects your personal information where required by law.
             </p>
             <p className="mt-3">
-              We retain your account and content for as long as your account is active or as needed to provide the Service and comply with law. If you delete your account, we will delete or anonymize your personal data in line with our retention policy, except where we must keep it for legal or safety reasons.
+              We retain your account and content for as long as your account is active or as needed to provide the Service and comply with law. When you delete your account from Profile → Account &amp; data, we anonymize your account: your name, photo, and email are removed and your sign-in is permanently disabled. Content you co-created with your partner (such as shared answers and reactions) remains in your partner&apos;s history with no personal information attached, since they are also a participant in that content. Authentication sessions, device tokens, and active subscriptions are removed at deletion.
             </p>
           </section>
 
@@ -91,7 +106,7 @@ export default function PrivacyPage() {
               <li>Data portability (e.g., a copy of your data in a usable format)</li>
             </ul>
             <p className="mt-3">
-              To exercise these rights, contact us at the email below. You can also delete your account or adjust in-app settings where available. If you are in the EEA or UK, you may have the right to lodge a complaint with your local data protection authority.
+              You can exercise the most common rights directly from the app: open <strong>Profile → Account &amp; data</strong> to download a JSON copy of your data or to delete your account. For anything else, contact us at the email below. If you are in the EEA or UK, you may also have the right to lodge a complaint with your local data protection authority.
             </p>
           </section>
 

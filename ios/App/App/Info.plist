@@ -47,5 +47,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Aligned uses your microphone only when you tap "Speak answer" so you can dictate today's response. Audio is processed by your device and isn't stored.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Aligned uses on-device speech recognition to turn what you say into your written answer when you tap "Speak answer". Recognition happens on your device.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Aligned needs access to your photos only when you choose to set or change your profile picture.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Aligned needs camera access only if you choose to take a new photo to use as your profile picture.</string>
 </dict>
 </plist>

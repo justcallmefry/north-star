@@ -14,10 +14,32 @@ import { getSpotlightStatus } from "@/lib/spotlight";
 import type { SpotlightStatus } from "@/lib/spotlight";
 import { getDareForWeek } from "@/lib/dare";
 import type { DareForWeekResult } from "@/lib/dare";
+import { getDayTheme } from "@/lib/day-theme";
 import { TodaySection } from "./today-section";
 import { AnniversaryBanner, isAnniversaryToday } from "./anniversary-banner";
 import { MilestonePromptCard } from "./milestone-prompt-card";
 import { SundayRecap } from "./sunday-recap";
+
+function RowShell({
+  href,
+  featured,
+  children,
+}: {
+  href: string;
+  featured: boolean;
+  children: React.ReactNode;
+}) {
+  const base =
+    "flex items-center gap-3 rounded-2xl border bg-white transition active:scale-[0.99]";
+  const cls = featured
+    ? `${base} border-dusk-300 px-5 py-4 shadow-md ring-1 ring-dusk-100`
+    : `${base} border-slate-200 px-4 py-3 hover:border-dusk-300/70`;
+  return (
+    <Link href={href} className={cls}>
+      {children}
+    </Link>
+  );
+}
 
 export type Relationship = {
   id: string;
@@ -83,6 +105,11 @@ export function AppPageClient({ initialData }: Props) {
     };
   }, [relationshipId, localDateStr]);
 
+  const todayDate = localDateStr
+    ? new Date(localDateStr + "T00:00:00.000Z")
+    : new Date();
+  const featuredMode = getDayTheme(todayDate).featuredMode;
+
   return (
     <main className="flex flex-col gap-2">
       {relationships.length > 0 ? (
@@ -106,161 +133,186 @@ export function AppPageClient({ initialData }: Props) {
               Also today
             </p>
 
-            {/* Date Night Dare row — weekly */}
-            {dareData && (
-              <Link
-                href="/app/dare"
-                className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 transition active:scale-[0.99] hover:border-dusk-300/70"
-              >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-peach-50 text-peach-600">
-                  <Flame className="h-5 w-5" strokeWidth={2} aria-hidden />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="font-semibold text-slate-900">Date Night Dare</p>
-                  <p className="truncate text-sm text-slate-500">
-                    {dareData.completed
-                      ? "Done this week. Nice work."
-                      : dareData.accepted
-                        ? `In progress: ${dareData.dare.title}`
-                        : dareData.dare.title}
-                  </p>
-                </div>
-                {dareData.completed ? (
-                  <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Completed" />
-                ) : (
-                  <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
-                )}
-              </Link>
-            )}
+            {(() => {
+              type RowEntry = { key: string; featuredKey: string | null; node: React.ReactNode };
+              const rows: RowEntry[] = [];
 
-            {/* Partner Spotlight row — monthly */}
-            {spotlightStatus && spotlightStatus.type !== "none" && (
-              <Link
-                href="/app/spotlight"
-                className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 transition active:scale-[0.99] hover:border-dusk-300/70"
-              >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600">
-                  <Sparkles className="h-5 w-5" strokeWidth={2} aria-hidden />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="font-semibold text-slate-900">Partner Spotlight</p>
-                  <p className="truncate text-sm text-slate-500">
-                    {spotlightStatus.type === "received"
-                      ? `${spotlightStatus.fromName ?? "Your partner"} wrote 3 things for you.`
-                      : spotlightStatus.type === "sent"
-                        ? "You sent your spotlight this month."
-                        : "Tell them 3 things you love about them."}
-                  </p>
-                </div>
-                {spotlightStatus.type === "received" ? (
-                  <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-brand-500 animate-pulse" aria-label="New" />
-                ) : spotlightStatus.type === "sent" ? (
-                  <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Sent" />
-                ) : (
-                  <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
-                )}
-              </Link>
-            )}
+              if (dareData) {
+                rows.push({
+                  key: "dare",
+                  featuredKey: "dare",
+                  node: (
+                    <RowShell href="/app/dare" featured={featuredMode === "dare"}>
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-peach-50 text-peach-600">
+                        <Flame className="h-5 w-5" strokeWidth={2} aria-hidden />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-semibold text-slate-900">Date Night Dare</p>
+                        <p className="truncate text-sm text-slate-500">
+                          {dareData.completed
+                            ? "Done this week. Nice work."
+                            : dareData.accepted
+                              ? `In progress: ${dareData.dare.title}`
+                              : dareData.dare.title}
+                        </p>
+                      </div>
+                      {dareData.completed ? (
+                        <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Completed" />
+                      ) : (
+                        <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                      )}
+                    </RowShell>
+                  ),
+                });
+              }
 
-            {/* Would You Rather row */}
-            {wyrData && (
-              <Link
-                href="/app/wyr"
-                className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 transition active:scale-[0.99] hover:border-dusk-300/70"
-              >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-dusk-50 text-dusk-600">
-                  <Shuffle className="h-5 w-5" strokeWidth={2} aria-hidden />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="font-semibold text-slate-900">Would You Rather</p>
-                  <p className="truncate text-sm text-slate-500">
-                    {wyrData.state === "revealed"
-                      ? wyrData.reveal?.matched
-                        ? "You're aligned today."
-                        : "You went different directions."
-                      : wyrData.myChoice != null
-                        ? `Waiting for ${wyrData.partnerName ?? "them"}…`
-                        : "Pick one — see if you match."}
-                  </p>
-                </div>
-                {wyrData.state === "revealed" ? (
-                  <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Done" />
-                ) : (
-                  <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
-                )}
-              </Link>
-            )}
+              if (spotlightStatus && spotlightStatus.type !== "none") {
+                rows.push({
+                  key: "spotlight",
+                  featuredKey: null,
+                  node: (
+                    <RowShell href="/app/spotlight" featured={false}>
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600">
+                        <Sparkles className="h-5 w-5" strokeWidth={2} aria-hidden />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-semibold text-slate-900">Partner Spotlight</p>
+                        <p className="truncate text-sm text-slate-500">
+                          {spotlightStatus.type === "received"
+                            ? `${spotlightStatus.fromName ?? "Your partner"} wrote 3 things for you.`
+                            : spotlightStatus.type === "sent"
+                              ? "You sent your spotlight this month."
+                              : "Tell them 3 things you love about them."}
+                        </p>
+                      </div>
+                      {spotlightStatus.type === "received" ? (
+                        <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-brand-500 animate-pulse" aria-label="New" />
+                      ) : spotlightStatus.type === "sent" ? (
+                        <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Sent" />
+                      ) : (
+                        <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                      )}
+                    </RowShell>
+                  ),
+                });
+              }
 
-            {/* Quiz row — compact, doesn't compete with the prompt above */}
-            <Link
-              href="/app/quiz"
-              className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 transition active:scale-[0.99] hover:border-dusk-300/70"
-            >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-dusk-50 text-dusk-600">
-                <HelpCircle className="h-5 w-5" strokeWidth={2} aria-hidden />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="font-semibold text-slate-900">Quiz</p>
-                <p className="truncate text-sm text-slate-500">
-                  Guess what your partner picked.
-                </p>
-              </div>
-              {quizDoneToday === true ? (
-                <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Done today" />
-              ) : (
-                <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
-              )}
-            </Link>
+              if (wyrData) {
+                rows.push({
+                  key: "wyr",
+                  featuredKey: null,
+                  node: (
+                    <RowShell href="/app/wyr" featured={false}>
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-dusk-50 text-dusk-600">
+                        <Shuffle className="h-5 w-5" strokeWidth={2} aria-hidden />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-semibold text-slate-900">Would You Rather</p>
+                        <p className="truncate text-sm text-slate-500">
+                          {wyrData.state === "revealed"
+                            ? wyrData.reveal?.matched
+                              ? "You're aligned today."
+                              : "You went different directions."
+                            : wyrData.myChoice != null
+                              ? `Waiting for ${wyrData.partnerName ?? "them"}…`
+                              : "Pick one — see if you match."}
+                        </p>
+                      </div>
+                      {wyrData.state === "revealed" ? (
+                        <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Done" />
+                      ) : (
+                        <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                      )}
+                    </RowShell>
+                  ),
+                });
+              }
 
-            {/* Appreciation row */}
-            {appreciationStatus && appreciationStatus.type !== "none" && (
-              <Link
-                href="/app/appreciation"
-                className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 transition active:scale-[0.99] hover:border-dusk-300/70"
-              >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600">
-                  <Heart className="h-5 w-5" strokeWidth={2} aria-hidden />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="font-semibold text-slate-900">Appreciation</p>
-                  <p className="truncate text-sm text-slate-500">
-                    {appreciationStatus.type === "received"
-                      ? `${appreciationStatus.fromName ?? "Your partner"} left you something.`
-                      : appreciationStatus.type === "sent"
-                        ? "You sent one this week."
-                        : "Tell them something you noticed."}
-                  </p>
-                </div>
-                {appreciationStatus.type === "received" ? (
-                  <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-brand-500 animate-pulse" aria-label="New" />
-                ) : appreciationStatus.type === "sent" ? (
-                  <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Sent" />
-                ) : (
-                  <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
-                )}
-              </Link>
-            )}
+              rows.push({
+                key: "quiz",
+                featuredKey: "quiz",
+                node: (
+                  <RowShell href="/app/quiz" featured={featuredMode === "quiz"}>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-dusk-50 text-dusk-600">
+                      <HelpCircle className="h-5 w-5" strokeWidth={2} aria-hidden />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-slate-900">Quiz</p>
+                      <p className="truncate text-sm text-slate-500">
+                        Guess what your partner picked.
+                      </p>
+                    </div>
+                    {quizDoneToday === true ? (
+                      <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Done today" />
+                    ) : (
+                      <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                    )}
+                  </RowShell>
+                ),
+              });
 
-            {/* Alignment row — same compact style */}
-            <Link
-              href="/app/agreement"
-              className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 transition active:scale-[0.99] hover:border-dusk-300/70"
-            >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-dusk-50 text-dusk-600">
-                <Scale className="h-5 w-5" strokeWidth={2} aria-hidden />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="font-semibold text-slate-900">Alignment</p>
-                <p className="truncate text-sm text-slate-500">
-                  Rate, then guess how they&apos;d answer.
-                </p>
-              </div>
-              {agreementDoneToday === true ? (
-                <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Done today" />
-              ) : (
-                <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
-              )}
-            </Link>
+              if (appreciationStatus && appreciationStatus.type !== "none") {
+                rows.push({
+                  key: "appreciation",
+                  featuredKey: "appreciation",
+                  node: (
+                    <RowShell href="/app/appreciation" featured={featuredMode === "appreciation"}>
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600">
+                        <Heart className="h-5 w-5" strokeWidth={2} aria-hidden />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-semibold text-slate-900">Appreciation</p>
+                        <p className="truncate text-sm text-slate-500">
+                          {appreciationStatus.type === "received"
+                            ? `${appreciationStatus.fromName ?? "Your partner"} left you something.`
+                            : appreciationStatus.type === "sent"
+                              ? "You sent one this week."
+                              : "Tell them something you noticed."}
+                        </p>
+                      </div>
+                      {appreciationStatus.type === "received" ? (
+                        <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-brand-500 animate-pulse" aria-label="New" />
+                      ) : appreciationStatus.type === "sent" ? (
+                        <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Sent" />
+                      ) : (
+                        <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                      )}
+                    </RowShell>
+                  ),
+                });
+              }
+
+              rows.push({
+                key: "agreement",
+                featuredKey: null,
+                node: (
+                  <RowShell href="/app/agreement" featured={false}>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-dusk-50 text-dusk-600">
+                      <Scale className="h-5 w-5" strokeWidth={2} aria-hidden />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-slate-900">Alignment</p>
+                      <p className="truncate text-sm text-slate-500">
+                        Rate, then guess how they&apos;d answer.
+                      </p>
+                    </div>
+                    {agreementDoneToday === true ? (
+                      <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Done today" />
+                    ) : (
+                      <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                    )}
+                  </RowShell>
+                ),
+              });
+
+              const ordered = rows.slice().sort((a, b) => {
+                const af = featuredMode && a.featuredKey === featuredMode ? -1 : 0;
+                const bf = featuredMode && b.featuredKey === featuredMode ? -1 : 0;
+                return af - bf;
+              });
+
+              return ordered.map((r) => <div key={r.key}>{r.node}</div>);
+            })()}
           </section>
         </div>
       ) : (

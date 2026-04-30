@@ -85,6 +85,9 @@ model User {
   memories           Memory[]
   appreciationsSent     Appreciation[] @relation("AppreciationSent")
   appreciationsReceived Appreciation[] @relation("AppreciationReceived")
+  wyrParticipations     WyrParticipation[]
+  spotlightsSent        PartnerSpotlight[] @relation("SpotlightSent")
+  spotlightsReceived    PartnerSpotlight[] @relation("SpotlightReceived")
 
   // Soft delete: when set, the account is anonymized (email/name/image cleared);
   // partner-visible historical content stays attached to this row by id.
@@ -163,7 +166,9 @@ model Relationship {
   streak        Streak?
   subscriptions Subscription[]
   memories     Memory[]
-  appreciations Appreciation[]
+  appreciations     Appreciation[]
+  wyrSessions       WyrSession[]
+  spotlights        PartnerSpotlight[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -469,6 +474,65 @@ model Appreciation {
   @@index([relationshipId])
   @@index([toUserId])
   @@index([weekKey])
+}
+
+enum WyrState {
+  open
+  revealed
+}
+
+model WyrSession {
+  id             String   @id @default(cuid())
+  relationshipId String
+  sessionDate    DateTime @db.Date
+  questionIndex  Int
+  state          WyrState @default(open)
+
+  relationship   Relationship      @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  participations WyrParticipation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([relationshipId, sessionDate])
+  @@index([relationshipId])
+  @@index([sessionDate])
+}
+
+model WyrParticipation {
+  id           String @id @default(cuid())
+  wyrSessionId String
+  userId       String
+  choice       Int    // 0 = optionA, 1 = optionB
+
+  wyrSession WyrSession @relation(fields: [wyrSessionId], references: [id], onDelete: Cascade)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([wyrSessionId, userId])
+  @@index([wyrSessionId])
+  @@index([userId])
+}
+
+/// Monthly "3 things I love about you" — one per person per month.
+model PartnerSpotlight {
+  id             String @id @default(cuid())
+  relationshipId String
+  fromUserId     String
+  toUserId       String
+  items          Json   // string[] — up to 3 things
+  monthKey       String // "YYYY-MM"
+
+  relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  fromUser     User         @relation("SpotlightSent", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser       User         @relation("SpotlightReceived", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([relationshipId, fromUserId, monthKey])
+  @@index([relationshipId])
+  @@index([toUserId])
 }
 
 model BetaSignup {

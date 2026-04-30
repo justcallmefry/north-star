@@ -2,15 +2,20 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Circle, Heart, HelpCircle, Scale } from "lucide-react";
+import { ArrowRight, CheckCircle, Circle, Heart, HelpCircle, Scale, Shuffle, Sparkles } from "lucide-react";
 import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { getQuizForToday } from "@/lib/quiz";
 import { getAgreementForToday } from "@/lib/agreement";
 import { getAppreciationStatus } from "@/lib/appreciation";
 import type { AppreciationStatus } from "@/lib/appreciation";
+import { getWyrForToday } from "@/lib/wyr";
+import type { WyrForTodayResult } from "@/lib/wyr";
+import { getSpotlightStatus } from "@/lib/spotlight";
+import type { SpotlightStatus } from "@/lib/spotlight";
 import { TodaySection } from "./today-section";
 import { AnniversaryBanner, isAnniversaryToday } from "./anniversary-banner";
 import { MilestonePromptCard } from "./milestone-prompt-card";
+import { SundayRecap } from "./sunday-recap";
 
 export type Relationship = {
   id: string;
@@ -44,6 +49,8 @@ export function AppPageClient({ initialData }: Props) {
   const [quizDoneToday, setQuizDoneToday] = useState<boolean | null>(null);
   const [agreementDoneToday, setAgreementDoneToday] = useState<boolean | null>(null);
   const [appreciationStatus, setAppreciationStatus] = useState<AppreciationStatus | null>(null);
+  const [wyrData, setWyrData] = useState<WyrForTodayResult | null>(null);
+  const [spotlightStatus, setSpotlightStatus] = useState<SpotlightStatus | null>(null);
 
   useEffect(() => {
     setLocalDateStr(getLocalDateString());
@@ -56,11 +63,15 @@ export function AppPageClient({ initialData }: Props) {
       getQuizForToday(relationshipId, localDateStr),
       getAgreementForToday(relationshipId, localDateStr),
       getAppreciationStatus(relationshipId),
-    ]).then(([quiz, agreement, appreciation]) => {
+      getWyrForToday(relationshipId, localDateStr),
+      getSpotlightStatus(relationshipId),
+    ]).then(([quiz, agreement, appreciation, wyr, spotlight]) => {
       if (cancelled) return;
       setQuizDoneToday(quiz?.myParticipation != null);
       setAgreementDoneToday(agreement?.myParticipation != null);
       setAppreciationStatus(appreciation);
+      setWyrData(wyr);
+      setSpotlightStatus(spotlight);
     });
     return () => {
       cancelled = true;
@@ -83,10 +94,70 @@ export function AppPageClient({ initialData }: Props) {
           )}
           <TodaySection relationshipId={relationshipId!} />
 
+          <SundayRecap relationshipId={relationshipId!} />
+
           <section className="space-y-2">
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
               Also today
             </p>
+
+            {/* Partner Spotlight row — monthly */}
+            {spotlightStatus && spotlightStatus.type !== "none" && (
+              <Link
+                href="/app/spotlight"
+                className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 transition active:scale-[0.99] hover:border-dusk-300/70"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600">
+                  <Sparkles className="h-5 w-5" strokeWidth={2} aria-hidden />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-slate-900">Partner Spotlight</p>
+                  <p className="truncate text-sm text-slate-500">
+                    {spotlightStatus.type === "received"
+                      ? `${spotlightStatus.fromName ?? "Your partner"} wrote 3 things for you.`
+                      : spotlightStatus.type === "sent"
+                        ? "You sent your spotlight this month."
+                        : "Tell them 3 things you love about them."}
+                  </p>
+                </div>
+                {spotlightStatus.type === "received" ? (
+                  <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-brand-500 animate-pulse" aria-label="New" />
+                ) : spotlightStatus.type === "sent" ? (
+                  <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Sent" />
+                ) : (
+                  <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                )}
+              </Link>
+            )}
+
+            {/* Would You Rather row */}
+            {wyrData && (
+              <Link
+                href="/app/wyr"
+                className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 transition active:scale-[0.99] hover:border-dusk-300/70"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-dusk-50 text-dusk-600">
+                  <Shuffle className="h-5 w-5" strokeWidth={2} aria-hidden />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-slate-900">Would You Rather</p>
+                  <p className="truncate text-sm text-slate-500">
+                    {wyrData.state === "revealed"
+                      ? wyrData.reveal?.matched
+                        ? "You're aligned today."
+                        : "You went different directions."
+                      : wyrData.myChoice != null
+                        ? `Waiting for ${wyrData.partnerName ?? "them"}…`
+                        : "Pick one — see if you match."}
+                  </p>
+                </div>
+                {wyrData.state === "revealed" ? (
+                  <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Done" />
+                ) : (
+                  <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                )}
+              </Link>
+            )}
 
             {/* Quiz row — compact, doesn't compete with the prompt above */}
             <Link

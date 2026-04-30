@@ -137,34 +137,34 @@ export function AppPageClient({ initialData }: Props) {
               type RowEntry = { key: string; featuredKey: string | null; node: React.ReactNode };
               const rows: RowEntry[] = [];
 
-              if (dareData) {
-                rows.push({
-                  key: "dare",
-                  featuredKey: "dare",
-                  node: (
-                    <RowShell href="/app/dare" featured={featuredMode === "dare"}>
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-peach-50 text-peach-600">
-                        <Flame className="h-5 w-5" strokeWidth={2} aria-hidden />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="font-semibold text-slate-900">Date Night Dare</p>
-                        <p className="truncate text-sm text-slate-500">
-                          {dareData.completed
+              rows.push({
+                key: "dare",
+                featuredKey: "dare",
+                node: (
+                  <RowShell href="/app/dare" featured={featuredMode === "dare"}>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-peach-50 text-peach-600">
+                      <Flame className="h-5 w-5" strokeWidth={2} aria-hidden />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-slate-900">Date Night Dare</p>
+                      <p className="truncate text-sm text-slate-500">
+                        {dareData === null
+                          ? "A new dare every week."
+                          : dareData.completed
                             ? "Done this week. Nice work."
                             : dareData.accepted
                               ? `In progress: ${dareData.dare.title}`
                               : dareData.dare.title}
-                        </p>
-                      </div>
-                      {dareData.completed ? (
-                        <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Completed" />
-                      ) : (
-                        <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
-                      )}
-                    </RowShell>
-                  ),
-                });
-              }
+                      </p>
+                    </div>
+                    {dareData?.completed ? (
+                      <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Completed" />
+                    ) : (
+                      <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                    )}
+                  </RowShell>
+                ),
+              });
 
               if (spotlightStatus && spotlightStatus.type !== "none") {
                 rows.push({
@@ -197,36 +197,36 @@ export function AppPageClient({ initialData }: Props) {
                 });
               }
 
-              if (wyrData) {
-                rows.push({
-                  key: "wyr",
-                  featuredKey: null,
-                  node: (
-                    <RowShell href="/app/wyr" featured={false}>
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-dusk-50 text-dusk-600">
-                        <Shuffle className="h-5 w-5" strokeWidth={2} aria-hidden />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="font-semibold text-slate-900">Would You Rather</p>
-                        <p className="truncate text-sm text-slate-500">
-                          {wyrData.state === "revealed"
+              rows.push({
+                key: "wyr",
+                featuredKey: null,
+                node: (
+                  <RowShell href="/app/wyr" featured={false}>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-dusk-50 text-dusk-600">
+                      <Shuffle className="h-5 w-5" strokeWidth={2} aria-hidden />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-slate-900">Would You Rather</p>
+                      <p className="truncate text-sm text-slate-500">
+                        {wyrData === null
+                          ? "Pick one — see if you match."
+                          : wyrData.state === "revealed"
                             ? wyrData.reveal?.matched
                               ? "You're aligned today."
                               : "You went different directions."
                             : wyrData.myChoice != null
                               ? `Waiting for ${wyrData.partnerName ?? "them"}…`
                               : "Pick one — see if you match."}
-                        </p>
-                      </div>
-                      {wyrData.state === "revealed" ? (
-                        <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Done" />
-                      ) : (
-                        <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
-                      )}
-                    </RowShell>
-                  ),
-                });
-              }
+                      </p>
+                    </div>
+                    {wyrData?.state === "revealed" ? (
+                      <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Done" />
+                    ) : (
+                      <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                    )}
+                  </RowShell>
+                ),
+              });
 
               rows.push({
                 key: "quiz",

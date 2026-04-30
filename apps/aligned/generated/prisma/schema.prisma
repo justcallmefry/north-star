@@ -218,14 +218,68 @@ model Prompt {
   isPremium  Boolean        @default(false)
   active     Boolean        @default(true)
 
+  /// Finer-grain taxonomy bucket layered on top of `category`.
+  /// e.g. "spark", "warmth", "today", "us", "future", "know-you",
+  /// "depth", "growth", "playdate", "milestone".
+  subcategory String?
+
+  /// 1 (very easy / playful) … 5 (emotionally demanding). Drives
+  /// scheduler depth caps so users never get back-to-back heavy days.
+  depthLevel Int @default(2)
+
+  /// 1–5 — how playful/entertaining the prompt is. Saturday rotation
+  /// weights toward higher funScore.
+  funScore Int @default(3)
+
+  /// 1–5 — how heavy the prompt feels. Used together with depthLevel
+  /// to space out emotionally intense content.
+  emotionalIntensity Int @default(2)
+
+  /// When true, the UI offers a pre-reveal "guess what they wrote"
+  /// flow. Most prompts don't support this format.
+  partnerGuessEnabled Boolean @default(false)
+
+  /// When true, after both reveal we offer a date-activation prompt
+  /// ("want to actually do this together?").
+  isDateActivation Boolean @default(false)
+
+  /// Reserved for milestone moments (anniversary, day-30, day-100,
+  /// day-365, new year). Excluded from normal rotation; surfaced
+  /// only via milestone hooks.
+  isMilestone Boolean @default(false)
+
+  /// When true, only schedule on Saturday/Sunday (e.g. "free Saturday"
+  /// hypotheticals).
+  weekendOnly Boolean @default(false)
+
+  /// Optional gating: "new" (< 1y), "established" (1–5y),
+  /// "long-term" (5+y). Null = universal.
+  relationshipStage String?
+
+  /// Free-form taxonomy markers ("nostalgia", "body-language",
+  /// "future-dreaming") — used by the scheduler for soft diversity.
+  tags String[] @default([])
+
+  /// Composite quality score 1–15 from internal rubric. Higher-scored
+  /// prompts get a small frequency boost.
+  qualityScore Int?
+
+  /// Provenance — 1 = original seed, 2 = v2 batch, 3 = v3 batch.
+  sourceVersion Int @default(1)
+
+  /// Per-prompt cooldown in days (overrides the scheduler default).
+  repeatCooldownDays Int @default(21)
+
   dailySessions DailySession[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([category])
+  @@index([subcategory])
   @@index([type])
   @@index([active])
+  @@index([isMilestone])
 }
 
 model DailySession {

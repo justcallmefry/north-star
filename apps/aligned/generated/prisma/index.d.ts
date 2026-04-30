@@ -11497,8 +11497,28 @@ export namespace Prisma {
 
   export type AggregatePrompt = {
     _count: PromptCountAggregateOutputType | null
+    _avg: PromptAvgAggregateOutputType | null
+    _sum: PromptSumAggregateOutputType | null
     _min: PromptMinAggregateOutputType | null
     _max: PromptMaxAggregateOutputType | null
+  }
+
+  export type PromptAvgAggregateOutputType = {
+    depthLevel: number | null
+    funScore: number | null
+    emotionalIntensity: number | null
+    qualityScore: number | null
+    sourceVersion: number | null
+    repeatCooldownDays: number | null
+  }
+
+  export type PromptSumAggregateOutputType = {
+    depthLevel: number | null
+    funScore: number | null
+    emotionalIntensity: number | null
+    qualityScore: number | null
+    sourceVersion: number | null
+    repeatCooldownDays: number | null
   }
 
   export type PromptMinAggregateOutputType = {
@@ -11510,6 +11530,18 @@ export namespace Prisma {
     tone: $Enums.PromptTone | null
     isPremium: boolean | null
     active: boolean | null
+    subcategory: string | null
+    depthLevel: number | null
+    funScore: number | null
+    emotionalIntensity: number | null
+    partnerGuessEnabled: boolean | null
+    isDateActivation: boolean | null
+    isMilestone: boolean | null
+    weekendOnly: boolean | null
+    relationshipStage: string | null
+    qualityScore: number | null
+    sourceVersion: number | null
+    repeatCooldownDays: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -11523,6 +11555,18 @@ export namespace Prisma {
     tone: $Enums.PromptTone | null
     isPremium: boolean | null
     active: boolean | null
+    subcategory: string | null
+    depthLevel: number | null
+    funScore: number | null
+    emotionalIntensity: number | null
+    partnerGuessEnabled: boolean | null
+    isDateActivation: boolean | null
+    isMilestone: boolean | null
+    weekendOnly: boolean | null
+    relationshipStage: string | null
+    qualityScore: number | null
+    sourceVersion: number | null
+    repeatCooldownDays: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -11536,11 +11580,42 @@ export namespace Prisma {
     tone: number
     isPremium: number
     active: number
+    subcategory: number
+    depthLevel: number
+    funScore: number
+    emotionalIntensity: number
+    partnerGuessEnabled: number
+    isDateActivation: number
+    isMilestone: number
+    weekendOnly: number
+    relationshipStage: number
+    tags: number
+    qualityScore: number
+    sourceVersion: number
+    repeatCooldownDays: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
+
+  export type PromptAvgAggregateInputType = {
+    depthLevel?: true
+    funScore?: true
+    emotionalIntensity?: true
+    qualityScore?: true
+    sourceVersion?: true
+    repeatCooldownDays?: true
+  }
+
+  export type PromptSumAggregateInputType = {
+    depthLevel?: true
+    funScore?: true
+    emotionalIntensity?: true
+    qualityScore?: true
+    sourceVersion?: true
+    repeatCooldownDays?: true
+  }
 
   export type PromptMinAggregateInputType = {
     id?: true
@@ -11551,6 +11626,18 @@ export namespace Prisma {
     tone?: true
     isPremium?: true
     active?: true
+    subcategory?: true
+    depthLevel?: true
+    funScore?: true
+    emotionalIntensity?: true
+    partnerGuessEnabled?: true
+    isDateActivation?: true
+    isMilestone?: true
+    weekendOnly?: true
+    relationshipStage?: true
+    qualityScore?: true
+    sourceVersion?: true
+    repeatCooldownDays?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -11564,6 +11651,18 @@ export namespace Prisma {
     tone?: true
     isPremium?: true
     active?: true
+    subcategory?: true
+    depthLevel?: true
+    funScore?: true
+    emotionalIntensity?: true
+    partnerGuessEnabled?: true
+    isDateActivation?: true
+    isMilestone?: true
+    weekendOnly?: true
+    relationshipStage?: true
+    qualityScore?: true
+    sourceVersion?: true
+    repeatCooldownDays?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -11577,6 +11676,19 @@ export namespace Prisma {
     tone?: true
     isPremium?: true
     active?: true
+    subcategory?: true
+    depthLevel?: true
+    funScore?: true
+    emotionalIntensity?: true
+    partnerGuessEnabled?: true
+    isDateActivation?: true
+    isMilestone?: true
+    weekendOnly?: true
+    relationshipStage?: true
+    tags?: true
+    qualityScore?: true
+    sourceVersion?: true
+    repeatCooldownDays?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -11620,6 +11732,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: PromptAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PromptSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: PromptMinAggregateInputType
@@ -11650,6 +11774,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: PromptCountAggregateInputType | true
+    _avg?: PromptAvgAggregateInputType
+    _sum?: PromptSumAggregateInputType
     _min?: PromptMinAggregateInputType
     _max?: PromptMaxAggregateInputType
   }
@@ -11663,9 +11789,24 @@ export namespace Prisma {
     tone: $Enums.PromptTone | null
     isPremium: boolean
     active: boolean
+    subcategory: string | null
+    depthLevel: number
+    funScore: number
+    emotionalIntensity: number
+    partnerGuessEnabled: boolean
+    isDateActivation: boolean
+    isMilestone: boolean
+    weekendOnly: boolean
+    relationshipStage: string | null
+    tags: string[]
+    qualityScore: number | null
+    sourceVersion: number
+    repeatCooldownDays: number
     createdAt: Date
     updatedAt: Date
     _count: PromptCountAggregateOutputType | null
+    _avg: PromptAvgAggregateOutputType | null
+    _sum: PromptSumAggregateOutputType | null
     _min: PromptMinAggregateOutputType | null
     _max: PromptMaxAggregateOutputType | null
   }
@@ -11693,6 +11834,19 @@ export namespace Prisma {
     tone?: boolean
     isPremium?: boolean
     active?: boolean
+    subcategory?: boolean
+    depthLevel?: boolean
+    funScore?: boolean
+    emotionalIntensity?: boolean
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: boolean
+    tags?: boolean
+    qualityScore?: boolean
+    sourceVersion?: boolean
+    repeatCooldownDays?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dailySessions?: boolean | Prompt$dailySessionsArgs<ExtArgs>
@@ -11708,6 +11862,19 @@ export namespace Prisma {
     tone?: boolean
     isPremium?: boolean
     active?: boolean
+    subcategory?: boolean
+    depthLevel?: boolean
+    funScore?: boolean
+    emotionalIntensity?: boolean
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: boolean
+    tags?: boolean
+    qualityScore?: boolean
+    sourceVersion?: boolean
+    repeatCooldownDays?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["prompt"]>
@@ -11721,6 +11888,19 @@ export namespace Prisma {
     tone?: boolean
     isPremium?: boolean
     active?: boolean
+    subcategory?: boolean
+    depthLevel?: boolean
+    funScore?: boolean
+    emotionalIntensity?: boolean
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: boolean
+    tags?: boolean
+    qualityScore?: boolean
+    sourceVersion?: boolean
+    repeatCooldownDays?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
@@ -11745,6 +11925,71 @@ export namespace Prisma {
       tone: $Enums.PromptTone | null
       isPremium: boolean
       active: boolean
+      /**
+       * Finer-grain taxonomy bucket layered on top of `category`.
+       * e.g. "spark", "warmth", "today", "us", "future", "know-you",
+       * "depth", "growth", "playdate", "milestone".
+       */
+      subcategory: string | null
+      /**
+       * 1 (very easy / playful) … 5 (emotionally demanding). Drives
+       * scheduler depth caps so users never get back-to-back heavy days.
+       */
+      depthLevel: number
+      /**
+       * 1–5 — how playful/entertaining the prompt is. Saturday rotation
+       * weights toward higher funScore.
+       */
+      funScore: number
+      /**
+       * 1–5 — how heavy the prompt feels. Used together with depthLevel
+       * to space out emotionally intense content.
+       */
+      emotionalIntensity: number
+      /**
+       * When true, the UI offers a pre-reveal "guess what they wrote"
+       * flow. Most prompts don't support this format.
+       */
+      partnerGuessEnabled: boolean
+      /**
+       * When true, after both reveal we offer a date-activation prompt
+       * ("want to actually do this together?").
+       */
+      isDateActivation: boolean
+      /**
+       * Reserved for milestone moments (anniversary, day-30, day-100,
+       * day-365, new year). Excluded from normal rotation; surfaced
+       * only via milestone hooks.
+       */
+      isMilestone: boolean
+      /**
+       * When true, only schedule on Saturday/Sunday (e.g. "free Saturday"
+       * hypotheticals).
+       */
+      weekendOnly: boolean
+      /**
+       * Optional gating: "new" (< 1y), "established" (1–5y),
+       * "long-term" (5+y). Null = universal.
+       */
+      relationshipStage: string | null
+      /**
+       * Free-form taxonomy markers ("nostalgia", "body-language",
+       * "future-dreaming") — used by the scheduler for soft diversity.
+       */
+      tags: string[]
+      /**
+       * Composite quality score 1–15 from internal rubric. Higher-scored
+       * prompts get a small frequency boost.
+       */
+      qualityScore: number | null
+      /**
+       * Provenance — 1 = original seed, 2 = v2 batch, 3 = v3 batch.
+       */
+      sourceVersion: number
+      /**
+       * Per-prompt cooldown in days (overrides the scheduler default).
+       */
+      repeatCooldownDays: number
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["prompt"]>
@@ -12149,6 +12394,19 @@ export namespace Prisma {
     readonly tone: FieldRef<"Prompt", 'PromptTone'>
     readonly isPremium: FieldRef<"Prompt", 'Boolean'>
     readonly active: FieldRef<"Prompt", 'Boolean'>
+    readonly subcategory: FieldRef<"Prompt", 'String'>
+    readonly depthLevel: FieldRef<"Prompt", 'Int'>
+    readonly funScore: FieldRef<"Prompt", 'Int'>
+    readonly emotionalIntensity: FieldRef<"Prompt", 'Int'>
+    readonly partnerGuessEnabled: FieldRef<"Prompt", 'Boolean'>
+    readonly isDateActivation: FieldRef<"Prompt", 'Boolean'>
+    readonly isMilestone: FieldRef<"Prompt", 'Boolean'>
+    readonly weekendOnly: FieldRef<"Prompt", 'Boolean'>
+    readonly relationshipStage: FieldRef<"Prompt", 'String'>
+    readonly tags: FieldRef<"Prompt", 'String[]'>
+    readonly qualityScore: FieldRef<"Prompt", 'Int'>
+    readonly sourceVersion: FieldRef<"Prompt", 'Int'>
+    readonly repeatCooldownDays: FieldRef<"Prompt", 'Int'>
     readonly createdAt: FieldRef<"Prompt", 'DateTime'>
     readonly updatedAt: FieldRef<"Prompt", 'DateTime'>
   }
@@ -26159,6 +26417,19 @@ export namespace Prisma {
     tone: 'tone',
     isPremium: 'isPremium',
     active: 'active',
+    subcategory: 'subcategory',
+    depthLevel: 'depthLevel',
+    funScore: 'funScore',
+    emotionalIntensity: 'emotionalIntensity',
+    partnerGuessEnabled: 'partnerGuessEnabled',
+    isDateActivation: 'isDateActivation',
+    isMilestone: 'isMilestone',
+    weekendOnly: 'weekendOnly',
+    relationshipStage: 'relationshipStage',
+    tags: 'tags',
+    qualityScore: 'qualityScore',
+    sourceVersion: 'sourceVersion',
+    repeatCooldownDays: 'repeatCooldownDays',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -27204,6 +27475,19 @@ export namespace Prisma {
     tone?: EnumPromptToneNullableFilter<"Prompt"> | $Enums.PromptTone | null
     isPremium?: BoolFilter<"Prompt"> | boolean
     active?: BoolFilter<"Prompt"> | boolean
+    subcategory?: StringNullableFilter<"Prompt"> | string | null
+    depthLevel?: IntFilter<"Prompt"> | number
+    funScore?: IntFilter<"Prompt"> | number
+    emotionalIntensity?: IntFilter<"Prompt"> | number
+    partnerGuessEnabled?: BoolFilter<"Prompt"> | boolean
+    isDateActivation?: BoolFilter<"Prompt"> | boolean
+    isMilestone?: BoolFilter<"Prompt"> | boolean
+    weekendOnly?: BoolFilter<"Prompt"> | boolean
+    relationshipStage?: StringNullableFilter<"Prompt"> | string | null
+    tags?: StringNullableListFilter<"Prompt">
+    qualityScore?: IntNullableFilter<"Prompt"> | number | null
+    sourceVersion?: IntFilter<"Prompt"> | number
+    repeatCooldownDays?: IntFilter<"Prompt"> | number
     createdAt?: DateTimeFilter<"Prompt"> | Date | string
     updatedAt?: DateTimeFilter<"Prompt"> | Date | string
     dailySessions?: DailySessionListRelationFilter
@@ -27218,6 +27502,19 @@ export namespace Prisma {
     tone?: SortOrderInput | SortOrder
     isPremium?: SortOrder
     active?: SortOrder
+    subcategory?: SortOrderInput | SortOrder
+    depthLevel?: SortOrder
+    funScore?: SortOrder
+    emotionalIntensity?: SortOrder
+    partnerGuessEnabled?: SortOrder
+    isDateActivation?: SortOrder
+    isMilestone?: SortOrder
+    weekendOnly?: SortOrder
+    relationshipStage?: SortOrderInput | SortOrder
+    tags?: SortOrder
+    qualityScore?: SortOrderInput | SortOrder
+    sourceVersion?: SortOrder
+    repeatCooldownDays?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     dailySessions?: DailySessionOrderByRelationAggregateInput
@@ -27235,6 +27532,19 @@ export namespace Prisma {
     tone?: EnumPromptToneNullableFilter<"Prompt"> | $Enums.PromptTone | null
     isPremium?: BoolFilter<"Prompt"> | boolean
     active?: BoolFilter<"Prompt"> | boolean
+    subcategory?: StringNullableFilter<"Prompt"> | string | null
+    depthLevel?: IntFilter<"Prompt"> | number
+    funScore?: IntFilter<"Prompt"> | number
+    emotionalIntensity?: IntFilter<"Prompt"> | number
+    partnerGuessEnabled?: BoolFilter<"Prompt"> | boolean
+    isDateActivation?: BoolFilter<"Prompt"> | boolean
+    isMilestone?: BoolFilter<"Prompt"> | boolean
+    weekendOnly?: BoolFilter<"Prompt"> | boolean
+    relationshipStage?: StringNullableFilter<"Prompt"> | string | null
+    tags?: StringNullableListFilter<"Prompt">
+    qualityScore?: IntNullableFilter<"Prompt"> | number | null
+    sourceVersion?: IntFilter<"Prompt"> | number
+    repeatCooldownDays?: IntFilter<"Prompt"> | number
     createdAt?: DateTimeFilter<"Prompt"> | Date | string
     updatedAt?: DateTimeFilter<"Prompt"> | Date | string
     dailySessions?: DailySessionListRelationFilter
@@ -27249,11 +27559,26 @@ export namespace Prisma {
     tone?: SortOrderInput | SortOrder
     isPremium?: SortOrder
     active?: SortOrder
+    subcategory?: SortOrderInput | SortOrder
+    depthLevel?: SortOrder
+    funScore?: SortOrder
+    emotionalIntensity?: SortOrder
+    partnerGuessEnabled?: SortOrder
+    isDateActivation?: SortOrder
+    isMilestone?: SortOrder
+    weekendOnly?: SortOrder
+    relationshipStage?: SortOrderInput | SortOrder
+    tags?: SortOrder
+    qualityScore?: SortOrderInput | SortOrder
+    sourceVersion?: SortOrder
+    repeatCooldownDays?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PromptCountOrderByAggregateInput
+    _avg?: PromptAvgOrderByAggregateInput
     _max?: PromptMaxOrderByAggregateInput
     _min?: PromptMinOrderByAggregateInput
+    _sum?: PromptSumOrderByAggregateInput
   }
 
   export type PromptScalarWhereWithAggregatesInput = {
@@ -27268,6 +27593,19 @@ export namespace Prisma {
     tone?: EnumPromptToneNullableWithAggregatesFilter<"Prompt"> | $Enums.PromptTone | null
     isPremium?: BoolWithAggregatesFilter<"Prompt"> | boolean
     active?: BoolWithAggregatesFilter<"Prompt"> | boolean
+    subcategory?: StringNullableWithAggregatesFilter<"Prompt"> | string | null
+    depthLevel?: IntWithAggregatesFilter<"Prompt"> | number
+    funScore?: IntWithAggregatesFilter<"Prompt"> | number
+    emotionalIntensity?: IntWithAggregatesFilter<"Prompt"> | number
+    partnerGuessEnabled?: BoolWithAggregatesFilter<"Prompt"> | boolean
+    isDateActivation?: BoolWithAggregatesFilter<"Prompt"> | boolean
+    isMilestone?: BoolWithAggregatesFilter<"Prompt"> | boolean
+    weekendOnly?: BoolWithAggregatesFilter<"Prompt"> | boolean
+    relationshipStage?: StringNullableWithAggregatesFilter<"Prompt"> | string | null
+    tags?: StringNullableListFilter<"Prompt">
+    qualityScore?: IntNullableWithAggregatesFilter<"Prompt"> | number | null
+    sourceVersion?: IntWithAggregatesFilter<"Prompt"> | number
+    repeatCooldownDays?: IntWithAggregatesFilter<"Prompt"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Prompt"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Prompt"> | Date | string
   }
@@ -28874,6 +29212,19 @@ export namespace Prisma {
     tone?: $Enums.PromptTone | null
     isPremium?: boolean
     active?: boolean
+    subcategory?: string | null
+    depthLevel?: number
+    funScore?: number
+    emotionalIntensity?: number
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: string | null
+    tags?: PromptCreatetagsInput | string[]
+    qualityScore?: number | null
+    sourceVersion?: number
+    repeatCooldownDays?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     dailySessions?: DailySessionCreateNestedManyWithoutPromptInput
@@ -28888,6 +29239,19 @@ export namespace Prisma {
     tone?: $Enums.PromptTone | null
     isPremium?: boolean
     active?: boolean
+    subcategory?: string | null
+    depthLevel?: number
+    funScore?: number
+    emotionalIntensity?: number
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: string | null
+    tags?: PromptCreatetagsInput | string[]
+    qualityScore?: number | null
+    sourceVersion?: number
+    repeatCooldownDays?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     dailySessions?: DailySessionUncheckedCreateNestedManyWithoutPromptInput
@@ -28902,6 +29266,19 @@ export namespace Prisma {
     tone?: NullableEnumPromptToneFieldUpdateOperationsInput | $Enums.PromptTone | null
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    depthLevel?: IntFieldUpdateOperationsInput | number
+    funScore?: IntFieldUpdateOperationsInput | number
+    emotionalIntensity?: IntFieldUpdateOperationsInput | number
+    partnerGuessEnabled?: BoolFieldUpdateOperationsInput | boolean
+    isDateActivation?: BoolFieldUpdateOperationsInput | boolean
+    isMilestone?: BoolFieldUpdateOperationsInput | boolean
+    weekendOnly?: BoolFieldUpdateOperationsInput | boolean
+    relationshipStage?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: PromptUpdatetagsInput | string[]
+    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    sourceVersion?: IntFieldUpdateOperationsInput | number
+    repeatCooldownDays?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dailySessions?: DailySessionUpdateManyWithoutPromptNestedInput
@@ -28916,6 +29293,19 @@ export namespace Prisma {
     tone?: NullableEnumPromptToneFieldUpdateOperationsInput | $Enums.PromptTone | null
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    depthLevel?: IntFieldUpdateOperationsInput | number
+    funScore?: IntFieldUpdateOperationsInput | number
+    emotionalIntensity?: IntFieldUpdateOperationsInput | number
+    partnerGuessEnabled?: BoolFieldUpdateOperationsInput | boolean
+    isDateActivation?: BoolFieldUpdateOperationsInput | boolean
+    isMilestone?: BoolFieldUpdateOperationsInput | boolean
+    weekendOnly?: BoolFieldUpdateOperationsInput | boolean
+    relationshipStage?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: PromptUpdatetagsInput | string[]
+    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    sourceVersion?: IntFieldUpdateOperationsInput | number
+    repeatCooldownDays?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dailySessions?: DailySessionUncheckedUpdateManyWithoutPromptNestedInput
@@ -28930,6 +29320,19 @@ export namespace Prisma {
     tone?: $Enums.PromptTone | null
     isPremium?: boolean
     active?: boolean
+    subcategory?: string | null
+    depthLevel?: number
+    funScore?: number
+    emotionalIntensity?: number
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: string | null
+    tags?: PromptCreatetagsInput | string[]
+    qualityScore?: number | null
+    sourceVersion?: number
+    repeatCooldownDays?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28943,6 +29346,19 @@ export namespace Prisma {
     tone?: NullableEnumPromptToneFieldUpdateOperationsInput | $Enums.PromptTone | null
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    depthLevel?: IntFieldUpdateOperationsInput | number
+    funScore?: IntFieldUpdateOperationsInput | number
+    emotionalIntensity?: IntFieldUpdateOperationsInput | number
+    partnerGuessEnabled?: BoolFieldUpdateOperationsInput | boolean
+    isDateActivation?: BoolFieldUpdateOperationsInput | boolean
+    isMilestone?: BoolFieldUpdateOperationsInput | boolean
+    weekendOnly?: BoolFieldUpdateOperationsInput | boolean
+    relationshipStage?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: PromptUpdatetagsInput | string[]
+    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    sourceVersion?: IntFieldUpdateOperationsInput | number
+    repeatCooldownDays?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28956,6 +29372,19 @@ export namespace Prisma {
     tone?: NullableEnumPromptToneFieldUpdateOperationsInput | $Enums.PromptTone | null
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    depthLevel?: IntFieldUpdateOperationsInput | number
+    funScore?: IntFieldUpdateOperationsInput | number
+    emotionalIntensity?: IntFieldUpdateOperationsInput | number
+    partnerGuessEnabled?: BoolFieldUpdateOperationsInput | boolean
+    isDateActivation?: BoolFieldUpdateOperationsInput | boolean
+    isMilestone?: BoolFieldUpdateOperationsInput | boolean
+    weekendOnly?: BoolFieldUpdateOperationsInput | boolean
+    relationshipStage?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: PromptUpdatetagsInput | string[]
+    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    sourceVersion?: IntFieldUpdateOperationsInput | number
+    repeatCooldownDays?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30554,6 +30983,25 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type PromptCountOrderByAggregateInput = {
     id?: SortOrder
     text?: SortOrder
@@ -30563,8 +31011,30 @@ export namespace Prisma {
     tone?: SortOrder
     isPremium?: SortOrder
     active?: SortOrder
+    subcategory?: SortOrder
+    depthLevel?: SortOrder
+    funScore?: SortOrder
+    emotionalIntensity?: SortOrder
+    partnerGuessEnabled?: SortOrder
+    isDateActivation?: SortOrder
+    isMilestone?: SortOrder
+    weekendOnly?: SortOrder
+    relationshipStage?: SortOrder
+    tags?: SortOrder
+    qualityScore?: SortOrder
+    sourceVersion?: SortOrder
+    repeatCooldownDays?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type PromptAvgOrderByAggregateInput = {
+    depthLevel?: SortOrder
+    funScore?: SortOrder
+    emotionalIntensity?: SortOrder
+    qualityScore?: SortOrder
+    sourceVersion?: SortOrder
+    repeatCooldownDays?: SortOrder
   }
 
   export type PromptMaxOrderByAggregateInput = {
@@ -30576,6 +31046,18 @@ export namespace Prisma {
     tone?: SortOrder
     isPremium?: SortOrder
     active?: SortOrder
+    subcategory?: SortOrder
+    depthLevel?: SortOrder
+    funScore?: SortOrder
+    emotionalIntensity?: SortOrder
+    partnerGuessEnabled?: SortOrder
+    isDateActivation?: SortOrder
+    isMilestone?: SortOrder
+    weekendOnly?: SortOrder
+    relationshipStage?: SortOrder
+    qualityScore?: SortOrder
+    sourceVersion?: SortOrder
+    repeatCooldownDays?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -30589,8 +31071,29 @@ export namespace Prisma {
     tone?: SortOrder
     isPremium?: SortOrder
     active?: SortOrder
+    subcategory?: SortOrder
+    depthLevel?: SortOrder
+    funScore?: SortOrder
+    emotionalIntensity?: SortOrder
+    partnerGuessEnabled?: SortOrder
+    isDateActivation?: SortOrder
+    isMilestone?: SortOrder
+    weekendOnly?: SortOrder
+    relationshipStage?: SortOrder
+    qualityScore?: SortOrder
+    sourceVersion?: SortOrder
+    repeatCooldownDays?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type PromptSumOrderByAggregateInput = {
+    depthLevel?: SortOrder
+    funScore?: SortOrder
+    emotionalIntensity?: SortOrder
+    qualityScore?: SortOrder
+    sourceVersion?: SortOrder
+    repeatCooldownDays?: SortOrder
   }
 
   export type EnumPromptTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -30629,6 +31132,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type EnumSessionStateFilter<$PrismaModel = never> = {
@@ -30872,17 +31391,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type StreakCountOrderByAggregateInput = {
     relationshipId?: SortOrder
     currentCount?: SortOrder
@@ -30912,22 +31420,6 @@ export namespace Prisma {
   export type StreakSumOrderByAggregateInput = {
     currentCount?: SortOrder
     longestCount?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type EnumSubscriptionStatusFilter<$PrismaModel = never> = {
@@ -32306,6 +32798,10 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutInvitesSentInput, UserUpdateWithoutInvitesSentInput>, UserUncheckedUpdateWithoutInvitesSentInput>
   }
 
+  export type PromptCreatetagsInput = {
+    set: string[]
+  }
+
   export type DailySessionCreateNestedManyWithoutPromptInput = {
     create?: XOR<DailySessionCreateWithoutPromptInput, DailySessionUncheckedCreateWithoutPromptInput> | DailySessionCreateWithoutPromptInput[] | DailySessionUncheckedCreateWithoutPromptInput[]
     connectOrCreate?: DailySessionCreateOrConnectWithoutPromptInput | DailySessionCreateOrConnectWithoutPromptInput[]
@@ -32334,6 +32830,19 @@ export namespace Prisma {
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type PromptUpdatetagsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type DailySessionUpdateManyWithoutPromptNestedInput = {
@@ -32696,14 +33205,6 @@ export namespace Prisma {
     create?: XOR<RelationshipCreateWithoutStreakInput, RelationshipUncheckedCreateWithoutStreakInput>
     connectOrCreate?: RelationshipCreateOrConnectWithoutStreakInput
     connect?: RelationshipWhereUniqueInput
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type RelationshipUpdateOneRequiredWithoutStreakNestedInput = {
@@ -33211,23 +33712,6 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type NestedEnumSessionStateFilter<$PrismaModel = never> = {
-    equals?: $Enums.SessionState | EnumSessionStateFieldRefInput<$PrismaModel>
-    in?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
-    not?: NestedEnumSessionStateFilter<$PrismaModel> | $Enums.SessionState
-  }
-
-  export type NestedEnumSessionStateWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SessionState | EnumSessionStateFieldRefInput<$PrismaModel>
-    in?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
-    not?: NestedEnumSessionStateWithAggregatesFilter<$PrismaModel> | $Enums.SessionState
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSessionStateFilter<$PrismaModel>
-    _max?: NestedEnumSessionStateFilter<$PrismaModel>
-  }
-
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -33253,6 +33737,23 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedEnumSessionStateFilter<$PrismaModel = never> = {
+    equals?: $Enums.SessionState | EnumSessionStateFieldRefInput<$PrismaModel>
+    in?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumSessionStateFilter<$PrismaModel> | $Enums.SessionState
+  }
+
+  export type NestedEnumSessionStateWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SessionState | EnumSessionStateFieldRefInput<$PrismaModel>
+    in?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumSessionStateWithAggregatesFilter<$PrismaModel> | $Enums.SessionState
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSessionStateFilter<$PrismaModel>
+    _max?: NestedEnumSessionStateFilter<$PrismaModel>
   }
 
   export type NestedEnumSubscriptionStatusFilter<$PrismaModel = never> = {
@@ -35383,6 +35884,19 @@ export namespace Prisma {
     tone?: $Enums.PromptTone | null
     isPremium?: boolean
     active?: boolean
+    subcategory?: string | null
+    depthLevel?: number
+    funScore?: number
+    emotionalIntensity?: number
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: string | null
+    tags?: PromptCreatetagsInput | string[]
+    qualityScore?: number | null
+    sourceVersion?: number
+    repeatCooldownDays?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -35396,6 +35910,19 @@ export namespace Prisma {
     tone?: $Enums.PromptTone | null
     isPremium?: boolean
     active?: boolean
+    subcategory?: string | null
+    depthLevel?: number
+    funScore?: number
+    emotionalIntensity?: number
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: string | null
+    tags?: PromptCreatetagsInput | string[]
+    qualityScore?: number | null
+    sourceVersion?: number
+    repeatCooldownDays?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -35526,6 +36053,19 @@ export namespace Prisma {
     tone?: NullableEnumPromptToneFieldUpdateOperationsInput | $Enums.PromptTone | null
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    depthLevel?: IntFieldUpdateOperationsInput | number
+    funScore?: IntFieldUpdateOperationsInput | number
+    emotionalIntensity?: IntFieldUpdateOperationsInput | number
+    partnerGuessEnabled?: BoolFieldUpdateOperationsInput | boolean
+    isDateActivation?: BoolFieldUpdateOperationsInput | boolean
+    isMilestone?: BoolFieldUpdateOperationsInput | boolean
+    weekendOnly?: BoolFieldUpdateOperationsInput | boolean
+    relationshipStage?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: PromptUpdatetagsInput | string[]
+    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    sourceVersion?: IntFieldUpdateOperationsInput | number
+    repeatCooldownDays?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -35539,6 +36079,19 @@ export namespace Prisma {
     tone?: NullableEnumPromptToneFieldUpdateOperationsInput | $Enums.PromptTone | null
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    depthLevel?: IntFieldUpdateOperationsInput | number
+    funScore?: IntFieldUpdateOperationsInput | number
+    emotionalIntensity?: IntFieldUpdateOperationsInput | number
+    partnerGuessEnabled?: BoolFieldUpdateOperationsInput | boolean
+    isDateActivation?: BoolFieldUpdateOperationsInput | boolean
+    isMilestone?: BoolFieldUpdateOperationsInput | boolean
+    weekendOnly?: BoolFieldUpdateOperationsInput | boolean
+    relationshipStage?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: PromptUpdatetagsInput | string[]
+    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    sourceVersion?: IntFieldUpdateOperationsInput | number
+    repeatCooldownDays?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

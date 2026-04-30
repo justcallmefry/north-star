@@ -38,7 +38,7 @@ async function pickPromptForSession(relationshipId: string): Promise<string | nu
       select: {
         promptId: true,
         sessionDate: true,
-        prompt: { select: { category: true, tone: true } },
+        prompt: { select: { category: true, tone: true, depthLevel: true } },
       },
     }),
     prisma.dailySession.count({ where: { relationshipId } }),
@@ -49,13 +49,23 @@ async function pickPromptForSession(relationshipId: string): Promise<string | nu
     where: {
       active: true,
       type: "daily",
+      isMilestone: false,
       ...(isIntroPhase && {
         category: { in: ["gratitude", "fun", "reflection", "growth"] },
         tone: { in: ["light", "playful"] },
+        depthLevel: { lte: 2 },
       }),
       // later: isPremium: false if not subscribed
     },
-    select: { id: true, category: true, tone: true },
+    select: {
+      id: true,
+      category: true,
+      tone: true,
+      depthLevel: true,
+      funScore: true,
+      isMilestone: true,
+      weekendOnly: true,
+    },
   });
 
   const recent = recentRaw.map((r) => ({
@@ -63,6 +73,7 @@ async function pickPromptForSession(relationshipId: string): Promise<string | nu
     promptId: r.promptId,
     category: r.prompt?.category ?? null,
     tone: r.prompt?.tone ?? null,
+    depthLevel: r.prompt?.depthLevel ?? null,
   }));
 
   return pickPrompt({
@@ -343,6 +354,10 @@ export type GetSessionResult = {
   dedication?: { totalCheckIns: number } | null;
   /** True when this is the first revealed daily session for this relationship. */
   isFirstCompletedSession?: boolean;
+  /** When true, the UI should offer the pre-reveal "guess what they wrote" flow. */
+  partnerGuessEnabled?: boolean;
+  /** When true, after reveal the UI should offer a date-activation nudge. */
+  isDateActivation?: boolean;
 };
 
 export async function getSession(sessionId: string): Promise<GetSessionResult | null> {
@@ -408,6 +423,8 @@ export async function getSession(sessionId: string): Promise<GetSessionResult | 
     streak: streak ?? undefined,
     dedication: dedication.totalCheckIns > 0 ? dedication : undefined,
     isFirstCompletedSession,
+    partnerGuessEnabled: dailySession.prompt?.partnerGuessEnabled ?? false,
+    isDateActivation: dailySession.prompt?.isDateActivation ?? false,
   };
 
   if (dailySession.state === "revealed") {

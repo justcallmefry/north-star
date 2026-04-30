@@ -33,8 +33,16 @@ export async function GET(request: Request) {
   // Eligible prompts and recent history needed by the scheduler.
   const [eligibleAll, relationships] = await Promise.all([
     prisma.prompt.findMany({
-      where: { active: true, type: "daily" },
-      select: { id: true, category: true, tone: true },
+      where: { active: true, type: "daily", isMilestone: false },
+      select: {
+        id: true,
+        category: true,
+        tone: true,
+        depthLevel: true,
+        funScore: true,
+        isMilestone: true,
+        weekendOnly: true,
+      },
     }),
     prisma.relationship.findMany({
       where: {
@@ -68,7 +76,7 @@ export async function GET(request: Request) {
       select: {
         promptId: true,
         sessionDate: true,
-        prompt: { select: { category: true, tone: true } },
+        prompt: { select: { category: true, tone: true, depthLevel: true } },
       },
     });
 
@@ -90,6 +98,7 @@ export async function GET(request: Request) {
       promptId: r.promptId,
       category: r.prompt?.category ?? null,
       tone: r.prompt?.tone ?? null,
+      depthLevel: r.prompt?.depthLevel ?? null,
     }));
 
     const promptId = pickPrompt({

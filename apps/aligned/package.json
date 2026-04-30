@@ -19,6 +19,7 @@
     "db:seed": "prisma db seed",
     "db:update-prompts": "tsx prisma/update-daily-prompts.ts",
     "db:add-prompts-v2": "tsx prisma/add-daily-prompts-v2.ts",
+    "db:add-prompts-v3": "tsx prisma/add-daily-prompts-v3.ts",
     "content:generate-quiz-draft": "tsx scripts/generate-quiz-draft.ts"
   },
   "dependencies": {

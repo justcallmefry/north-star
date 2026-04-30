@@ -361,10 +361,12 @@ export function SessionContent({ data, currentUserId }: Props) {
       {data.hasUserResponded && data.state === "open" && data.canReveal && !isRevealed && (
         <div className="space-y-3">
           <p className="text-base text-slate-700 sm:text-lg">Both of you have answered.</p>
-          <PreRevealGuess
-            sessionId={data.sessionId}
-            partnerName={data.partnerName ?? null}
-          />
+          {data.partnerGuessEnabled && (
+            <PreRevealGuess
+              sessionId={data.sessionId}
+              partnerName={data.partnerName ?? null}
+            />
+          )}
           <div className="flex flex-col gap-2">
             <button
               type="button"

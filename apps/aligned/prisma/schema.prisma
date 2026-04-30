@@ -83,8 +83,14 @@ model User {
   subscriptions      Subscription[]
   pushSubscriptions  PushSubscription[]
 
+  // Soft delete: when set, the account is anonymized (email/name/image cleared);
+  // partner-visible historical content stays attached to this row by id.
+  deletedAt DateTime?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([deletedAt])
 }
 
 model PushSubscription {

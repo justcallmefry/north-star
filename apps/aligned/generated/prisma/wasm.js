@@ -129,8 +129,19 @@ exports.Prisma.UserScalarFieldEnum = {
   name: 'name',
   image: 'image',
   password: 'password',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PushSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  endpoint: 'endpoint',
+  p256dhKey: 'p256dhKey',
+  authKey: 'authKey',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.AccountScalarFieldEnum = {
@@ -400,6 +411,7 @@ exports.AgreementState = exports.$Enums.AgreementState = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  PushSubscription: 'PushSubscription',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',

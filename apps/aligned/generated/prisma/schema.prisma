@@ -81,9 +81,29 @@ model User {
   agreementParticipations AgreementParticipation[]
   meetingEntries          MeetingEntry[]
   subscriptions           Subscription[]
+  pushSubscriptions       PushSubscription[]
+
+  // Soft delete: when set, the account is anonymized (email/name/image cleared);
+  // partner-visible historical content stays attached to this row by id.
+  deletedAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([deletedAt])
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @unique
+  p256dhKey String   @map("p256dh_key")
+  authKey   String   @map("auth_key")
+  userAgent String?  @map("user_agent")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model Account {

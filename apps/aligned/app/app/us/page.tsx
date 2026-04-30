@@ -8,6 +8,7 @@ import { RelationshipActions } from "../relationship-actions";
 import { ProfileForm } from "./profile-form";
 import { PasswordForm } from "./password-form";
 import { SignOutButton } from "./sign-out-button";
+import { AccountDataSection } from "./account-data-section";
 
 export const dynamic = "force-dynamic";
 
@@ -119,6 +120,8 @@ export default async function UsPage() {
           <PasswordForm hasPassword={hasPassword} />
           <SignOutButton />
         </div>
+
+        <AccountDataSection />
       </section>
 
       {primary ? (

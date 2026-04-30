@@ -11,7 +11,7 @@ import { DedicationBadge } from "../../dedication-badge";
 import { NotifyPartnerButton } from "../../notify-partner-button";
 import { StreakBadge } from "../../streak-badge";
 import { StreakShareCard } from "./streak-share-card";
-import { RevealStamp } from "./reveal-stamp";
+import { RevealStamp } from "@/components/reveal-stamp";
 import { haptic } from "@/lib/haptics";
 
 const AFTER_REVEAL_PAUSE_MS = 1100;
@@ -373,7 +373,11 @@ export function SessionContent({ data, currentUserId }: Props) {
       {isRevealed && afterRevealReady && (
         <div className="ns-stack-tight">
           <RevealStamp
-            dayNumber={data.streak?.currentCount}
+            eyebrow={
+              data.streak?.currentCount && data.streak.currentCount > 0
+                ? `Day ${data.streak.currentCount}`
+                : null
+            }
             totalMembers={totalMembers}
           />
 

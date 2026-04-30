@@ -11,8 +11,10 @@ import { DedicationBadge } from "../../dedication-badge";
 import { NotifyPartnerButton } from "../../notify-partner-button";
 import { StreakBadge } from "../../streak-badge";
 import { StreakShareCard } from "./streak-share-card";
+import { RevealStamp } from "./reveal-stamp";
+import { haptic } from "@/lib/haptics";
 
-const AFTER_REVEAL_PAUSE_MS = 1000;
+const AFTER_REVEAL_PAUSE_MS = 1100;
 
 type Props = { data: GetSessionResult; currentUserId: string };
 
@@ -59,7 +61,7 @@ export function SessionContent({ data, currentUserId }: Props) {
       const result = await revealSession(data.sessionId);
       setRevealData(result);
       setRevealed(true);
-      toast.success("Revealed.");
+      void haptic("reveal");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to reveal");
@@ -356,18 +358,42 @@ export function SessionContent({ data, currentUserId }: Props) {
       )}
 
       {isRevealed && !afterRevealReady && (
-        <div className="flex min-h-[12rem] items-center justify-center" aria-hidden="true">
-          <p className="text-slate-400 text-lg">—</p>
+        <div
+          className="flex min-h-[12rem] flex-col items-center justify-center gap-3"
+          aria-live="polite"
+          aria-label="Revealing answers"
+        >
+          <div className="animate-reveal-shimmer flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-violet-100">
+            <span className="text-2xl" aria-hidden>✦</span>
+          </div>
+          <p className="text-sm uppercase tracking-[0.18em] text-brand-600">Revealing</p>
         </div>
       )}
 
       {isRevealed && afterRevealReady && (
-        <div className="animate-calm-fade-in ns-card ns-stack-tight">
+        <div className="ns-stack-tight">
+          <RevealStamp
+            dayNumber={data.streak?.currentCount}
+            totalMembers={totalMembers}
+          />
+
+          <div className="animate-calm-fade-in ns-card ns-stack-tight">
           <h3 className="text-lg font-semibold text-slate-900 sm:text-xl">Answers</h3>
 
           <div className="space-y-2">
-            {responsesToShow.map((resp) => (
-              <div key={resp.key} className="space-y-1.5">
+            {responsesToShow.map((resp, idx) => (
+              <div
+                key={resp.key}
+                className={`animate-reveal-cascade space-y-1.5 ${
+                  idx === 0
+                    ? "reveal-cascade-delay-1"
+                    : idx === 1
+                      ? "reveal-cascade-delay-2"
+                      : idx === 2
+                        ? "reveal-cascade-delay-3"
+                        : "reveal-cascade-delay-4"
+                }`}
+              >
                 <div className="flex items-center gap-2">
                   <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-base">
                     {typeof resp.icon === "string" && resp.icon.trim().startsWith("http") ? (
@@ -459,6 +485,7 @@ export function SessionContent({ data, currentUserId }: Props) {
               })}
             </div>
           )}
+          </div>
         </div>
       )}
 

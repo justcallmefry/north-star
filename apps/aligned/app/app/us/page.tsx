@@ -166,9 +166,17 @@ export default async function UsPage() {
 
           {insights && (
             <div className="ns-card">
-              <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
-                How you&apos;ve been showing up
-              </h2>
+              <div className="flex items-start justify-between gap-3">
+                <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
+                  How you&apos;ve been showing up
+                </h2>
+                <Link
+                  href="/app/insights"
+                  className="shrink-0 text-sm font-medium text-brand-600 hover:text-brand-700"
+                >
+                  Couple insights →
+                </Link>
+              </div>
               <div className="mt-3 space-y-1.5 text-sm text-slate-700 sm:text-base">
                 <p>
                   You&apos;ve answered{" "}

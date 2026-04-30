@@ -4,11 +4,13 @@
 import { prisma } from "@/lib/prisma";
 import { requireActiveMember } from "@/lib/relationship-members";
 import { getServerAuthSession } from "@/lib/auth";
-
-const MIN_AGE_DAYS = 30;
-const SATURDAY = 6;
-/** Of the eligible Saturdays, this fraction shows the throwback variant. */
-const THROWBACK_SHARE = 0.5;
+import {
+  hash,
+  isSaturday,
+  isThrowbackDay,
+  monthsBetween,
+  MIN_AGE_DAYS,
+} from "@/lib/throwback-internal";
 
 type StoredSnapshot = {
   kind?: string;
@@ -32,34 +34,6 @@ export type ThrowbackToday = {
 };
 
 /**
- * Hash a string deterministically (cyrb53-lite). Used to pick the throwback
- * variant on a stable share of Saturdays per couple.
- */
-function hash(str: string): number {
-  let h = 0;
-  for (let i = 0; i < str.length; i++) h = ((h * 31) + str.charCodeAt(i)) >>> 0;
-  return h;
-}
-
-function isThrowbackDay(relationshipId: string, dateStr: string): boolean {
-  const buckets = 100;
-  const cutoff = Math.floor(buckets * THROWBACK_SHARE);
-  return hash(relationshipId + dateStr) % buckets < cutoff;
-}
-
-function isSaturday(dateStr: string): boolean {
-  const d = new Date(dateStr + "T00:00:00.000Z");
-  // Saturday in UTC. Acceptable approximation for couples in any timezone:
-  // the rhythm aligns to UTC date which the rest of the app already uses.
-  return d.getUTCDay() === SATURDAY;
-}
-
-function monthsBetween(from: Date, to: Date): number {
-  const ms = to.getTime() - from.getTime();
-  return Math.max(0, Math.floor(ms / (1000 * 60 * 60 * 24 * 30)));
-}
-
-/**
  * Returns a throwback Today result for the given relationship/date, or null
  * when not eligible. Caller is responsible for membership checks before
  * invoking — but we re-check defensively.
@@ -80,8 +54,6 @@ export async function getThrowbackForToday(
   const cutoff = new Date(today);
   cutoff.setUTCDate(cutoff.getUTCDate() - MIN_AGE_DAYS);
 
-  // Pick deterministically among eligible memories: oldest first by savedAt
-  // and break ties by (relationshipId + dateStr) hash modulo eligible count.
   const eligible = await prisma.memory.findMany({
     where: {
       relationshipId,
@@ -96,7 +68,6 @@ export async function getThrowbackForToday(
   const idx = hash(relationshipId + localDateStr) % eligible.length;
   const memory = eligible[idx]!;
 
-  // Resolve original DailySession to get promptId (snapshot only stores text).
   const sourceSession = memory.sourceId
     ? await prisma.dailySession.findUnique({
         where: { id: memory.sourceId },
@@ -123,6 +94,3 @@ export async function getThrowbackForToday(
     responses,
   };
 }
-
-// Exposed for unit smoke only.
-export const __testing = { hash, isThrowbackDay, isSaturday, monthsBetween };

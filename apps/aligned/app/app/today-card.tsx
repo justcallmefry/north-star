@@ -53,7 +53,7 @@ export function TodayCard({ today }: Props) {
   return (
     <section className={theme.sectionClass}>
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className={theme.eyebrowChipClass}>
+        <div className={`${theme.eyebrowChipClass} min-w-0`}>
           <span className={theme.eyebrowDotClass} />
           <h2 className={theme.eyebrowTextClass}>{theme.label}</h2>
         </div>

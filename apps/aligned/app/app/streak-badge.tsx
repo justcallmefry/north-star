@@ -36,12 +36,12 @@ export function StreakBadge({ currentCount, longestCount, variant = "compact" }:
   if (variant === "compact") {
     return (
       <div
-        className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-sm font-medium text-amber-800 ring-1 ring-amber-200/80"
+        className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-sm font-medium text-amber-800 ring-1 ring-amber-200/80"
         title={longestCount != null ? `${milestoneLabel}. Longest: ${longestCount} days` : milestoneLabel}
         aria-label={`${currentCount} day streak`}
       >
-        <Icon className="h-4 w-4 text-amber-600" strokeWidth={2} aria-hidden />
-        <span>
+        <Icon className="h-4 w-4 shrink-0 text-amber-600" strokeWidth={2} aria-hidden />
+        <span className="whitespace-nowrap">
           {currentCount} day{currentCount === 1 ? "" : "s"} in a row
         </span>
       </div>

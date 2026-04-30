@@ -17,6 +17,7 @@ import { WaitingForPartner } from "./waiting-for-partner";
 import { PreRevealGuess, readGuess } from "./pre-reveal-guess";
 import { StreakCelebration, isStreakMilestone } from "@/components/streak-celebration";
 import { SaveMemoryButton } from "./save-memory-button";
+import { StickerRow } from "./sticker-row";
 
 const AFTER_REVEAL_PAUSE_MS = 1100;
 
@@ -478,13 +479,15 @@ export function SessionContent({ data, currentUserId }: Props) {
           <SaveMemoryButton sessionId={data.sessionId} initialSaved={false} />
 
           <div className="space-y-3 border-t border-brand-100 pt-5">
+            <StickerRow sessionId={data.sessionId} />
+
             {data.isFirstCompletedSession && (
               <p className="text-sm text-slate-600">
                 Optional: What surprised you about your partner&apos;s answer, or what do you want to remember from today?
               </p>
             )}
             <label htmlFor="session-response" className="block text-sm font-medium text-slate-700">
-              Send a response back
+              Or write a response
             </label>
             <textarea
               id="session-response"

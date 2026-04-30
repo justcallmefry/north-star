@@ -4,6 +4,9 @@ import { Bookmark } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { listMemoriesForRelationship, type MemoryListItem } from "@/lib/memories";
+import { getPartnerUserId } from "@/lib/push";
+import { prisma } from "@/lib/prisma";
+import { AppreciationComposer } from "./appreciation-composer";
 
 export const dynamic = "force-dynamic";
 
@@ -80,6 +83,13 @@ export default async function MemoriesPage() {
   if (!primary) redirect("/app/pair");
 
   const memories = await listMemoriesForRelationship(primary.id);
+  const partnerId = await getPartnerUserId(primary.id, session.user.id);
+  const partner = partnerId
+    ? await prisma.user.findUnique({
+        where: { id: partnerId },
+        select: { name: true },
+      })
+    : null;
 
   return (
     <main className="ns-stack">
@@ -99,6 +109,11 @@ export default async function MemoriesPage() {
           Things you both said, the days that mattered. Tap save on any reveal to add it here.
         </p>
       </header>
+
+      <AppreciationComposer
+        relationshipId={primary.id}
+        partnerName={partner?.name ?? null}
+      />
 
       {memories.length === 0 ? (
         <section className="ns-card text-center">

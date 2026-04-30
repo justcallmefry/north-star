@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { getToday } from "@/lib/sessions";
-import type { GetTodayResult } from "@/lib/sessions";
+import { useEffect, useRef, useState } from "react";
+import { getTodayWithVariant } from "@/lib/sessions";
+import type { TodayResponse } from "@/lib/sessions";
 import { TodayCard } from "./today-card";
+import { TodayThrowbackCard } from "./today-throwback-card";
+import { TodaySkeleton } from "./today-skeleton";
 
 type Props = { relationshipId: string };
 
@@ -24,28 +26,24 @@ function msUntilNextMidnight(): number {
 }
 
 export function TodaySection({ relationshipId }: Props) {
-  const [today, setToday] = useState<GetTodayResult | null>(null);
+  const [data, setData] = useState<TodayResponse | null>(null);
   const [loading, setLoading] = useState(true);
   // Set only on client after mount so we never use the server's date (avoids timezone bug
   // where history showed sessions one day behind for users ahead of server TZ).
   const [localDateStr, setLocalDateStr] = useState<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Initialize local date on client so it's always the user's calendar day, not the server's.
   useEffect(() => {
     setLocalDateStr(getLocalDateString());
   }, []);
 
-  // Fetch today's session when relationship or local date changes. Skip until we have client date.
   useEffect(() => {
     if (localDateStr == null) return;
     let cancelled = false;
     setLoading(true);
-    getToday(relationshipId, localDateStr)
+    getTodayWithVariant(relationshipId, localDateStr)
       .then((result) => {
-        if (!cancelled) {
-          setToday(result);
-        }
+        if (!cancelled) setData(result);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -71,16 +69,17 @@ export function TodaySection({ relationshipId }: Props) {
     };
   }, [localDateStr]);
 
-  if (localDateStr == null || loading) {
-    return (
-      <section className="ns-card animate-pulse">
-        <div className="h-4 w-32 rounded bg-slate-200" />
-        <div className="mt-4 h-8 w-full rounded bg-slate-200" />
-        <div className="mt-3 h-4 w-3/4 rounded bg-slate-100" />
-        <div className="mt-6 h-12 w-full rounded-xl bg-slate-100" />
-      </section>
-    );
+  if (localDateStr == null || loading || data == null) {
+    return <TodaySkeleton />;
   }
 
-  return <TodayCard today={today} />;
+  if (data.variant === "throwback") {
+    return (
+      <TodayThrowbackCard
+        throwback={data.throwback}
+        localDateStr={localDateStr}
+      />
+    );
+  }
+  return <TodayCard today={data.today} />;
 }

@@ -5,6 +5,7 @@ import { DedicationBadge } from "./dedication-badge";
 import { NotifyPartnerButton } from "./notify-partner-button";
 import { StreakBadge } from "./streak-badge";
 import { ConnectionDots } from "./connection-dots";
+import { getDayTheme, estimateAnswerTime, titleCase } from "@/lib/day-theme";
 
 type Props = { today: GetTodayResult | null };
 
@@ -25,30 +26,36 @@ export function TodayCard({ today }: Props) {
     );
   }
 
-  const { sessionId, relationshipId, promptText, momentText, state, hasUserResponded, hasPartnerResponded, canReveal, streak, dedication, partnerName } = today;
+  const {
+    sessionId,
+    relationshipId,
+    promptText,
+    momentText,
+    state,
+    hasUserResponded,
+    hasPartnerResponded,
+    canReveal,
+    streak,
+    dedication,
+    partnerName,
+    category,
+    tone,
+    depthLevel,
+  } = today;
   const done = hasUserResponded || state === "revealed" || (state === "open" && canReveal);
 
-  // Saturday rhythm: a softer visual cue. Doesn't change content yet —
-  // a dedicated weekend prompt pool is a follow-up content pass.
-  const isSaturday = new Date().getDay() === 6;
-  const sectionClass = isSaturday
-    ? "relative animate-calm-fade-in rounded-2xl border border-peach-300/40 bg-gradient-to-br from-peach-300/20 via-white to-white p-5 shadow-sm sm:p-6"
-    : "relative animate-calm-fade-in rounded-2xl border border-brand-100/80 bg-gradient-to-br from-brand-50/90 to-white p-5 shadow-sm ring-1 ring-brand-50/80 sm:p-6";
-  const eyebrowChipClass = isSaturday
-    ? "inline-flex items-center gap-2 rounded-lg bg-peach-300/30 px-3 py-1"
-    : "inline-flex items-center gap-2 rounded-lg bg-brand-100/80 px-3 py-1";
-  const eyebrowDotClass = isSaturday ? "h-1.5 w-1.5 rounded-full bg-peach-500" : "h-1.5 w-1.5 rounded-full bg-brand-500";
-  const eyebrowTextClass = isSaturday
-    ? "text-xs font-semibold uppercase tracking-[0.18em] text-peach-600 sm:text-sm"
-    : "text-xs font-semibold uppercase tracking-[0.18em] text-brand-700 sm:text-sm";
-  const eyebrowLabel = isSaturday ? "Saturday — a softer one" : "Today";
+  const theme = getDayTheme(new Date());
+  const time = estimateAnswerTime(depthLevel ?? null);
+  const cat = titleCase(category ?? null);
+  const ton = titleCase(tone ?? null);
+  const metaParts = [cat, ton, time].filter(Boolean) as string[];
 
   return (
-    <section className={sectionClass}>
+    <section className={theme.sectionClass}>
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className={eyebrowChipClass}>
-          <span className={eyebrowDotClass} />
-          <h2 className={eyebrowTextClass}>{eyebrowLabel}</h2>
+        <div className={theme.eyebrowChipClass}>
+          <span className={theme.eyebrowDotClass} />
+          <h2 className={theme.eyebrowTextClass}>{theme.label}</h2>
         </div>
         {streak && streak.currentCount > 0 && (
           <StreakBadge
@@ -58,6 +65,16 @@ export function TodayCard({ today }: Props) {
           />
         )}
       </div>
+      {metaParts.length > 0 && (
+        <p className="mt-2 text-xs text-slate-500 sm:text-sm">
+          {metaParts.map((p, i) => (
+            <span key={p}>
+              {i > 0 && <span className="mx-1.5 text-slate-300">·</span>}
+              {p}
+            </span>
+          ))}
+        </p>
+      )}
       {streak && !streak.currentCount && streak.justReset && (
         <p className="mt-2 text-xs font-medium text-amber-800">
           Every day is a fresh start.
@@ -100,13 +117,13 @@ export function TodayCard({ today }: Props) {
         {state === "revealed" && (
           <Link
             href={`/app/session/${sessionId}`}
-            className="ns-btn-primary block w-full text-center py-3.5"
+            className="ns-btn-primary block w-full text-center py-3.5 transition active:scale-[0.98]"
           >
             View Today&apos;s Answers
           </Link>
         )}
         {state === "open" && !hasUserResponded && hasPartnerResponded && (
-          <div className="space-y-3">
+          <div className="space-y-3 w-full">
             <div className="flex items-center gap-2">
               <span className="relative flex h-2.5 w-2.5 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75" />
@@ -118,7 +135,7 @@ export function TodayCard({ today }: Props) {
             </div>
             <Link
               href={`/app/session/${sessionId}`}
-              className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-white shadow-lg shadow-brand-200/40"
+              className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-white shadow-lg shadow-brand-200/40 transition active:scale-[0.98]"
             >
               Answer now
             </Link>
@@ -127,18 +144,18 @@ export function TodayCard({ today }: Props) {
         {state === "open" && !hasUserResponded && !hasPartnerResponded && (
           <Link
             href={`/app/session/${sessionId}`}
-            className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-white shadow-lg shadow-brand-200/40"
+            className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-white shadow-lg shadow-brand-200/40 transition active:scale-[0.98]"
           >
             Answer today&apos;s question
           </Link>
         )}
         {state === "open" && hasUserResponded && !canReveal && (
-          <div className="space-y-4">
+          <div className="space-y-4 w-full">
             <p className="text-center text-sm text-slate-500 leading-relaxed max-w-md mx-auto">
               Your answer is saved. We&apos;ll reveal when your partner replies.
             </p>
             <div className="flex flex-col gap-2">
-              <Link href={`/app/session/${sessionId}`} className="ns-btn-primary block w-full text-center py-3.5">
+              <Link href={`/app/session/${sessionId}`} className="ns-btn-primary block w-full text-center py-3.5 transition active:scale-[0.98]">
                 View my answer
               </Link>
               <NotifyPartnerButton sessionId={sessionId} relationshipId={relationshipId} partnerName={partnerName} variant="secondary" className="w-full py-3.5" />
@@ -146,10 +163,10 @@ export function TodayCard({ today }: Props) {
           </div>
         )}
         {state === "open" && canReveal && (
-          <div className="space-y-2">
+          <div className="space-y-2 w-full">
             <Link
               href={`/app/session/${sessionId}`}
-              className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-white shadow-lg shadow-brand-200/40"
+              className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-white shadow-lg shadow-brand-200/40 transition active:scale-[0.98]"
             >
               Reveal answers
             </Link>

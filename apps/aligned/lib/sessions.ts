@@ -7,6 +7,7 @@ import { getDedication } from "@/lib/dedication";
 import { getStreak, updateStreakOnReveal } from "@/lib/streak";
 import { getActiveMemberIds, requireActiveMember, todayUTC } from "@/lib/relationship-members";
 import { pickPrompt } from "@/lib/prompt-scheduler";
+import { getThrowbackForToday } from "@/lib/throwback";
 import { VALIDATION_ACK_MAX_LENGTH, VALIDATION_ALLOWED_EMOJIS } from "@north-star/shared";
 
 /** Verify user is active member of the session's relationship. Returns minimal session (no sensitive includes). */
@@ -98,7 +99,33 @@ export type GetTodayResult = {
   streak?: { currentCount: number; longestCount: number; justReset?: boolean } | null;
   /** This user's total daily check-ins in this relationship (never resets). */
   dedication?: { totalCheckIns: number } | null;
+  /** Prompt category for the meta line + featured-slot logic. */
+  category?: string | null;
+  /** Prompt tone for the meta line. */
+  tone?: string | null;
+  /** Prompt depth (1..5) — drives estimated time. */
+  depthLevel?: number | null;
+  /** "sun".."sat" — drives day theme on the client. */
+  dayThemeKey?: "sun" | "mon" | "tue" | "wed" | "thu" | "fri" | "sat";
 };
+
+export type ThrowbackTodayResult = {
+  variant: "throwback";
+  relationshipId: string;
+  /** Memory we're surfacing — pass to "Answer it again" action. */
+  memoryId: string;
+  /** Original promptId — null if the source session is gone (then disable action). */
+  promptId: string | null;
+  /** "7 months ago", etc. */
+  monthsAgo: number;
+  promptText: string;
+  responses: Array<{ userId: string; name: string | null; content: string | null }>;
+  partnerName?: string | null;
+};
+
+export type TodayResponse =
+  | { variant: "standard"; today: GetTodayResult | null }
+  | { variant: "throwback"; throwback: ThrowbackTodayResult };
 
 /**
  * Get today's session for a relationship.
@@ -232,6 +259,9 @@ export async function getToday(
       : Promise.resolve(null),
   ]);
 
+  const dayKeys = ["sun","mon","tue","wed","thu","fri","sat"] as const;
+  const sessionDayKey = dayKeys[dailySession.sessionDate.getUTCDay()];
+
   return {
     sessionId: dailySession.id,
     relationshipId,
@@ -244,7 +274,48 @@ export async function getToday(
     partnerName: partnerUser?.name ?? null,
     streak: streak ?? undefined,
     dedication: dedication.totalCheckIns > 0 ? dedication : undefined,
+    category: dailySession.prompt?.category ?? null,
+    tone: dailySession.prompt?.tone ?? null,
+    depthLevel: dailySession.prompt?.depthLevel ?? null,
+    dayThemeKey: sessionDayKey,
   };
+}
+
+/**
+ * Wraps getToday() with the Saturday Throwback variant.
+ * Saturday + eligible memory + deterministic share → throwback variant.
+ * Otherwise → standard.
+ */
+export async function getTodayWithVariant(
+  relationshipId: string,
+  localDateStr?: string
+): Promise<TodayResponse> {
+  const dateStr = localDateStr ?? new Date().toISOString().slice(0, 10);
+  const throwback = await getThrowbackForToday(relationshipId, dateStr);
+  if (throwback) {
+    const session = await getServerAuthSession();
+    const userId = session?.user?.id ?? null;
+    const memberIds = userId ? await getActiveMemberIds(relationshipId) : [];
+    const partnerId = userId ? memberIds.find((id) => id !== userId) ?? null : null;
+    const partner = partnerId
+      ? await prisma.user.findUnique({ where: { id: partnerId }, select: { name: true } })
+      : null;
+    return {
+      variant: "throwback",
+      throwback: {
+        variant: "throwback",
+        relationshipId,
+        memoryId: throwback.memoryId,
+        promptId: throwback.promptId,
+        monthsAgo: throwback.monthsAgo,
+        promptText: throwback.promptText,
+        responses: throwback.responses,
+        partnerName: partner?.name ?? null,
+      },
+    };
+  }
+  const today = await getToday(relationshipId, localDateStr);
+  return { variant: "standard", today };
 }
 
 export async function submitResponse(sessionId: string, text: string) {

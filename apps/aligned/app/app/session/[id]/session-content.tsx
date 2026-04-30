@@ -23,6 +23,49 @@ import type { MilestoneContext } from "@/lib/milestones";
 
 const AFTER_REVEAL_PAUSE_MS = 1100;
 
+const FOLLOW_UP_PROMPTS: Record<string, string[]> = {
+  gratitude: [
+    "When was the last time you told each other this out loud?",
+    "What's one small thing from this week you both want to hold onto?",
+    "Is there something you've been grateful for but haven't said yet?",
+  ],
+  communication: [
+    "Is there a version of this you want to revisit in a real conversation tonight?",
+    "What's one thing you wish the other understood more deeply about you here?",
+    "Is this something you've talked about before, or is it new?",
+  ],
+  reflection: [
+    "Has your thinking on this changed over time — and does your partner know?",
+    "What surprised you about their answer?",
+    "Is this something you'd want to revisit in a year?",
+  ],
+  fun: [
+    "Would you actually do this together — or is it purely hypothetical?",
+    "Which of you would be worse at this?",
+    "What's the story behind your answer?",
+  ],
+  growth: [
+    "Is this an area where you want the other's support — or just their understanding?",
+    "What would change if you both took a small step on this together?",
+    "Did their answer surprise you or confirm what you already knew?",
+  ],
+  other: [
+    "What did their answer make you feel?",
+    "Is there more to say about this that the question didn't leave room for?",
+    "What's one thing you want to remember about today's answers?",
+  ],
+};
+
+function pickFollowUp(category: string | null | undefined, sessionId: string): string {
+  const pool = FOLLOW_UP_PROMPTS[category ?? "other"] ?? FOLLOW_UP_PROMPTS.other;
+  // Deterministic pick so it doesn't jump on re-render
+  let hash = 0;
+  for (let i = 0; i < sessionId.length; i++) {
+    hash = (hash * 31 + sessionId.charCodeAt(i)) >>> 0;
+  }
+  return pool[hash % pool.length]!;
+}
+
 function streakMilestoneContext(count: number | null | undefined): MilestoneContext | null {
   if (count === 7) return "streak-7";
   if (count === 30) return "streak-30";
@@ -48,6 +91,7 @@ export function SessionContent({ data, currentUserId }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [revealed, setRevealed] = useState(false);
   const [afterRevealReady, setAfterRevealReady] = useState(false);
+  const [partnerRevealed, setPartnerRevealed] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const recognitionRef = useRef<any | null>(null);
   const [revealData, setRevealData] = useState<{
@@ -80,6 +124,7 @@ export function SessionContent({ data, currentUserId }: Props) {
   async function handleReveal() {
     setError(null);
     setLoading("reveal");
+    setPartnerRevealed(false);
     try {
       const result = await revealSession(data.sessionId);
       setRevealData(result);
@@ -91,6 +136,11 @@ export function SessionContent({ data, currentUserId }: Props) {
     } finally {
       setLoading(null);
     }
+  }
+
+  function handleRevealPartner() {
+    setPartnerRevealed(true);
+    void haptic("reveal");
   }
 
   async function handleReaction() {
@@ -439,49 +489,81 @@ export function SessionContent({ data, currentUserId }: Props) {
           <h3 className="text-lg font-semibold text-slate-900 sm:text-xl">Answers</h3>
 
           <div className="space-y-2">
-            {responsesToShow.map((resp, idx) => (
-              <div
-                key={resp.key}
-                className={`animate-reveal-cascade space-y-1.5 ${
-                  idx === 0
-                    ? "reveal-cascade-delay-1"
-                    : idx === 1
-                      ? "reveal-cascade-delay-2"
-                      : idx === 2
-                        ? "reveal-cascade-delay-3"
-                        : "reveal-cascade-delay-4"
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-base">
-                    {typeof resp.icon === "string" && resp.icon.trim().startsWith("http") ? (
-                      <img src={resp.icon.trim()} alt="" className="absolute inset-0 h-full w-full object-cover" width={36} height={36} />
-                    ) : (
-                      resp.icon
-                    )}
-                  </span>
-                  <span
-                    className={`rounded-full px-3 py-1.5 text-sm font-semibold uppercase tracking-[0.14em] ${resp.bubbleClass}`}
-                  >
-                    {resp.title}
-                  </span>
-                </div>
-                <p className="ns-card-inner px-3 py-3 text-2xl leading-relaxed text-slate-900 sm:text-3xl">
-                  {resp.content ?? "—"}
-                </p>
-                {!resp.isMe && savedGuess && (
-                  <p className="px-3 text-sm italic text-slate-500 sm:text-base">
-                    <span className="font-medium not-italic text-slate-600">You guessed: </span>
-                    {savedGuess}
+            {/* Two-step reveal: my answer first, then partner tap-to-reveal.
+                Skip two-step if already revealed on page load (data.state === "revealed"). */}
+            {responsesToShow.map((resp, idx) => {
+              const isPartnerAnswer = !resp.isMe;
+              const needsTap = isPartnerAnswer && revealed && !partnerRevealed && data.state !== "revealed";
+              if (needsTap) return null;
+              return (
+                <div
+                  key={resp.key}
+                  className={`animate-reveal-cascade space-y-1.5 ${
+                    idx === 0
+                      ? "reveal-cascade-delay-1"
+                      : idx === 1
+                        ? "reveal-cascade-delay-2"
+                        : idx === 2
+                          ? "reveal-cascade-delay-3"
+                          : "reveal-cascade-delay-4"
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-base">
+                      {typeof resp.icon === "string" && resp.icon.trim().startsWith("http") ? (
+                        <img src={resp.icon.trim()} alt="" className="absolute inset-0 h-full w-full object-cover" width={36} height={36} />
+                      ) : (
+                        resp.icon
+                      )}
+                    </span>
+                    <span
+                      className={`rounded-full px-3 py-1.5 text-sm font-semibold uppercase tracking-[0.14em] ${resp.bubbleClass}`}
+                    >
+                      {resp.title}
+                    </span>
+                  </div>
+                  <p className="ns-card-inner px-3 py-3 text-2xl leading-relaxed text-slate-900 sm:text-3xl">
+                    {resp.content ?? "—"}
                   </p>
-                )}
-              </div>
-            ))}
+                  {!resp.isMe && savedGuess && (
+                    <p className="px-3 text-sm italic text-slate-500 sm:text-base">
+                      <span className="font-medium not-italic text-slate-600">You guessed: </span>
+                      {savedGuess}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+            {/* Partner reveal button — shown after my answer is visible, before partner is revealed */}
+            {revealed && !partnerRevealed && data.state !== "revealed" && responsesToShow.some((r) => !r.isMe) && (
+              <button
+                type="button"
+                onClick={handleRevealPartner}
+                className="mt-2 w-full rounded-2xl border-2 border-dashed border-brand-200 bg-brand-50/60 px-4 py-5 text-center transition hover:bg-brand-50 active:scale-[0.98]"
+              >
+                <p className="text-base font-semibold text-brand-700">
+                  Ready to see what {data.partnerName ?? "they"} wrote?
+                </p>
+                <p className="mt-1 text-sm text-slate-500">Tap to reveal</p>
+              </button>
+            )}
           </div>
 
           <p className="text-center text-lg font-medium text-brand-700 sm:text-xl">
             {afterRevealLine}
           </p>
+
+          {/* Follow-up conversation prompt — bridges the app to a real conversation */}
+          {(partnerRevealed || data.state === "revealed") && (
+            <div className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3.5">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+                Talk about it
+              </p>
+              <p className="mt-1.5 text-base leading-relaxed text-slate-700 sm:text-lg">
+                {pickFollowUp(data.promptCategory, data.sessionId)}
+              </p>
+            </div>
+          )}
 
           {data.streak && data.streak.currentCount > 0 && (
             <div className="flex justify-center">

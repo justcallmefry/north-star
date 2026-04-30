@@ -101,7 +101,26 @@ export function TodayCard({ today }: Props) {
             View Today&apos;s Answers
           </Link>
         )}
-        {state === "open" && !hasUserResponded && (
+        {state === "open" && !hasUserResponded && hasPartnerResponded && (
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2.5 w-2.5 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-brand-500" />
+              </span>
+              <p className="text-sm font-medium text-brand-700">
+                They answered — they&apos;re waiting on you.
+              </p>
+            </div>
+            <Link
+              href={`/app/session/${sessionId}`}
+              className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-white shadow-lg shadow-brand-200/40"
+            >
+              Answer now
+            </Link>
+          </div>
+        )}
+        {state === "open" && !hasUserResponded && !hasPartnerResponded && (
           <Link
             href={`/app/session/${sessionId}`}
             className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-white shadow-lg shadow-brand-200/40"

@@ -358,6 +358,8 @@ export type GetSessionResult = {
   partnerGuessEnabled?: boolean;
   /** When true, after reveal the UI should offer a date-activation nudge. */
   isDateActivation?: boolean;
+  /** Prompt category — used client-side to pick a contextual follow-up conversation prompt. */
+  promptCategory?: string | null;
 };
 
 export async function getSession(sessionId: string): Promise<GetSessionResult | null> {
@@ -425,6 +427,7 @@ export async function getSession(sessionId: string): Promise<GetSessionResult | 
     isFirstCompletedSession,
     partnerGuessEnabled: dailySession.prompt?.partnerGuessEnabled ?? false,
     isDateActivation: dailySession.prompt?.isDateActivation ?? false,
+    promptCategory: dailySession.prompt?.category ?? null,
   };
 
   if (dailySession.state === "revealed") {

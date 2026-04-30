@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { getDedication } from "@/lib/dedication";
 import { getStreak, updateStreakOnReveal } from "@/lib/streak";
 import { getActiveMemberIds, requireActiveMember, todayUTC } from "@/lib/relationship-members";
+import { pickPrompt } from "@/lib/prompt-scheduler";
 import { VALIDATION_ACK_MAX_LENGTH, VALIDATION_ALLOWED_EMOJIS } from "@north-star/shared";
 
 /** Verify user is active member of the session's relationship. Returns minimal session (no sensitive includes). */
@@ -19,48 +20,68 @@ async function requireSessionMembership(userId: string, sessionId: string) {
   return session;
 }
 
-/** Pick a prompt not used in the last 7 sessions for this relationship. */
+function toDateKey(d: Date): string {
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+}
+
+/**
+ * Deterministic, tone-balanced prompt selection. See lib/prompt-scheduler.ts
+ * for the policy. Same prompt for both partners on the same day; different
+ * couples get different sequences.
+ */
 async function pickPromptForSession(relationshipId: string): Promise<string | null> {
-  const [recent, totalCount] = await Promise.all([
+  const [recentRaw, totalCount] = await Promise.all([
     prisma.dailySession.findMany({
       where: { relationshipId },
       orderBy: { sessionDate: "desc" },
-      take: 7,
-      select: { promptId: true },
+      take: 21,
+      select: {
+        promptId: true,
+        sessionDate: true,
+        prompt: { select: { category: true, tone: true, depthLevel: true } },
+      },
     }),
-    prisma.dailySession.count({
-      where: { relationshipId },
-    }),
+    prisma.dailySession.count({ where: { relationshipId } }),
   ]);
-  const usedIds = recent.map((s) => s.promptId).filter(Boolean) as string[];
   const isIntroPhase = totalCount < 7;
 
-  let prompt = await prisma.prompt.findFirst({
+  const eligible = await prisma.prompt.findMany({
     where: {
       active: true,
       type: "daily",
-      // Guided first week: favor light, connection-focused prompts for the first few sessions.
+      isMilestone: false,
       ...(isIntroPhase && {
         category: { in: ["gratitude", "fun", "reflection", "growth"] },
         tone: { in: ["light", "playful"] },
+        depthLevel: { lte: 2 },
       }),
       // later: isPremium: false if not subscribed
-      id: usedIds.length > 0 ? { notIn: usedIds } : undefined,
     },
-    orderBy: { createdAt: "asc" },
-    select: { id: true },
+    select: {
+      id: true,
+      category: true,
+      tone: true,
+      depthLevel: true,
+      funScore: true,
+      isMilestone: true,
+      weekendOnly: true,
+    },
   });
-  if (!prompt) {
-    prompt = await prisma.prompt.findFirst({
-      where: {
-        active: true,
-        type: "daily",
-      },
-      orderBy: { createdAt: "asc" },
-      select: { id: true },
-    });
-  }
-  return prompt?.id ?? null;
+
+  const recent = recentRaw.map((r) => ({
+    sessionDate: toDateKey(r.sessionDate),
+    promptId: r.promptId,
+    category: r.prompt?.category ?? null,
+    tone: r.prompt?.tone ?? null,
+    depthLevel: r.prompt?.depthLevel ?? null,
+  }));
+
+  return pickPrompt({
+    relationshipId,
+    todayKey: toDateKey(todayUTC()),
+    eligible,
+    recent,
+  });
 }
 
 export type GetTodayResult = {
@@ -333,6 +354,10 @@ export type GetSessionResult = {
   dedication?: { totalCheckIns: number } | null;
   /** True when this is the first revealed daily session for this relationship. */
   isFirstCompletedSession?: boolean;
+  /** When true, the UI should offer the pre-reveal "guess what they wrote" flow. */
+  partnerGuessEnabled?: boolean;
+  /** When true, after reveal the UI should offer a date-activation nudge. */
+  isDateActivation?: boolean;
 };
 
 export async function getSession(sessionId: string): Promise<GetSessionResult | null> {
@@ -398,6 +423,8 @@ export async function getSession(sessionId: string): Promise<GetSessionResult | 
     streak: streak ?? undefined,
     dedication: dedication.totalCheckIns > 0 ? dedication : undefined,
     isFirstCompletedSession,
+    partnerGuessEnabled: dailySession.prompt?.partnerGuessEnabled ?? false,
+    isDateActivation: dailySession.prompt?.isDateActivation ?? false,
   };
 
   if (dailySession.state === "revealed") {

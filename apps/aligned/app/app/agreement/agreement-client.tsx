@@ -5,9 +5,11 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Check, ChevronLeft, Scale, X } from "lucide-react";
 import { toast } from "sonner";
 import { LoadingSpinner } from "@/components/loading-spinner";
+import { RevealStamp } from "@/components/reveal-stamp";
 import type { AgreementForTodayResult, AgreementQuestion } from "@/lib/agreement-shared";
 import { AGREEMENT_OPTIONS } from "@/lib/agreement-shared";
 import { getAgreementForDate, submitAgreement } from "@/lib/agreement";
+import { useFirstReveal } from "@/lib/use-first-reveal";
 import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
 
 type Props = {
@@ -202,6 +204,7 @@ export function AgreementClient({
             sessionUserName={sessionUserName}
             sessionUserImage={sessionUserImage}
             partnerImage={yesterdayData.partnerImage ?? null}
+            revealKey={null}
             onBack={() => {
               setYesterdayData(undefined);
               requestAnimationFrame(() => document.getElementById("app-scroll")?.scrollTo({ top: 0, behavior: "smooth" }));
@@ -256,6 +259,7 @@ export function AgreementClient({
           sessionUserName={sessionUserName}
           sessionUserImage={sessionUserImage}
           partnerImage={partnerImage}
+          revealKey={`agreement:${localDateStr}`}
         />
         <div className="flex justify-center">
           <button
@@ -577,6 +581,7 @@ function AgreementRevealView({
   sessionUserImage,
   partnerImage,
   onBack,
+  revealKey,
 }: {
   questions: AgreementQuestion[];
   reveal: NonNullable<AgreementForTodayResult["reveal"]>;
@@ -584,7 +589,11 @@ function AgreementRevealView({
   sessionUserImage: string | null;
   partnerImage: string | null;
   onBack?: () => void;
+  /** Pass a stable key for the first-reveal moment, or `null` to suppress (yesterday view). */
+  revealKey?: string | null;
 }) {
+  const isFirstReveal = useFirstReveal(revealKey ?? null, revealKey != null);
+  const cascade = isFirstReveal ? "animate-reveal-cascade" : "";
   const myName = sessionUserName ?? "You";
   const partnerName = reveal.partnerName ?? "Partner";
   const options = [...AGREEMENT_OPTIONS];
@@ -600,7 +609,10 @@ function AgreementRevealView({
 
   return (
     <div className="space-y-5">
-      <p className="text-center text-lg font-medium text-slate-700 sm:text-xl">
+      {isFirstReveal && <RevealStamp totalMembers={2} />}
+      <p
+        className={`text-center text-lg font-medium text-slate-700 sm:text-xl ${cascade} ${cascade ? "reveal-cascade-delay-1" : ""}`}
+      >
         {resultsLine}
       </p>
       {/* Scoreboard commented out for now — may bring back later
@@ -612,7 +624,9 @@ function AgreementRevealView({
       */}
 
       {/* Answers in two columns with green/red and bigger icons */}
-      <div className="space-y-3">
+      <div
+        className={`space-y-3 ${cascade} ${cascade ? "reveal-cascade-delay-2" : ""}`}
+      >
         {questions.map((q, i) => {
           const myAns = reveal.myAnswers[i];
           const myGuess = reveal.myGuesses[i];

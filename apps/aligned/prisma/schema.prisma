@@ -82,9 +82,16 @@ model User {
   meetingEntries     MeetingEntry[]
   subscriptions      Subscription[]
   pushSubscriptions  PushSubscription[]
+  memories           Memory[]
+
+  // Soft delete: when set, the account is anonymized (email/name/image cleared);
+  // partner-visible historical content stays attached to this row by id.
+  deletedAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([deletedAt])
 }
 
 model PushSubscription {
@@ -137,9 +144,13 @@ model VerificationToken {
 // ============== App models ==============
 
 model Relationship {
-  id     String             @id @default(cuid())
-  name   String?
-  status RelationshipStatus @default(active)
+  id              String             @id @default(cuid())
+  name            String?
+  status          RelationshipStatus @default(active)
+  /// The day this couple started — optional. When set, the app uses
+  /// it to compute "Day N together" on Today and to trigger an
+  /// anniversary banner on the day-of-month.
+  anniversaryDate DateTime?          @db.Date
 
   members       RelationshipMember[]
   invites       Invite[]
@@ -149,6 +160,7 @@ model Relationship {
   meetings     Meeting[]
   streak        Streak?
   subscriptions Subscription[]
+  memories     Memory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -206,14 +218,68 @@ model Prompt {
   isPremium  Boolean        @default(false)
   active     Boolean        @default(true)
 
+  /// Finer-grain taxonomy bucket layered on top of `category`.
+  /// e.g. "spark", "warmth", "today", "us", "future", "know-you",
+  /// "depth", "growth", "playdate", "milestone".
+  subcategory String?
+
+  /// 1 (very easy / playful) … 5 (emotionally demanding). Drives
+  /// scheduler depth caps so users never get back-to-back heavy days.
+  depthLevel Int @default(2)
+
+  /// 1–5 — how playful/entertaining the prompt is. Saturday rotation
+  /// weights toward higher funScore.
+  funScore Int @default(3)
+
+  /// 1–5 — how heavy the prompt feels. Used together with depthLevel
+  /// to space out emotionally intense content.
+  emotionalIntensity Int @default(2)
+
+  /// When true, the UI offers a pre-reveal "guess what they wrote"
+  /// flow. Most prompts don't support this format.
+  partnerGuessEnabled Boolean @default(false)
+
+  /// When true, after both reveal we offer a date-activation prompt
+  /// ("want to actually do this together?").
+  isDateActivation Boolean @default(false)
+
+  /// Reserved for milestone moments (anniversary, day-30, day-100,
+  /// day-365, new year). Excluded from normal rotation; surfaced
+  /// only via milestone hooks.
+  isMilestone Boolean @default(false)
+
+  /// When true, only schedule on Saturday/Sunday (e.g. "free Saturday"
+  /// hypotheticals).
+  weekendOnly Boolean @default(false)
+
+  /// Optional gating: "new" (< 1y), "established" (1–5y),
+  /// "long-term" (5+y). Null = universal.
+  relationshipStage String?
+
+  /// Free-form taxonomy markers ("nostalgia", "body-language",
+  /// "future-dreaming") — used by the scheduler for soft diversity.
+  tags String[] @default([])
+
+  /// Composite quality score 1–15 from internal rubric. Higher-scored
+  /// prompts get a small frequency boost.
+  qualityScore Int?
+
+  /// Provenance — 1 = original seed, 2 = v2 batch, 3 = v3 batch.
+  sourceVersion Int @default(1)
+
+  /// Per-prompt cooldown in days (overrides the scheduler default).
+  repeatCooldownDays Int @default(21)
+
   dailySessions DailySession[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([category])
+  @@index([subcategory])
   @@index([type])
   @@index([active])
+  @@index([isMilestone])
 }
 
 model DailySession {
@@ -354,6 +420,30 @@ model Subscription {
   @@index([userId])
   @@index([relationshipId])
   @@index([status])
+}
+
+/// A frozen snapshot of a meaningful moment a couple chooses to keep.
+/// Stored as denormalized JSON so source deletions don't destroy the memory.
+model Memory {
+  id             String   @id @default(cuid())
+  relationshipId String
+  savedByUserId  String
+  /// "session_reveal" | "quiz_reveal" | "agreement_reveal" | "appreciation"
+  sourceType     String
+  /// Optional pointer back to the original (e.g. DailySession.id). May be null
+  /// if the source was deleted; the snapshot keeps the content alive.
+  sourceId       String?
+  /// Frozen content — prompt text, both answers, date, etc. Schema-by-convention.
+  snapshot       Json
+
+  relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  savedByUser  User         @relation(fields: [savedByUserId], references: [id], onDelete: Cascade)
+
+  savedAt DateTime @default(now())
+
+  @@index([relationshipId])
+  @@index([savedByUserId])
+  @@index([savedAt])
 }
 
 model BetaSignup {

@@ -27,14 +27,27 @@ export function TodayCard({ today }: Props) {
   const { sessionId, relationshipId, promptText, momentText, state, hasUserResponded, hasPartnerResponded, canReveal, streak, dedication } = today;
   const done = hasUserResponded || state === "revealed" || (state === "open" && canReveal);
 
+  // Saturday rhythm: a softer visual cue. Doesn't change content yet —
+  // a dedicated weekend prompt pool is a follow-up content pass.
+  const isSaturday = new Date().getDay() === 6;
+  const sectionClass = isSaturday
+    ? "relative animate-calm-fade-in rounded-2xl border border-peach-300/40 bg-gradient-to-br from-peach-300/20 via-white to-white p-5 shadow-sm sm:p-6"
+    : "relative animate-calm-fade-in rounded-2xl border border-brand-100/80 bg-gradient-to-br from-brand-50/90 to-white p-5 shadow-sm ring-1 ring-brand-50/80 sm:p-6";
+  const eyebrowChipClass = isSaturday
+    ? "inline-flex items-center gap-2 rounded-lg bg-peach-300/30 px-3 py-1"
+    : "inline-flex items-center gap-2 rounded-lg bg-brand-100/80 px-3 py-1";
+  const eyebrowDotClass = isSaturday ? "h-1.5 w-1.5 rounded-full bg-peach-500" : "h-1.5 w-1.5 rounded-full bg-brand-500";
+  const eyebrowTextClass = isSaturday
+    ? "text-xs font-semibold uppercase tracking-[0.18em] text-peach-600 sm:text-sm"
+    : "text-xs font-semibold uppercase tracking-[0.18em] text-brand-700 sm:text-sm";
+  const eyebrowLabel = isSaturday ? "Saturday — a softer one" : "Today";
+
   return (
-    <section className="relative animate-calm-fade-in rounded-2xl border border-brand-100/80 bg-gradient-to-br from-brand-50/90 to-white p-5 shadow-sm ring-1 ring-brand-50/80 sm:p-6">
+    <section className={sectionClass}>
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="inline-flex items-center gap-2 rounded-lg bg-brand-100/80 px-3 py-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700 sm:text-sm">
-            Today
-          </h2>
+        <div className={eyebrowChipClass}>
+          <span className={eyebrowDotClass} />
+          <h2 className={eyebrowTextClass}>{eyebrowLabel}</h2>
         </div>
         {streak && streak.currentCount > 0 && (
           <StreakBadge

@@ -25,6 +25,9 @@ export default async function AppPage() {
       id: r.id,
       name: r.name,
       status: r.status,
+      anniversaryISO: r.anniversaryDate
+        ? r.anniversaryDate.toISOString().slice(0, 10)
+        : null,
     })),
     todayImagePaths,
   };

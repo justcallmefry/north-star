@@ -129,8 +129,19 @@ exports.Prisma.UserScalarFieldEnum = {
   name: 'name',
   image: 'image',
   password: 'password',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PushSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  endpoint: 'endpoint',
+  p256dhKey: 'p256dhKey',
+  authKey: 'authKey',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.AccountScalarFieldEnum = {
@@ -165,6 +176,7 @@ exports.Prisma.RelationshipScalarFieldEnum = {
   id: 'id',
   name: 'name',
   status: 'status',
+  anniversaryDate: 'anniversaryDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -203,6 +215,19 @@ exports.Prisma.PromptScalarFieldEnum = {
   tone: 'tone',
   isPremium: 'isPremium',
   active: 'active',
+  subcategory: 'subcategory',
+  depthLevel: 'depthLevel',
+  funScore: 'funScore',
+  emotionalIntensity: 'emotionalIntensity',
+  partnerGuessEnabled: 'partnerGuessEnabled',
+  isDateActivation: 'isDateActivation',
+  isMilestone: 'isMilestone',
+  weekendOnly: 'weekendOnly',
+  relationshipStage: 'relationshipStage',
+  tags: 'tags',
+  qualityScore: 'qualityScore',
+  sourceVersion: 'sourceVersion',
+  repeatCooldownDays: 'repeatCooldownDays',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -285,6 +310,16 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.MemoryScalarFieldEnum = {
+  id: 'id',
+  relationshipId: 'relationshipId',
+  savedByUserId: 'savedByUserId',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  snapshot: 'snapshot',
+  savedAt: 'savedAt'
+};
+
 exports.Prisma.BetaSignupScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -334,6 +369,10 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -342,6 +381,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.RelationshipStatus = exports.$Enums.RelationshipStatus = {
   active: 'active',
@@ -400,6 +445,7 @@ exports.AgreementState = exports.$Enums.AgreementState = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  PushSubscription: 'PushSubscription',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
@@ -415,6 +461,7 @@ exports.Prisma.ModelName = {
   MeetingEntry: 'MeetingEntry',
   Streak: 'Streak',
   Subscription: 'Subscription',
+  Memory: 'Memory',
   BetaSignup: 'BetaSignup',
   QuizSession: 'QuizSession',
   QuizParticipation: 'QuizParticipation',

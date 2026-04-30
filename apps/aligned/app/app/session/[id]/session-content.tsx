@@ -11,8 +11,32 @@ import { DedicationBadge } from "../../dedication-badge";
 import { NotifyPartnerButton } from "../../notify-partner-button";
 import { StreakBadge } from "../../streak-badge";
 import { StreakShareCard } from "./streak-share-card";
+import { RevealStamp } from "@/components/reveal-stamp";
+import { haptic } from "@/lib/haptics";
+import { WaitingForPartner } from "./waiting-for-partner";
+import { PreRevealGuess, readGuess } from "./pre-reveal-guess";
+import { StreakCelebration, isStreakMilestone } from "@/components/streak-celebration";
+import { SaveMemoryButton } from "./save-memory-button";
+import { StickerRow } from "./sticker-row";
+import { MilestonePromptCard } from "../../milestone-prompt-card";
+import type { MilestoneContext } from "@/lib/milestones";
 
-const AFTER_REVEAL_PAUSE_MS = 1000;
+const AFTER_REVEAL_PAUSE_MS = 1100;
+
+function streakMilestoneContext(count: number | null | undefined): MilestoneContext | null {
+  if (count === 7) return "streak-7";
+  if (count === 30) return "streak-30";
+  if (count === 100) return "streak-100";
+  if (count === 365) return "streak-365";
+  return null;
+}
+
+const STREAK_MILESTONE_EYEBROW: Record<string, string> = {
+  "streak-7": "One week milestone",
+  "streak-30": "30-day milestone",
+  "streak-100": "100-day milestone",
+  "streak-365": "One year milestone",
+};
 
 type Props = { data: GetSessionResult; currentUserId: string };
 
@@ -43,6 +67,7 @@ export function SessionContent({ data, currentUserId }: Props) {
     setLoading("submit");
     try {
       await submitResponse(data.sessionId, text);
+      void haptic("success");
       toast.success("Answer saved.");
       router.refresh();
       // Keep loading as "submit" until refreshed data arrives (see useEffect below)
@@ -59,7 +84,7 @@ export function SessionContent({ data, currentUserId }: Props) {
       const result = await revealSession(data.sessionId);
       setRevealData(result);
       setRevealed(true);
-      toast.success("Revealed.");
+      void haptic("reveal");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to reveal");
@@ -75,6 +100,7 @@ export function SessionContent({ data, currentUserId }: Props) {
     try {
       await submitReflection(data.sessionId, undefined, reaction.trim());
       setReaction("");
+      void haptic("tap");
       toast.success("Response sent.");
       router.refresh();
     } catch (err) {
@@ -191,6 +217,7 @@ export function SessionContent({ data, currentUserId }: Props) {
           icon: myIcon,
           bubbleClass: "border-brand-200 bg-brand-50 text-slate-900",
           content: data.userResponse ?? null,
+          isMe: true,
         },
         {
           key: "partner",
@@ -198,6 +225,7 @@ export function SessionContent({ data, currentUserId }: Props) {
           icon: partnerIcon,
           bubbleClass: "border-violet-100 bg-violet-50 text-slate-900",
           content: data.partnerResponse ?? null,
+          isMe: false,
         },
       ];
     }
@@ -240,9 +268,15 @@ export function SessionContent({ data, currentUserId }: Props) {
         icon,
         bubbleClass,
         content: r.content ?? null,
+        isMe,
       };
     });
   }, [isRevealed, revealData, data.userResponse, data.partnerResponse, data.allResponses, data.partnerName, data.currentUserName, data.currentUserImage, data.partnerImage, currentUserId]);
+
+  const savedGuess = useMemo(() => {
+    if (!isRevealed) return null;
+    return readGuess(data.sessionId);
+  }, [isRevealed, data.sessionId]);
   const reflectionsToShow = revealData?.reflections ?? data.reflections ?? [];
 
   const totalMembers = data.memberCount ?? 2;
@@ -332,15 +366,24 @@ export function SessionContent({ data, currentUserId }: Props) {
       )}
 
       {data.hasUserResponded && data.state === "open" && !data.canReveal && (
-        <div className="space-y-3 rounded-xl border border-brand-200 bg-brand-50 p-4 text-base text-brand-800 sm:text-lg">
-          <p>Waiting on {totalMembers === 2 ? "your partner" : "everyone"} to answer. You can reveal once all have responded.</p>
-          <NotifyPartnerButton sessionId={data.sessionId} relationshipId={data.relationshipId} className="w-full py-3.5" />
-        </div>
+        <WaitingForPartner
+          sessionId={data.sessionId}
+          relationshipId={data.relationshipId}
+          partnerName={data.partnerName ?? null}
+          partnerImage={(data.partnerImage as string | null) ?? null}
+          totalMembers={totalMembers}
+        />
       )}
 
       {data.hasUserResponded && data.state === "open" && data.canReveal && !isRevealed && (
-        <div>
-          <p className="mb-2 text-base text-slate-700 sm:text-lg">Both of you have answered.</p>
+        <div className="space-y-3">
+          <p className="text-base text-slate-700 sm:text-lg">Both of you have answered.</p>
+          {data.partnerGuessEnabled && (
+            <PreRevealGuess
+              sessionId={data.sessionId}
+              partnerName={data.partnerName ?? null}
+            />
+          )}
           <div className="flex flex-col gap-2">
             <button
               type="button"
@@ -356,18 +399,59 @@ export function SessionContent({ data, currentUserId }: Props) {
       )}
 
       {isRevealed && !afterRevealReady && (
-        <div className="flex min-h-[12rem] items-center justify-center" aria-hidden="true">
-          <p className="text-slate-400 text-lg">—</p>
+        <div
+          className="flex min-h-[12rem] flex-col items-center justify-center gap-3"
+          aria-live="polite"
+          aria-label="Revealing answers"
+        >
+          <div className="animate-reveal-shimmer flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-violet-100">
+            <span className="text-2xl" aria-hidden>✦</span>
+          </div>
+          <p className="text-sm uppercase tracking-[0.18em] text-brand-600">Revealing</p>
         </div>
       )}
 
       {isRevealed && afterRevealReady && (
-        <div className="animate-calm-fade-in ns-card ns-stack-tight">
+        <div className="ns-stack-tight">
+          {isStreakMilestone(data.streak?.currentCount) ? (
+            <>
+              <StreakCelebration count={data.streak!.currentCount} />
+              {streakMilestoneContext(data.streak!.currentCount) && (
+                <MilestonePromptCard
+                  relationshipId={data.relationshipId}
+                  context={streakMilestoneContext(data.streak!.currentCount)!}
+                  eyebrow={STREAK_MILESTONE_EYEBROW[streakMilestoneContext(data.streak!.currentCount)!] ?? "Milestone question"}
+                />
+              )}
+            </>
+          ) : (
+            <RevealStamp
+              eyebrow={
+                data.streak?.currentCount && data.streak.currentCount > 0
+                  ? `Day ${data.streak.currentCount}`
+                  : null
+              }
+              totalMembers={totalMembers}
+            />
+          )}
+
+          <div className="animate-calm-fade-in ns-card ns-stack-tight">
           <h3 className="text-lg font-semibold text-slate-900 sm:text-xl">Answers</h3>
 
           <div className="space-y-2">
-            {responsesToShow.map((resp) => (
-              <div key={resp.key} className="space-y-1.5">
+            {responsesToShow.map((resp, idx) => (
+              <div
+                key={resp.key}
+                className={`animate-reveal-cascade space-y-1.5 ${
+                  idx === 0
+                    ? "reveal-cascade-delay-1"
+                    : idx === 1
+                      ? "reveal-cascade-delay-2"
+                      : idx === 2
+                        ? "reveal-cascade-delay-3"
+                        : "reveal-cascade-delay-4"
+                }`}
+              >
                 <div className="flex items-center gap-2">
                   <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-base">
                     {typeof resp.icon === "string" && resp.icon.trim().startsWith("http") ? (
@@ -385,6 +469,12 @@ export function SessionContent({ data, currentUserId }: Props) {
                 <p className="ns-card-inner px-3 py-3 text-2xl leading-relaxed text-slate-900 sm:text-3xl">
                   {resp.content ?? "—"}
                 </p>
+                {!resp.isMe && savedGuess && (
+                  <p className="px-3 text-sm italic text-slate-500 sm:text-base">
+                    <span className="font-medium not-italic text-slate-600">You guessed: </span>
+                    {savedGuess}
+                  </p>
+                )}
               </div>
             ))}
           </div>
@@ -414,14 +504,18 @@ export function SessionContent({ data, currentUserId }: Props) {
               <StreakShareCard currentCount={data.streak.currentCount} />
             )}
 
+          <SaveMemoryButton sessionId={data.sessionId} initialSaved={false} />
+
           <div className="space-y-3 border-t border-brand-100 pt-5">
+            <StickerRow sessionId={data.sessionId} />
+
             {data.isFirstCompletedSession && (
               <p className="text-sm text-slate-600">
                 Optional: What surprised you about your partner&apos;s answer, or what do you want to remember from today?
               </p>
             )}
             <label htmlFor="session-response" className="block text-sm font-medium text-slate-700">
-              Send a response back
+              Or write a response
             </label>
             <textarea
               id="session-response"
@@ -459,6 +553,7 @@ export function SessionContent({ data, currentUserId }: Props) {
               })}
             </div>
           )}
+          </div>
         </div>
       )}
 

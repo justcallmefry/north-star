@@ -43,15 +43,15 @@ export default async function PairPage() {
 
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900 tracking-tight sm:text-3xl">
-            Pair with your partner
+          <h1 className="font-display text-2xl font-semibold text-slate-900 tracking-tight sm:text-3xl">
+            Bring your person in.
           </h1>
-          <p className="mt-2 text-slate-600">
-            Share your invite code or enter your partner&apos;s code to start answering questions together.
+          <p className="mt-2 text-slate-600 sm:text-base">
+            Aligned only works when you&apos;re paired. Send your partner an invite — or pop in the code they sent you.
           </p>
         </div>
 
-        <PairContent />
+        <PairContent userFirstName={(session.user.name ?? null) as string | null} />
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import { RelationshipActions } from "../relationship-actions";
 import { ProfileForm } from "./profile-form";
 import { PasswordForm } from "./password-form";
 import { SignOutButton } from "./sign-out-button";
+import { AccountDataSection } from "./account-data-section";
 
 export const dynamic = "force-dynamic";
 
@@ -119,6 +120,28 @@ export default async function UsPage() {
           <PasswordForm hasPassword={hasPassword} />
           <SignOutButton />
         </div>
+
+        {primary && (
+          <Link
+            href="/app/history"
+            className="ns-card flex items-center justify-between gap-3 transition active:scale-[0.99] hover:border-dusk-300/70"
+          >
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-sm">
+                Your story so far
+              </p>
+              <p className="mt-1 text-base font-semibold text-slate-900 sm:text-lg">
+                Past responses
+              </p>
+              <p className="mt-1 text-sm text-slate-600">
+                Browse everything you&apos;ve answered together.
+              </p>
+            </div>
+            <span className="text-xl text-slate-400" aria-hidden>→</span>
+          </Link>
+        )}
+
+        <AccountDataSection />
       </section>
 
       {primary ? (
@@ -163,9 +186,17 @@ export default async function UsPage() {
 
           {insights && (
             <div className="ns-card">
-              <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
-                How you&apos;ve been showing up
-              </h2>
+              <div className="flex items-start justify-between gap-3">
+                <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
+                  How you&apos;ve been showing up
+                </h2>
+                <Link
+                  href="/app/insights"
+                  className="shrink-0 text-sm font-medium text-brand-600 hover:text-brand-700"
+                >
+                  Couple insights →
+                </Link>
+              </div>
               <div className="mt-3 space-y-1.5 text-sm text-slate-700 sm:text-base">
                 <p>
                   You&apos;ve answered{" "}

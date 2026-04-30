@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model PushSubscription
+ * 
+ */
+export type PushSubscription = $Result.DefaultSelection<Prisma.$PushSubscriptionPayload>
+/**
  * Model Account
  * 
  */
@@ -93,6 +98,12 @@ export type Streak = $Result.DefaultSelection<Prisma.$StreakPayload>
  * 
  */
 export type Subscription = $Result.DefaultSelection<Prisma.$SubscriptionPayload>
+/**
+ * Model Memory
+ * A frozen snapshot of a meaningful moment a couple chooses to keep.
+ * Stored as denormalized JSON so source deletions don't destroy the memory.
+ */
+export type Memory = $Result.DefaultSelection<Prisma.$MemoryPayload>
 /**
  * Model BetaSignup
  * 
@@ -376,6 +387,16 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs>;
 
   /**
+   * `prisma.pushSubscription`: Exposes CRUD operations for the **PushSubscription** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PushSubscriptions
+    * const pushSubscriptions = await prisma.pushSubscription.findMany()
+    * ```
+    */
+  get pushSubscription(): Prisma.PushSubscriptionDelegate<ExtArgs>;
+
+  /**
    * `prisma.account`: Exposes CRUD operations for the **Account** model.
     * Example usage:
     * ```ts
@@ -524,6 +545,16 @@ export class PrismaClient<
     * ```
     */
   get subscription(): Prisma.SubscriptionDelegate<ExtArgs>;
+
+  /**
+   * `prisma.memory`: Exposes CRUD operations for the **Memory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Memories
+    * const memories = await prisma.memory.findMany()
+    * ```
+    */
+  get memory(): Prisma.MemoryDelegate<ExtArgs>;
 
   /**
    * `prisma.betaSignup`: Exposes CRUD operations for the **BetaSignup** model.
@@ -1016,6 +1047,7 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    PushSubscription: 'PushSubscription',
     Account: 'Account',
     Session: 'Session',
     VerificationToken: 'VerificationToken',
@@ -1031,6 +1063,7 @@ export namespace Prisma {
     MeetingEntry: 'MeetingEntry',
     Streak: 'Streak',
     Subscription: 'Subscription',
+    Memory: 'Memory',
     BetaSignup: 'BetaSignup',
     QuizSession: 'QuizSession',
     QuizParticipation: 'QuizParticipation',
@@ -1051,7 +1084,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation"
+      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "memory" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1122,6 +1155,76 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      PushSubscription: {
+        payload: Prisma.$PushSubscriptionPayload<ExtArgs>
+        fields: Prisma.PushSubscriptionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PushSubscriptionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PushSubscriptionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+          }
+          findFirst: {
+            args: Prisma.PushSubscriptionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PushSubscriptionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+          }
+          findMany: {
+            args: Prisma.PushSubscriptionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[]
+          }
+          create: {
+            args: Prisma.PushSubscriptionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+          }
+          createMany: {
+            args: Prisma.PushSubscriptionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PushSubscriptionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[]
+          }
+          delete: {
+            args: Prisma.PushSubscriptionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+          }
+          update: {
+            args: Prisma.PushSubscriptionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+          }
+          deleteMany: {
+            args: Prisma.PushSubscriptionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PushSubscriptionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PushSubscriptionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+          }
+          aggregate: {
+            args: Prisma.PushSubscriptionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePushSubscription>
+          }
+          groupBy: {
+            args: Prisma.PushSubscriptionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PushSubscriptionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PushSubscriptionCountArgs<ExtArgs>
+            result: $Utils.Optional<PushSubscriptionCountAggregateOutputType> | number
           }
         }
       }
@@ -2175,6 +2278,76 @@ export namespace Prisma {
           }
         }
       }
+      Memory: {
+        payload: Prisma.$MemoryPayload<ExtArgs>
+        fields: Prisma.MemoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MemoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MemoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>
+          }
+          findFirst: {
+            args: Prisma.MemoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MemoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>
+          }
+          findMany: {
+            args: Prisma.MemoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>[]
+          }
+          create: {
+            args: Prisma.MemoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>
+          }
+          createMany: {
+            args: Prisma.MemoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MemoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>[]
+          }
+          delete: {
+            args: Prisma.MemoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>
+          }
+          update: {
+            args: Prisma.MemoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.MemoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MemoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MemoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemoryPayload>
+          }
+          aggregate: {
+            args: Prisma.MemoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMemory>
+          }
+          groupBy: {
+            args: Prisma.MemoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MemoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MemoryCountArgs<ExtArgs>
+            result: $Utils.Optional<MemoryCountAggregateOutputType> | number
+          }
+        }
+      }
       BetaSignup: {
         payload: Prisma.$BetaSignupPayload<ExtArgs>
         fields: Prisma.BetaSignupFieldRefs
@@ -2697,6 +2870,8 @@ export namespace Prisma {
     agreementParticipations: number
     meetingEntries: number
     subscriptions: number
+    pushSubscriptions: number
+    memories: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2711,6 +2886,8 @@ export namespace Prisma {
     agreementParticipations?: boolean | UserCountOutputTypeCountAgreementParticipationsArgs
     meetingEntries?: boolean | UserCountOutputTypeCountMeetingEntriesArgs
     subscriptions?: boolean | UserCountOutputTypeCountSubscriptionsArgs
+    pushSubscriptions?: boolean | UserCountOutputTypeCountPushSubscriptionsArgs
+    memories?: boolean | UserCountOutputTypeCountMemoriesArgs
   }
 
   // Custom InputTypes
@@ -2801,6 +2978,20 @@ export namespace Prisma {
     where?: SubscriptionWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPushSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PushSubscriptionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMemoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MemoryWhereInput
+  }
+
 
   /**
    * Count Type RelationshipCountOutputType
@@ -2814,6 +3005,7 @@ export namespace Prisma {
     agreementSessions: number
     meetings: number
     subscriptions: number
+    memories: number
   }
 
   export type RelationshipCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2824,6 +3016,7 @@ export namespace Prisma {
     agreementSessions?: boolean | RelationshipCountOutputTypeCountAgreementSessionsArgs
     meetings?: boolean | RelationshipCountOutputTypeCountMeetingsArgs
     subscriptions?: boolean | RelationshipCountOutputTypeCountSubscriptionsArgs
+    memories?: boolean | RelationshipCountOutputTypeCountMemoriesArgs
   }
 
   // Custom InputTypes
@@ -2884,6 +3077,13 @@ export namespace Prisma {
    */
   export type RelationshipCountOutputTypeCountSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SubscriptionWhereInput
+  }
+
+  /**
+   * RelationshipCountOutputType without action
+   */
+  export type RelationshipCountOutputTypeCountMemoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MemoryWhereInput
   }
 
 
@@ -3103,6 +3303,7 @@ export namespace Prisma {
     name: string | null
     image: string | null
     password: string | null
+    deletedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3114,6 +3315,7 @@ export namespace Prisma {
     name: string | null
     image: string | null
     password: string | null
+    deletedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3125,6 +3327,7 @@ export namespace Prisma {
     name: number
     image: number
     password: number
+    deletedAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -3138,6 +3341,7 @@ export namespace Prisma {
     name?: true
     image?: true
     password?: true
+    deletedAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -3149,6 +3353,7 @@ export namespace Prisma {
     name?: true
     image?: true
     password?: true
+    deletedAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -3160,6 +3365,7 @@ export namespace Prisma {
     name?: true
     image?: true
     password?: true
+    deletedAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -3244,6 +3450,7 @@ export namespace Prisma {
     name: string | null
     image: string | null
     password: string | null
+    deletedAt: Date | null
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -3272,6 +3479,7 @@ export namespace Prisma {
     name?: boolean
     image?: boolean
     password?: boolean
+    deletedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -3285,6 +3493,8 @@ export namespace Prisma {
     agreementParticipations?: boolean | User$agreementParticipationsArgs<ExtArgs>
     meetingEntries?: boolean | User$meetingEntriesArgs<ExtArgs>
     subscriptions?: boolean | User$subscriptionsArgs<ExtArgs>
+    pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
+    memories?: boolean | User$memoriesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3295,6 +3505,7 @@ export namespace Prisma {
     name?: boolean
     image?: boolean
     password?: boolean
+    deletedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -3306,6 +3517,7 @@ export namespace Prisma {
     name?: boolean
     image?: boolean
     password?: boolean
+    deletedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
@@ -3322,6 +3534,8 @@ export namespace Prisma {
     agreementParticipations?: boolean | User$agreementParticipationsArgs<ExtArgs>
     meetingEntries?: boolean | User$meetingEntriesArgs<ExtArgs>
     subscriptions?: boolean | User$subscriptionsArgs<ExtArgs>
+    pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
+    memories?: boolean | User$memoriesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3340,6 +3554,8 @@ export namespace Prisma {
       agreementParticipations: Prisma.$AgreementParticipationPayload<ExtArgs>[]
       meetingEntries: Prisma.$MeetingEntryPayload<ExtArgs>[]
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
+      pushSubscriptions: Prisma.$PushSubscriptionPayload<ExtArgs>[]
+      memories: Prisma.$MemoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3348,6 +3564,7 @@ export namespace Prisma {
       name: string | null
       image: string | null
       password: string | null
+      deletedAt: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -3725,6 +3942,8 @@ export namespace Prisma {
     agreementParticipations<T extends User$agreementParticipationsArgs<ExtArgs> = {}>(args?: Subset<T, User$agreementParticipationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgreementParticipationPayload<ExtArgs>, T, "findMany"> | Null>
     meetingEntries<T extends User$meetingEntriesArgs<ExtArgs> = {}>(args?: Subset<T, User$meetingEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingEntryPayload<ExtArgs>, T, "findMany"> | Null>
     subscriptions<T extends User$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
+    pushSubscriptions<T extends User$pushSubscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$pushSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
+    memories<T extends User$memoriesArgs<ExtArgs> = {}>(args?: Subset<T, User$memoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3760,6 +3979,7 @@ export namespace Prisma {
     readonly name: FieldRef<"User", 'String'>
     readonly image: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
+    readonly deletedAt: FieldRef<"User", 'DateTime'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -4296,6 +4516,46 @@ export namespace Prisma {
   }
 
   /**
+   * User.pushSubscriptions
+   */
+  export type User$pushSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    where?: PushSubscriptionWhereInput
+    orderBy?: PushSubscriptionOrderByWithRelationInput | PushSubscriptionOrderByWithRelationInput[]
+    cursor?: PushSubscriptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PushSubscriptionScalarFieldEnum | PushSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * User.memories
+   */
+  export type User$memoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    where?: MemoryWhereInput
+    orderBy?: MemoryOrderByWithRelationInput | MemoryOrderByWithRelationInput[]
+    cursor?: MemoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MemoryScalarFieldEnum | MemoryScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4307,6 +4567,963 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PushSubscription
+   */
+
+  export type AggregatePushSubscription = {
+    _count: PushSubscriptionCountAggregateOutputType | null
+    _min: PushSubscriptionMinAggregateOutputType | null
+    _max: PushSubscriptionMaxAggregateOutputType | null
+  }
+
+  export type PushSubscriptionMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    endpoint: string | null
+    p256dhKey: string | null
+    authKey: string | null
+    userAgent: string | null
+    createdAt: Date | null
+  }
+
+  export type PushSubscriptionMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    endpoint: string | null
+    p256dhKey: string | null
+    authKey: string | null
+    userAgent: string | null
+    createdAt: Date | null
+  }
+
+  export type PushSubscriptionCountAggregateOutputType = {
+    id: number
+    userId: number
+    endpoint: number
+    p256dhKey: number
+    authKey: number
+    userAgent: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PushSubscriptionMinAggregateInputType = {
+    id?: true
+    userId?: true
+    endpoint?: true
+    p256dhKey?: true
+    authKey?: true
+    userAgent?: true
+    createdAt?: true
+  }
+
+  export type PushSubscriptionMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    endpoint?: true
+    p256dhKey?: true
+    authKey?: true
+    userAgent?: true
+    createdAt?: true
+  }
+
+  export type PushSubscriptionCountAggregateInputType = {
+    id?: true
+    userId?: true
+    endpoint?: true
+    p256dhKey?: true
+    authKey?: true
+    userAgent?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PushSubscriptionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PushSubscription to aggregate.
+     */
+    where?: PushSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushSubscriptions to fetch.
+     */
+    orderBy?: PushSubscriptionOrderByWithRelationInput | PushSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PushSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushSubscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PushSubscriptions
+    **/
+    _count?: true | PushSubscriptionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PushSubscriptionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PushSubscriptionMaxAggregateInputType
+  }
+
+  export type GetPushSubscriptionAggregateType<T extends PushSubscriptionAggregateArgs> = {
+        [P in keyof T & keyof AggregatePushSubscription]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePushSubscription[P]>
+      : GetScalarType<T[P], AggregatePushSubscription[P]>
+  }
+
+
+
+
+  export type PushSubscriptionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PushSubscriptionWhereInput
+    orderBy?: PushSubscriptionOrderByWithAggregationInput | PushSubscriptionOrderByWithAggregationInput[]
+    by: PushSubscriptionScalarFieldEnum[] | PushSubscriptionScalarFieldEnum
+    having?: PushSubscriptionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PushSubscriptionCountAggregateInputType | true
+    _min?: PushSubscriptionMinAggregateInputType
+    _max?: PushSubscriptionMaxAggregateInputType
+  }
+
+  export type PushSubscriptionGroupByOutputType = {
+    id: string
+    userId: string
+    endpoint: string
+    p256dhKey: string
+    authKey: string
+    userAgent: string | null
+    createdAt: Date
+    _count: PushSubscriptionCountAggregateOutputType | null
+    _min: PushSubscriptionMinAggregateOutputType | null
+    _max: PushSubscriptionMaxAggregateOutputType | null
+  }
+
+  type GetPushSubscriptionGroupByPayload<T extends PushSubscriptionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PushSubscriptionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PushSubscriptionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PushSubscriptionGroupByOutputType[P]>
+            : GetScalarType<T[P], PushSubscriptionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PushSubscriptionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    endpoint?: boolean
+    p256dhKey?: boolean
+    authKey?: boolean
+    userAgent?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pushSubscription"]>
+
+  export type PushSubscriptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    endpoint?: boolean
+    p256dhKey?: boolean
+    authKey?: boolean
+    userAgent?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pushSubscription"]>
+
+  export type PushSubscriptionSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    endpoint?: boolean
+    p256dhKey?: boolean
+    authKey?: boolean
+    userAgent?: boolean
+    createdAt?: boolean
+  }
+
+  export type PushSubscriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PushSubscriptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PushSubscriptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PushSubscription"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      endpoint: string
+      p256dhKey: string
+      authKey: string
+      userAgent: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["pushSubscription"]>
+    composites: {}
+  }
+
+  type PushSubscriptionGetPayload<S extends boolean | null | undefined | PushSubscriptionDefaultArgs> = $Result.GetResult<Prisma.$PushSubscriptionPayload, S>
+
+  type PushSubscriptionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<PushSubscriptionFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: PushSubscriptionCountAggregateInputType | true
+    }
+
+  export interface PushSubscriptionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PushSubscription'], meta: { name: 'PushSubscription' } }
+    /**
+     * Find zero or one PushSubscription that matches the filter.
+     * @param {PushSubscriptionFindUniqueArgs} args - Arguments to find a PushSubscription
+     * @example
+     * // Get one PushSubscription
+     * const pushSubscription = await prisma.pushSubscription.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PushSubscriptionFindUniqueArgs>(args: SelectSubset<T, PushSubscriptionFindUniqueArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one PushSubscription that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {PushSubscriptionFindUniqueOrThrowArgs} args - Arguments to find a PushSubscription
+     * @example
+     * // Get one PushSubscription
+     * const pushSubscription = await prisma.pushSubscription.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PushSubscriptionFindUniqueOrThrowArgs>(args: SelectSubset<T, PushSubscriptionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first PushSubscription that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushSubscriptionFindFirstArgs} args - Arguments to find a PushSubscription
+     * @example
+     * // Get one PushSubscription
+     * const pushSubscription = await prisma.pushSubscription.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PushSubscriptionFindFirstArgs>(args?: SelectSubset<T, PushSubscriptionFindFirstArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first PushSubscription that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushSubscriptionFindFirstOrThrowArgs} args - Arguments to find a PushSubscription
+     * @example
+     * // Get one PushSubscription
+     * const pushSubscription = await prisma.pushSubscription.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PushSubscriptionFindFirstOrThrowArgs>(args?: SelectSubset<T, PushSubscriptionFindFirstOrThrowArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more PushSubscriptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushSubscriptionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PushSubscriptions
+     * const pushSubscriptions = await prisma.pushSubscription.findMany()
+     * 
+     * // Get first 10 PushSubscriptions
+     * const pushSubscriptions = await prisma.pushSubscription.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pushSubscriptionWithIdOnly = await prisma.pushSubscription.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PushSubscriptionFindManyArgs>(args?: SelectSubset<T, PushSubscriptionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a PushSubscription.
+     * @param {PushSubscriptionCreateArgs} args - Arguments to create a PushSubscription.
+     * @example
+     * // Create one PushSubscription
+     * const PushSubscription = await prisma.pushSubscription.create({
+     *   data: {
+     *     // ... data to create a PushSubscription
+     *   }
+     * })
+     * 
+     */
+    create<T extends PushSubscriptionCreateArgs>(args: SelectSubset<T, PushSubscriptionCreateArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many PushSubscriptions.
+     * @param {PushSubscriptionCreateManyArgs} args - Arguments to create many PushSubscriptions.
+     * @example
+     * // Create many PushSubscriptions
+     * const pushSubscription = await prisma.pushSubscription.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PushSubscriptionCreateManyArgs>(args?: SelectSubset<T, PushSubscriptionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PushSubscriptions and returns the data saved in the database.
+     * @param {PushSubscriptionCreateManyAndReturnArgs} args - Arguments to create many PushSubscriptions.
+     * @example
+     * // Create many PushSubscriptions
+     * const pushSubscription = await prisma.pushSubscription.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PushSubscriptions and only return the `id`
+     * const pushSubscriptionWithIdOnly = await prisma.pushSubscription.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PushSubscriptionCreateManyAndReturnArgs>(args?: SelectSubset<T, PushSubscriptionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a PushSubscription.
+     * @param {PushSubscriptionDeleteArgs} args - Arguments to delete one PushSubscription.
+     * @example
+     * // Delete one PushSubscription
+     * const PushSubscription = await prisma.pushSubscription.delete({
+     *   where: {
+     *     // ... filter to delete one PushSubscription
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PushSubscriptionDeleteArgs>(args: SelectSubset<T, PushSubscriptionDeleteArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one PushSubscription.
+     * @param {PushSubscriptionUpdateArgs} args - Arguments to update one PushSubscription.
+     * @example
+     * // Update one PushSubscription
+     * const pushSubscription = await prisma.pushSubscription.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PushSubscriptionUpdateArgs>(args: SelectSubset<T, PushSubscriptionUpdateArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more PushSubscriptions.
+     * @param {PushSubscriptionDeleteManyArgs} args - Arguments to filter PushSubscriptions to delete.
+     * @example
+     * // Delete a few PushSubscriptions
+     * const { count } = await prisma.pushSubscription.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PushSubscriptionDeleteManyArgs>(args?: SelectSubset<T, PushSubscriptionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PushSubscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushSubscriptionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PushSubscriptions
+     * const pushSubscription = await prisma.pushSubscription.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PushSubscriptionUpdateManyArgs>(args: SelectSubset<T, PushSubscriptionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PushSubscription.
+     * @param {PushSubscriptionUpsertArgs} args - Arguments to update or create a PushSubscription.
+     * @example
+     * // Update or create a PushSubscription
+     * const pushSubscription = await prisma.pushSubscription.upsert({
+     *   create: {
+     *     // ... data to create a PushSubscription
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PushSubscription we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PushSubscriptionUpsertArgs>(args: SelectSubset<T, PushSubscriptionUpsertArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of PushSubscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushSubscriptionCountArgs} args - Arguments to filter PushSubscriptions to count.
+     * @example
+     * // Count the number of PushSubscriptions
+     * const count = await prisma.pushSubscription.count({
+     *   where: {
+     *     // ... the filter for the PushSubscriptions we want to count
+     *   }
+     * })
+    **/
+    count<T extends PushSubscriptionCountArgs>(
+      args?: Subset<T, PushSubscriptionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PushSubscriptionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PushSubscription.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushSubscriptionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PushSubscriptionAggregateArgs>(args: Subset<T, PushSubscriptionAggregateArgs>): Prisma.PrismaPromise<GetPushSubscriptionAggregateType<T>>
+
+    /**
+     * Group by PushSubscription.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushSubscriptionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PushSubscriptionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PushSubscriptionGroupByArgs['orderBy'] }
+        : { orderBy?: PushSubscriptionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PushSubscriptionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPushSubscriptionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PushSubscription model
+   */
+  readonly fields: PushSubscriptionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PushSubscription.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PushSubscriptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PushSubscription model
+   */ 
+  interface PushSubscriptionFieldRefs {
+    readonly id: FieldRef<"PushSubscription", 'String'>
+    readonly userId: FieldRef<"PushSubscription", 'String'>
+    readonly endpoint: FieldRef<"PushSubscription", 'String'>
+    readonly p256dhKey: FieldRef<"PushSubscription", 'String'>
+    readonly authKey: FieldRef<"PushSubscription", 'String'>
+    readonly userAgent: FieldRef<"PushSubscription", 'String'>
+    readonly createdAt: FieldRef<"PushSubscription", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PushSubscription findUnique
+   */
+  export type PushSubscriptionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PushSubscription to fetch.
+     */
+    where: PushSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * PushSubscription findUniqueOrThrow
+   */
+  export type PushSubscriptionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PushSubscription to fetch.
+     */
+    where: PushSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * PushSubscription findFirst
+   */
+  export type PushSubscriptionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PushSubscription to fetch.
+     */
+    where?: PushSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushSubscriptions to fetch.
+     */
+    orderBy?: PushSubscriptionOrderByWithRelationInput | PushSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PushSubscriptions.
+     */
+    cursor?: PushSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushSubscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PushSubscriptions.
+     */
+    distinct?: PushSubscriptionScalarFieldEnum | PushSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * PushSubscription findFirstOrThrow
+   */
+  export type PushSubscriptionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PushSubscription to fetch.
+     */
+    where?: PushSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushSubscriptions to fetch.
+     */
+    orderBy?: PushSubscriptionOrderByWithRelationInput | PushSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PushSubscriptions.
+     */
+    cursor?: PushSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushSubscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PushSubscriptions.
+     */
+    distinct?: PushSubscriptionScalarFieldEnum | PushSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * PushSubscription findMany
+   */
+  export type PushSubscriptionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PushSubscriptions to fetch.
+     */
+    where?: PushSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushSubscriptions to fetch.
+     */
+    orderBy?: PushSubscriptionOrderByWithRelationInput | PushSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PushSubscriptions.
+     */
+    cursor?: PushSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushSubscriptions.
+     */
+    skip?: number
+    distinct?: PushSubscriptionScalarFieldEnum | PushSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * PushSubscription create
+   */
+  export type PushSubscriptionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PushSubscription.
+     */
+    data: XOR<PushSubscriptionCreateInput, PushSubscriptionUncheckedCreateInput>
+  }
+
+  /**
+   * PushSubscription createMany
+   */
+  export type PushSubscriptionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PushSubscriptions.
+     */
+    data: PushSubscriptionCreateManyInput | PushSubscriptionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PushSubscription createManyAndReturn
+   */
+  export type PushSubscriptionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many PushSubscriptions.
+     */
+    data: PushSubscriptionCreateManyInput | PushSubscriptionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PushSubscription update
+   */
+  export type PushSubscriptionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PushSubscription.
+     */
+    data: XOR<PushSubscriptionUpdateInput, PushSubscriptionUncheckedUpdateInput>
+    /**
+     * Choose, which PushSubscription to update.
+     */
+    where: PushSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * PushSubscription updateMany
+   */
+  export type PushSubscriptionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PushSubscriptions.
+     */
+    data: XOR<PushSubscriptionUpdateManyMutationInput, PushSubscriptionUncheckedUpdateManyInput>
+    /**
+     * Filter which PushSubscriptions to update
+     */
+    where?: PushSubscriptionWhereInput
+  }
+
+  /**
+   * PushSubscription upsert
+   */
+  export type PushSubscriptionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PushSubscription to update in case it exists.
+     */
+    where: PushSubscriptionWhereUniqueInput
+    /**
+     * In case the PushSubscription found by the `where` argument doesn't exist, create a new PushSubscription with this data.
+     */
+    create: XOR<PushSubscriptionCreateInput, PushSubscriptionUncheckedCreateInput>
+    /**
+     * In case the PushSubscription was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PushSubscriptionUpdateInput, PushSubscriptionUncheckedUpdateInput>
+  }
+
+  /**
+   * PushSubscription delete
+   */
+  export type PushSubscriptionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter which PushSubscription to delete.
+     */
+    where: PushSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * PushSubscription deleteMany
+   */
+  export type PushSubscriptionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PushSubscriptions to delete
+     */
+    where?: PushSubscriptionWhereInput
+  }
+
+  /**
+   * PushSubscription without action
+   */
+  export type PushSubscriptionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
   }
 
 
@@ -7150,6 +8367,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     status: $Enums.RelationshipStatus | null
+    anniversaryDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7158,6 +8376,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     status: $Enums.RelationshipStatus | null
+    anniversaryDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7166,6 +8385,7 @@ export namespace Prisma {
     id: number
     name: number
     status: number
+    anniversaryDate: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -7176,6 +8396,7 @@ export namespace Prisma {
     id?: true
     name?: true
     status?: true
+    anniversaryDate?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7184,6 +8405,7 @@ export namespace Prisma {
     id?: true
     name?: true
     status?: true
+    anniversaryDate?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7192,6 +8414,7 @@ export namespace Prisma {
     id?: true
     name?: true
     status?: true
+    anniversaryDate?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -7273,6 +8496,7 @@ export namespace Prisma {
     id: string
     name: string | null
     status: $Enums.RelationshipStatus
+    anniversaryDate: Date | null
     createdAt: Date
     updatedAt: Date
     _count: RelationshipCountAggregateOutputType | null
@@ -7298,6 +8522,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     status?: boolean
+    anniversaryDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     members?: boolean | Relationship$membersArgs<ExtArgs>
@@ -7308,6 +8533,7 @@ export namespace Prisma {
     meetings?: boolean | Relationship$meetingsArgs<ExtArgs>
     streak?: boolean | Relationship$streakArgs<ExtArgs>
     subscriptions?: boolean | Relationship$subscriptionsArgs<ExtArgs>
+    memories?: boolean | Relationship$memoriesArgs<ExtArgs>
     _count?: boolean | RelationshipCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["relationship"]>
 
@@ -7315,6 +8541,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     status?: boolean
+    anniversaryDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["relationship"]>
@@ -7323,6 +8550,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     status?: boolean
+    anniversaryDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
@@ -7336,6 +8564,7 @@ export namespace Prisma {
     meetings?: boolean | Relationship$meetingsArgs<ExtArgs>
     streak?: boolean | Relationship$streakArgs<ExtArgs>
     subscriptions?: boolean | Relationship$subscriptionsArgs<ExtArgs>
+    memories?: boolean | Relationship$memoriesArgs<ExtArgs>
     _count?: boolean | RelationshipCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RelationshipIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -7351,11 +8580,18 @@ export namespace Prisma {
       meetings: Prisma.$MeetingPayload<ExtArgs>[]
       streak: Prisma.$StreakPayload<ExtArgs> | null
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
+      memories: Prisma.$MemoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string | null
       status: $Enums.RelationshipStatus
+      /**
+       * The day this couple started — optional. When set, the app uses
+       * it to compute "Day N together" on Today and to trigger an
+       * anniversary banner on the day-of-month.
+       */
+      anniversaryDate: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["relationship"]>
@@ -7730,6 +8966,7 @@ export namespace Prisma {
     meetings<T extends Relationship$meetingsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$meetingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany"> | Null>
     streak<T extends Relationship$streakArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$streakArgs<ExtArgs>>): Prisma__StreakClient<$Result.GetResult<Prisma.$StreakPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     subscriptions<T extends Relationship$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
+    memories<T extends Relationship$memoriesArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$memoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7762,6 +8999,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Relationship", 'String'>
     readonly name: FieldRef<"Relationship", 'String'>
     readonly status: FieldRef<"Relationship", 'RelationshipStatus'>
+    readonly anniversaryDate: FieldRef<"Relationship", 'DateTime'>
     readonly createdAt: FieldRef<"Relationship", 'DateTime'>
     readonly updatedAt: FieldRef<"Relationship", 'DateTime'>
   }
@@ -8230,6 +9468,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SubscriptionScalarFieldEnum | SubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * Relationship.memories
+   */
+  export type Relationship$memoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    where?: MemoryWhereInput
+    orderBy?: MemoryOrderByWithRelationInput | MemoryOrderByWithRelationInput[]
+    cursor?: MemoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MemoryScalarFieldEnum | MemoryScalarFieldEnum[]
   }
 
   /**
@@ -10239,8 +11497,28 @@ export namespace Prisma {
 
   export type AggregatePrompt = {
     _count: PromptCountAggregateOutputType | null
+    _avg: PromptAvgAggregateOutputType | null
+    _sum: PromptSumAggregateOutputType | null
     _min: PromptMinAggregateOutputType | null
     _max: PromptMaxAggregateOutputType | null
+  }
+
+  export type PromptAvgAggregateOutputType = {
+    depthLevel: number | null
+    funScore: number | null
+    emotionalIntensity: number | null
+    qualityScore: number | null
+    sourceVersion: number | null
+    repeatCooldownDays: number | null
+  }
+
+  export type PromptSumAggregateOutputType = {
+    depthLevel: number | null
+    funScore: number | null
+    emotionalIntensity: number | null
+    qualityScore: number | null
+    sourceVersion: number | null
+    repeatCooldownDays: number | null
   }
 
   export type PromptMinAggregateOutputType = {
@@ -10252,6 +11530,18 @@ export namespace Prisma {
     tone: $Enums.PromptTone | null
     isPremium: boolean | null
     active: boolean | null
+    subcategory: string | null
+    depthLevel: number | null
+    funScore: number | null
+    emotionalIntensity: number | null
+    partnerGuessEnabled: boolean | null
+    isDateActivation: boolean | null
+    isMilestone: boolean | null
+    weekendOnly: boolean | null
+    relationshipStage: string | null
+    qualityScore: number | null
+    sourceVersion: number | null
+    repeatCooldownDays: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10265,6 +11555,18 @@ export namespace Prisma {
     tone: $Enums.PromptTone | null
     isPremium: boolean | null
     active: boolean | null
+    subcategory: string | null
+    depthLevel: number | null
+    funScore: number | null
+    emotionalIntensity: number | null
+    partnerGuessEnabled: boolean | null
+    isDateActivation: boolean | null
+    isMilestone: boolean | null
+    weekendOnly: boolean | null
+    relationshipStage: string | null
+    qualityScore: number | null
+    sourceVersion: number | null
+    repeatCooldownDays: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10278,11 +11580,42 @@ export namespace Prisma {
     tone: number
     isPremium: number
     active: number
+    subcategory: number
+    depthLevel: number
+    funScore: number
+    emotionalIntensity: number
+    partnerGuessEnabled: number
+    isDateActivation: number
+    isMilestone: number
+    weekendOnly: number
+    relationshipStage: number
+    tags: number
+    qualityScore: number
+    sourceVersion: number
+    repeatCooldownDays: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
+
+  export type PromptAvgAggregateInputType = {
+    depthLevel?: true
+    funScore?: true
+    emotionalIntensity?: true
+    qualityScore?: true
+    sourceVersion?: true
+    repeatCooldownDays?: true
+  }
+
+  export type PromptSumAggregateInputType = {
+    depthLevel?: true
+    funScore?: true
+    emotionalIntensity?: true
+    qualityScore?: true
+    sourceVersion?: true
+    repeatCooldownDays?: true
+  }
 
   export type PromptMinAggregateInputType = {
     id?: true
@@ -10293,6 +11626,18 @@ export namespace Prisma {
     tone?: true
     isPremium?: true
     active?: true
+    subcategory?: true
+    depthLevel?: true
+    funScore?: true
+    emotionalIntensity?: true
+    partnerGuessEnabled?: true
+    isDateActivation?: true
+    isMilestone?: true
+    weekendOnly?: true
+    relationshipStage?: true
+    qualityScore?: true
+    sourceVersion?: true
+    repeatCooldownDays?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10306,6 +11651,18 @@ export namespace Prisma {
     tone?: true
     isPremium?: true
     active?: true
+    subcategory?: true
+    depthLevel?: true
+    funScore?: true
+    emotionalIntensity?: true
+    partnerGuessEnabled?: true
+    isDateActivation?: true
+    isMilestone?: true
+    weekendOnly?: true
+    relationshipStage?: true
+    qualityScore?: true
+    sourceVersion?: true
+    repeatCooldownDays?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10319,6 +11676,19 @@ export namespace Prisma {
     tone?: true
     isPremium?: true
     active?: true
+    subcategory?: true
+    depthLevel?: true
+    funScore?: true
+    emotionalIntensity?: true
+    partnerGuessEnabled?: true
+    isDateActivation?: true
+    isMilestone?: true
+    weekendOnly?: true
+    relationshipStage?: true
+    tags?: true
+    qualityScore?: true
+    sourceVersion?: true
+    repeatCooldownDays?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -10362,6 +11732,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: PromptAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PromptSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: PromptMinAggregateInputType
@@ -10392,6 +11774,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: PromptCountAggregateInputType | true
+    _avg?: PromptAvgAggregateInputType
+    _sum?: PromptSumAggregateInputType
     _min?: PromptMinAggregateInputType
     _max?: PromptMaxAggregateInputType
   }
@@ -10405,9 +11789,24 @@ export namespace Prisma {
     tone: $Enums.PromptTone | null
     isPremium: boolean
     active: boolean
+    subcategory: string | null
+    depthLevel: number
+    funScore: number
+    emotionalIntensity: number
+    partnerGuessEnabled: boolean
+    isDateActivation: boolean
+    isMilestone: boolean
+    weekendOnly: boolean
+    relationshipStage: string | null
+    tags: string[]
+    qualityScore: number | null
+    sourceVersion: number
+    repeatCooldownDays: number
     createdAt: Date
     updatedAt: Date
     _count: PromptCountAggregateOutputType | null
+    _avg: PromptAvgAggregateOutputType | null
+    _sum: PromptSumAggregateOutputType | null
     _min: PromptMinAggregateOutputType | null
     _max: PromptMaxAggregateOutputType | null
   }
@@ -10435,6 +11834,19 @@ export namespace Prisma {
     tone?: boolean
     isPremium?: boolean
     active?: boolean
+    subcategory?: boolean
+    depthLevel?: boolean
+    funScore?: boolean
+    emotionalIntensity?: boolean
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: boolean
+    tags?: boolean
+    qualityScore?: boolean
+    sourceVersion?: boolean
+    repeatCooldownDays?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dailySessions?: boolean | Prompt$dailySessionsArgs<ExtArgs>
@@ -10450,6 +11862,19 @@ export namespace Prisma {
     tone?: boolean
     isPremium?: boolean
     active?: boolean
+    subcategory?: boolean
+    depthLevel?: boolean
+    funScore?: boolean
+    emotionalIntensity?: boolean
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: boolean
+    tags?: boolean
+    qualityScore?: boolean
+    sourceVersion?: boolean
+    repeatCooldownDays?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["prompt"]>
@@ -10463,6 +11888,19 @@ export namespace Prisma {
     tone?: boolean
     isPremium?: boolean
     active?: boolean
+    subcategory?: boolean
+    depthLevel?: boolean
+    funScore?: boolean
+    emotionalIntensity?: boolean
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: boolean
+    tags?: boolean
+    qualityScore?: boolean
+    sourceVersion?: boolean
+    repeatCooldownDays?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
@@ -10487,6 +11925,71 @@ export namespace Prisma {
       tone: $Enums.PromptTone | null
       isPremium: boolean
       active: boolean
+      /**
+       * Finer-grain taxonomy bucket layered on top of `category`.
+       * e.g. "spark", "warmth", "today", "us", "future", "know-you",
+       * "depth", "growth", "playdate", "milestone".
+       */
+      subcategory: string | null
+      /**
+       * 1 (very easy / playful) … 5 (emotionally demanding). Drives
+       * scheduler depth caps so users never get back-to-back heavy days.
+       */
+      depthLevel: number
+      /**
+       * 1–5 — how playful/entertaining the prompt is. Saturday rotation
+       * weights toward higher funScore.
+       */
+      funScore: number
+      /**
+       * 1–5 — how heavy the prompt feels. Used together with depthLevel
+       * to space out emotionally intense content.
+       */
+      emotionalIntensity: number
+      /**
+       * When true, the UI offers a pre-reveal "guess what they wrote"
+       * flow. Most prompts don't support this format.
+       */
+      partnerGuessEnabled: boolean
+      /**
+       * When true, after both reveal we offer a date-activation prompt
+       * ("want to actually do this together?").
+       */
+      isDateActivation: boolean
+      /**
+       * Reserved for milestone moments (anniversary, day-30, day-100,
+       * day-365, new year). Excluded from normal rotation; surfaced
+       * only via milestone hooks.
+       */
+      isMilestone: boolean
+      /**
+       * When true, only schedule on Saturday/Sunday (e.g. "free Saturday"
+       * hypotheticals).
+       */
+      weekendOnly: boolean
+      /**
+       * Optional gating: "new" (< 1y), "established" (1–5y),
+       * "long-term" (5+y). Null = universal.
+       */
+      relationshipStage: string | null
+      /**
+       * Free-form taxonomy markers ("nostalgia", "body-language",
+       * "future-dreaming") — used by the scheduler for soft diversity.
+       */
+      tags: string[]
+      /**
+       * Composite quality score 1–15 from internal rubric. Higher-scored
+       * prompts get a small frequency boost.
+       */
+      qualityScore: number | null
+      /**
+       * Provenance — 1 = original seed, 2 = v2 batch, 3 = v3 batch.
+       */
+      sourceVersion: number
+      /**
+       * Per-prompt cooldown in days (overrides the scheduler default).
+       */
+      repeatCooldownDays: number
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["prompt"]>
@@ -10891,6 +12394,19 @@ export namespace Prisma {
     readonly tone: FieldRef<"Prompt", 'PromptTone'>
     readonly isPremium: FieldRef<"Prompt", 'Boolean'>
     readonly active: FieldRef<"Prompt", 'Boolean'>
+    readonly subcategory: FieldRef<"Prompt", 'String'>
+    readonly depthLevel: FieldRef<"Prompt", 'Int'>
+    readonly funScore: FieldRef<"Prompt", 'Int'>
+    readonly emotionalIntensity: FieldRef<"Prompt", 'Int'>
+    readonly partnerGuessEnabled: FieldRef<"Prompt", 'Boolean'>
+    readonly isDateActivation: FieldRef<"Prompt", 'Boolean'>
+    readonly isMilestone: FieldRef<"Prompt", 'Boolean'>
+    readonly weekendOnly: FieldRef<"Prompt", 'Boolean'>
+    readonly relationshipStage: FieldRef<"Prompt", 'String'>
+    readonly tags: FieldRef<"Prompt", 'String[]'>
+    readonly qualityScore: FieldRef<"Prompt", 'Int'>
+    readonly sourceVersion: FieldRef<"Prompt", 'Int'>
+    readonly repeatCooldownDays: FieldRef<"Prompt", 'Int'>
     readonly createdAt: FieldRef<"Prompt", 'DateTime'>
     readonly updatedAt: FieldRef<"Prompt", 'DateTime'>
   }
@@ -19080,6 +20596,975 @@ export namespace Prisma {
 
 
   /**
+   * Model Memory
+   */
+
+  export type AggregateMemory = {
+    _count: MemoryCountAggregateOutputType | null
+    _min: MemoryMinAggregateOutputType | null
+    _max: MemoryMaxAggregateOutputType | null
+  }
+
+  export type MemoryMinAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    savedByUserId: string | null
+    sourceType: string | null
+    sourceId: string | null
+    savedAt: Date | null
+  }
+
+  export type MemoryMaxAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    savedByUserId: string | null
+    sourceType: string | null
+    sourceId: string | null
+    savedAt: Date | null
+  }
+
+  export type MemoryCountAggregateOutputType = {
+    id: number
+    relationshipId: number
+    savedByUserId: number
+    sourceType: number
+    sourceId: number
+    snapshot: number
+    savedAt: number
+    _all: number
+  }
+
+
+  export type MemoryMinAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    savedByUserId?: true
+    sourceType?: true
+    sourceId?: true
+    savedAt?: true
+  }
+
+  export type MemoryMaxAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    savedByUserId?: true
+    sourceType?: true
+    sourceId?: true
+    savedAt?: true
+  }
+
+  export type MemoryCountAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    savedByUserId?: true
+    sourceType?: true
+    sourceId?: true
+    snapshot?: true
+    savedAt?: true
+    _all?: true
+  }
+
+  export type MemoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Memory to aggregate.
+     */
+    where?: MemoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Memories to fetch.
+     */
+    orderBy?: MemoryOrderByWithRelationInput | MemoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MemoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Memories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Memories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Memories
+    **/
+    _count?: true | MemoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MemoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MemoryMaxAggregateInputType
+  }
+
+  export type GetMemoryAggregateType<T extends MemoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateMemory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMemory[P]>
+      : GetScalarType<T[P], AggregateMemory[P]>
+  }
+
+
+
+
+  export type MemoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MemoryWhereInput
+    orderBy?: MemoryOrderByWithAggregationInput | MemoryOrderByWithAggregationInput[]
+    by: MemoryScalarFieldEnum[] | MemoryScalarFieldEnum
+    having?: MemoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MemoryCountAggregateInputType | true
+    _min?: MemoryMinAggregateInputType
+    _max?: MemoryMaxAggregateInputType
+  }
+
+  export type MemoryGroupByOutputType = {
+    id: string
+    relationshipId: string
+    savedByUserId: string
+    sourceType: string
+    sourceId: string | null
+    snapshot: JsonValue
+    savedAt: Date
+    _count: MemoryCountAggregateOutputType | null
+    _min: MemoryMinAggregateOutputType | null
+    _max: MemoryMaxAggregateOutputType | null
+  }
+
+  type GetMemoryGroupByPayload<T extends MemoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MemoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MemoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MemoryGroupByOutputType[P]>
+            : GetScalarType<T[P], MemoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MemorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    savedByUserId?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    snapshot?: boolean
+    savedAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    savedByUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["memory"]>
+
+  export type MemorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    savedByUserId?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    snapshot?: boolean
+    savedAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    savedByUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["memory"]>
+
+  export type MemorySelectScalar = {
+    id?: boolean
+    relationshipId?: boolean
+    savedByUserId?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    snapshot?: boolean
+    savedAt?: boolean
+  }
+
+  export type MemoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    savedByUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type MemoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    savedByUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $MemoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Memory"
+    objects: {
+      relationship: Prisma.$RelationshipPayload<ExtArgs>
+      savedByUser: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      relationshipId: string
+      savedByUserId: string
+      /**
+       * "session_reveal" | "quiz_reveal" | "agreement_reveal" | "appreciation"
+       */
+      sourceType: string
+      /**
+       * Optional pointer back to the original (e.g. DailySession.id). May be null
+       * if the source was deleted; the snapshot keeps the content alive.
+       */
+      sourceId: string | null
+      /**
+       * Frozen content — prompt text, both answers, date, etc. Schema-by-convention.
+       */
+      snapshot: Prisma.JsonValue
+      savedAt: Date
+    }, ExtArgs["result"]["memory"]>
+    composites: {}
+  }
+
+  type MemoryGetPayload<S extends boolean | null | undefined | MemoryDefaultArgs> = $Result.GetResult<Prisma.$MemoryPayload, S>
+
+  type MemoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<MemoryFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: MemoryCountAggregateInputType | true
+    }
+
+  export interface MemoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Memory'], meta: { name: 'Memory' } }
+    /**
+     * Find zero or one Memory that matches the filter.
+     * @param {MemoryFindUniqueArgs} args - Arguments to find a Memory
+     * @example
+     * // Get one Memory
+     * const memory = await prisma.memory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MemoryFindUniqueArgs>(args: SelectSubset<T, MemoryFindUniqueArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one Memory that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {MemoryFindUniqueOrThrowArgs} args - Arguments to find a Memory
+     * @example
+     * // Get one Memory
+     * const memory = await prisma.memory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MemoryFindUniqueOrThrowArgs>(args: SelectSubset<T, MemoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first Memory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemoryFindFirstArgs} args - Arguments to find a Memory
+     * @example
+     * // Get one Memory
+     * const memory = await prisma.memory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MemoryFindFirstArgs>(args?: SelectSubset<T, MemoryFindFirstArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first Memory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemoryFindFirstOrThrowArgs} args - Arguments to find a Memory
+     * @example
+     * // Get one Memory
+     * const memory = await prisma.memory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MemoryFindFirstOrThrowArgs>(args?: SelectSubset<T, MemoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more Memories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Memories
+     * const memories = await prisma.memory.findMany()
+     * 
+     * // Get first 10 Memories
+     * const memories = await prisma.memory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const memoryWithIdOnly = await prisma.memory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MemoryFindManyArgs>(args?: SelectSubset<T, MemoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a Memory.
+     * @param {MemoryCreateArgs} args - Arguments to create a Memory.
+     * @example
+     * // Create one Memory
+     * const Memory = await prisma.memory.create({
+     *   data: {
+     *     // ... data to create a Memory
+     *   }
+     * })
+     * 
+     */
+    create<T extends MemoryCreateArgs>(args: SelectSubset<T, MemoryCreateArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many Memories.
+     * @param {MemoryCreateManyArgs} args - Arguments to create many Memories.
+     * @example
+     * // Create many Memories
+     * const memory = await prisma.memory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MemoryCreateManyArgs>(args?: SelectSubset<T, MemoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Memories and returns the data saved in the database.
+     * @param {MemoryCreateManyAndReturnArgs} args - Arguments to create many Memories.
+     * @example
+     * // Create many Memories
+     * const memory = await prisma.memory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Memories and only return the `id`
+     * const memoryWithIdOnly = await prisma.memory.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MemoryCreateManyAndReturnArgs>(args?: SelectSubset<T, MemoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a Memory.
+     * @param {MemoryDeleteArgs} args - Arguments to delete one Memory.
+     * @example
+     * // Delete one Memory
+     * const Memory = await prisma.memory.delete({
+     *   where: {
+     *     // ... filter to delete one Memory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MemoryDeleteArgs>(args: SelectSubset<T, MemoryDeleteArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one Memory.
+     * @param {MemoryUpdateArgs} args - Arguments to update one Memory.
+     * @example
+     * // Update one Memory
+     * const memory = await prisma.memory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MemoryUpdateArgs>(args: SelectSubset<T, MemoryUpdateArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more Memories.
+     * @param {MemoryDeleteManyArgs} args - Arguments to filter Memories to delete.
+     * @example
+     * // Delete a few Memories
+     * const { count } = await prisma.memory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MemoryDeleteManyArgs>(args?: SelectSubset<T, MemoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Memories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Memories
+     * const memory = await prisma.memory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MemoryUpdateManyArgs>(args: SelectSubset<T, MemoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Memory.
+     * @param {MemoryUpsertArgs} args - Arguments to update or create a Memory.
+     * @example
+     * // Update or create a Memory
+     * const memory = await prisma.memory.upsert({
+     *   create: {
+     *     // ... data to create a Memory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Memory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MemoryUpsertArgs>(args: SelectSubset<T, MemoryUpsertArgs<ExtArgs>>): Prisma__MemoryClient<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of Memories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemoryCountArgs} args - Arguments to filter Memories to count.
+     * @example
+     * // Count the number of Memories
+     * const count = await prisma.memory.count({
+     *   where: {
+     *     // ... the filter for the Memories we want to count
+     *   }
+     * })
+    **/
+    count<T extends MemoryCountArgs>(
+      args?: Subset<T, MemoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MemoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Memory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MemoryAggregateArgs>(args: Subset<T, MemoryAggregateArgs>): Prisma.PrismaPromise<GetMemoryAggregateType<T>>
+
+    /**
+     * Group by Memory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MemoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MemoryGroupByArgs['orderBy'] }
+        : { orderBy?: MemoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MemoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMemoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Memory model
+   */
+  readonly fields: MemoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Memory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MemoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    relationship<T extends RelationshipDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RelationshipDefaultArgs<ExtArgs>>): Prisma__RelationshipClient<$Result.GetResult<Prisma.$RelationshipPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    savedByUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Memory model
+   */ 
+  interface MemoryFieldRefs {
+    readonly id: FieldRef<"Memory", 'String'>
+    readonly relationshipId: FieldRef<"Memory", 'String'>
+    readonly savedByUserId: FieldRef<"Memory", 'String'>
+    readonly sourceType: FieldRef<"Memory", 'String'>
+    readonly sourceId: FieldRef<"Memory", 'String'>
+    readonly snapshot: FieldRef<"Memory", 'Json'>
+    readonly savedAt: FieldRef<"Memory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Memory findUnique
+   */
+  export type MemoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Memory to fetch.
+     */
+    where: MemoryWhereUniqueInput
+  }
+
+  /**
+   * Memory findUniqueOrThrow
+   */
+  export type MemoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Memory to fetch.
+     */
+    where: MemoryWhereUniqueInput
+  }
+
+  /**
+   * Memory findFirst
+   */
+  export type MemoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Memory to fetch.
+     */
+    where?: MemoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Memories to fetch.
+     */
+    orderBy?: MemoryOrderByWithRelationInput | MemoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Memories.
+     */
+    cursor?: MemoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Memories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Memories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Memories.
+     */
+    distinct?: MemoryScalarFieldEnum | MemoryScalarFieldEnum[]
+  }
+
+  /**
+   * Memory findFirstOrThrow
+   */
+  export type MemoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Memory to fetch.
+     */
+    where?: MemoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Memories to fetch.
+     */
+    orderBy?: MemoryOrderByWithRelationInput | MemoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Memories.
+     */
+    cursor?: MemoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Memories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Memories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Memories.
+     */
+    distinct?: MemoryScalarFieldEnum | MemoryScalarFieldEnum[]
+  }
+
+  /**
+   * Memory findMany
+   */
+  export type MemoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Memories to fetch.
+     */
+    where?: MemoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Memories to fetch.
+     */
+    orderBy?: MemoryOrderByWithRelationInput | MemoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Memories.
+     */
+    cursor?: MemoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Memories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Memories.
+     */
+    skip?: number
+    distinct?: MemoryScalarFieldEnum | MemoryScalarFieldEnum[]
+  }
+
+  /**
+   * Memory create
+   */
+  export type MemoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Memory.
+     */
+    data: XOR<MemoryCreateInput, MemoryUncheckedCreateInput>
+  }
+
+  /**
+   * Memory createMany
+   */
+  export type MemoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Memories.
+     */
+    data: MemoryCreateManyInput | MemoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Memory createManyAndReturn
+   */
+  export type MemoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many Memories.
+     */
+    data: MemoryCreateManyInput | MemoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Memory update
+   */
+  export type MemoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Memory.
+     */
+    data: XOR<MemoryUpdateInput, MemoryUncheckedUpdateInput>
+    /**
+     * Choose, which Memory to update.
+     */
+    where: MemoryWhereUniqueInput
+  }
+
+  /**
+   * Memory updateMany
+   */
+  export type MemoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Memories.
+     */
+    data: XOR<MemoryUpdateManyMutationInput, MemoryUncheckedUpdateManyInput>
+    /**
+     * Filter which Memories to update
+     */
+    where?: MemoryWhereInput
+  }
+
+  /**
+   * Memory upsert
+   */
+  export type MemoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Memory to update in case it exists.
+     */
+    where: MemoryWhereUniqueInput
+    /**
+     * In case the Memory found by the `where` argument doesn't exist, create a new Memory with this data.
+     */
+    create: XOR<MemoryCreateInput, MemoryUncheckedCreateInput>
+    /**
+     * In case the Memory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MemoryUpdateInput, MemoryUncheckedUpdateInput>
+  }
+
+  /**
+   * Memory delete
+   */
+  export type MemoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+    /**
+     * Filter which Memory to delete.
+     */
+    where: MemoryWhereUniqueInput
+  }
+
+  /**
+   * Memory deleteMany
+   */
+  export type MemoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Memories to delete
+     */
+    where?: MemoryWhereInput
+  }
+
+  /**
+   * Memory without action
+   */
+  export type MemoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Memory
+     */
+    select?: MemorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemoryInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model BetaSignup
    */
 
@@ -23822,11 +26307,25 @@ export namespace Prisma {
     name: 'name',
     image: 'image',
     password: 'password',
+    deletedAt: 'deletedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const PushSubscriptionScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    endpoint: 'endpoint',
+    p256dhKey: 'p256dhKey',
+    authKey: 'authKey',
+    userAgent: 'userAgent',
+    createdAt: 'createdAt'
+  };
+
+  export type PushSubscriptionScalarFieldEnum = (typeof PushSubscriptionScalarFieldEnum)[keyof typeof PushSubscriptionScalarFieldEnum]
 
 
   export const AccountScalarFieldEnum: {
@@ -23870,6 +26369,7 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     status: 'status',
+    anniversaryDate: 'anniversaryDate',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -23917,6 +26417,19 @@ export namespace Prisma {
     tone: 'tone',
     isPremium: 'isPremium',
     active: 'active',
+    subcategory: 'subcategory',
+    depthLevel: 'depthLevel',
+    funScore: 'funScore',
+    emotionalIntensity: 'emotionalIntensity',
+    partnerGuessEnabled: 'partnerGuessEnabled',
+    isDateActivation: 'isDateActivation',
+    isMilestone: 'isMilestone',
+    weekendOnly: 'weekendOnly',
+    relationshipStage: 'relationshipStage',
+    tags: 'tags',
+    qualityScore: 'qualityScore',
+    sourceVersion: 'sourceVersion',
+    repeatCooldownDays: 'repeatCooldownDays',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -24026,6 +26539,19 @@ export namespace Prisma {
   export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
 
 
+  export const MemoryScalarFieldEnum: {
+    id: 'id',
+    relationshipId: 'relationshipId',
+    savedByUserId: 'savedByUserId',
+    sourceType: 'sourceType',
+    sourceId: 'sourceId',
+    snapshot: 'snapshot',
+    savedAt: 'savedAt'
+  };
+
+  export type MemoryScalarFieldEnum = (typeof MemoryScalarFieldEnum)[keyof typeof MemoryScalarFieldEnum]
+
+
   export const BetaSignupScalarFieldEnum: {
     id: 'id',
     email: 'email',
@@ -24093,6 +26619,13 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -24107,6 +26640,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -24262,6 +26804,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
    * Reference to a field of type 'QuizState'
    */
   export type EnumQuizStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuizState'>
@@ -24316,6 +26865,7 @@ export namespace Prisma {
     name?: StringNullableFilter<"User"> | string | null
     image?: StringNullableFilter<"User"> | string | null
     password?: StringNullableFilter<"User"> | string | null
+    deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     accounts?: AccountListRelationFilter
@@ -24329,6 +26879,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationListRelationFilter
     meetingEntries?: MeetingEntryListRelationFilter
     subscriptions?: SubscriptionListRelationFilter
+    pushSubscriptions?: PushSubscriptionListRelationFilter
+    memories?: MemoryListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -24338,6 +26890,7 @@ export namespace Prisma {
     name?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     password?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     accounts?: AccountOrderByRelationAggregateInput
@@ -24351,6 +26904,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationOrderByRelationAggregateInput
     meetingEntries?: MeetingEntryOrderByRelationAggregateInput
     subscriptions?: SubscriptionOrderByRelationAggregateInput
+    pushSubscriptions?: PushSubscriptionOrderByRelationAggregateInput
+    memories?: MemoryOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -24363,6 +26918,7 @@ export namespace Prisma {
     name?: StringNullableFilter<"User"> | string | null
     image?: StringNullableFilter<"User"> | string | null
     password?: StringNullableFilter<"User"> | string | null
+    deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     accounts?: AccountListRelationFilter
@@ -24376,6 +26932,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationListRelationFilter
     meetingEntries?: MeetingEntryListRelationFilter
     subscriptions?: SubscriptionListRelationFilter
+    pushSubscriptions?: PushSubscriptionListRelationFilter
+    memories?: MemoryListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -24385,6 +26943,7 @@ export namespace Prisma {
     name?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     password?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -24402,8 +26961,74 @@ export namespace Prisma {
     name?: StringNullableWithAggregatesFilter<"User"> | string | null
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     password?: StringNullableWithAggregatesFilter<"User"> | string | null
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+  }
+
+  export type PushSubscriptionWhereInput = {
+    AND?: PushSubscriptionWhereInput | PushSubscriptionWhereInput[]
+    OR?: PushSubscriptionWhereInput[]
+    NOT?: PushSubscriptionWhereInput | PushSubscriptionWhereInput[]
+    id?: StringFilter<"PushSubscription"> | string
+    userId?: StringFilter<"PushSubscription"> | string
+    endpoint?: StringFilter<"PushSubscription"> | string
+    p256dhKey?: StringFilter<"PushSubscription"> | string
+    authKey?: StringFilter<"PushSubscription"> | string
+    userAgent?: StringNullableFilter<"PushSubscription"> | string | null
+    createdAt?: DateTimeFilter<"PushSubscription"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type PushSubscriptionOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    endpoint?: SortOrder
+    p256dhKey?: SortOrder
+    authKey?: SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type PushSubscriptionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    endpoint?: string
+    AND?: PushSubscriptionWhereInput | PushSubscriptionWhereInput[]
+    OR?: PushSubscriptionWhereInput[]
+    NOT?: PushSubscriptionWhereInput | PushSubscriptionWhereInput[]
+    userId?: StringFilter<"PushSubscription"> | string
+    p256dhKey?: StringFilter<"PushSubscription"> | string
+    authKey?: StringFilter<"PushSubscription"> | string
+    userAgent?: StringNullableFilter<"PushSubscription"> | string | null
+    createdAt?: DateTimeFilter<"PushSubscription"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id" | "endpoint">
+
+  export type PushSubscriptionOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    endpoint?: SortOrder
+    p256dhKey?: SortOrder
+    authKey?: SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: PushSubscriptionCountOrderByAggregateInput
+    _max?: PushSubscriptionMaxOrderByAggregateInput
+    _min?: PushSubscriptionMinOrderByAggregateInput
+  }
+
+  export type PushSubscriptionScalarWhereWithAggregatesInput = {
+    AND?: PushSubscriptionScalarWhereWithAggregatesInput | PushSubscriptionScalarWhereWithAggregatesInput[]
+    OR?: PushSubscriptionScalarWhereWithAggregatesInput[]
+    NOT?: PushSubscriptionScalarWhereWithAggregatesInput | PushSubscriptionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PushSubscription"> | string
+    userId?: StringWithAggregatesFilter<"PushSubscription"> | string
+    endpoint?: StringWithAggregatesFilter<"PushSubscription"> | string
+    p256dhKey?: StringWithAggregatesFilter<"PushSubscription"> | string
+    authKey?: StringWithAggregatesFilter<"PushSubscription"> | string
+    userAgent?: StringNullableWithAggregatesFilter<"PushSubscription"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PushSubscription"> | Date | string
   }
 
   export type AccountWhereInput = {
@@ -24599,6 +27224,7 @@ export namespace Prisma {
     id?: StringFilter<"Relationship"> | string
     name?: StringNullableFilter<"Relationship"> | string | null
     status?: EnumRelationshipStatusFilter<"Relationship"> | $Enums.RelationshipStatus
+    anniversaryDate?: DateTimeNullableFilter<"Relationship"> | Date | string | null
     createdAt?: DateTimeFilter<"Relationship"> | Date | string
     updatedAt?: DateTimeFilter<"Relationship"> | Date | string
     members?: RelationshipMemberListRelationFilter
@@ -24609,12 +27235,14 @@ export namespace Prisma {
     meetings?: MeetingListRelationFilter
     streak?: XOR<StreakNullableRelationFilter, StreakWhereInput> | null
     subscriptions?: SubscriptionListRelationFilter
+    memories?: MemoryListRelationFilter
   }
 
   export type RelationshipOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrderInput | SortOrder
     status?: SortOrder
+    anniversaryDate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     members?: RelationshipMemberOrderByRelationAggregateInput
@@ -24625,6 +27253,7 @@ export namespace Prisma {
     meetings?: MeetingOrderByRelationAggregateInput
     streak?: StreakOrderByWithRelationInput
     subscriptions?: SubscriptionOrderByRelationAggregateInput
+    memories?: MemoryOrderByRelationAggregateInput
   }
 
   export type RelationshipWhereUniqueInput = Prisma.AtLeast<{
@@ -24634,6 +27263,7 @@ export namespace Prisma {
     NOT?: RelationshipWhereInput | RelationshipWhereInput[]
     name?: StringNullableFilter<"Relationship"> | string | null
     status?: EnumRelationshipStatusFilter<"Relationship"> | $Enums.RelationshipStatus
+    anniversaryDate?: DateTimeNullableFilter<"Relationship"> | Date | string | null
     createdAt?: DateTimeFilter<"Relationship"> | Date | string
     updatedAt?: DateTimeFilter<"Relationship"> | Date | string
     members?: RelationshipMemberListRelationFilter
@@ -24644,12 +27274,14 @@ export namespace Prisma {
     meetings?: MeetingListRelationFilter
     streak?: XOR<StreakNullableRelationFilter, StreakWhereInput> | null
     subscriptions?: SubscriptionListRelationFilter
+    memories?: MemoryListRelationFilter
   }, "id">
 
   export type RelationshipOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrderInput | SortOrder
     status?: SortOrder
+    anniversaryDate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: RelationshipCountOrderByAggregateInput
@@ -24664,6 +27296,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Relationship"> | string
     name?: StringNullableWithAggregatesFilter<"Relationship"> | string | null
     status?: EnumRelationshipStatusWithAggregatesFilter<"Relationship"> | $Enums.RelationshipStatus
+    anniversaryDate?: DateTimeNullableWithAggregatesFilter<"Relationship"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Relationship"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Relationship"> | Date | string
   }
@@ -24842,6 +27475,19 @@ export namespace Prisma {
     tone?: EnumPromptToneNullableFilter<"Prompt"> | $Enums.PromptTone | null
     isPremium?: BoolFilter<"Prompt"> | boolean
     active?: BoolFilter<"Prompt"> | boolean
+    subcategory?: StringNullableFilter<"Prompt"> | string | null
+    depthLevel?: IntFilter<"Prompt"> | number
+    funScore?: IntFilter<"Prompt"> | number
+    emotionalIntensity?: IntFilter<"Prompt"> | number
+    partnerGuessEnabled?: BoolFilter<"Prompt"> | boolean
+    isDateActivation?: BoolFilter<"Prompt"> | boolean
+    isMilestone?: BoolFilter<"Prompt"> | boolean
+    weekendOnly?: BoolFilter<"Prompt"> | boolean
+    relationshipStage?: StringNullableFilter<"Prompt"> | string | null
+    tags?: StringNullableListFilter<"Prompt">
+    qualityScore?: IntNullableFilter<"Prompt"> | number | null
+    sourceVersion?: IntFilter<"Prompt"> | number
+    repeatCooldownDays?: IntFilter<"Prompt"> | number
     createdAt?: DateTimeFilter<"Prompt"> | Date | string
     updatedAt?: DateTimeFilter<"Prompt"> | Date | string
     dailySessions?: DailySessionListRelationFilter
@@ -24856,6 +27502,19 @@ export namespace Prisma {
     tone?: SortOrderInput | SortOrder
     isPremium?: SortOrder
     active?: SortOrder
+    subcategory?: SortOrderInput | SortOrder
+    depthLevel?: SortOrder
+    funScore?: SortOrder
+    emotionalIntensity?: SortOrder
+    partnerGuessEnabled?: SortOrder
+    isDateActivation?: SortOrder
+    isMilestone?: SortOrder
+    weekendOnly?: SortOrder
+    relationshipStage?: SortOrderInput | SortOrder
+    tags?: SortOrder
+    qualityScore?: SortOrderInput | SortOrder
+    sourceVersion?: SortOrder
+    repeatCooldownDays?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     dailySessions?: DailySessionOrderByRelationAggregateInput
@@ -24873,6 +27532,19 @@ export namespace Prisma {
     tone?: EnumPromptToneNullableFilter<"Prompt"> | $Enums.PromptTone | null
     isPremium?: BoolFilter<"Prompt"> | boolean
     active?: BoolFilter<"Prompt"> | boolean
+    subcategory?: StringNullableFilter<"Prompt"> | string | null
+    depthLevel?: IntFilter<"Prompt"> | number
+    funScore?: IntFilter<"Prompt"> | number
+    emotionalIntensity?: IntFilter<"Prompt"> | number
+    partnerGuessEnabled?: BoolFilter<"Prompt"> | boolean
+    isDateActivation?: BoolFilter<"Prompt"> | boolean
+    isMilestone?: BoolFilter<"Prompt"> | boolean
+    weekendOnly?: BoolFilter<"Prompt"> | boolean
+    relationshipStage?: StringNullableFilter<"Prompt"> | string | null
+    tags?: StringNullableListFilter<"Prompt">
+    qualityScore?: IntNullableFilter<"Prompt"> | number | null
+    sourceVersion?: IntFilter<"Prompt"> | number
+    repeatCooldownDays?: IntFilter<"Prompt"> | number
     createdAt?: DateTimeFilter<"Prompt"> | Date | string
     updatedAt?: DateTimeFilter<"Prompt"> | Date | string
     dailySessions?: DailySessionListRelationFilter
@@ -24887,11 +27559,26 @@ export namespace Prisma {
     tone?: SortOrderInput | SortOrder
     isPremium?: SortOrder
     active?: SortOrder
+    subcategory?: SortOrderInput | SortOrder
+    depthLevel?: SortOrder
+    funScore?: SortOrder
+    emotionalIntensity?: SortOrder
+    partnerGuessEnabled?: SortOrder
+    isDateActivation?: SortOrder
+    isMilestone?: SortOrder
+    weekendOnly?: SortOrder
+    relationshipStage?: SortOrderInput | SortOrder
+    tags?: SortOrder
+    qualityScore?: SortOrderInput | SortOrder
+    sourceVersion?: SortOrder
+    repeatCooldownDays?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PromptCountOrderByAggregateInput
+    _avg?: PromptAvgOrderByAggregateInput
     _max?: PromptMaxOrderByAggregateInput
     _min?: PromptMinOrderByAggregateInput
+    _sum?: PromptSumOrderByAggregateInput
   }
 
   export type PromptScalarWhereWithAggregatesInput = {
@@ -24906,6 +27593,19 @@ export namespace Prisma {
     tone?: EnumPromptToneNullableWithAggregatesFilter<"Prompt"> | $Enums.PromptTone | null
     isPremium?: BoolWithAggregatesFilter<"Prompt"> | boolean
     active?: BoolWithAggregatesFilter<"Prompt"> | boolean
+    subcategory?: StringNullableWithAggregatesFilter<"Prompt"> | string | null
+    depthLevel?: IntWithAggregatesFilter<"Prompt"> | number
+    funScore?: IntWithAggregatesFilter<"Prompt"> | number
+    emotionalIntensity?: IntWithAggregatesFilter<"Prompt"> | number
+    partnerGuessEnabled?: BoolWithAggregatesFilter<"Prompt"> | boolean
+    isDateActivation?: BoolWithAggregatesFilter<"Prompt"> | boolean
+    isMilestone?: BoolWithAggregatesFilter<"Prompt"> | boolean
+    weekendOnly?: BoolWithAggregatesFilter<"Prompt"> | boolean
+    relationshipStage?: StringNullableWithAggregatesFilter<"Prompt"> | string | null
+    tags?: StringNullableListFilter<"Prompt">
+    qualityScore?: IntNullableWithAggregatesFilter<"Prompt"> | number | null
+    sourceVersion?: IntWithAggregatesFilter<"Prompt"> | number
+    repeatCooldownDays?: IntWithAggregatesFilter<"Prompt"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Prompt"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Prompt"> | Date | string
   }
@@ -25458,6 +28158,74 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
   }
 
+  export type MemoryWhereInput = {
+    AND?: MemoryWhereInput | MemoryWhereInput[]
+    OR?: MemoryWhereInput[]
+    NOT?: MemoryWhereInput | MemoryWhereInput[]
+    id?: StringFilter<"Memory"> | string
+    relationshipId?: StringFilter<"Memory"> | string
+    savedByUserId?: StringFilter<"Memory"> | string
+    sourceType?: StringFilter<"Memory"> | string
+    sourceId?: StringNullableFilter<"Memory"> | string | null
+    snapshot?: JsonFilter<"Memory">
+    savedAt?: DateTimeFilter<"Memory"> | Date | string
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+    savedByUser?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type MemoryOrderByWithRelationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    savedByUserId?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrderInput | SortOrder
+    snapshot?: SortOrder
+    savedAt?: SortOrder
+    relationship?: RelationshipOrderByWithRelationInput
+    savedByUser?: UserOrderByWithRelationInput
+  }
+
+  export type MemoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MemoryWhereInput | MemoryWhereInput[]
+    OR?: MemoryWhereInput[]
+    NOT?: MemoryWhereInput | MemoryWhereInput[]
+    relationshipId?: StringFilter<"Memory"> | string
+    savedByUserId?: StringFilter<"Memory"> | string
+    sourceType?: StringFilter<"Memory"> | string
+    sourceId?: StringNullableFilter<"Memory"> | string | null
+    snapshot?: JsonFilter<"Memory">
+    savedAt?: DateTimeFilter<"Memory"> | Date | string
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+    savedByUser?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type MemoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    savedByUserId?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrderInput | SortOrder
+    snapshot?: SortOrder
+    savedAt?: SortOrder
+    _count?: MemoryCountOrderByAggregateInput
+    _max?: MemoryMaxOrderByAggregateInput
+    _min?: MemoryMinOrderByAggregateInput
+  }
+
+  export type MemoryScalarWhereWithAggregatesInput = {
+    AND?: MemoryScalarWhereWithAggregatesInput | MemoryScalarWhereWithAggregatesInput[]
+    OR?: MemoryScalarWhereWithAggregatesInput[]
+    NOT?: MemoryScalarWhereWithAggregatesInput | MemoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Memory"> | string
+    relationshipId?: StringWithAggregatesFilter<"Memory"> | string
+    savedByUserId?: StringWithAggregatesFilter<"Memory"> | string
+    sourceType?: StringWithAggregatesFilter<"Memory"> | string
+    sourceId?: StringNullableWithAggregatesFilter<"Memory"> | string | null
+    snapshot?: JsonWithAggregatesFilter<"Memory">
+    savedAt?: DateTimeWithAggregatesFilter<"Memory"> | Date | string
+  }
+
   export type BetaSignupWhereInput = {
     AND?: BetaSignupWhereInput | BetaSignupWhereInput[]
     OR?: BetaSignupWhereInput[]
@@ -25773,6 +28541,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -25786,6 +28555,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -25795,6 +28566,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -25808,6 +28580,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUpdateInput = {
@@ -25817,6 +28591,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -25830,6 +28605,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -25839,6 +28616,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -25852,6 +28630,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -25861,6 +28641,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -25872,6 +28653,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -25883,8 +28665,78 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushSubscriptionCreateInput = {
+    id?: string
+    endpoint: string
+    p256dhKey: string
+    authKey: string
+    userAgent?: string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutPushSubscriptionsInput
+  }
+
+  export type PushSubscriptionUncheckedCreateInput = {
+    id?: string
+    userId: string
+    endpoint: string
+    p256dhKey: string
+    authKey: string
+    userAgent?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PushSubscriptionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    p256dhKey?: StringFieldUpdateOperationsInput | string
+    authKey?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPushSubscriptionsNestedInput
+  }
+
+  export type PushSubscriptionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    p256dhKey?: StringFieldUpdateOperationsInput | string
+    authKey?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushSubscriptionCreateManyInput = {
+    id?: string
+    userId: string
+    endpoint: string
+    p256dhKey: string
+    authKey: string
+    userAgent?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PushSubscriptionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    p256dhKey?: StringFieldUpdateOperationsInput | string
+    authKey?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushSubscriptionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    p256dhKey?: StringFieldUpdateOperationsInput | string
+    authKey?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AccountCreateInput = {
@@ -26085,6 +28937,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -26095,12 +28948,14 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -26111,12 +28966,14 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -26127,12 +28984,14 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -26143,12 +29002,14 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipCreateManyInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -26157,6 +29018,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -26165,6 +29027,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -26349,6 +29212,19 @@ export namespace Prisma {
     tone?: $Enums.PromptTone | null
     isPremium?: boolean
     active?: boolean
+    subcategory?: string | null
+    depthLevel?: number
+    funScore?: number
+    emotionalIntensity?: number
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: string | null
+    tags?: PromptCreatetagsInput | string[]
+    qualityScore?: number | null
+    sourceVersion?: number
+    repeatCooldownDays?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     dailySessions?: DailySessionCreateNestedManyWithoutPromptInput
@@ -26363,6 +29239,19 @@ export namespace Prisma {
     tone?: $Enums.PromptTone | null
     isPremium?: boolean
     active?: boolean
+    subcategory?: string | null
+    depthLevel?: number
+    funScore?: number
+    emotionalIntensity?: number
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: string | null
+    tags?: PromptCreatetagsInput | string[]
+    qualityScore?: number | null
+    sourceVersion?: number
+    repeatCooldownDays?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     dailySessions?: DailySessionUncheckedCreateNestedManyWithoutPromptInput
@@ -26377,6 +29266,19 @@ export namespace Prisma {
     tone?: NullableEnumPromptToneFieldUpdateOperationsInput | $Enums.PromptTone | null
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    depthLevel?: IntFieldUpdateOperationsInput | number
+    funScore?: IntFieldUpdateOperationsInput | number
+    emotionalIntensity?: IntFieldUpdateOperationsInput | number
+    partnerGuessEnabled?: BoolFieldUpdateOperationsInput | boolean
+    isDateActivation?: BoolFieldUpdateOperationsInput | boolean
+    isMilestone?: BoolFieldUpdateOperationsInput | boolean
+    weekendOnly?: BoolFieldUpdateOperationsInput | boolean
+    relationshipStage?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: PromptUpdatetagsInput | string[]
+    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    sourceVersion?: IntFieldUpdateOperationsInput | number
+    repeatCooldownDays?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dailySessions?: DailySessionUpdateManyWithoutPromptNestedInput
@@ -26391,6 +29293,19 @@ export namespace Prisma {
     tone?: NullableEnumPromptToneFieldUpdateOperationsInput | $Enums.PromptTone | null
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    depthLevel?: IntFieldUpdateOperationsInput | number
+    funScore?: IntFieldUpdateOperationsInput | number
+    emotionalIntensity?: IntFieldUpdateOperationsInput | number
+    partnerGuessEnabled?: BoolFieldUpdateOperationsInput | boolean
+    isDateActivation?: BoolFieldUpdateOperationsInput | boolean
+    isMilestone?: BoolFieldUpdateOperationsInput | boolean
+    weekendOnly?: BoolFieldUpdateOperationsInput | boolean
+    relationshipStage?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: PromptUpdatetagsInput | string[]
+    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    sourceVersion?: IntFieldUpdateOperationsInput | number
+    repeatCooldownDays?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dailySessions?: DailySessionUncheckedUpdateManyWithoutPromptNestedInput
@@ -26405,6 +29320,19 @@ export namespace Prisma {
     tone?: $Enums.PromptTone | null
     isPremium?: boolean
     active?: boolean
+    subcategory?: string | null
+    depthLevel?: number
+    funScore?: number
+    emotionalIntensity?: number
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: string | null
+    tags?: PromptCreatetagsInput | string[]
+    qualityScore?: number | null
+    sourceVersion?: number
+    repeatCooldownDays?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -26418,6 +29346,19 @@ export namespace Prisma {
     tone?: NullableEnumPromptToneFieldUpdateOperationsInput | $Enums.PromptTone | null
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    depthLevel?: IntFieldUpdateOperationsInput | number
+    funScore?: IntFieldUpdateOperationsInput | number
+    emotionalIntensity?: IntFieldUpdateOperationsInput | number
+    partnerGuessEnabled?: BoolFieldUpdateOperationsInput | boolean
+    isDateActivation?: BoolFieldUpdateOperationsInput | boolean
+    isMilestone?: BoolFieldUpdateOperationsInput | boolean
+    weekendOnly?: BoolFieldUpdateOperationsInput | boolean
+    relationshipStage?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: PromptUpdatetagsInput | string[]
+    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    sourceVersion?: IntFieldUpdateOperationsInput | number
+    repeatCooldownDays?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -26431,6 +29372,19 @@ export namespace Prisma {
     tone?: NullableEnumPromptToneFieldUpdateOperationsInput | $Enums.PromptTone | null
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    depthLevel?: IntFieldUpdateOperationsInput | number
+    funScore?: IntFieldUpdateOperationsInput | number
+    emotionalIntensity?: IntFieldUpdateOperationsInput | number
+    partnerGuessEnabled?: BoolFieldUpdateOperationsInput | boolean
+    isDateActivation?: BoolFieldUpdateOperationsInput | boolean
+    isMilestone?: BoolFieldUpdateOperationsInput | boolean
+    weekendOnly?: BoolFieldUpdateOperationsInput | boolean
+    relationshipStage?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: PromptUpdatetagsInput | string[]
+    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    sourceVersion?: IntFieldUpdateOperationsInput | number
+    repeatCooldownDays?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -26983,6 +29937,74 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MemoryCreateInput = {
+    id?: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutMemoriesInput
+    savedByUser: UserCreateNestedOneWithoutMemoriesInput
+  }
+
+  export type MemoryUncheckedCreateInput = {
+    id?: string
+    relationshipId: string
+    savedByUserId: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
+  }
+
+  export type MemoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutMemoriesNestedInput
+    savedByUser?: UserUpdateOneRequiredWithoutMemoriesNestedInput
+  }
+
+  export type MemoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    savedByUserId?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemoryCreateManyInput = {
+    id?: string
+    relationshipId: string
+    savedByUserId: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
+  }
+
+  export type MemoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    savedByUserId?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type BetaSignupCreateInput = {
     id?: string
     email: string
@@ -27411,6 +30433,18 @@ export namespace Prisma {
     none?: SubscriptionWhereInput
   }
 
+  export type PushSubscriptionListRelationFilter = {
+    every?: PushSubscriptionWhereInput
+    some?: PushSubscriptionWhereInput
+    none?: PushSubscriptionWhereInput
+  }
+
+  export type MemoryListRelationFilter = {
+    every?: MemoryWhereInput
+    some?: MemoryWhereInput
+    none?: MemoryWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -27460,6 +30494,14 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type PushSubscriptionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MemoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
@@ -27467,6 +30509,7 @@ export namespace Prisma {
     name?: SortOrder
     image?: SortOrder
     password?: SortOrder
+    deletedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -27478,6 +30521,7 @@ export namespace Prisma {
     name?: SortOrder
     image?: SortOrder
     password?: SortOrder
+    deletedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -27489,6 +30533,7 @@ export namespace Prisma {
     name?: SortOrder
     image?: SortOrder
     password?: SortOrder
+    deletedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -27557,6 +30602,41 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type UserRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type PushSubscriptionCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    endpoint?: SortOrder
+    p256dhKey?: SortOrder
+    authKey?: SortOrder
+    userAgent?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PushSubscriptionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    endpoint?: SortOrder
+    p256dhKey?: SortOrder
+    authKey?: SortOrder
+    userAgent?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PushSubscriptionMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    endpoint?: SortOrder
+    p256dhKey?: SortOrder
+    authKey?: SortOrder
+    userAgent?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -27566,11 +30646,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type UserRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type AccountProviderProviderAccountIdCompoundUniqueInput = {
@@ -27747,6 +30822,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     status?: SortOrder
+    anniversaryDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -27755,6 +30831,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     status?: SortOrder
+    anniversaryDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -27763,6 +30840,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     status?: SortOrder
+    anniversaryDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -27905,6 +30983,25 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type PromptCountOrderByAggregateInput = {
     id?: SortOrder
     text?: SortOrder
@@ -27914,8 +31011,30 @@ export namespace Prisma {
     tone?: SortOrder
     isPremium?: SortOrder
     active?: SortOrder
+    subcategory?: SortOrder
+    depthLevel?: SortOrder
+    funScore?: SortOrder
+    emotionalIntensity?: SortOrder
+    partnerGuessEnabled?: SortOrder
+    isDateActivation?: SortOrder
+    isMilestone?: SortOrder
+    weekendOnly?: SortOrder
+    relationshipStage?: SortOrder
+    tags?: SortOrder
+    qualityScore?: SortOrder
+    sourceVersion?: SortOrder
+    repeatCooldownDays?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type PromptAvgOrderByAggregateInput = {
+    depthLevel?: SortOrder
+    funScore?: SortOrder
+    emotionalIntensity?: SortOrder
+    qualityScore?: SortOrder
+    sourceVersion?: SortOrder
+    repeatCooldownDays?: SortOrder
   }
 
   export type PromptMaxOrderByAggregateInput = {
@@ -27927,6 +31046,18 @@ export namespace Prisma {
     tone?: SortOrder
     isPremium?: SortOrder
     active?: SortOrder
+    subcategory?: SortOrder
+    depthLevel?: SortOrder
+    funScore?: SortOrder
+    emotionalIntensity?: SortOrder
+    partnerGuessEnabled?: SortOrder
+    isDateActivation?: SortOrder
+    isMilestone?: SortOrder
+    weekendOnly?: SortOrder
+    relationshipStage?: SortOrder
+    qualityScore?: SortOrder
+    sourceVersion?: SortOrder
+    repeatCooldownDays?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -27940,8 +31071,29 @@ export namespace Prisma {
     tone?: SortOrder
     isPremium?: SortOrder
     active?: SortOrder
+    subcategory?: SortOrder
+    depthLevel?: SortOrder
+    funScore?: SortOrder
+    emotionalIntensity?: SortOrder
+    partnerGuessEnabled?: SortOrder
+    isDateActivation?: SortOrder
+    isMilestone?: SortOrder
+    weekendOnly?: SortOrder
+    relationshipStage?: SortOrder
+    qualityScore?: SortOrder
+    sourceVersion?: SortOrder
+    repeatCooldownDays?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type PromptSumOrderByAggregateInput = {
+    depthLevel?: SortOrder
+    funScore?: SortOrder
+    emotionalIntensity?: SortOrder
+    qualityScore?: SortOrder
+    sourceVersion?: SortOrder
+    repeatCooldownDays?: SortOrder
   }
 
   export type EnumPromptTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -27980,6 +31132,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type EnumSessionStateFilter<$PrismaModel = never> = {
@@ -28223,17 +31391,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type StreakCountOrderByAggregateInput = {
     relationshipId?: SortOrder
     currentCount?: SortOrder
@@ -28263,22 +31420,6 @@ export namespace Prisma {
   export type StreakSumOrderByAggregateInput = {
     currentCount?: SortOrder
     longestCount?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type EnumSubscriptionStatusFilter<$PrismaModel = never> = {
@@ -28340,6 +31481,81 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSubscriptionStatusFilter<$PrismaModel>
     _max?: NestedEnumSubscriptionStatusFilter<$PrismaModel>
+  }
+  export type JsonFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type MemoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    savedByUserId?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    snapshot?: SortOrder
+    savedAt?: SortOrder
+  }
+
+  export type MemoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    savedByUserId?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    savedAt?: SortOrder
+  }
+
+  export type MemoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    savedByUserId?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    savedAt?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type BetaSignupCountOrderByAggregateInput = {
@@ -28615,6 +31831,20 @@ export namespace Prisma {
     connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
   }
 
+  export type PushSubscriptionCreateNestedManyWithoutUserInput = {
+    create?: XOR<PushSubscriptionCreateWithoutUserInput, PushSubscriptionUncheckedCreateWithoutUserInput> | PushSubscriptionCreateWithoutUserInput[] | PushSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PushSubscriptionCreateOrConnectWithoutUserInput | PushSubscriptionCreateOrConnectWithoutUserInput[]
+    createMany?: PushSubscriptionCreateManyUserInputEnvelope
+    connect?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+  }
+
+  export type MemoryCreateNestedManyWithoutSavedByUserInput = {
+    create?: XOR<MemoryCreateWithoutSavedByUserInput, MemoryUncheckedCreateWithoutSavedByUserInput> | MemoryCreateWithoutSavedByUserInput[] | MemoryUncheckedCreateWithoutSavedByUserInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutSavedByUserInput | MemoryCreateOrConnectWithoutSavedByUserInput[]
+    createMany?: MemoryCreateManySavedByUserInputEnvelope
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -28690,6 +31920,20 @@ export namespace Prisma {
     connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput | SubscriptionCreateOrConnectWithoutUserInput[]
     createMany?: SubscriptionCreateManyUserInputEnvelope
     connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+  }
+
+  export type PushSubscriptionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PushSubscriptionCreateWithoutUserInput, PushSubscriptionUncheckedCreateWithoutUserInput> | PushSubscriptionCreateWithoutUserInput[] | PushSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PushSubscriptionCreateOrConnectWithoutUserInput | PushSubscriptionCreateOrConnectWithoutUserInput[]
+    createMany?: PushSubscriptionCreateManyUserInputEnvelope
+    connect?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+  }
+
+  export type MemoryUncheckedCreateNestedManyWithoutSavedByUserInput = {
+    create?: XOR<MemoryCreateWithoutSavedByUserInput, MemoryUncheckedCreateWithoutSavedByUserInput> | MemoryCreateWithoutSavedByUserInput[] | MemoryUncheckedCreateWithoutSavedByUserInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutSavedByUserInput | MemoryCreateOrConnectWithoutSavedByUserInput[]
+    createMany?: MemoryCreateManySavedByUserInputEnvelope
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -28862,6 +32106,34 @@ export namespace Prisma {
     deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
   }
 
+  export type PushSubscriptionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PushSubscriptionCreateWithoutUserInput, PushSubscriptionUncheckedCreateWithoutUserInput> | PushSubscriptionCreateWithoutUserInput[] | PushSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PushSubscriptionCreateOrConnectWithoutUserInput | PushSubscriptionCreateOrConnectWithoutUserInput[]
+    upsert?: PushSubscriptionUpsertWithWhereUniqueWithoutUserInput | PushSubscriptionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PushSubscriptionCreateManyUserInputEnvelope
+    set?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    disconnect?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    delete?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    connect?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    update?: PushSubscriptionUpdateWithWhereUniqueWithoutUserInput | PushSubscriptionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PushSubscriptionUpdateManyWithWhereWithoutUserInput | PushSubscriptionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PushSubscriptionScalarWhereInput | PushSubscriptionScalarWhereInput[]
+  }
+
+  export type MemoryUpdateManyWithoutSavedByUserNestedInput = {
+    create?: XOR<MemoryCreateWithoutSavedByUserInput, MemoryUncheckedCreateWithoutSavedByUserInput> | MemoryCreateWithoutSavedByUserInput[] | MemoryUncheckedCreateWithoutSavedByUserInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutSavedByUserInput | MemoryCreateOrConnectWithoutSavedByUserInput[]
+    upsert?: MemoryUpsertWithWhereUniqueWithoutSavedByUserInput | MemoryUpsertWithWhereUniqueWithoutSavedByUserInput[]
+    createMany?: MemoryCreateManySavedByUserInputEnvelope
+    set?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    disconnect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    delete?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    update?: MemoryUpdateWithWhereUniqueWithoutSavedByUserInput | MemoryUpdateWithWhereUniqueWithoutSavedByUserInput[]
+    updateMany?: MemoryUpdateManyWithWhereWithoutSavedByUserInput | MemoryUpdateManyWithWhereWithoutSavedByUserInput[]
+    deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -29016,6 +32288,48 @@ export namespace Prisma {
     deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
   }
 
+  export type PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PushSubscriptionCreateWithoutUserInput, PushSubscriptionUncheckedCreateWithoutUserInput> | PushSubscriptionCreateWithoutUserInput[] | PushSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PushSubscriptionCreateOrConnectWithoutUserInput | PushSubscriptionCreateOrConnectWithoutUserInput[]
+    upsert?: PushSubscriptionUpsertWithWhereUniqueWithoutUserInput | PushSubscriptionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PushSubscriptionCreateManyUserInputEnvelope
+    set?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    disconnect?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    delete?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    connect?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    update?: PushSubscriptionUpdateWithWhereUniqueWithoutUserInput | PushSubscriptionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PushSubscriptionUpdateManyWithWhereWithoutUserInput | PushSubscriptionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PushSubscriptionScalarWhereInput | PushSubscriptionScalarWhereInput[]
+  }
+
+  export type MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput = {
+    create?: XOR<MemoryCreateWithoutSavedByUserInput, MemoryUncheckedCreateWithoutSavedByUserInput> | MemoryCreateWithoutSavedByUserInput[] | MemoryUncheckedCreateWithoutSavedByUserInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutSavedByUserInput | MemoryCreateOrConnectWithoutSavedByUserInput[]
+    upsert?: MemoryUpsertWithWhereUniqueWithoutSavedByUserInput | MemoryUpsertWithWhereUniqueWithoutSavedByUserInput[]
+    createMany?: MemoryCreateManySavedByUserInputEnvelope
+    set?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    disconnect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    delete?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    update?: MemoryUpdateWithWhereUniqueWithoutSavedByUserInput | MemoryUpdateWithWhereUniqueWithoutSavedByUserInput[]
+    updateMany?: MemoryUpdateManyWithWhereWithoutSavedByUserInput | MemoryUpdateManyWithWhereWithoutSavedByUserInput[]
+    deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutPushSubscriptionsInput = {
+    create?: XOR<UserCreateWithoutPushSubscriptionsInput, UserUncheckedCreateWithoutPushSubscriptionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPushSubscriptionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutPushSubscriptionsNestedInput = {
+    create?: XOR<UserCreateWithoutPushSubscriptionsInput, UserUncheckedCreateWithoutPushSubscriptionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPushSubscriptionsInput
+    upsert?: UserUpsertWithoutPushSubscriptionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPushSubscriptionsInput, UserUpdateWithoutPushSubscriptionsInput>, UserUncheckedUpdateWithoutPushSubscriptionsInput>
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -29107,6 +32421,13 @@ export namespace Prisma {
     connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
   }
 
+  export type MemoryCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<MemoryCreateWithoutRelationshipInput, MemoryUncheckedCreateWithoutRelationshipInput> | MemoryCreateWithoutRelationshipInput[] | MemoryUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutRelationshipInput | MemoryCreateOrConnectWithoutRelationshipInput[]
+    createMany?: MemoryCreateManyRelationshipInputEnvelope
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+  }
+
   export type RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput = {
     create?: XOR<RelationshipMemberCreateWithoutRelationshipInput, RelationshipMemberUncheckedCreateWithoutRelationshipInput> | RelationshipMemberCreateWithoutRelationshipInput[] | RelationshipMemberUncheckedCreateWithoutRelationshipInput[]
     connectOrCreate?: RelationshipMemberCreateOrConnectWithoutRelationshipInput | RelationshipMemberCreateOrConnectWithoutRelationshipInput[]
@@ -29160,6 +32481,13 @@ export namespace Prisma {
     connectOrCreate?: SubscriptionCreateOrConnectWithoutRelationshipInput | SubscriptionCreateOrConnectWithoutRelationshipInput[]
     createMany?: SubscriptionCreateManyRelationshipInputEnvelope
     connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+  }
+
+  export type MemoryUncheckedCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<MemoryCreateWithoutRelationshipInput, MemoryUncheckedCreateWithoutRelationshipInput> | MemoryCreateWithoutRelationshipInput[] | MemoryUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutRelationshipInput | MemoryCreateOrConnectWithoutRelationshipInput[]
+    createMany?: MemoryCreateManyRelationshipInputEnvelope
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
   }
 
   export type EnumRelationshipStatusFieldUpdateOperationsInput = {
@@ -29274,6 +32602,20 @@ export namespace Prisma {
     deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
   }
 
+  export type MemoryUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<MemoryCreateWithoutRelationshipInput, MemoryUncheckedCreateWithoutRelationshipInput> | MemoryCreateWithoutRelationshipInput[] | MemoryUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutRelationshipInput | MemoryCreateOrConnectWithoutRelationshipInput[]
+    upsert?: MemoryUpsertWithWhereUniqueWithoutRelationshipInput | MemoryUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: MemoryCreateManyRelationshipInputEnvelope
+    set?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    disconnect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    delete?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    update?: MemoryUpdateWithWhereUniqueWithoutRelationshipInput | MemoryUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: MemoryUpdateManyWithWhereWithoutRelationshipInput | MemoryUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
+  }
+
   export type RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput = {
     create?: XOR<RelationshipMemberCreateWithoutRelationshipInput, RelationshipMemberUncheckedCreateWithoutRelationshipInput> | RelationshipMemberCreateWithoutRelationshipInput[] | RelationshipMemberUncheckedCreateWithoutRelationshipInput[]
     connectOrCreate?: RelationshipMemberCreateOrConnectWithoutRelationshipInput | RelationshipMemberCreateOrConnectWithoutRelationshipInput[]
@@ -29382,6 +32724,20 @@ export namespace Prisma {
     deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
   }
 
+  export type MemoryUncheckedUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<MemoryCreateWithoutRelationshipInput, MemoryUncheckedCreateWithoutRelationshipInput> | MemoryCreateWithoutRelationshipInput[] | MemoryUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: MemoryCreateOrConnectWithoutRelationshipInput | MemoryCreateOrConnectWithoutRelationshipInput[]
+    upsert?: MemoryUpsertWithWhereUniqueWithoutRelationshipInput | MemoryUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: MemoryCreateManyRelationshipInputEnvelope
+    set?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    disconnect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    delete?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+    update?: MemoryUpdateWithWhereUniqueWithoutRelationshipInput | MemoryUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: MemoryUpdateManyWithWhereWithoutRelationshipInput | MemoryUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
+  }
+
   export type RelationshipCreateNestedOneWithoutMembersInput = {
     create?: XOR<RelationshipCreateWithoutMembersInput, RelationshipUncheckedCreateWithoutMembersInput>
     connectOrCreate?: RelationshipCreateOrConnectWithoutMembersInput
@@ -29442,6 +32798,10 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutInvitesSentInput, UserUpdateWithoutInvitesSentInput>, UserUncheckedUpdateWithoutInvitesSentInput>
   }
 
+  export type PromptCreatetagsInput = {
+    set: string[]
+  }
+
   export type DailySessionCreateNestedManyWithoutPromptInput = {
     create?: XOR<DailySessionCreateWithoutPromptInput, DailySessionUncheckedCreateWithoutPromptInput> | DailySessionCreateWithoutPromptInput[] | DailySessionUncheckedCreateWithoutPromptInput[]
     connectOrCreate?: DailySessionCreateOrConnectWithoutPromptInput | DailySessionCreateOrConnectWithoutPromptInput[]
@@ -29470,6 +32830,19 @@ export namespace Prisma {
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type PromptUpdatetagsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type DailySessionUpdateManyWithoutPromptNestedInput = {
@@ -29834,14 +33207,6 @@ export namespace Prisma {
     connect?: RelationshipWhereUniqueInput
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type RelationshipUpdateOneRequiredWithoutStreakNestedInput = {
     create?: XOR<RelationshipCreateWithoutStreakInput, RelationshipUncheckedCreateWithoutStreakInput>
     connectOrCreate?: RelationshipCreateOrConnectWithoutStreakInput
@@ -29882,6 +33247,34 @@ export namespace Prisma {
     delete?: RelationshipWhereInput | boolean
     connect?: RelationshipWhereUniqueInput
     update?: XOR<XOR<RelationshipUpdateToOneWithWhereWithoutSubscriptionsInput, RelationshipUpdateWithoutSubscriptionsInput>, RelationshipUncheckedUpdateWithoutSubscriptionsInput>
+  }
+
+  export type RelationshipCreateNestedOneWithoutMemoriesInput = {
+    create?: XOR<RelationshipCreateWithoutMemoriesInput, RelationshipUncheckedCreateWithoutMemoriesInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutMemoriesInput
+    connect?: RelationshipWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutMemoriesInput = {
+    create?: XOR<UserCreateWithoutMemoriesInput, UserUncheckedCreateWithoutMemoriesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMemoriesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type RelationshipUpdateOneRequiredWithoutMemoriesNestedInput = {
+    create?: XOR<RelationshipCreateWithoutMemoriesInput, RelationshipUncheckedCreateWithoutMemoriesInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutMemoriesInput
+    upsert?: RelationshipUpsertWithoutMemoriesInput
+    connect?: RelationshipWhereUniqueInput
+    update?: XOR<XOR<RelationshipUpdateToOneWithWhereWithoutMemoriesInput, RelationshipUpdateWithoutMemoriesInput>, RelationshipUncheckedUpdateWithoutMemoriesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutMemoriesNestedInput = {
+    create?: XOR<UserCreateWithoutMemoriesInput, UserUncheckedCreateWithoutMemoriesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMemoriesInput
+    upsert?: UserUpsertWithoutMemoriesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMemoriesInput, UserUpdateWithoutMemoriesInput>, UserUncheckedUpdateWithoutMemoriesInput>
   }
 
   export type RelationshipCreateNestedOneWithoutQuizSessionsInput = {
@@ -30319,23 +33712,6 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type NestedEnumSessionStateFilter<$PrismaModel = never> = {
-    equals?: $Enums.SessionState | EnumSessionStateFieldRefInput<$PrismaModel>
-    in?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
-    not?: NestedEnumSessionStateFilter<$PrismaModel> | $Enums.SessionState
-  }
-
-  export type NestedEnumSessionStateWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SessionState | EnumSessionStateFieldRefInput<$PrismaModel>
-    in?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
-    not?: NestedEnumSessionStateWithAggregatesFilter<$PrismaModel> | $Enums.SessionState
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSessionStateFilter<$PrismaModel>
-    _max?: NestedEnumSessionStateFilter<$PrismaModel>
-  }
-
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -30363,6 +33739,23 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumSessionStateFilter<$PrismaModel = never> = {
+    equals?: $Enums.SessionState | EnumSessionStateFieldRefInput<$PrismaModel>
+    in?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumSessionStateFilter<$PrismaModel> | $Enums.SessionState
+  }
+
+  export type NestedEnumSessionStateWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SessionState | EnumSessionStateFieldRefInput<$PrismaModel>
+    in?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SessionState[] | ListEnumSessionStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumSessionStateWithAggregatesFilter<$PrismaModel> | $Enums.SessionState
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSessionStateFilter<$PrismaModel>
+    _max?: NestedEnumSessionStateFilter<$PrismaModel>
+  }
+
   export type NestedEnumSubscriptionStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.SubscriptionStatus | EnumSubscriptionStatusFieldRefInput<$PrismaModel>
     in?: $Enums.SubscriptionStatus[] | ListEnumSubscriptionStatusFieldRefInput<$PrismaModel>
@@ -30378,6 +33771,28 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSubscriptionStatusFilter<$PrismaModel>
     _max?: NestedEnumSubscriptionStatusFilter<$PrismaModel>
+  }
+  export type NestedJsonFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedEnumQuizStateFilter<$PrismaModel = never> = {
@@ -30744,6 +34159,62 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PushSubscriptionCreateWithoutUserInput = {
+    id?: string
+    endpoint: string
+    p256dhKey: string
+    authKey: string
+    userAgent?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PushSubscriptionUncheckedCreateWithoutUserInput = {
+    id?: string
+    endpoint: string
+    p256dhKey: string
+    authKey: string
+    userAgent?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PushSubscriptionCreateOrConnectWithoutUserInput = {
+    where: PushSubscriptionWhereUniqueInput
+    create: XOR<PushSubscriptionCreateWithoutUserInput, PushSubscriptionUncheckedCreateWithoutUserInput>
+  }
+
+  export type PushSubscriptionCreateManyUserInputEnvelope = {
+    data: PushSubscriptionCreateManyUserInput | PushSubscriptionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MemoryCreateWithoutSavedByUserInput = {
+    id?: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutMemoriesInput
+  }
+
+  export type MemoryUncheckedCreateWithoutSavedByUserInput = {
+    id?: string
+    relationshipId: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
+  }
+
+  export type MemoryCreateOrConnectWithoutSavedByUserInput = {
+    where: MemoryWhereUniqueInput
+    create: XOR<MemoryCreateWithoutSavedByUserInput, MemoryUncheckedCreateWithoutSavedByUserInput>
+  }
+
+  export type MemoryCreateManySavedByUserInputEnvelope = {
+    data: MemoryCreateManySavedByUserInput | MemoryCreateManySavedByUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -31073,6 +34544,176 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
   }
 
+  export type PushSubscriptionUpsertWithWhereUniqueWithoutUserInput = {
+    where: PushSubscriptionWhereUniqueInput
+    update: XOR<PushSubscriptionUpdateWithoutUserInput, PushSubscriptionUncheckedUpdateWithoutUserInput>
+    create: XOR<PushSubscriptionCreateWithoutUserInput, PushSubscriptionUncheckedCreateWithoutUserInput>
+  }
+
+  export type PushSubscriptionUpdateWithWhereUniqueWithoutUserInput = {
+    where: PushSubscriptionWhereUniqueInput
+    data: XOR<PushSubscriptionUpdateWithoutUserInput, PushSubscriptionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PushSubscriptionUpdateManyWithWhereWithoutUserInput = {
+    where: PushSubscriptionScalarWhereInput
+    data: XOR<PushSubscriptionUpdateManyMutationInput, PushSubscriptionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PushSubscriptionScalarWhereInput = {
+    AND?: PushSubscriptionScalarWhereInput | PushSubscriptionScalarWhereInput[]
+    OR?: PushSubscriptionScalarWhereInput[]
+    NOT?: PushSubscriptionScalarWhereInput | PushSubscriptionScalarWhereInput[]
+    id?: StringFilter<"PushSubscription"> | string
+    userId?: StringFilter<"PushSubscription"> | string
+    endpoint?: StringFilter<"PushSubscription"> | string
+    p256dhKey?: StringFilter<"PushSubscription"> | string
+    authKey?: StringFilter<"PushSubscription"> | string
+    userAgent?: StringNullableFilter<"PushSubscription"> | string | null
+    createdAt?: DateTimeFilter<"PushSubscription"> | Date | string
+  }
+
+  export type MemoryUpsertWithWhereUniqueWithoutSavedByUserInput = {
+    where: MemoryWhereUniqueInput
+    update: XOR<MemoryUpdateWithoutSavedByUserInput, MemoryUncheckedUpdateWithoutSavedByUserInput>
+    create: XOR<MemoryCreateWithoutSavedByUserInput, MemoryUncheckedCreateWithoutSavedByUserInput>
+  }
+
+  export type MemoryUpdateWithWhereUniqueWithoutSavedByUserInput = {
+    where: MemoryWhereUniqueInput
+    data: XOR<MemoryUpdateWithoutSavedByUserInput, MemoryUncheckedUpdateWithoutSavedByUserInput>
+  }
+
+  export type MemoryUpdateManyWithWhereWithoutSavedByUserInput = {
+    where: MemoryScalarWhereInput
+    data: XOR<MemoryUpdateManyMutationInput, MemoryUncheckedUpdateManyWithoutSavedByUserInput>
+  }
+
+  export type MemoryScalarWhereInput = {
+    AND?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
+    OR?: MemoryScalarWhereInput[]
+    NOT?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
+    id?: StringFilter<"Memory"> | string
+    relationshipId?: StringFilter<"Memory"> | string
+    savedByUserId?: StringFilter<"Memory"> | string
+    sourceType?: StringFilter<"Memory"> | string
+    sourceId?: StringNullableFilter<"Memory"> | string | null
+    snapshot?: JsonFilter<"Memory">
+    savedAt?: DateTimeFilter<"Memory"> | Date | string
+  }
+
+  export type UserCreateWithoutPushSubscriptionsInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberCreateNestedManyWithoutUserInput
+    invitesSent?: InviteCreateNestedManyWithoutSenderInput
+    responses?: ResponseCreateNestedManyWithoutUserInput
+    reflections?: ReflectionCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutSenderInput
+    responses?: ResponseUncheckedCreateNestedManyWithoutUserInput
+    reflections?: ReflectionUncheckedCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationUncheckedCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationUncheckedCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPushSubscriptionsInput, UserUncheckedCreateWithoutPushSubscriptionsInput>
+  }
+
+  export type UserUpsertWithoutPushSubscriptionsInput = {
+    update: XOR<UserUpdateWithoutPushSubscriptionsInput, UserUncheckedUpdateWithoutPushSubscriptionsInput>
+    create: XOR<UserCreateWithoutPushSubscriptionsInput, UserUncheckedCreateWithoutPushSubscriptionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPushSubscriptionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPushSubscriptionsInput, UserUncheckedUpdateWithoutPushSubscriptionsInput>
+  }
+
+  export type UserUpdateWithoutPushSubscriptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUncheckedUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUncheckedUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUncheckedUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUncheckedUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+  }
+
   export type UserCreateWithoutAccountsInput = {
     id?: string
     email: string
@@ -31080,6 +34721,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -31092,6 +34734,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -31101,6 +34745,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -31113,6 +34758,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -31138,6 +34785,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -31150,6 +34798,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -31159,6 +34809,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -31171,6 +34822,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -31180,6 +34833,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -31192,6 +34846,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -31201,6 +34857,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -31213,6 +34870,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -31238,6 +34897,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -31250,6 +34910,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -31259,6 +34921,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -31271,6 +34934,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type RelationshipMemberCreateWithoutRelationshipInput = {
@@ -31504,6 +35169,34 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type MemoryCreateWithoutRelationshipInput = {
+    id?: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
+    savedByUser: UserCreateNestedOneWithoutMemoriesInput
+  }
+
+  export type MemoryUncheckedCreateWithoutRelationshipInput = {
+    id?: string
+    savedByUserId: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
+  }
+
+  export type MemoryCreateOrConnectWithoutRelationshipInput = {
+    where: MemoryWhereUniqueInput
+    create: XOR<MemoryCreateWithoutRelationshipInput, MemoryUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type MemoryCreateManyRelationshipInputEnvelope = {
+    data: MemoryCreateManyRelationshipInput | MemoryCreateManyRelationshipInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RelationshipMemberUpsertWithWhereUniqueWithoutRelationshipInput = {
     where: RelationshipMemberWhereUniqueInput
     update: XOR<RelationshipMemberUpdateWithoutRelationshipInput, RelationshipMemberUncheckedUpdateWithoutRelationshipInput>
@@ -31687,10 +35380,27 @@ export namespace Prisma {
     data: XOR<SubscriptionUpdateManyMutationInput, SubscriptionUncheckedUpdateManyWithoutRelationshipInput>
   }
 
+  export type MemoryUpsertWithWhereUniqueWithoutRelationshipInput = {
+    where: MemoryWhereUniqueInput
+    update: XOR<MemoryUpdateWithoutRelationshipInput, MemoryUncheckedUpdateWithoutRelationshipInput>
+    create: XOR<MemoryCreateWithoutRelationshipInput, MemoryUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type MemoryUpdateWithWhereUniqueWithoutRelationshipInput = {
+    where: MemoryWhereUniqueInput
+    data: XOR<MemoryUpdateWithoutRelationshipInput, MemoryUncheckedUpdateWithoutRelationshipInput>
+  }
+
+  export type MemoryUpdateManyWithWhereWithoutRelationshipInput = {
+    where: MemoryScalarWhereInput
+    data: XOR<MemoryUpdateManyMutationInput, MemoryUncheckedUpdateManyWithoutRelationshipInput>
+  }
+
   export type RelationshipCreateWithoutMembersInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     invites?: InviteCreateNestedManyWithoutRelationshipInput
@@ -31700,12 +35410,14 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutMembersInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     invites?: InviteUncheckedCreateNestedManyWithoutRelationshipInput
@@ -31715,6 +35427,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutMembersInput = {
@@ -31729,6 +35442,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -31741,6 +35455,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutRelationshipMembersInput = {
@@ -31750,6 +35466,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -31762,6 +35479,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutRelationshipMembersInput = {
@@ -31784,6 +35503,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     invites?: InviteUpdateManyWithoutRelationshipNestedInput
@@ -31793,12 +35513,14 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     invites?: InviteUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -31808,6 +35530,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type UserUpsertWithoutRelationshipMembersInput = {
@@ -31828,6 +35551,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -31840,6 +35564,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRelationshipMembersInput = {
@@ -31849,6 +35575,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -31861,12 +35588,15 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type RelationshipCreateWithoutInvitesInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -31876,12 +35606,14 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutInvitesInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -31891,6 +35623,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutInvitesInput = {
@@ -31905,6 +35638,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -31917,6 +35651,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutInvitesSentInput = {
@@ -31926,6 +35662,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -31938,6 +35675,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutInvitesSentInput = {
@@ -31960,6 +35699,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -31969,12 +35709,14 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutInvitesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -31984,6 +35726,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type UserUpsertWithoutInvitesSentInput = {
@@ -32004,6 +35747,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -32016,6 +35760,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvitesSentInput = {
@@ -32025,6 +35771,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -32037,6 +35784,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type DailySessionCreateWithoutPromptInput = {
@@ -32091,6 +35840,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -32100,12 +35850,14 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutDailySessionsInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -32115,6 +35867,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutDailySessionsInput = {
@@ -32131,6 +35884,19 @@ export namespace Prisma {
     tone?: $Enums.PromptTone | null
     isPremium?: boolean
     active?: boolean
+    subcategory?: string | null
+    depthLevel?: number
+    funScore?: number
+    emotionalIntensity?: number
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: string | null
+    tags?: PromptCreatetagsInput | string[]
+    qualityScore?: number | null
+    sourceVersion?: number
+    repeatCooldownDays?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -32144,6 +35910,19 @@ export namespace Prisma {
     tone?: $Enums.PromptTone | null
     isPremium?: boolean
     active?: boolean
+    subcategory?: string | null
+    depthLevel?: number
+    funScore?: number
+    emotionalIntensity?: number
+    partnerGuessEnabled?: boolean
+    isDateActivation?: boolean
+    isMilestone?: boolean
+    weekendOnly?: boolean
+    relationshipStage?: string | null
+    tags?: PromptCreatetagsInput | string[]
+    qualityScore?: number | null
+    sourceVersion?: number
+    repeatCooldownDays?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -32224,6 +36003,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -32233,12 +36013,14 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutDailySessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -32248,6 +36030,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type PromptUpsertWithoutDailySessionsInput = {
@@ -32270,6 +36053,19 @@ export namespace Prisma {
     tone?: NullableEnumPromptToneFieldUpdateOperationsInput | $Enums.PromptTone | null
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    depthLevel?: IntFieldUpdateOperationsInput | number
+    funScore?: IntFieldUpdateOperationsInput | number
+    emotionalIntensity?: IntFieldUpdateOperationsInput | number
+    partnerGuessEnabled?: BoolFieldUpdateOperationsInput | boolean
+    isDateActivation?: BoolFieldUpdateOperationsInput | boolean
+    isMilestone?: BoolFieldUpdateOperationsInput | boolean
+    weekendOnly?: BoolFieldUpdateOperationsInput | boolean
+    relationshipStage?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: PromptUpdatetagsInput | string[]
+    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    sourceVersion?: IntFieldUpdateOperationsInput | number
+    repeatCooldownDays?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -32283,6 +36079,19 @@ export namespace Prisma {
     tone?: NullableEnumPromptToneFieldUpdateOperationsInput | $Enums.PromptTone | null
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    depthLevel?: IntFieldUpdateOperationsInput | number
+    funScore?: IntFieldUpdateOperationsInput | number
+    emotionalIntensity?: IntFieldUpdateOperationsInput | number
+    partnerGuessEnabled?: BoolFieldUpdateOperationsInput | boolean
+    isDateActivation?: BoolFieldUpdateOperationsInput | boolean
+    isMilestone?: BoolFieldUpdateOperationsInput | boolean
+    weekendOnly?: BoolFieldUpdateOperationsInput | boolean
+    relationshipStage?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: PromptUpdatetagsInput | string[]
+    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    sourceVersion?: IntFieldUpdateOperationsInput | number
+    repeatCooldownDays?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -32353,6 +36162,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -32365,6 +36175,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutResponsesInput = {
@@ -32374,6 +36186,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -32386,6 +36199,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutResponsesInput = {
@@ -32468,6 +36283,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -32480,6 +36296,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutResponsesInput = {
@@ -32489,6 +36307,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -32501,6 +36320,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type ResponseValidationUpsertWithWhereUniqueWithoutResponseInput = {
@@ -32549,6 +36370,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -32561,6 +36383,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutResponseValidationsInput = {
@@ -32570,6 +36394,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -32582,6 +36407,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutResponseValidationsInput = {
@@ -32636,6 +36463,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -32648,6 +36476,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutResponseValidationsInput = {
@@ -32657,6 +36487,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -32669,6 +36500,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type DailySessionCreateWithoutReflectionsInput = {
@@ -32705,6 +36538,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -32717,6 +36551,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutReflectionsInput = {
@@ -32726,6 +36562,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -32738,6 +36575,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutReflectionsInput = {
@@ -32796,6 +36635,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -32808,6 +36648,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReflectionsInput = {
@@ -32817,6 +36659,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -32829,12 +36672,15 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type RelationshipCreateWithoutMeetingsInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -32844,12 +36690,14 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutMeetingsInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -32859,6 +36707,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutMeetingsInput = {
@@ -32915,6 +36764,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -32924,12 +36774,14 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutMeetingsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -32939,6 +36791,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type MeetingEntryUpsertWithWhereUniqueWithoutMeetingInput = {
@@ -32985,6 +36838,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -32997,6 +36851,8 @@ export namespace Prisma {
     quizParticipations?: QuizParticipationCreateNestedManyWithoutUserInput
     agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutMeetingEntriesInput = {
@@ -33006,6 +36862,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -33018,6 +36875,8 @@ export namespace Prisma {
     quizParticipations?: QuizParticipationUncheckedCreateNestedManyWithoutUserInput
     agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutMeetingEntriesInput = {
@@ -33070,6 +36929,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -33082,6 +36942,8 @@ export namespace Prisma {
     quizParticipations?: QuizParticipationUpdateManyWithoutUserNestedInput
     agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMeetingEntriesInput = {
@@ -33091,6 +36953,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -33103,12 +36966,15 @@ export namespace Prisma {
     quizParticipations?: QuizParticipationUncheckedUpdateManyWithoutUserNestedInput
     agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type RelationshipCreateWithoutStreakInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -33118,12 +36984,14 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutStreakInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -33133,6 +37001,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutStreakInput = {
@@ -33155,6 +37024,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -33164,12 +37034,14 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutStreakInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -33179,6 +37051,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type UserCreateWithoutSubscriptionsInput = {
@@ -33188,6 +37061,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -33200,6 +37074,8 @@ export namespace Prisma {
     quizParticipations?: QuizParticipationCreateNestedManyWithoutUserInput
     agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -33209,6 +37085,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -33221,6 +37098,8 @@ export namespace Prisma {
     quizParticipations?: QuizParticipationUncheckedCreateNestedManyWithoutUserInput
     agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -33232,6 +37111,7 @@ export namespace Prisma {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -33241,12 +37121,14 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutSubscriptionsInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -33256,6 +37138,7 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutSubscriptionsInput = {
@@ -33281,6 +37164,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -33293,6 +37177,8 @@ export namespace Prisma {
     quizParticipations?: QuizParticipationUpdateManyWithoutUserNestedInput
     agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -33302,6 +37188,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -33314,6 +37201,8 @@ export namespace Prisma {
     quizParticipations?: QuizParticipationUncheckedUpdateManyWithoutUserNestedInput
     agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type RelationshipUpsertWithoutSubscriptionsInput = {
@@ -33331,6 +37220,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -33340,12 +37230,14 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutSubscriptionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -33355,12 +37247,210 @@ export namespace Prisma {
     agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type RelationshipCreateWithoutMemoriesInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
+    invites?: InviteCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingCreateNestedManyWithoutRelationshipInput
+    streak?: StreakCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipUncheckedCreateWithoutMemoriesInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
+    invites?: InviteUncheckedCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionUncheckedCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
+    streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipCreateOrConnectWithoutMemoriesInput = {
+    where: RelationshipWhereUniqueInput
+    create: XOR<RelationshipCreateWithoutMemoriesInput, RelationshipUncheckedCreateWithoutMemoriesInput>
+  }
+
+  export type UserCreateWithoutMemoriesInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberCreateNestedManyWithoutUserInput
+    invitesSent?: InviteCreateNestedManyWithoutSenderInput
+    responses?: ResponseCreateNestedManyWithoutUserInput
+    reflections?: ReflectionCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutMemoriesInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutSenderInput
+    responses?: ResponseUncheckedCreateNestedManyWithoutUserInput
+    reflections?: ReflectionUncheckedCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationUncheckedCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationUncheckedCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutMemoriesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMemoriesInput, UserUncheckedCreateWithoutMemoriesInput>
+  }
+
+  export type RelationshipUpsertWithoutMemoriesInput = {
+    update: XOR<RelationshipUpdateWithoutMemoriesInput, RelationshipUncheckedUpdateWithoutMemoriesInput>
+    create: XOR<RelationshipCreateWithoutMemoriesInput, RelationshipUncheckedCreateWithoutMemoriesInput>
+    where?: RelationshipWhereInput
+  }
+
+  export type RelationshipUpdateToOneWithWhereWithoutMemoriesInput = {
+    where?: RelationshipWhereInput
+    data: XOR<RelationshipUpdateWithoutMemoriesInput, RelationshipUncheckedUpdateWithoutMemoriesInput>
+  }
+
+  export type RelationshipUpdateWithoutMemoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type RelationshipUncheckedUpdateWithoutMemoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUncheckedUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type UserUpsertWithoutMemoriesInput = {
+    update: XOR<UserUpdateWithoutMemoriesInput, UserUncheckedUpdateWithoutMemoriesInput>
+    create: XOR<UserCreateWithoutMemoriesInput, UserUncheckedCreateWithoutMemoriesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMemoriesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMemoriesInput, UserUncheckedUpdateWithoutMemoriesInput>
+  }
+
+  export type UserUpdateWithoutMemoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMemoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUncheckedUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUncheckedUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUncheckedUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUncheckedUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RelationshipCreateWithoutQuizSessionsInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -33370,12 +37460,14 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutQuizSessionsInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -33385,6 +37477,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutQuizSessionsInput = {
@@ -33435,6 +37528,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -33444,12 +37538,14 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutQuizSessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -33459,6 +37555,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type QuizParticipationUpsertWithWhereUniqueWithoutQuizSessionInput = {
@@ -33507,6 +37604,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -33519,6 +37617,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutQuizParticipationsInput = {
@@ -33528,6 +37628,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -33540,6 +37641,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutQuizParticipationsInput = {
@@ -33594,6 +37697,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -33606,6 +37710,8 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutQuizParticipationsInput = {
@@ -33615,6 +37721,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -33627,12 +37734,15 @@ export namespace Prisma {
     agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type RelationshipCreateWithoutAgreementSessionsInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
@@ -33642,12 +37752,14 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutAgreementSessionsInput = {
     id?: string
     name?: string | null
     status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
@@ -33657,6 +37769,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutAgreementSessionsInput = {
@@ -33707,6 +37820,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
@@ -33716,12 +37830,14 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutAgreementSessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -33731,6 +37847,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type AgreementParticipationUpsertWithWhereUniqueWithoutAgreementSessionInput = {
@@ -33779,6 +37896,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -33791,6 +37909,8 @@ export namespace Prisma {
     quizParticipations?: QuizParticipationCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserUncheckedCreateWithoutAgreementParticipationsInput = {
@@ -33800,6 +37920,7 @@ export namespace Prisma {
     name?: string | null
     image?: string | null
     password?: string | null
+    deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -33812,6 +37933,8 @@ export namespace Prisma {
     quizParticipations?: QuizParticipationUncheckedCreateNestedManyWithoutUserInput
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
   }
 
   export type UserCreateOrConnectWithoutAgreementParticipationsInput = {
@@ -33866,6 +37989,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -33878,6 +38002,8 @@ export namespace Prisma {
     quizParticipations?: QuizParticipationUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAgreementParticipationsInput = {
@@ -33887,6 +38013,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -33899,6 +38026,8 @@ export namespace Prisma {
     quizParticipations?: QuizParticipationUncheckedUpdateManyWithoutUserNestedInput
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -34008,6 +38137,24 @@ export namespace Prisma {
     cancelAtPeriodEnd?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type PushSubscriptionCreateManyUserInput = {
+    id?: string
+    endpoint: string
+    p256dhKey: string
+    authKey: string
+    userAgent?: string | null
+    createdAt?: Date | string
+  }
+
+  export type MemoryCreateManySavedByUserInput = {
+    id?: string
+    relationshipId: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -34339,6 +38486,60 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PushSubscriptionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    p256dhKey?: StringFieldUpdateOperationsInput | string
+    authKey?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushSubscriptionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    p256dhKey?: StringFieldUpdateOperationsInput | string
+    authKey?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushSubscriptionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    p256dhKey?: StringFieldUpdateOperationsInput | string
+    authKey?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemoryUpdateWithoutSavedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutMemoriesNestedInput
+  }
+
+  export type MemoryUncheckedUpdateWithoutSavedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemoryUncheckedUpdateManyWithoutSavedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type RelationshipMemberCreateManyRelationshipInput = {
     id?: string
     userId: string
@@ -34404,6 +38605,15 @@ export namespace Prisma {
     cancelAtPeriodEnd?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type MemoryCreateManyRelationshipInput = {
+    id?: string
+    savedByUserId: string
+    sourceType: string
+    sourceId?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    savedAt?: Date | string
   }
 
   export type RelationshipMemberUpdateWithoutRelationshipInput = {
@@ -34615,6 +38825,33 @@ export namespace Prisma {
     cancelAtPeriodEnd?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemoryUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    savedByUser?: UserUpdateOneRequiredWithoutMemoriesNestedInput
+  }
+
+  export type MemoryUncheckedUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    savedByUserId?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemoryUncheckedUpdateManyWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    savedByUserId?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DailySessionCreateManyPromptInput = {
@@ -34917,6 +39154,10 @@ export namespace Prisma {
      */
     export type UserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserDefaultArgs<ExtArgs>
     /**
+     * @deprecated Use PushSubscriptionDefaultArgs instead
+     */
+    export type PushSubscriptionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PushSubscriptionDefaultArgs<ExtArgs>
+    /**
      * @deprecated Use AccountDefaultArgs instead
      */
     export type AccountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AccountDefaultArgs<ExtArgs>
@@ -34976,6 +39217,10 @@ export namespace Prisma {
      * @deprecated Use SubscriptionDefaultArgs instead
      */
     export type SubscriptionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = SubscriptionDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use MemoryDefaultArgs instead
+     */
+    export type MemoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MemoryDefaultArgs<ExtArgs>
     /**
      * @deprecated Use BetaSignupDefaultArgs instead
      */

@@ -183,6 +183,43 @@ export async function getMyActiveRelationships() {
   return getActiveRelationshipsForUser(session.user.id);
 }
 
+/** Set or clear the anniversary date for a relationship (member-only). */
+export async function setAnniversaryDate(
+  relationshipId: string,
+  dateStr: string | null
+): Promise<void> {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
+  const member = await prisma.relationshipMember.findFirst({
+    where: { relationshipId, userId: session.user.id, leftAt: null },
+    select: { id: true },
+  });
+  if (!member) throw new Error("Not a member of this relationship");
+
+  let value: Date | null = null;
+  if (dateStr) {
+    // Parse YYYY-MM-DD as a local date (no time). Reject anything else.
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr);
+    if (!m) throw new Error("Invalid date");
+    const [, y, mo, d] = m;
+    value = new Date(Date.UTC(Number(y), Number(mo) - 1, Number(d)));
+    if (Number.isNaN(value.getTime())) throw new Error("Invalid date");
+    if (value.getTime() > Date.now() + 86_400_000) {
+      throw new Error("That date is in the future");
+    }
+  }
+
+  await prisma.relationship.update({
+    where: { id: relationshipId },
+    data: { anniversaryDate: value },
+  });
+
+  revalidatePath("/app");
+  revalidatePath("/app/us");
+  revalidatePath("/app/us/relationship");
+}
+
 /** Get latest pending invite for a relationship (for share link). */
 export async function getLatestInvite(relationshipId: string) {
   const session = await getServerAuthSession();

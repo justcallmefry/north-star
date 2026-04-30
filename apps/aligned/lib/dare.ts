@@ -7,7 +7,7 @@ import { requireActiveMember } from "@/lib/relationship-members";
 
 export type Dare = { title: string; description: string; duration: string };
 
-export const DARES: Dare[] = [
+const DARES: Dare[] = [
   { title: "Cook something neither of you has made before", description: "No recipes allowed. Improvise from whatever's in the kitchen.", duration: "~45 min" },
   { title: "Take a walk with no destination", description: "Put your phones away. Just walk and talk until you feel like turning back.", duration: "~30 min" },
   { title: "Watch a movie the other person picks — no complaining", description: "One of you picks something the other hasn't seen. No vetoes allowed.", duration: "~2 hours" },

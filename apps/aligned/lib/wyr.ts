@@ -7,7 +7,7 @@ import { requireActiveMember, getActiveMemberIds } from "@/lib/relationship-memb
 
 export type WyrQuestion = { optionA: string; optionB: string };
 
-export const WYR_QUESTIONS: WyrQuestion[] = [
+const WYR_QUESTIONS: WyrQuestion[] = [
   { optionA: "Spontaneous road trip with no plan", optionB: "Perfectly planned vacation" },
   { optionA: "A cozy night in every weekend", optionB: "Always something new to do" },
   { optionA: "Live in the city", optionB: "Live somewhere quiet and slow" },

@@ -25,7 +25,7 @@ export function TodayCard({ today }: Props) {
     );
   }
 
-  const { sessionId, relationshipId, promptText, momentText, state, hasUserResponded, hasPartnerResponded, canReveal, streak, dedication } = today;
+  const { sessionId, relationshipId, promptText, momentText, state, hasUserResponded, hasPartnerResponded, canReveal, streak, dedication, partnerName } = today;
   const done = hasUserResponded || state === "revealed" || (state === "open" && canReveal);
 
   // Saturday rhythm: a softer visual cue. Doesn't change content yet —
@@ -141,7 +141,7 @@ export function TodayCard({ today }: Props) {
               <Link href={`/app/session/${sessionId}`} className="ns-btn-primary block w-full text-center py-3.5">
                 View my answer
               </Link>
-              <NotifyPartnerButton sessionId={sessionId} relationshipId={relationshipId} variant="secondary" className="w-full py-3.5" />
+              <NotifyPartnerButton sessionId={sessionId} relationshipId={relationshipId} partnerName={partnerName} variant="secondary" className="w-full py-3.5" />
             </div>
           </div>
         )}

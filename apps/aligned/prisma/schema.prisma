@@ -169,6 +169,7 @@ model Relationship {
   appreciations     Appreciation[]
   wyrSessions       WyrSession[]
   spotlights        PartnerSpotlight[]
+  dateNightDares    DateNightDare[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -533,6 +534,23 @@ model PartnerSpotlight {
   @@unique([relationshipId, fromUserId, monthKey])
   @@index([relationshipId])
   @@index([toUserId])
+}
+
+/// Weekly real-world challenge for the couple. One dare per week, couple-level tracking.
+model DateNightDare {
+  id             String    @id @default(cuid())
+  relationshipId String
+  weekKey        String    // "YYYY-WNN"
+  dareIndex      Int
+  acceptedAt     DateTime?
+  completedAt    DateTime?
+
+  relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([relationshipId, weekKey])
+  @@index([relationshipId])
 }
 
 model BetaSignup {

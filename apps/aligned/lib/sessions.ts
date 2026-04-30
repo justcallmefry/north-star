@@ -93,6 +93,7 @@ export type GetTodayResult = {
   hasUserResponded: boolean;
   hasPartnerResponded: boolean;
   canReveal: boolean;
+  partnerName?: string | null;
   /** Consecutive days the couple has completed the question (revealed). */
   streak?: { currentCount: number; longestCount: number; justReset?: boolean } | null;
   /** This user's total daily check-ins in this relationship (never resets). */
@@ -223,9 +224,12 @@ export async function getToday(
     hasPartnerResponded &&
     memberIds.length >= 2;
 
-  const [streak, dedication] = await Promise.all([
+  const [streak, dedication, partnerUser] = await Promise.all([
     getStreak(relationshipId),
     getDedication(relationshipId, session.user.id),
+    partnerIds[0]
+      ? prisma.user.findUnique({ where: { id: partnerIds[0] }, select: { name: true } })
+      : Promise.resolve(null),
   ]);
 
   return {
@@ -237,6 +241,7 @@ export async function getToday(
     hasUserResponded,
     hasPartnerResponded,
     canReveal,
+    partnerName: partnerUser?.name ?? null,
     streak: streak ?? undefined,
     dedication: dedication.totalCheckIns > 0 ? dedication : undefined,
   };

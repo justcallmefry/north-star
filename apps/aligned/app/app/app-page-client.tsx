@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Circle, Heart, HelpCircle, Scale, Shuffle, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle, Circle, Flame, Heart, HelpCircle, Scale, Shuffle, Sparkles } from "lucide-react";
 import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { getQuizForToday } from "@/lib/quiz";
 import { getAgreementForToday } from "@/lib/agreement";
@@ -12,6 +12,8 @@ import { getWyrForToday } from "@/lib/wyr";
 import type { WyrForTodayResult } from "@/lib/wyr";
 import { getSpotlightStatus } from "@/lib/spotlight";
 import type { SpotlightStatus } from "@/lib/spotlight";
+import { getDareForWeek } from "@/lib/dare";
+import type { DareForWeekResult } from "@/lib/dare";
 import { TodaySection } from "./today-section";
 import { AnniversaryBanner, isAnniversaryToday } from "./anniversary-banner";
 import { MilestonePromptCard } from "./milestone-prompt-card";
@@ -51,6 +53,7 @@ export function AppPageClient({ initialData }: Props) {
   const [appreciationStatus, setAppreciationStatus] = useState<AppreciationStatus | null>(null);
   const [wyrData, setWyrData] = useState<WyrForTodayResult | null>(null);
   const [spotlightStatus, setSpotlightStatus] = useState<SpotlightStatus | null>(null);
+  const [dareData, setDareData] = useState<DareForWeekResult | null>(null);
 
   useEffect(() => {
     setLocalDateStr(getLocalDateString());
@@ -65,13 +68,15 @@ export function AppPageClient({ initialData }: Props) {
       getAppreciationStatus(relationshipId),
       getWyrForToday(relationshipId, localDateStr),
       getSpotlightStatus(relationshipId),
-    ]).then(([quiz, agreement, appreciation, wyr, spotlight]) => {
+      getDareForWeek(relationshipId),
+    ]).then(([quiz, agreement, appreciation, wyr, spotlight, dare]) => {
       if (cancelled) return;
       setQuizDoneToday(quiz?.myParticipation != null);
       setAgreementDoneToday(agreement?.myParticipation != null);
       setAppreciationStatus(appreciation);
       setWyrData(wyr);
       setSpotlightStatus(spotlight);
+      setDareData(dare);
     });
     return () => {
       cancelled = true;
@@ -100,6 +105,33 @@ export function AppPageClient({ initialData }: Props) {
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
               Also today
             </p>
+
+            {/* Date Night Dare row — weekly */}
+            {dareData && (
+              <Link
+                href="/app/dare"
+                className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 transition active:scale-[0.99] hover:border-dusk-300/70"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-peach-50 text-peach-600">
+                  <Flame className="h-5 w-5" strokeWidth={2} aria-hidden />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-slate-900">Date Night Dare</p>
+                  <p className="truncate text-sm text-slate-500">
+                    {dareData.completed
+                      ? "Done this week. Nice work."
+                      : dareData.accepted
+                        ? `In progress: ${dareData.dare.title}`
+                        : dareData.dare.title}
+                  </p>
+                </div>
+                {dareData.completed ? (
+                  <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={2} aria-label="Completed" />
+                ) : (
+                  <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                )}
+              </Link>
+            )}
 
             {/* Partner Spotlight row — monthly */}
             {spotlightStatus && spotlightStatus.type !== "none" && (

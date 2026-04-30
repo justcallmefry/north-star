@@ -7,25 +7,42 @@ type Props = {
   sessionId: string;
   /** Required for in-app push; when missing we only use Share/SMS */
   relationshipId?: string;
+  /** Partner's first name — used to personalise notification copy */
+  partnerName?: string | null;
   size?: "sm" | "md";
   variant?: "primary" | "secondary";
   messageType?: "your_turn" | "reveal";
   className?: string;
 };
 
-const MESSAGES = {
-  your_turn: "I answered today's question. It's your turn. I'm excited to see what you say.",
-  reveal: "I answered the question. We both did – come reveal so we can see what we said.",
-} as const;
-
-const TITLES = {
-  your_turn: "Your turn",
-  reveal: "Time to reveal",
-} as const;
+function getMessages(partnerName?: string | null) {
+  const them = partnerName ? partnerName : null;
+  return {
+    your_turn: {
+      title: them ? `${them} answered — your turn` : "Your turn",
+      body: them
+        ? `${them} just answered today's question and is waiting on you.`
+        : "Your partner answered today's question and is waiting on you.",
+      sms: them
+        ? `${them} answered today's question — it's your turn.`
+        : "I answered today's question — your turn.",
+    },
+    reveal: {
+      title: "You're both in — ready to reveal?",
+      body: them
+        ? `${them} answered. You're both in. Come see what they wrote.`
+        : "You both answered. Come reveal your answers together.",
+      sms: them
+        ? `We both answered. Come reveal — I want to see what you said.`
+        : "We both answered. Come reveal together.",
+    },
+  } as const;
+}
 
 export function NotifyPartnerButton({
   sessionId,
   relationshipId,
+  partnerName,
   size = "md",
   variant = "primary",
   messageType = "your_turn",
@@ -36,7 +53,8 @@ export function NotifyPartnerButton({
       ? window.location.origin
       : (process.env.NEXT_PUBLIC_APP_URL ?? "");
   const targetUrl = appUrl ? `${appUrl}/app/session/${sessionId}` : "";
-  const baseText = MESSAGES[messageType];
+  const messages = getMessages(partnerName);
+  const msg = messages[messageType];
 
   async function handleClick(e: React.MouseEvent) {
     e.preventDefault();
@@ -50,8 +68,8 @@ export function NotifyPartnerButton({
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               relationshipId,
-              title: TITLES[messageType],
-              body: baseText,
+              title: msg.title,
+              body: msg.body,
               url: `/app/session/${sessionId}`,
             }),
           });
@@ -68,7 +86,7 @@ export function NotifyPartnerButton({
       }
     }
 
-    const text = `${baseText} ${targetUrl}`.trim();
+    const text = `${msg.sms} ${targetUrl}`.trim();
     if (typeof navigator !== "undefined" && (navigator as Navigator & { share?: (o: { text: string; url?: string }) => Promise<void> }).share) {
       try {
         await (navigator as Navigator & { share: (o: { text: string; url?: string }) => Promise<void> }).share({

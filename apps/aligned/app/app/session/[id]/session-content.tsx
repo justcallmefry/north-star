@@ -357,6 +357,13 @@ export function SessionContent({ data, currentUserId }: Props) {
   const reflectionsToShow = revealData?.reflections ?? data.reflections ?? [];
 
   const totalMembers = data.memberCount ?? 2;
+
+  // Finish the Sentence: prompts containing "___" split into a prefix the user completes.
+  const ftsParts = data.promptText.includes("___")
+    ? data.promptText.split("___")
+    : null;
+  const ftsPrefix = ftsParts?.[0]?.trimEnd() ?? null;
+  const ftsSuffix = ftsParts?.[1]?.trimStart() ?? null;
   const respondedCount = data.respondedCount ?? ((data.hasUserResponded ? 1 : 0) + (data.hasPartnerResponded ? totalMembers - 1 : 0));
   const afterRevealLine = data.isFirstCompletedSession
     ? "You just did the hard part — you showed up for each other. This can be your new daily rhythm."
@@ -364,9 +371,20 @@ export function SessionContent({ data, currentUserId }: Props) {
 
   return (
     <div className="space-y-10">
-      <p className="text-center text-3xl font-semibold leading-relaxed text-slate-900 sm:text-4xl">
-        {data.promptText}
-      </p>
+      {ftsPrefix ? (
+        <div className="text-center space-y-1">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
+            Finish the sentence
+          </p>
+          <p className="text-3xl font-semibold leading-relaxed text-slate-900 sm:text-4xl">
+            {ftsPrefix}<span className="text-brand-300"> ___</span>{ftsSuffix}
+          </p>
+        </div>
+      ) : (
+        <p className="text-center text-3xl font-semibold leading-relaxed text-slate-900 sm:text-4xl">
+          {data.promptText}
+        </p>
+      )}
 
       {data.momentText && (
         <div className="ns-card mx-auto max-w-xl">
@@ -382,11 +400,16 @@ export function SessionContent({ data, currentUserId }: Props) {
       {data.state === "open" && (
         <form onSubmit={handleSubmit} className="mx-auto max-w-xl space-y-6">
           <div className="space-y-3">
+            {ftsPrefix && (
+              <div className="rounded-xl bg-brand-50/60 px-4 py-2.5 text-base font-medium text-brand-800">
+                {ftsPrefix} <span className="italic text-brand-400">…your completion below</span>
+              </div>
+            )}
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder="Your answer..."
-              rows={5}
+              placeholder={ftsPrefix ? "…complete the sentence" : "Your answer..."}
+              rows={ftsPrefix ? 3 : 5}
               className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-4 text-lg leading-relaxed text-slate-900 placeholder:text-slate-500 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300"
               required
             />
@@ -470,7 +493,7 @@ export function SessionContent({ data, currentUserId }: Props) {
             >
               {loading === "reveal" ? "Revealing…" : "Reveal answers"}
             </button>
-            <NotifyPartnerButton sessionId={data.sessionId} relationshipId={data.relationshipId} messageType="reveal" size="sm" className="w-full py-2.5" />
+            <NotifyPartnerButton sessionId={data.sessionId} relationshipId={data.relationshipId} partnerName={data.partnerName} messageType="reveal" size="sm" className="w-full py-2.5" />
           </div>
         </div>
       )}
@@ -550,7 +573,9 @@ export function SessionContent({ data, currentUserId }: Props) {
                     </span>
                   </div>
                   <p className="ns-card-inner px-3 py-3 text-2xl leading-relaxed text-slate-900 sm:text-3xl">
-                    {resp.content ?? "—"}
+                    {ftsPrefix && resp.content
+                      ? `${ftsPrefix} ${resp.content}${ftsSuffix ?? ""}`
+                      : (resp.content ?? "—")}
                   </p>
                   {!resp.isMe && savedGuess && (
                     <p className="px-3 text-sm italic text-slate-500 sm:text-base">

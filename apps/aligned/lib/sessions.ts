@@ -318,6 +318,40 @@ export async function getTodayWithVariant(
   return { variant: "standard", today };
 }
 
+/**
+ * Create or fetch today's DailySession, optionally forcing a specific prompt.
+ * Used by the "Answer it again" action on the Saturday throwback card.
+ * If a session for today already exists, returns its id without changes.
+ */
+export async function createOrGetTodaySession(
+  relationshipId: string,
+  localDateStr: string,
+  forcePromptId?: string
+): Promise<{ sessionId: string }> {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) throw new Error("Not signed in");
+  await requireActiveMember(session.user.id, relationshipId);
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(localDateStr)) {
+    throw new Error("Invalid date");
+  }
+  const today = new Date(localDateStr + "T00:00:00.000Z");
+
+  const existing = await prisma.dailySession.findUnique({
+    where: { relationshipId_sessionDate: { relationshipId, sessionDate: today } },
+    select: { id: true },
+  });
+  if (existing) return { sessionId: existing.id };
+
+  const promptId = forcePromptId ?? (await pickPromptForSession(relationshipId));
+  const created = await prisma.dailySession.create({
+    data: { relationshipId, sessionDate: today, promptId, state: "open" },
+    select: { id: true },
+  });
+  revalidatePath("/app");
+  return { sessionId: created.id };
+}
+
 export async function submitResponse(sessionId: string, text: string) {
   const session = await getServerAuthSession();
   if (!session?.user?.id) throw new Error("Not signed in");
@@ -436,6 +470,14 @@ export type GetSessionResult = {
   isDateActivation?: boolean;
   /** Prompt category — used client-side to pick a contextual follow-up conversation prompt. */
   promptCategory?: string | null;
+  /** Up to 3 content words in the partner's revealed answer that have never appeared in their past responses for this couple. Empty/undefined when none. */
+  noveltyTags?: string[];
+  /** True when this session was created by re-answering a saved Memory. UI shows the Then/Now treatment when set. */
+  isThrowback?: boolean;
+  /** When isThrowback, the original Memory's responses for the Then panel. */
+  throwbackThen?: Array<{ userId: string; name: string | null; content: string | null }> | null;
+  /** Months ago the original was answered. */
+  throwbackMonthsAgo?: number;
 };
 
 export async function getSession(sessionId: string): Promise<GetSessionResult | null> {
@@ -537,6 +579,66 @@ export async function getSession(sessionId: string): Promise<GetSessionResult | 
         content: r.content,
       };
     });
+  }
+
+  // Novelty tags — words the partner has never used in any past response for
+  // this couple. Skipped when the user is alone (no partner answer).
+  if (dailySession.state === "revealed" && result.partnerResponse) {
+    const partnerUserId = dailySession.responses.find(
+      (r) => r.userId !== session.user!.id
+    )?.userId;
+    if (partnerUserId) {
+      const pastPartner = await prisma.response.findMany({
+        where: {
+          userId: partnerUserId,
+          session: { relationshipId: dailySession.relationshipId },
+          NOT: { sessionId: dailySession.id },
+        },
+        select: { content: true },
+      });
+      const { findNovelTags } = await import("@/lib/novelty");
+      result.noveltyTags = findNovelTags(
+        result.partnerResponse,
+        pastPartner.map((r) => r.content),
+        result.userResponse
+      );
+    }
+  }
+
+  // Then/Now metadata — when a Memory exists for this prompt + relationship
+  // and predates this session, the UI shows a Then/Now panel. We can't filter
+  // on promptId in the Memory query directly (it's not a column), so we fetch
+  // recent Memories and resolve their source DailySession.
+  if (dailySession.state === "revealed" && dailySession.promptId) {
+    const earlierMemories = await prisma.memory.findMany({
+      where: {
+        relationshipId: dailySession.relationshipId,
+        sourceType: "session_reveal",
+        savedAt: { lt: dailySession.sessionDate },
+      },
+      orderBy: { savedAt: "desc" },
+      take: 20,
+      select: { sourceId: true, savedAt: true, snapshot: true },
+    });
+    for (const mem of earlierMemories) {
+      if (!mem.sourceId) continue;
+      const sourceSession = await prisma.dailySession.findUnique({
+        where: { id: mem.sourceId },
+        select: { promptId: true, sessionDate: true },
+      });
+      if (sourceSession?.promptId === dailySession.promptId) {
+        const snap = mem.snapshot as unknown as {
+          responses?: Array<{ userId: string; name: string | null; content: string | null }>;
+        } | null;
+        const ms =
+          dailySession.sessionDate.getTime() - sourceSession.sessionDate.getTime();
+        const monthsAgo = Math.max(1, Math.floor(ms / (1000 * 60 * 60 * 24 * 30)));
+        result.isThrowback = true;
+        result.throwbackThen = snap?.responses ?? null;
+        result.throwbackMonthsAgo = monthsAgo;
+        break;
+      }
+    }
   }
 
   return result;

@@ -9,7 +9,7 @@ const NAV_ITEMS: Array<{ href: string; label: string; icon: typeof Home; hidden?
   { href: "/app/quiz", label: "Quiz", icon: HelpCircle },
   { href: "/app/agreement", label: "Alignment", icon: Scale },
   { href: "/app/history", label: "Responses", icon: History },
-  { href: "/app/meeting", label: "Our Week", icon: CalendarRange, hidden: true },
+  { href: "/app/meeting", label: "Our Week", icon: CalendarRange },
   { href: "/app/us", label: "Profile", icon: User },
 ];
 

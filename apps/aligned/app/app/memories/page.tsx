@@ -116,22 +116,21 @@ export default async function MemoriesPage() {
       />
 
       {memories.length === 0 ? (
-        <section className="ns-card text-center">
+        <section className="rounded-2xl bg-gradient-to-br from-peach-50/60 via-white to-brand-50/30 border border-peach-200/40 p-8 text-center sm:p-10">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-peach-300/30 text-peach-600">
             <Bookmark className="h-7 w-7" strokeWidth={1.8} />
           </div>
-          <p className="mt-4 text-lg font-semibold text-slate-900 sm:text-xl">
-            No memories yet
+          <p className="mt-6 font-display text-xl font-semibold text-slate-900 sm:text-2xl">
+            Your first memory is waiting to be made.
           </p>
-          <p className="mt-1.5 text-sm text-slate-600 sm:text-base">
-            After a reveal you both find meaningful, tap &quot;Save as a memory&quot;
-            and it&apos;ll show up here for you to revisit.
+          <p className="mt-4 text-base leading-relaxed text-slate-700 sm:text-lg">
+            When a question lands just right—when their answer surprises you, or says exactly what you were feeling—save it. It&apos;ll be here waiting.
           </p>
           <Link
             href="/app"
-            className="ns-btn-primary mt-5 inline-flex w-full items-center justify-center gap-2 py-3 sm:w-auto sm:px-6"
+            className="ns-btn-primary mt-6 inline-flex w-full items-center justify-center gap-2 py-3 sm:w-auto sm:px-6"
           >
-            Today&apos;s question
+            Answer today&apos;s question
           </Link>
         </section>
       ) : (

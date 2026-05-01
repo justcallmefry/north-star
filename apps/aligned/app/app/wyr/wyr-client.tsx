@@ -59,7 +59,7 @@ export function WyrClient({ initialData }: Props) {
 
           if (isRevealed) {
             cardClass += isMine && isPartners
-              ? "border-brand-400 bg-brand-50 text-brand-900"
+              ? "border-brand-400 bg-brand-50 text-brand-900 animate-wyr-match-glow"
               : isMine
                 ? "border-brand-300 bg-brand-50/60 text-slate-900"
                 : isPartners

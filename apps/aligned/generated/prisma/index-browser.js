@@ -320,6 +320,55 @@ exports.Prisma.MemoryScalarFieldEnum = {
   savedAt: 'savedAt'
 };
 
+exports.Prisma.AppreciationScalarFieldEnum = {
+  id: 'id',
+  relationshipId: 'relationshipId',
+  fromUserId: 'fromUserId',
+  toUserId: 'toUserId',
+  content: 'content',
+  weekKey: 'weekKey',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.WyrSessionScalarFieldEnum = {
+  id: 'id',
+  relationshipId: 'relationshipId',
+  sessionDate: 'sessionDate',
+  questionIndex: 'questionIndex',
+  state: 'state',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WyrParticipationScalarFieldEnum = {
+  id: 'id',
+  wyrSessionId: 'wyrSessionId',
+  userId: 'userId',
+  choice: 'choice',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.PartnerSpotlightScalarFieldEnum = {
+  id: 'id',
+  relationshipId: 'relationshipId',
+  fromUserId: 'fromUserId',
+  toUserId: 'toUserId',
+  items: 'items',
+  monthKey: 'monthKey',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.DateNightDareScalarFieldEnum = {
+  id: 'id',
+  relationshipId: 'relationshipId',
+  weekKey: 'weekKey',
+  dareIndex: 'dareIndex',
+  acceptedAt: 'acceptedAt',
+  completedAt: 'completedAt',
+  photoUrl: 'photoUrl',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.BetaSignupScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -433,6 +482,11 @@ exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
   trialing: 'trialing'
 };
 
+exports.WyrState = exports.$Enums.WyrState = {
+  open: 'open',
+  revealed: 'revealed'
+};
+
 exports.QuizState = exports.$Enums.QuizState = {
   open: 'open',
   revealed: 'revealed'
@@ -462,6 +516,11 @@ exports.Prisma.ModelName = {
   Streak: 'Streak',
   Subscription: 'Subscription',
   Memory: 'Memory',
+  Appreciation: 'Appreciation',
+  WyrSession: 'WyrSession',
+  WyrParticipation: 'WyrParticipation',
+  PartnerSpotlight: 'PartnerSpotlight',
+  DateNightDare: 'DateNightDare',
   BetaSignup: 'BetaSignup',
   QuizSession: 'QuizSession',
   QuizParticipation: 'QuizParticipation',

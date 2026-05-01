@@ -20,11 +20,12 @@ import { StreakCelebration, isStreakMilestone } from "@/components/streak-celebr
 import { StickerRow } from "./sticker-row";
 import { QuickReactRow } from "./quick-react-row";
 import { PostRevealActionBar } from "./post-reveal-action-bar";
+import { SealReveal } from "./seal-reveal";
 import { saveSessionReveal } from "@/lib/memories";
 import { MilestonePromptCard } from "../../milestone-prompt-card";
 import type { MilestoneContext } from "@/lib/milestones";
 
-const AFTER_REVEAL_PAUSE_MS = 1100;
+const AFTER_REVEAL_PAUSE_MS = 1400;
 
 const FOLLOW_UP_PROMPTS: Record<string, string[]> = {
   gratitude: [
@@ -524,18 +525,7 @@ export function SessionContent({ data, currentUserId }: Props) {
         </div>
       )}
 
-      {isRevealed && !afterRevealReady && (
-        <div
-          className="flex min-h-[12rem] flex-col items-center justify-center gap-3"
-          aria-live="polite"
-          aria-label="Revealing answers"
-        >
-          <div className="animate-reveal-shimmer flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-violet-100">
-            <span className="text-2xl" aria-hidden>✦</span>
-          </div>
-          <p className="text-sm uppercase tracking-[0.18em] text-brand-600">Revealing</p>
-        </div>
-      )}
+      {isRevealed && !afterRevealReady && <SealReveal />}
 
       {isRevealed && afterRevealReady && (
         <div className="ns-stack-tight">

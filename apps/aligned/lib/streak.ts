@@ -1,6 +1,41 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { getActiveMemberIds } from "@/lib/relationship-members";
+import { sendPushToUser } from "@/lib/push";
+
+const MILESTONE_COPY: Record<number, { title: string; body: string }> = {
+  7: {
+    title: "A week together.",
+    body: "Seven days of showing up. That's a habit.",
+  },
+  30: {
+    title: "30 days. That's a rhythm.",
+    body: "A month of showing up. This is what becomes part of you two.",
+  },
+  100: {
+    title: "100 days.",
+    body: "Most couples don't get here. You did.",
+  },
+  365: {
+    title: "A whole year of showing up.",
+    body: "365 days of choosing each other in this small daily way.",
+  },
+};
+
+function isStreakMilestone(count: number): count is 7 | 30 | 100 | 365 {
+  return count === 7 || count === 30 || count === 100 || count === 365;
+}
+
+async function pushMilestoneToUser(userId: string, count: number): Promise<void> {
+  const copy = MILESTONE_COPY[count];
+  if (!copy) return;
+  try {
+    await sendPushToUser(userId, { title: copy.title, body: copy.body, url: "/app" });
+  } catch (err) {
+    console.error("[streak-milestone] push failed:", err);
+  }
+}
 
 /** Format a Date as YYYY-MM-DD (UTC date only). */
 function toDateString(d: Date): string {
@@ -109,4 +144,15 @@ export async function updateStreakOnReveal(
       lastCompletedDate: new Date(completedStr + "T12:00:00.000Z"),
     },
   });
+
+  // Milestone push fan-out — runs once per genuine day-crossing increment.
+  // The same-day guard above prevents double-fires on a second reveal.
+  if (isStreakMilestone(newCurrent)) {
+    try {
+      const memberIds = await getActiveMemberIds(relationshipId);
+      await Promise.all(memberIds.map((uid) => pushMilestoneToUser(uid, newCurrent)));
+    } catch (err) {
+      console.error("[streak-milestone] fan-out failed:", err);
+    }
+  }
 }

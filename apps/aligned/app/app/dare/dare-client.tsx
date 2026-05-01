@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle, Clock, Flame } from "lucide-react";
+import { Camera, CheckCircle, Clock, Flame, X } from "lucide-react";
 import { toast } from "sonner";
 import { acceptDare, completeDare } from "@/lib/dare";
 import type { DareForWeekResult } from "@/lib/dare";
@@ -10,10 +10,43 @@ import { haptic } from "@/lib/haptics";
 
 type Props = { dare: DareForWeekResult };
 
+async function uploadDarePhoto(file: File): Promise<string> {
+  const fd = new FormData();
+  fd.append("file", file);
+  const res = await fetch("/api/dare-photo", { method: "POST", body: fd });
+  if (!res.ok) {
+    const err = await res.json().catch(() => null);
+    const code = err?.error ?? "upload_failed";
+    const msg =
+      code === "too_large" ? "Photo is too large (5MB max)."
+      : code === "bad_type" ? "Photo must be jpg, png, or webp."
+      : code === "blob_not_configured" ? "Photo upload isn't configured."
+      : "Couldn't upload photo. Try again.";
+    throw new Error(msg);
+  }
+  const data = await res.json();
+  return data.url as string;
+}
+
 export function DareClient({ dare: initial }: Props) {
   const router = useRouter();
   const [dare, setDare] = useState(initial);
   const [loading, setLoading] = useState<"accept" | "complete" | null>(null);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+
+  function pickPhoto(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setPhotoFile(file);
+    setPhotoPreview(URL.createObjectURL(file));
+  }
+
+  function clearPhoto() {
+    setPhotoFile(null);
+    if (photoPreview) URL.revokeObjectURL(photoPreview);
+    setPhotoPreview(null);
+  }
 
   async function handleAccept() {
     setLoading("accept");
@@ -32,9 +65,14 @@ export function DareClient({ dare: initial }: Props) {
   async function handleComplete() {
     setLoading("complete");
     try {
-      await completeDare(dare.dareId);
+      let url: string | undefined;
+      if (photoFile) {
+        url = await uploadDarePhoto(photoFile);
+      }
+      await completeDare(dare.dareId, url);
       void haptic("success");
-      setDare((d) => ({ ...d, accepted: true, completed: true }));
+      setDare((d) => ({ ...d, accepted: true, completed: true, photoUrl: url ?? d.photoUrl }));
+      clearPhoto();
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed");
@@ -77,7 +115,15 @@ export function DareClient({ dare: initial }: Props) {
       </div>
 
       {dare.completed ? (
-        <div className="rounded-2xl bg-gradient-to-br from-emerald-50 to-white border border-emerald-200 px-5 py-6 text-center space-y-2 shadow-sm">
+        <div className="rounded-2xl bg-gradient-to-br from-emerald-50 to-white border border-emerald-200 px-5 py-6 text-center space-y-3 shadow-sm">
+          {dare.photoUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={dare.photoUrl}
+              alt=""
+              className="mx-auto w-full max-h-64 rounded-xl object-cover"
+            />
+          )}
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
             <CheckCircle className="h-8 w-8" strokeWidth={2} />
           </div>
@@ -91,6 +137,32 @@ export function DareClient({ dare: initial }: Props) {
           <p className="text-center text-sm text-brand-700 font-medium">
             You&apos;re committed. Come back and mark it done when you finish.
           </p>
+          {photoPreview ? (
+            <div className="relative">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={photoPreview} alt="" className="w-full max-h-64 rounded-xl object-cover" />
+              <button
+                type="button"
+                onClick={clearPhoto}
+                aria-label="Remove photo"
+                className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-xs font-semibold text-slate-700 shadow-sm hover:bg-white"
+              >
+                <X className="h-3.5 w-3.5" strokeWidth={2} />
+                Remove
+              </button>
+            </div>
+          ) : (
+            <label className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed border-slate-300 bg-white px-4 py-3 text-sm text-slate-600 hover:border-brand-400 hover:text-brand-700 transition">
+              <Camera className="h-4 w-4" strokeWidth={2} />
+              Add a photo (optional)
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="sr-only"
+                onChange={pickPhoto}
+              />
+            </label>
+          )}
           <button
             type="button"
             onClick={handleComplete}

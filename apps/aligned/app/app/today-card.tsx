@@ -6,6 +6,7 @@ import { NotifyPartnerButton } from "./notify-partner-button";
 import { StreakBadge } from "./streak-badge";
 import { ConnectionDots } from "./connection-dots";
 import { getDayTheme, estimateAnswerTime, titleCase } from "@/lib/day-theme";
+import { getCouplePalette } from "@/lib/couple-colors";
 
 type Props = { today: GetTodayResult | null };
 
@@ -49,12 +50,23 @@ export function TodayCard({ today }: Props) {
   const cat = titleCase(category ?? null);
   const ton = titleCase(tone ?? null);
   const metaParts = [cat, ton, time].filter(Boolean) as string[];
+  const palette = getCouplePalette(relationshipId);
 
   return (
     <section className={theme.sectionClass}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className={`${theme.eyebrowChipClass} min-w-0`}>
-          <span className={theme.eyebrowDotClass} />
+          <span className="relative inline-flex items-center justify-center">
+            <span
+              className="absolute inset-[-3px] rounded-full"
+              style={{
+                background: `linear-gradient(135deg, ${palette.primary} 0%, ${palette.primary} 50%, ${palette.secondary} 50%, ${palette.secondary} 100%)`,
+                opacity: 0.45,
+              }}
+              aria-hidden
+            />
+            <span className={`${theme.eyebrowDotClass} relative`} />
+          </span>
           <h2 className={theme.eyebrowTextClass}>{theme.label}</h2>
         </div>
         {streak && streak.currentCount > 0 && (

@@ -18,7 +18,7 @@ import { getDayTheme } from "@/lib/day-theme";
 import { TodaySection } from "./today-section";
 import { AnniversaryBanner, isAnniversaryToday } from "./anniversary-banner";
 import { MilestonePromptCard } from "./milestone-prompt-card";
-import { SundayRecap } from "./sunday-recap";
+import { IssuePromo } from "@/components/issues/issue-promo";
 import { PushPrompt } from "./push-prompt";
 
 function RowShell({
@@ -128,7 +128,7 @@ export function AppPageClient({ initialData }: Props) {
           <TodaySection relationshipId={relationshipId!} />
           <PushPrompt />
 
-          <SundayRecap relationshipId={relationshipId!} />
+          <IssuePromo relationshipId={relationshipId!} />
 
           <section className="space-y-2">
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">

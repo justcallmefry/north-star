@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { submitWyrChoice } from "@/lib/wyr";
@@ -13,6 +13,12 @@ export function WyrClient({ initialData }: Props) {
   const router = useRouter();
   const [data, setData] = useState(initialData);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (data.state === "revealed") {
+      void haptic("reveal");
+    }
+  }, [data.state]);
 
   async function handlePick(choice: 0 | 1) {
     if (loading) return;
@@ -111,19 +117,19 @@ export function WyrClient({ initialData }: Props) {
       )}
 
       {state === "revealed" && reveal && (
-        <div className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-4 text-center space-y-1">
-          {reveal.matched ? (
-            <>
-              <p className="text-base font-semibold text-brand-700">You&apos;re aligned on this one.</p>
-              <p className="text-sm text-slate-500">Same pick — talk about why.</p>
-            </>
-          ) : (
-            <>
-              <p className="text-base font-semibold text-slate-800">You see this differently.</p>
-              <p className="text-sm text-slate-500">Neither is wrong — worth a conversation.</p>
-            </>
-          )}
-        </div>
+        reveal.matched ? (
+          <div className="animate-calm-fade-in rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 via-white to-brand-50 px-5 py-5 text-center space-y-2">
+            <p className="text-2xl" aria-hidden>✦</p>
+            <p className="text-xl font-semibold text-emerald-800">You matched.</p>
+            <p className="text-sm text-slate-600">Same instinct — that says something. Ask each other why.</p>
+          </div>
+        ) : (
+          <div className="animate-calm-fade-in rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50/60 via-white to-white px-5 py-5 text-center space-y-2">
+            <p className="text-2xl" aria-hidden>↔</p>
+            <p className="text-xl font-semibold text-slate-800">You went different ways.</p>
+            <p className="text-sm text-slate-600">Neither is wrong. This one&apos;s worth talking about tonight.</p>
+          </div>
+        )
       )}
     </div>
   );

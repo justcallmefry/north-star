@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { format, startOfWeek, endOfWeek } from "date-fns";
 import Image from "next/image";
-import { CalendarRange, ClipboardList } from "lucide-react";
+import { BookOpen, ClipboardList } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { isBuildTime } from "@/lib/build";
@@ -38,10 +38,10 @@ export default async function MeetingPage() {
         <header className="animate-calm-fade-in space-y-2">
           <div className="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 ring-1 ring-brand-200">
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-brand-500">
-              <CalendarRange className="h-3.5 w-3.5" />
+              <BookOpen className="h-3.5 w-3.5" />
             </span>
             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
-              Our Week
+              Our Recap
             </span>
           </div>
           <p className="flex items-start gap-2 text-sm text-slate-600 sm:text-base">
@@ -63,7 +63,7 @@ export default async function MeetingPage() {
 
         <div className="ns-stack-tight animate-calm-fade-in animate-calm-delay-header">
           <section className="ns-card">
-            <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">This week so far</h2>
+            <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">This week</h2>
             <p className="mt-1 text-sm text-slate-600">A read-only snapshot. You can add or edit your notes below.</p>
             <div className="mt-4">
               <MeetingView
@@ -75,7 +75,7 @@ export default async function MeetingPage() {
           </section>
 
           <section className="ns-card">
-            <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Add to Our Week</h2>
+            <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Add to this week</h2>
             <p className="mt-1 text-sm text-slate-600">Optional prompts. Write a little or a lot—whatever feels right.</p>
             <div className="mt-4">
               <MeetingForm meetingId={current.meetingId} initial={meetingData?.ownEntry ?? null} />

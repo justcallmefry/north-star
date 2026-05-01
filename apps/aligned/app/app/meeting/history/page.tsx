@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { format, addDays } from "date-fns";
-import { CalendarRange } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { isBuildTime } from "@/lib/build";
@@ -45,7 +45,7 @@ export default async function MeetingHistoryPage() {
       <header className="space-y-2">
         <div className="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 ring-1 ring-brand-200">
           <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-brand-500">
-            <CalendarRange className="h-3.5 w-3.5" />
+            <BookOpen className="h-3.5 w-3.5" />
           </span>
           <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
             Past Weeks

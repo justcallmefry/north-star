@@ -21,6 +21,10 @@ import { StickerRow } from "./sticker-row";
 import { QuickReactRow } from "./quick-react-row";
 import { PostRevealActionBar } from "./post-reveal-action-bar";
 import { SealReveal } from "./seal-reveal";
+import { UnfoldCard } from "./unfold-card";
+import { StreamingText } from "./streaming-text";
+import { AlignedStamp } from "./aligned-stamp";
+import { detectAligned } from "@/lib/reveal/aligned";
 import { saveSessionReveal } from "@/lib/memories";
 import { MilestonePromptCard } from "../../milestone-prompt-card";
 import type { MilestoneContext } from "@/lib/milestones";
@@ -126,6 +130,8 @@ export function SessionContent({ data, currentUserId }: Props) {
   const [isRecording, setIsRecording] = useState(false);
   const [memorySaved, setMemorySaved] = useState(false);
   const [memorySaving, setMemorySaving] = useState(false);
+  const [myStreamDone, setMyStreamDone] = useState(false);
+  const [partnerStreamDone, setPartnerStreamDone] = useState(false);
 
   async function handleSaveMemory() {
     if (memorySaved || memorySaving) return;
@@ -177,6 +183,8 @@ export function SessionContent({ data, currentUserId }: Props) {
       const result = await revealSession(data.sessionId);
       setRevealData(result);
       setRevealed(true);
+      setMyStreamDone(false);
+      setPartnerStreamDone(false);
       void haptic("reveal");
       router.refresh();
     } catch (err) {
@@ -586,21 +594,16 @@ export function SessionContent({ data, currentUserId }: Props) {
               const isPartnerAnswer = !resp.isMe;
               const needsTap = isPartnerAnswer && revealed && !partnerRevealed && data.state !== "revealed";
               if (needsTap) return null;
-              const useSlowReveal = isPartnerAnswer && partnerRevealed && data.state !== "revealed";
-              return (
+
+              const streamText = ftsPrefix && resp.content
+                ? `${ftsPrefix} ${resp.content}${ftsSuffix ?? ""}`
+                : (resp.content ?? "—");
+
+              const cardInner = (
                 <div
-                  key={resp.key}
                   ref={!resp.isMe ? partnerAnswerRef : undefined}
                   tabIndex={!resp.isMe ? -1 : undefined}
-                  className={`${useSlowReveal ? "animate-partner-reveal" : "animate-reveal-cascade"} space-y-1.5 ${
-                    idx === 0
-                      ? "reveal-cascade-delay-1"
-                      : idx === 1
-                        ? "reveal-cascade-delay-2"
-                        : idx === 2
-                          ? "reveal-cascade-delay-3"
-                          : "reveal-cascade-delay-4"
-                  }`}
+                  className="space-y-1.5"
                 >
                   <div className="flex items-center gap-2">
                     <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-base">
@@ -610,16 +613,19 @@ export function SessionContent({ data, currentUserId }: Props) {
                         resp.icon
                       )}
                     </span>
-                    <span
-                      className={`rounded-full px-3 py-1.5 text-sm font-semibold uppercase tracking-[0.14em] ${resp.bubbleClass}`}
-                    >
+                    <span className={`rounded-full px-3 py-1.5 text-sm font-semibold uppercase tracking-[0.14em] ${resp.bubbleClass}`}>
                       {resp.title}
                     </span>
                   </div>
                   <p className="ns-card-inner px-3 py-3 text-2xl leading-relaxed text-slate-900 sm:text-3xl">
-                    {ftsPrefix && resp.content
-                      ? `${ftsPrefix} ${resp.content}${ftsSuffix ?? ""}`
-                      : (resp.content ?? "—")}
+                    <StreamingText
+                      text={streamText}
+                      skip={!revealed}
+                      onComplete={() => {
+                        if (resp.isMe) setMyStreamDone(true);
+                        else setPartnerStreamDone(true);
+                      }}
+                    />
                   </p>
                   {!resp.isMe && data.noveltyTags && data.noveltyTags.length > 0 && (
                     <p
@@ -647,6 +653,13 @@ export function SessionContent({ data, currentUserId }: Props) {
                   })()}
                 </div>
               );
+
+              void idx; // idx no longer used for class names; UnfoldCard handles entrance animation
+              return revealed ? (
+                <UnfoldCard key={resp.key}>{cardInner}</UnfoldCard>
+              ) : (
+                <div key={resp.key}>{cardInner}</div>
+              );
             })}
             {/* Partner reveal button — shown after my answer is visible, before partner is revealed */}
             {revealed && !partnerRevealed && data.state !== "revealed" && responsesToShow.some((r) => !r.isMe) && (
@@ -667,20 +680,38 @@ export function SessionContent({ data, currentUserId }: Props) {
           {(partnerRevealed || data.state === "revealed") && (() => {
             const shared = findSharedWords(responsesToShow);
             if (shared.length === 0) return null;
+            const myResp = responsesToShow.find((r) => r.isMe);
+            const partnerResp = responsesToShow.find((r) => !r.isMe);
+            const alignedLevel =
+              myResp?.content && partnerResp?.content
+                ? detectAligned(myResp.content, partnerResp.content)
+                : "none";
+            const pulseClass =
+              alignedLevel === "deeplyAligned"
+                ? "animate-word-pulse-2x"
+                : alignedLevel === "aligned"
+                  ? "animate-word-pulse"
+                  : "";
+
             return (
-              <div className="flex flex-wrap items-center justify-center gap-2 py-1">
-                <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
-                  You both mentioned
-                </span>
-                {shared.map((w) => (
-                  <span
-                    key={w}
-                    className="rounded-full bg-brand-100 px-3 py-1 text-sm font-semibold text-brand-700"
-                  >
-                    {w}
+              <>
+                <div className="flex flex-wrap items-center justify-center gap-2 py-1">
+                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+                    You both mentioned
                   </span>
-                ))}
-              </div>
+                  {shared.map((w) => (
+                    <span
+                      key={w}
+                      className={`rounded-full bg-brand-100 px-3 py-1 text-sm font-semibold text-brand-700 ${pulseClass}`}
+                    >
+                      {w}
+                    </span>
+                  ))}
+                </div>
+                {alignedLevel !== "none" && (
+                  <AlignedStamp level={alignedLevel} />
+                )}
+              </>
             );
           })()}
 

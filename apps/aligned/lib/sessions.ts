@@ -24,13 +24,62 @@ function toDateKey(d: Date): string {
   return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
 }
 
+/** Fast deterministic 32-bit hash — same algo as prompt-scheduler / milestones. */
+function hash(input: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < input.length; i++) {
+    h ^= input.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+/**
+ * Returns true when today falls within [anniversary - windowDaysBefore, anniversary] (inclusive),
+ * comparing only month+day of the anniversary against today's year.
+ *
+ * Edge case: Feb 29 anniversaries in a non-leap year are treated as Feb 28
+ * (JavaScript's Date.UTC handles this by rolling over to Mar 1, so we clamp to
+ * Feb 28 when Feb 29 doesn't exist). Documented trade-off: the window fires one
+ * day earlier in that year rather than being skipped entirely.
+ */
+function isWithinAnniversaryWindow(
+  anniversaryDate: Date | null | undefined,
+  todayKey: string,
+  windowDaysBefore = 7
+): boolean {
+  if (!anniversaryDate) return false;
+  const today = new Date(todayKey + "T00:00:00.000Z");
+  const annivMonth = anniversaryDate.getUTCMonth();
+  const annivDay = anniversaryDate.getUTCDate();
+  const thisYear = today.getUTCFullYear();
+
+  // Build the anniversary date in the current year. If the result shifts (e.g.
+  // Feb 29 in a non-leap year becomes Mar 1), clamp back to the last day of Feb.
+  let thisYearAnniv = new Date(Date.UTC(thisYear, annivMonth, annivDay));
+  if (thisYearAnniv.getUTCMonth() !== annivMonth) {
+    // Day overflowed (Feb 29 → Mar 1 in non-leap year): use Feb 28 instead.
+    thisYearAnniv = new Date(Date.UTC(thisYear, annivMonth + 1, 0));
+  }
+
+  const diffMs = thisYearAnniv.getTime() - today.getTime();
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  return diffDays >= 0 && diffDays <= windowDaysBefore;
+}
+
 /**
  * Deterministic, tone-balanced prompt selection. See lib/prompt-scheduler.ts
  * for the policy. Same prompt for both partners on the same day; different
  * couples get different sequences.
+ *
+ * When today falls within the 7-day anniversary window, anniversary-tagged
+ * prompts are preferred over the normal rotation (with fallback to normal
+ * selection if none are fresh).
  */
 async function pickPromptForSession(relationshipId: string): Promise<string | null> {
-  const [recentRaw, totalCount] = await Promise.all([
+  const todayKey = toDateKey(todayUTC());
+
+  const [recentRaw, totalCount, relationship] = await Promise.all([
     prisma.dailySession.findMany({
       where: { relationshipId },
       orderBy: { sessionDate: "desc" },
@@ -42,8 +91,30 @@ async function pickPromptForSession(relationshipId: string): Promise<string | nu
       },
     }),
     prisma.dailySession.count({ where: { relationshipId } }),
+    prisma.relationship.findUnique({
+      where: { id: relationshipId },
+      select: { anniversaryDate: true },
+    }),
   ]);
   const isIntroPhase = totalCount < 7;
+
+  // --- Anniversary window: prefer anniversary-tagged prompts ---
+  if (isWithinAnniversaryWindow(relationship?.anniversaryDate, todayKey)) {
+    const recentlyUsedIds = new Set(
+      recentRaw.slice(0, 90).map((r) => r.promptId).filter((id): id is string => !!id)
+    );
+    const anniversaryPool = await prisma.prompt.findMany({
+      where: { active: true, type: "daily", tags: { has: "anniversary" } },
+      select: { id: true, text: true },
+    });
+    const fresh = anniversaryPool.filter((p) => !recentlyUsedIds.has(p.id));
+    const candidates = fresh.length > 0 ? fresh : anniversaryPool; // fall back to any if all seen
+    if (candidates.length > 0) {
+      const idx = hash(`${relationshipId}::anniversary::${todayKey}`) % candidates.length;
+      return candidates[idx]!.id;
+    }
+    // If no anniversary prompts exist at all, fall through to normal selection.
+  }
 
   const eligible = await prisma.prompt.findMany({
     where: {
@@ -78,7 +149,7 @@ async function pickPromptForSession(relationshipId: string): Promise<string | nu
 
   return pickPrompt({
     relationshipId,
-    todayKey: toDateKey(todayUTC()),
+    todayKey,
     eligible,
     recent,
   });

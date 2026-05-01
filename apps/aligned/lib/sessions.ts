@@ -25,12 +25,85 @@ function toDateKey(d: Date): string {
   return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
 }
 
+/** Stable cyrb53-lite hash for deterministic prompt picking. */
+function hashStr(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = ((h * 31) + s.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+/**
+ * True when `today` falls within `windowDaysBefore` days before — or on — the
+ * couple's anniversary in the current calendar year. Feb 29 anniversaries in
+ * non-leap years roll back to Feb 28 (window fires one day early that year).
+ */
+function isWithinAnniversaryWindow(
+  anniversaryDate: Date | null | undefined,
+  today: Date,
+  windowDaysBefore = 7
+): boolean {
+  if (!anniversaryDate) return false;
+  const annivMonth = anniversaryDate.getUTCMonth();
+  const annivDay = anniversaryDate.getUTCDate();
+  let thisYear = new Date(Date.UTC(today.getUTCFullYear(), annivMonth, annivDay));
+  // Feb 29 in non-leap year → JS rolls to Mar 1; clamp back to Feb 28.
+  if (thisYear.getUTCMonth() !== annivMonth) {
+    thisYear = new Date(Date.UTC(today.getUTCFullYear(), annivMonth, annivDay - 1));
+  }
+  const diffDays = Math.floor((thisYear.getTime() - today.getTime()) / 86400000);
+  return diffDays >= 0 && diffDays <= windowDaysBefore;
+}
+
 /**
  * Deterministic, tone-balanced prompt selection. See lib/prompt-scheduler.ts
  * for the policy. Same prompt for both partners on the same day; different
  * couples get different sequences.
+ *
+ * Anniversary preference: when today is within the 7-day window before (or on)
+ * the couple's anniversary, prefer prompts tagged "anniversary" that haven't
+ * been used in the last 90 sessions. Falls through to the normal scheduler if
+ * no anniversary prompts are eligible.
  */
 async function pickPromptForSession(relationshipId: string): Promise<string | null> {
+  // Anniversary preference: cheap pre-check before the heavy scheduler query.
+  const today = todayUTC();
+  const relationship = await prisma.relationship.findUnique({
+    where: { id: relationshipId },
+    select: { anniversaryDate: true },
+  });
+  if (isWithinAnniversaryWindow(relationship?.anniversaryDate ?? null, today)) {
+    const annivPrompts = await prisma.prompt.findMany({
+      where: {
+        active: true,
+        type: "daily",
+        tags: { has: "anniversary" },
+      },
+      select: { id: true },
+    });
+    if (annivPrompts.length > 0) {
+      // Exclude prompts used in the last 90 sessions (defense against
+      // re-picking the same anniversary prompt year-over-year too quickly).
+      const recentIds = new Set(
+        (
+          await prisma.dailySession.findMany({
+            where: { relationshipId },
+            orderBy: { sessionDate: "desc" },
+            take: 90,
+            select: { promptId: true },
+          })
+        )
+          .map((r) => r.promptId)
+          .filter((id): id is string => !!id)
+      );
+      const fresh = annivPrompts.filter((p) => !recentIds.has(p.id));
+      const pool = fresh.length > 0 ? fresh : annivPrompts;
+      const todayKey = toDateKey(today);
+      const idx = hashStr(`${relationshipId}::anniversary::${todayKey}`) % pool.length;
+      return pool[idx]!.id;
+    }
+    // No anniversary-tagged prompts seeded — fall through to default selection.
+  }
+
   const [recentRaw, totalCount] = await Promise.all([
     prisma.dailySession.findMany({
       where: { relationshipId },

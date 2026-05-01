@@ -3,6 +3,7 @@
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { requireActiveMember } from "@/lib/relationship-members";
+import { tokenize as words } from "@/lib/issues/stopwords";
 
 export type SundayRecapResult = {
   answeredDays: number;
@@ -12,22 +13,6 @@ export type SundayRecapResult = {
   /** Up to 3 words that appeared most across all answers this week. */
   topWords: string[];
 };
-
-const STOP = new Set([
-  "a","an","the","and","or","but","in","on","at","to","for","of","with","by","from","is","are",
-  "was","were","be","been","have","has","had","do","does","did","will","would","could","should",
-  "i","you","we","they","he","she","it","my","your","our","their","this","that","just","so",
-  "not","no","if","as","me","him","us","them","very","really","get","got","go","some","any",
-  "out","all","can","one","two","more","what","when","where","how","why","also","then","like",
-]);
-
-function words(text: string): string[] {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, "")
-    .split(/\s+/)
-    .filter((w) => w.length > 3 && !STOP.has(w));
-}
 
 export async function getSundayRecap(
   relationshipId: string,

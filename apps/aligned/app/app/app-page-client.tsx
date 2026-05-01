@@ -19,6 +19,7 @@ import { TodaySection } from "./today-section";
 import { AnniversaryBanner, isAnniversaryToday } from "./anniversary-banner";
 import { MilestonePromptCard } from "./milestone-prompt-card";
 import { SundayRecap } from "./sunday-recap";
+import { PushPrompt } from "./push-prompt";
 
 function RowShell({
   href,
@@ -125,6 +126,7 @@ export function AppPageClient({ initialData }: Props) {
             />
           )}
           <TodaySection relationshipId={relationshipId!} />
+          <PushPrompt />
 
           <SundayRecap relationshipId={relationshipId!} />
 

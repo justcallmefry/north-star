@@ -413,12 +413,37 @@ exports.Prisma.AgreementParticipationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.IssueScalarFieldEnum = {
+  id: 'id',
+  relationshipId: 'relationshipId',
+  cadence: 'cadence',
+  milestoneType: 'milestoneType',
+  issueNumber: 'issueNumber',
+  volumeNumber: 'volumeNumber',
+  windowStart: 'windowStart',
+  windowEnd: 'windowEnd',
+  publishedAt: 'publishedAt',
+  headline: 'headline',
+  coverPhotoUrl: 'coverPhotoUrl',
+  coverGradient: 'coverGradient',
+  sections: 'sections',
+  savedAt: 'savedAt',
+  openedByA: 'openedByA',
+  openedByB: 'openedByB',
+  isPremium: 'isPremium'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
 };
 
 exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
@@ -497,6 +522,13 @@ exports.AgreementState = exports.$Enums.AgreementState = {
   revealed: 'revealed'
 };
 
+exports.IssueCadence = exports.$Enums.IssueCadence = {
+  weekly: 'weekly',
+  monthly: 'monthly',
+  yearly: 'yearly',
+  milestone: 'milestone'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   PushSubscription: 'PushSubscription',
@@ -525,7 +557,8 @@ exports.Prisma.ModelName = {
   QuizSession: 'QuizSession',
   QuizParticipation: 'QuizParticipation',
   AgreementSession: 'AgreementSession',
-  AgreementParticipation: 'AgreementParticipation'
+  AgreementParticipation: 'AgreementParticipation',
+  Issue: 'Issue'
 };
 
 /**

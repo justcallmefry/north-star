@@ -43,15 +43,24 @@ export default async function HistoryPage({ searchParams }: Props) {
 
     return (
       <main className="min-h-screen bg-white p-3 sm:p-4">
-        <div className="mb-4">
-          <Link href="/app" className="ns-btn-primary block w-full text-center !py-2.5 text-sm">
-            Answer today&apos;s question
-          </Link>
-        </div>
-        <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Our history</h1>
-        <p className="mt-1.5 text-sm text-slate-600 sm:text-base">
-          Questions you&apos;ve answered together.
-        </p>
+        <header className="mb-5 space-y-1">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-500 sm:text-sm">
+            Your story
+          </p>
+          <h1 className="font-display text-2xl font-semibold text-slate-900 sm:text-3xl">Every answer, together.</h1>
+          <p className="text-sm text-slate-600 sm:text-base">
+            {items.length === 0
+              ? "Answer your first question to start your story."
+              : "All the questions you've answered together."}
+          </p>
+        </header>
+        {items.length === 0 && (
+          <div className="mb-4">
+            <Link href="/app" className="ns-btn-primary block w-full text-center !py-2.5 text-sm">
+              Answer today&apos;s question
+            </Link>
+          </div>
+        )}
         <div className="mt-4">
           <HistoryListWithSearch
             items={itemsForClient}

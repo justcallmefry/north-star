@@ -38,6 +38,11 @@ export function WyrClient({ initialData }: Props) {
     }
   }, [data.myChoice, data.state]);
 
+  // Sync local state when server delivers fresh initialData (e.g. after router.refresh())
+  useEffect(() => {
+    setData(initialData);
+  }, [initialData]);
+
   async function handlePick(choice: 0 | 1) {
     if (loading) return;
     setLoading(true);

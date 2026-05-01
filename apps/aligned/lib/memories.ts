@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getServerAuthSession } from "@/lib/auth";
 import { requireActiveMember } from "@/lib/relationship-members";
+import { getPartnerUserId, sendPushToUser } from "@/lib/push";
 
 export type SessionRevealSnapshot = {
   kind: "session_reveal";
@@ -129,6 +130,21 @@ export async function saveAppreciation(
       snapshot: snapshot as unknown as object,
     },
   });
+
+  // Notify the recipient. Wrapped in try/catch so a push failure never
+  // rolls back the DB write — the memory is the source of truth.
+  try {
+    const recipientUserId = await getPartnerUserId(relationshipId, userId);
+    if (recipientUserId) {
+      await sendPushToUser(recipientUserId, {
+        title: `${snapshot.fromName ?? "They"} left you something.`,
+        body: "From them, for you.",
+        url: "/app/memories",
+      });
+    }
+  } catch (err) {
+    console.error("[appreciation] push send failed:", err);
+  }
 
   revalidatePath("/app/memories");
 }

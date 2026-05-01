@@ -105,15 +105,17 @@ export function WyrClient({ initialData }: Props) {
       )}
 
       {myChoice != null && state === "open" && !partnerSubmitted && (
-        <p className="text-center text-sm text-slate-500">
-          Waiting for {partnerName ?? "them"} to pick…
-        </p>
+        <div className="rounded-2xl border border-dusk-100 bg-gradient-to-br from-dusk-50 to-white p-5 text-center">
+          <p className="text-base font-semibold text-slate-900">{partnerName ?? "Them"} hasn&apos;t picked yet.</p>
+          <p className="mt-1 text-sm text-slate-600">Your choice is locked in. We&apos;ll reveal the match the moment they do.</p>
+        </div>
       )}
 
       {myChoice != null && state === "open" && partnerSubmitted && (
-        <p className="text-center text-sm text-slate-500 animate-pulse">
-          Both in — reveal loading…
-        </p>
+        <div className="rounded-2xl border border-dusk-100 bg-gradient-to-br from-dusk-50 to-white p-5 text-center animate-pulse">
+          <p className="text-base font-semibold text-slate-900">Both picks are in.</p>
+          <p className="mt-1 text-sm text-slate-600">Revealing your match now…</p>
+        </div>
       )}
 
       {state === "revealed" && reveal && (

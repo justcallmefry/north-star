@@ -20,22 +20,18 @@ function getMessages(partnerName?: string | null) {
   const them = partnerName ? partnerName : null;
   return {
     your_turn: {
-      title: them ? `${them} answered — your turn` : "Your turn",
-      body: them
-        ? `${them} just answered today's question and is waiting on you.`
-        : "Your partner answered today's question and is waiting on you.",
+      title: them ? `${them} is curious what you'll say.` : "They're curious what you'll say.",
+      body: "Whenever you're ready.",
       sms: them
-        ? `${them} answered today's question — it's your turn.`
-        : "I answered today's question — your turn.",
+        ? `${them} already answered today's question. Whenever you're ready.`
+        : "I already answered today's question. Whenever you're ready.",
     },
     reveal: {
-      title: "You're both in — ready to reveal?",
-      body: them
-        ? `${them} answered. You're both in. Come see what they wrote.`
-        : "You both answered. Come reveal your answers together.",
+      title: "You're both in.",
+      body: "Tap to see what they wrote.",
       sms: them
-        ? `We both answered. Come reveal — I want to see what you said.`
-        : "We both answered. Come reveal together.",
+        ? `We both answered. Come see what each other wrote.`
+        : "We both answered. Come see what each other wrote.",
     },
   } as const;
 }

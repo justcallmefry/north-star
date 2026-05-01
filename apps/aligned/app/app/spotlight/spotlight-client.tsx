@@ -93,7 +93,10 @@ export function SpotlightClient({ relationshipId, status }: Props) {
 
   if (status.type === "none") {
     return (
-      <p className="text-center text-slate-500">Pair with a partner to send a spotlight.</p>
+      <div className="rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-50 to-white p-5 text-center">
+        <p className="text-base font-semibold text-slate-900">Pair up to send your first spotlight.</p>
+        <p className="mt-1 text-sm text-slate-600">Three things you love about them — once a month. Pair with a partner to begin.</p>
+      </div>
     );
   }
 

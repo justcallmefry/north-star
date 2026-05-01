@@ -10,7 +10,7 @@ type Props = {
   size?: "sm" | "md";
 };
 
-const MESSAGE = "I updated Our Week. Please feel free to add your thoughts.";
+const MESSAGE = "I added to Our Week. Add yours whenever you're ready.";
 
 export function NotifyPartnerMeetingButton({
   meetingId,
@@ -36,7 +36,7 @@ export function NotifyPartnerMeetingButton({
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               relationshipId,
-              title: "Our Week",
+              title: "Our Week is updated.",
               body: MESSAGE,
               url: path,
             }),

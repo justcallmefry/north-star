@@ -85,8 +85,8 @@ export async function sendSpotlight(relationshipId: string, items: string[]): Pr
 
   const sender = await prisma.user.findUnique({ where: { id: userId }, select: { name: true } });
   await sendPushToUser(partnerId, {
-    title: `${sender?.name ?? "Your partner"} wrote something for you`,
-    body: "3 things they love about you — this month.",
+    title: `${sender?.name ?? "They"} left you something.`,
+    body: "From them, for you.",
     url: "/app/spotlight",
   }).catch(() => {});
 

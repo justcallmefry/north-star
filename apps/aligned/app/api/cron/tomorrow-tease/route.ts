@@ -114,15 +114,9 @@ export async function GET(request: Request) {
     const promptRow = eligible.find((p) => p.id === promptId);
     const teaser = teaserForCategory(promptRow?.category ?? null);
 
-    const teaserTitles = [
-      "Tomorrow's question is ready.",
-      "Something worth thinking about tomorrow.",
-      "A new question drops tomorrow.",
-    ];
-    const titleIdx = Math.abs(rel.id.charCodeAt(0) ?? 0) % teaserTitles.length;
     const payload = {
-      title: teaserTitles[titleIdx] ?? "Tomorrow on Aligned",
-      body: `Tomorrow: something about ${teaser}. See you then.`,
+      title: "Tomorrow's question is almost here.",
+      body: `Something about ${teaser} — see you then.`,
       url: `${appUrl}/app`,
     };
 

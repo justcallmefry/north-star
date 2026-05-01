@@ -113,13 +113,10 @@ export function HistoryListWithSearch({
           <li className="ns-card flex flex-col items-center justify-center py-12 text-center">
             <EmptyTogetherIllustration className="w-32 h-32 sm:w-40 sm:h-40" />
             <p className="mt-4 text-base font-medium text-slate-700 sm:text-lg">
-              No responses yet.
+              Your story starts today.
             </p>
             <p className="mt-1 text-sm text-slate-500">
-              When you or your partner answer the question of the day, it&apos;ll show here.
-            </p>
-            <p className="mt-2 text-sm text-slate-400">
-              Days when neither answered don&apos;t appear; once someone answers, you&apos;ll see that day.
+              Each question you answer together becomes part of your shared history — it&apos;ll all live here.
             </p>
           </li>
         ) : filtered.length === 0 ? (

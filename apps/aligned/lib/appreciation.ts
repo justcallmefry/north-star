@@ -97,8 +97,8 @@ export async function sendAppreciation(
   const sender = await prisma.user.findUnique({ where: { id: userId }, select: { name: true } });
   const senderName = sender?.name ?? "Your partner";
   await sendPushToUser(partnerId, {
-    title: `${senderName} left you something`,
-    body: "They noticed something about you this week.",
+    title: `${senderName} left you something.`,
+    body: "From them, for you.",
     url: `/app/appreciation`,
   }).catch(() => {/* non-fatal */});
 

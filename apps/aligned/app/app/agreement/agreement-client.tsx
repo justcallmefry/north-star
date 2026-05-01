@@ -184,8 +184,8 @@ export function AgreementClient({
         <div className="space-y-6">
           <AgreementPageHeader />
           <div className="ns-card py-8 text-center">
-            <p className="text-slate-600">No results from yesterday.</p>
-            <p className="mt-1 text-sm text-slate-500">If neither of you did the alignment that day, there&apos;s nothing to show.</p>
+            <p className="text-slate-600 font-medium">No check-in yesterday.</p>
+            <p className="mt-1 text-sm text-slate-500">If neither of you completed the alignment that day, there&apos;s nothing to score. Today&apos;s a fresh start.</p>
             <button type="button" onClick={() => setYesterdayData(undefined)} className="ns-btn-secondary mt-4 w-full !py-2.5 text-sm">
               Back to today
             </button>
@@ -288,10 +288,10 @@ export function AgreementClient({
         <AgreementPageHeader />
         <div className="ns-card space-y-4 py-8 text-center">
           <p className="text-lg font-medium text-slate-700">
-            You&apos;re done! Waiting for your partner to finish.
+            Your answers are in.
           </p>
           <p className="text-sm text-slate-500">
-            We&apos;ll show results once you&apos;ve both answered.
+            We&apos;ll reveal where you land together once they&apos;re done too.
           </p>
           <div className="flex flex-col gap-3">
             <NotifyPartnerQuizButton variant="agreement" relationshipId={relationshipId} size="sm" />

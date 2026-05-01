@@ -34,7 +34,7 @@ export function MeetingView({ ownEntry, partnerEntry, canViewPartner }: Props) {
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-slate-500">Nothing here yet.</p>
+            <p className="text-sm text-slate-500">Fill in your notes for this week&apos;s meeting to see them here.</p>
           )}
         </section>
 

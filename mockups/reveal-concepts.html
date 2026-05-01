@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aligned — Pick a Reveal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:      #FAF6F0;
+      --cream-dark: #F0EAE0;
+      --blue:       #1F4E73;
+      --blue-light: #2d6a9f;
+      --peach:      #e07a5f;
+      --peach-light:#f0a090;
+      --slate:      #0f172a;
+      --slate-mid:  #475569;
+      --slate-soft: #94a3b8;
+      --card-bg:    #FFFDF9;
+      --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      background: var(--cream);
+      color: var(--slate);
+      font-family: 'Manrope', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      padding: 0 0 80px;
+      min-height: 100vh;
+    }
+
+    /* ─── Page Header ───────────────────────────────────────────────────── */
+    .page-header {
+      text-align: center;
+      padding: 72px 24px 48px;
+      position: relative;
+    }
+
+    .page-header::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--peach);
+      margin: 32px auto 0;
+      opacity: .5;
+    }
+
+    .page-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(48px, 8vw, 80px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--slate);
+    }
+
+    .page-title em {
+      font-style: normal;
+      color: var(--blue);
+    }
+
+    .page-subtitle {
+      margin-top: 16px;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--slate-mid);
+      letter-spacing: 0.01em;
+      max-width: 360px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ─── Columns Layout ────────────────────────────────────────────────── */
+    .concepts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    @media (max-width: 960px) {
+      .concepts { grid-template-columns: 1fr; max-width: 420px; }
+    }
+
+    /* ─── Individual Concept Column ─────────────────────────────────────── */
+    .concept {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .concept-number {
+      font-family: 'Fraunces', serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--slate-soft);
+      margin-bottom: 10px;
+    }
+
+    .concept-name {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(26px, 3.5vw, 34px);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--slate);
+      margin-bottom: 8px;
+    }
+
+    .concept-tagline {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--slate-mid);
+      font-style: italic;
+      margin-bottom: 28px;
+      letter-spacing: 0.01em;
+    }
+
+    /* ─── Animation Stage ───────────────────────────────────────────────── */
+    .stage {
+      background: var(--card-bg);
+      border: 1px solid rgba(31, 78, 115, 0.08);
+      border-radius: 20px;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        0 1px 3px rgba(15, 23, 42, 0.04),
+        0 8px 32px rgba(15, 23, 42, 0.06);
+    }
+
+    /* ─── Trigger Button ────────────────────────────────────────────────── */
+    .trigger-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 28px;
+      padding: 12px 28px;
+      background: transparent;
+      border: 1.5px solid var(--blue);
+      border-radius: 100px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--blue);
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    .trigger-btn:hover {
+      background: var(--blue);
+      color: var(--cream);
+    }
+
+    .trigger-btn:disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    /* ─── Replay + Meta ─────────────────────────────────────────────────── */
+    .below-stage {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .replay-btn {
+      font-family: 'Manrope', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--slate-soft);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 0;
+      transition: color 0.2s ease;
+    }
+
+    .replay-btn:hover { color: var(--peach); }
+
+    /* ─── Pros / Cons ───────────────────────────────────────────────────── */
+    .verdict {
+      margin-top: 20px;
+      padding: 20px 0 0;
+      border-top: 1px solid rgba(15, 23, 42, 0.07);
+    }
+
+    .verdict-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .verdict-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      min-width: 36px;
+      padding-top: 2px;
+    }
+
+    .verdict-label.pro  { color: var(--blue); }
+    .verdict-label.con  { color: var(--peach); }
+
+    .verdict-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .verdict-list li {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--slate-mid);
+      line-height: 1.5;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       CONCEPT 1 — THE SEAL
+    ═══════════════════════════════════════════════════════════════════════ */
+
+    .seal-stage { background: var(--card-bg); }
+
+    /* Envelope container */
+    .envelope-wrap {
+      position: relative;
+      width: 220px;
+      height: 160px;
+      flex-shrink: 0;
+    }
+
+    /* Envelope body */
+    .envelope-body {
+      position: absolute;
+      inset: 0;
+      background: #EDE7DC;
+      border-radius: 4px 4px 8px 8px;
+      border: 1.5px solid rgba(31, 78, 115, 0.15);
+      overflow: hidden;
+    }
+
+    /* V-fold lines on envelope face */
+    .envelope-body::before,
+    .envelope-body::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+    }
+
+    .envelope-body::before {
+      left: 0;
+      border-width: 60px 0 0 110px;
+      border-color: transparent transparent transparent rgba(31, 78, 115, 0.06);
+    }
+
+    .envelope-body::after {
+      right: 0;
+      border-width: 60px 110px 0 0;
+      border-color: transparent rgba(31, 78, 115, 0.06) transparent transparent;
+    }
+
+    /* Envelope flap */
+    .envelope-flap {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 80px;
+      background: #E2D9CC;
+      border-radius: 4px 4px 0 0;
+      transform-origin: top center;
+      transform: rotateX(0deg);
+      transform-style: preserve-3d;
+      transition: transform 0.4s var(--ease-spring) 0.35s;
+      z-index: 3;
+      clip-path: polygon(0 0, 100% 0, 50% 65%);
+      border: 1.5px solid rgba(31, 78, 115, 0.12);
+    }
+
+    /* Wax seal */
+    .wax-seal {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 56px;
+      height: 56px;
+      z-index: 10;
+      animation: sealPulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes sealPulse {
+      0%, 100% { opacity: 0.9; transform: translate(-50%, -50%) scale(1); }
+      50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.04); }
+    }
+
+    /* Wax halves crack apart */
+    .seal-left, .seal-right {
+      position: absolute;
+      top: 0; width: 28px; height: 56px;
+      transition: transform 0.35s var(--ease-spring);
+    }
+
+    .seal-left  { left: 0;  transform-origin: left center; }
+    .seal-right { right: 0; transform-origin: right center; }
+
+    /* Wax particles */
+    .seal-particle {
+      position: absolute;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #c0392b;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Letter content (sibling of envelope-wrap, sits below it) */
+    .letter-content {
+      width: 100%;
+      max-width: 320px;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(-12px);
+      transition: max-height 0.45s var(--ease-spring) 0.75s,
+                  opacity    0.35s ease               0.85s,
+                  transform  0.45s var(--ease-spring) 0.75s,
+                  margin-top 0.45s var(--ease-spring) 0.75s;
+      margin-top: 0;
+    }
+
+    /* ── IS-REVEALED state for Concept 1 ── */
+    .concept-1.is-revealed .wax-seal {
+      animation: none;
+    }
+
+    .concept-1.is-revealed .seal-left {
+      transform: rotate(-18deg);
+    }
+
+    .concept-1.is-revealed .seal-right {
+      transform: rotate(18deg);
+    }
+
+    .concept-1.is-revealed .seal-particle { animation: particleBurst 600ms forwards; }
+    .concept-1.is-revealed .seal-particle:nth-child(1) { --px: -18px; --py: -22px; animation-delay: 0ms; }
+    .concept-1.is-revealed .seal-particle:nth-child(2) { --px:  20px; --py: -18px; animation-delay: 40ms; }
+    .concept-1.is-revealed .seal-particle:nth-child(3) { --px: -22px; --py:  14px; animation-delay: 80ms; }
+    .concept-1.is-revealed .seal-particle:nth-child(4) { --px:  18px; --py:  20px; animation-delay: 20ms; }
+    .concept-1.is-revealed .seal-particle:nth-child(5) { --px:   4px; --py: -26px; animation-delay: 60ms; }
+
+    @keyframes particleBurst {
+      0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+      60%  { opacity: .7; }
+      100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0.2); }
+    }
+
+    .concept-1.is-revealed .envelope-flap {
+      transform: rotateX(-180deg);
+    }
+
+    /* Envelope collapses to nothing once it has done its job —
+       the seal metaphor lives in the gesture, not the artifact. */
+    .envelope-wrap {
+      transition: transform 0.55s var(--ease-spring) 0.75s,
+                  max-height 0.55s var(--ease-spring) 0.75s,
+                  opacity    0.45s ease               0.80s,
+                  margin     0.55s var(--ease-spring) 0.75s;
+      max-height: 160px;
+    }
+    .concept-1.is-revealed .envelope-wrap {
+      transform: scale(0.4) translateY(-18px);
+      max-height: 0;
+      opacity: 0;
+      margin: 0;
+      pointer-events: none;
+    }
+
+    .concept-1.is-revealed .letter-content {
+      max-height: 420px;
+      opacity: 1;
+      transform: translateY(0);
+      margin-top: 0;
+    }
+
+    /* ─── Answer Cards (shared) ─────────────────────────────────────────── */
+    .answers {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .answer-card {
+      background: var(--cream);
+      border-radius: 14px;
+      padding: 16px 18px;
+      border: 1px solid rgba(31, 78, 115, 0.10);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+
+    .answer-name {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .answer-text {
+      font-family: 'Fraunces', serif;
+      font-size: 15px;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.55;
+      color: var(--slate);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       CONCEPT 2 — TWO THREADS
+    ═══════════════════════════════════════════════════════════════════════ */
+
+    .threads-stage {
+      position: relative;
+    }
+
+    .threads-svg-wrap {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    /* Idle thread paths — always visible, tracing toward center */
+    #path-peach,
+    #path-blue {
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    #path-peach { stroke: var(--peach); }
+    #path-blue  { stroke: var(--blue-light); }
+
+    .thread-dash {
+      stroke-dasharray: 300;
+      stroke-dashoffset: 300;
+    }
+
+    /* Idle tip pulse */
+    .thread-tip {
+      r: 4;
+      opacity: 0;
+    }
+
+    #tip-peach { fill: var(--peach); }
+    #tip-blue  { fill: var(--blue-light); }
+
+    /* Knot */
+    .knot-circle {
+      cx: 50%; cy: 50%;
+      r: 0;
+      opacity: 0;
+    }
+
+    /* ── IS-REVEALED state for Concept 2 ── */
+
+    /* Step 1: threads draw in */
+    .concept-2.is-revealed #path-peach.thread-dash,
+    .concept-2.is-revealed #path-blue.thread-dash {
+      animation: drawThread 0.4s var(--ease-spring) forwards;
+    }
+
+    .concept-2.is-revealed #path-peach.thread-dash { animation-delay: 0ms; }
+    .concept-2.is-revealed #path-blue.thread-dash  { animation-delay: 40ms; }
+
+    @keyframes drawThread {
+      from { stroke-dashoffset: 300; }
+      to   { stroke-dashoffset: 0; }
+    }
+
+    /* Hide idle tips on reveal */
+    .concept-2.is-revealed .thread-tip { opacity: 0 !important; animation: none !important; }
+
+    /* Step 2: knot forms */
+    .concept-2.is-revealed .knot-circle {
+      animation: knotForm 0.25s var(--ease-spring) 0.42s forwards;
+    }
+
+    @keyframes knotForm {
+      0%   { r: 0;  opacity: 0; }
+      60%  { r: 14; opacity: 1; }
+      100% { r: 10; opacity: 1; }
+    }
+
+    /* Step 3: knot dissolves, answers appear */
+    .concept-2.is-revealed .knot-circle {
+      animation:
+        knotForm   0.25s var(--ease-spring) 0.42s forwards,
+        knotExpand 0.35s var(--ease-spring) 0.67s forwards;
+    }
+
+    @keyframes knotExpand {
+      0%   { r: 10; opacity: 1; }
+      100% { r: 80; opacity: 0; }
+    }
+
+    /* Answers for concept 2 */
+    .threads-answers {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s ease 1s, transform 0.3s var(--ease-spring) 1s;
+    }
+
+    .concept-2.is-revealed .threads-answers {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Dot indicators */
+    .answer-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    .dot-peach { background: var(--peach); }
+    .dot-blue  { background: var(--blue-light); }
+
+    /* Idle thread animation for pre-state */
+    .idle-thread-tip {
+      animation: tipPulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes tipPulse {
+      0%, 100% { opacity: 0.4; r: 4; }
+      50%       { opacity: 1;   r: 6; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       CONCEPT 3 — TODAY'S SPARK
+    ═══════════════════════════════════════════════════════════════════════ */
+
+    .spark-stage { position: relative; }
+
+    /* The warm card background layer */
+    .spark-card-inner {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+    }
+
+    /* Warm glow overlay — fades in on reveal */
+    .spark-warmth {
+      position: absolute;
+      inset: -32px -24px;
+      border-radius: 20px;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(224, 122, 95, 0.18) 0%, transparent 70%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease 0.3s;
+    }
+
+    .concept-3.is-revealed .spark-warmth { opacity: 1; }
+
+    /* Ember dot */
+    .ember {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #f5b89a 0%, var(--peach) 50%, #c0392b 100%);
+      box-shadow: 0 0 12px 4px rgba(224, 122, 95, 0.5);
+      position: relative;
+      z-index: 3;
+      animation: emberBreathe 2.5s ease-in-out infinite;
+      transition: transform 0.3s var(--ease-spring);
+      flex-shrink: 0;
+    }
+
+    @keyframes emberBreathe {
+      0%, 100% { box-shadow: 0 0 10px 3px rgba(224, 122, 95, 0.4); transform: scale(1); }
+      50%       { box-shadow: 0 0 20px 8px rgba(224, 122, 95, 0.6); transform: scale(1.08); }
+    }
+
+    /* Ember ignite flash */
+    .concept-3.is-revealed .ember {
+      animation:
+        emberBreathe 2.5s ease-in-out infinite 0.3s,
+        emberFlash   0.3s var(--ease-spring)    0s    forwards;
+    }
+
+    @keyframes emberFlash {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.4); box-shadow: 0 0 30px 14px rgba(224, 122, 95, 0.8); }
+      100% { transform: scale(1); }
+    }
+
+    /* Particles */
+    .particles {
+      position: absolute;
+      width: 0; height: 0;
+      top: 50%; left: 50%;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .particle {
+      position: absolute;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      opacity: 0;
+      background: var(--peach);
+    }
+
+    .concept-3.is-revealed .particle {
+      animation-name: particleRise;
+      animation-duration: var(--dur, 800ms);
+      animation-delay: var(--delay, 0ms);
+      animation-timing-function: ease-out;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes particleRise {
+      0%   { opacity: 0.9; transform: translate(var(--x0,0px), 0) scale(1); }
+      70%  { opacity: 0.5; }
+      100% { opacity: 0;   transform: translate(var(--x1,0px), var(--y,-60px)) scale(0.3); }
+    }
+
+    /* Spark answers */
+    .spark-answers {
+      position: relative;
+      z-index: 5;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      opacity: 0;
+      transition: opacity 0.35s ease 0.72s;
+    }
+
+    .concept-3.is-revealed .spark-answers { opacity: 1; }
+
+    /* Ember container — shrinks to a residual glow after reveal */
+    .ember-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 60px;
+      position: relative;
+      z-index: 3;
+    }
+
+    /* ─── Residual glow ring after reveal ──────────────────────────── */
+    .concept-3.is-revealed .ember-container::after {
+      content: '';
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      box-shadow: 0 0 24px 12px rgba(224, 122, 95, 0.2);
+      animation: glowReside 2s ease-in-out infinite 1s;
+    }
+
+    @keyframes glowReside {
+      0%, 100% { opacity: .6; }
+      50%       { opacity: 1;  }
+    }
+
+    /* ─── Border glow on spark stage after reveal ───────────────────── */
+    .concept-3.is-revealed.spark-stage-col .stage {
+      border-color: rgba(224, 122, 95, 0.3);
+      box-shadow:
+        0 1px 3px rgba(15, 23, 42, 0.04),
+        0 8px 32px rgba(15, 23, 42, 0.06),
+        0 0 0 2px rgba(224, 122, 95, 0.12),
+        inset 0 0 40px rgba(224, 122, 95, 0.05);
+      transition: border-color 0.5s ease 0.3s, box-shadow 0.5s ease 0.3s;
+    }
+
+    /* ─── Reduce Motion ─────────────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .concept-1.is-revealed .letter-content,
+      .concept-2.is-revealed .threads-answers,
+      .concept-3.is-revealed .spark-answers {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* ─── Divider between concepts ──────────────────────────────────────── */
+    @media (min-width: 961px) {
+      .concepts {
+        position: relative;
+      }
+
+      .concepts::before,
+      .concepts::after {
+        content: '';
+        position: absolute;
+        top: 60px; bottom: 0;
+        width: 1px;
+        background: linear-gradient(to bottom, transparent, rgba(31, 78, 115, 0.1) 20%, rgba(31, 78, 115, 0.1) 80%, transparent);
+      }
+
+      .concepts::before { left: calc(33.33% + 8px); }
+      .concepts::after  { left: calc(66.66% + 8px); }
+    }
+
+    /* ─── Small tag for "pre-state label" ───────────────────────────────── */
+    .waiting-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--slate-soft);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* preserve-3d for flap; flex column so letter sits below envelope */
+    .envelope-scene {
+      perspective: 800px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ─── Page Header ─────────────────────────────────────────────────── -->
+  <header class="page-header" role="banner">
+    <h1 class="page-title"><em>Pick</em> a reveal.</h1>
+    <p class="page-subtitle">Tap each one. The one that makes you feel something is the right answer.</p>
+  </header>
+
+  <!-- ─── Three Concepts ──────────────────────────────────────────────── -->
+  <main class="concepts" role="main">
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         CONCEPT 1 — THE SEAL
+    ══════════════════════════════════════════════════════════════════════ -->
+    <section class="concept concept-1" aria-label="Concept 1: The Seal">
+      <p class="concept-number">Concept 01</p>
+      <h2 class="concept-name">The Seal</h2>
+      <p class="concept-tagline">A private letter, sealed in wax.</p>
+
+      <div class="stage seal-stage" id="stage-1">
+
+        <p class="waiting-label" id="waiting-1">Both answers are in</p>
+
+        <!-- Envelope -->
+        <div class="envelope-scene">
+          <div class="envelope-wrap" id="envelope">
+
+            <!-- Flap (folds open) -->
+            <div class="envelope-flap" id="flap"></div>
+
+            <!-- Envelope body -->
+            <div class="envelope-body"></div>
+
+            <!-- Wax Seal SVG -->
+            <div class="wax-seal" id="wax-seal" role="img" aria-label="Wax seal with initials C and M">
+              <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
+                <!-- Left half -->
+                <g class="seal-left" id="seal-half-left">
+                  <path d="M28 4 C28 4 14 8 8 18 C4 24 4 28 4 28 L28 28 Z" fill="#c0392b"/>
+                  <path d="M28 52 C28 52 14 48 8 38 C4 32 4 28 4 28 L28 28 Z" fill="#922b21"/>
+                  <path d="M28 28 L4 28 C4 28 8 22 14 18 L28 28Z" fill="#a93226" opacity="0.5"/>
+                </g>
+                <!-- Right half -->
+                <g class="seal-right" id="seal-half-right">
+                  <path d="M28 4 C28 4 42 8 48 18 C52 24 52 28 52 28 L28 28 Z" fill="#c0392b"/>
+                  <path d="M28 52 C28 52 42 48 48 38 C52 32 52 28 52 28 L28 28 Z" fill="#922b21"/>
+                  <path d="M28 28 L52 28 C52 28 48 22 42 18 L28 28Z" fill="#a93226" opacity="0.5"/>
+                </g>
+                <!-- Initials overlay (always on top) -->
+                <text x="28" y="32" text-anchor="middle" font-family="Fraunces, serif" font-size="14" font-weight="400" fill="rgba(255,230,220,0.9)" style="pointer-events:none;">C·M</text>
+                <!-- Ornamental ring -->
+                <circle cx="28" cy="28" r="20" stroke="rgba(255,200,180,0.3)" stroke-width="1" fill="none"/>
+                <!-- Particles (positioned at seal center) -->
+                <circle class="seal-particle" cx="28" cy="28" r="2.5" style="fill:#c0392b"/>
+                <circle class="seal-particle" cx="28" cy="28" r="2.5" style="fill:#e74c3c"/>
+                <circle class="seal-particle" cx="28" cy="28" r="2.5" style="fill:#a93226"/>
+                <circle class="seal-particle" cx="28" cy="28" r="3px" style="fill:#d44000"/>
+                <circle class="seal-particle" cx="28" cy="28" r="2px" style="fill:#c0392b"/>
+              </svg>
+            </div>
+
+          </div><!-- /envelope-wrap -->
+
+          <!-- Letter content unfolds below the envelope -->
+          <div class="letter-content" id="letter-content">
+            <div class="answers">
+              <div class="answer-card">
+                <p class="answer-name" style="color: var(--blue);">Chris</p>
+                <p class="answer-text">"I felt grateful when you made coffee without me asking. Small things like that remind me you see me."</p>
+              </div>
+              <div class="answer-card">
+                <p class="answer-name" style="color: var(--peach);">Morgan</p>
+                <p class="answer-text">"I love how you laugh at your own jokes before getting to the punchline. It's the best part of my day."</p>
+              </div>
+            </div>
+          </div>
+        </div><!-- /envelope-scene -->
+
+        <button class="trigger-btn" id="trigger-1" aria-label="Open the envelope">
+          Tap to open
+        </button>
+
+      </div><!-- /stage -->
+
+      <div class="below-stage">
+        <button class="replay-btn" data-concept="1" aria-label="Replay Concept 1 animation">↺ Replay</button>
+      </div>
+
+      <div class="verdict">
+        <div class="verdict-row">
+          <span class="verdict-label pro">Pro</span>
+          <ul class="verdict-list">
+            <li>Most coherent with existing 'sealed answer' copy.</li>
+            <li>App Store screenshot ready.</li>
+            <li>Tactile gesture — user authors the moment.</li>
+          </ul>
+        </div>
+        <div class="verdict-row">
+          <span class="verdict-label con">Con</span>
+          <ul class="verdict-list">
+            <li>Wax-seal aesthetic could read 'wedding invitation.'</li>
+            <li>Single-metaphor: every reveal feels the same.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         CONCEPT 2 — TWO THREADS
+    ══════════════════════════════════════════════════════════════════════ -->
+    <section class="concept concept-2" aria-label="Concept 2: Two Threads">
+      <p class="concept-number">Concept 02</p>
+      <h2 class="concept-name">Two Threads</h2>
+      <p class="concept-tagline">Two threads, one knot.</p>
+
+      <div class="stage threads-stage" id="stage-2">
+
+        <!-- SVG canvas for thread paths -->
+        <svg class="threads-svg-wrap" id="threads-svg" viewBox="0 0 360 480" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <radialGradient id="knotGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#e07a5f"/>
+              <stop offset="50%"  stop-color="#9b6fa0"/>
+              <stop offset="100%" stop-color="#2d6a9f"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Peach thread: top-left corner → center -->
+          <path
+            id="path-peach"
+            class="thread-dash"
+            d="M 0,0 C 60,60 120,120 180,240"
+          />
+          <!-- Peach idle tip dot -->
+          <circle id="tip-peach" class="thread-tip idle-thread-tip" cx="90" cy="105" r="5" fill="#e07a5f"/>
+
+          <!-- Blue thread: top-right corner → center -->
+          <path
+            id="path-blue"
+            class="thread-dash"
+            d="M 360,0 C 300,60 240,120 180,240"
+          />
+          <!-- Blue idle tip dot -->
+          <circle id="tip-blue" class="thread-tip idle-thread-tip" cx="270" cy="105" r="5" fill="#2d6a9f" style="animation-delay: 0.4s"/>
+
+          <!-- Knot at center -->
+          <circle id="knot" class="knot-circle" cx="180" cy="240" r="0" fill="url(#knotGrad)" opacity="0"/>
+        </svg>
+
+        <!-- Answers overlay -->
+        <div class="threads-answers" id="threads-answers">
+          <div class="answers">
+            <div class="answer-card">
+              <p class="answer-name">
+                <span class="answer-dot dot-peach" aria-hidden="true"></span>
+                Chris
+              </p>
+              <p class="answer-text">"I felt grateful when you made coffee without me asking. Small things like that remind me you see me."</p>
+            </div>
+            <div class="answer-card">
+              <p class="answer-name">
+                <span class="answer-dot dot-blue" aria-hidden="true"></span>
+                Morgan
+              </p>
+              <p class="answer-text">"I love how you laugh at your own jokes before getting to the punchline. It's the best part of my day."</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="trigger-btn" id="trigger-2" aria-label="Reveal both answers">
+          Tap when ready
+        </button>
+
+      </div><!-- /stage -->
+
+      <div class="below-stage">
+        <button class="replay-btn" data-concept="2" aria-label="Replay Concept 2 animation">↺ Replay</button>
+      </div>
+
+      <div class="verdict">
+        <div class="verdict-row">
+          <span class="verdict-label pro">Pro</span>
+          <ul class="verdict-list">
+            <li>Each couple gets their own color pair — unique to them.</li>
+            <li>Visual identity surface (colors propagate to other UI).</li>
+          </ul>
+        </div>
+        <div class="verdict-row">
+          <span class="verdict-label con">Con</span>
+          <ul class="verdict-list">
+            <li>Most expensive to build (SVG path math + per-couple color generation).</li>
+            <li>Threads can feel abstract on first encounter.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         CONCEPT 3 — TODAY'S SPARK
+    ══════════════════════════════════════════════════════════════════════ -->
+    <section class="concept concept-3 spark-stage-col" aria-label="Concept 3: Today's Spark">
+      <p class="concept-number">Concept 03</p>
+      <h2 class="concept-name">Today's Spark</h2>
+      <p class="concept-tagline">A quiet ember, lit together.</p>
+
+      <div class="stage spark-stage" id="stage-3">
+
+        <div class="spark-card-inner">
+          <!-- Warm glow overlay -->
+          <div class="spark-warmth" aria-hidden="true"></div>
+
+          <!-- Ember + particles -->
+          <div class="ember-container">
+            <div class="ember" id="ember" role="img" aria-label="Glowing ember"></div>
+            <!-- Particles are injected by JS for randomness -->
+            <div class="particles" id="particles" aria-hidden="true"></div>
+          </div>
+
+          <!-- Answers -->
+          <div class="spark-answers" id="spark-answers">
+            <div class="answers">
+              <div class="answer-card">
+                <p class="answer-name" style="color: var(--blue);">Chris</p>
+                <p class="answer-text">"I felt grateful when you made coffee without me asking. Small things like that remind me you see me."</p>
+              </div>
+              <div class="answer-card">
+                <p class="answer-name" style="color: var(--peach);">Morgan</p>
+                <p class="answer-text">"I love how you laugh at your own jokes before getting to the punchline. It's the best part of my day."</p>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /spark-card-inner -->
+
+        <button class="trigger-btn" id="trigger-3" aria-label="Open the day">
+          Open the day
+        </button>
+
+      </div><!-- /stage -->
+
+      <div class="below-stage">
+        <button class="replay-btn" data-concept="3" aria-label="Replay Concept 3 animation">↺ Replay</button>
+      </div>
+
+      <div class="verdict">
+        <div class="verdict-row">
+          <span class="verdict-label pro">Pro</span>
+          <ul class="verdict-list">
+            <li>Warmth is the brand value made literal.</li>
+            <li>Fast to build (no SVG, just gradients + particles).</li>
+            <li>Doesn't feel like a wedding metaphor.</li>
+          </ul>
+        </div>
+        <div class="verdict-row">
+          <span class="verdict-label con">Con</span>
+          <ul class="verdict-list">
+            <li>Ember imagery less ownable — could feel generic if not executed precisely.</li>
+            <li>Less of a 'gesture' than Seal.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ─── JS ──────────────────────────────────────────────────────────── -->
+  <script>
+    'use strict';
+
+    // ── Respect reduced-motion preference ──────────────────────────────
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ── Particle config for Concept 3 ──────────────────────────────────
+    const PARTICLE_CONFIGS = [
+      { x0: '-4px',  x1: '-22px', y: '-70px',  delay: '0ms',   dur: '900ms', size: 6, color: '#e07a5f' },
+      { x0: '6px',   x1: '28px',  y: '-58px',  delay: '60ms',  dur: '780ms', size: 5, color: '#f0a090' },
+      { x0: '-8px',  x1: '-14px', y: '-80px',  delay: '120ms', dur: '860ms', size: 4, color: '#e07a5f' },
+      { x0: '10px',  x1: '18px',  y: '-65px',  delay: '30ms',  dur: '820ms', size: 5, color: '#d44000' },
+      { x0: '-2px',  x1: '-30px', y: '-72px',  delay: '90ms',  dur: '950ms', size: 3, color: '#f5b89a' },
+      { x0: '4px',   x1: '35px',  y: '-55px',  delay: '150ms', dur: '800ms', size: 4, color: '#e07a5f' },
+      { x0: '-6px',  x1: '-8px',  y: '-88px',  delay: '45ms',  dur: '1000ms',size: 3, color: '#f0a090' },
+      { x0: '8px',   x1: '12px',  y: '-76px',  delay: '200ms', dur: '870ms', size: 5, color: '#d44000' },
+      { x0: '-10px', x1: '-24px', y: '-62px',  delay: '75ms',  dur: '910ms', size: 4, color: '#e07a5f' },
+      { x0: '2px',   x1: '22px',  y: '-84px',  delay: '165ms', dur: '840ms', size: 3, color: '#f5b89a' },
+    ];
+
+    function buildParticles() {
+      const container = document.getElementById('particles');
+      if (!container) return;
+      container.innerHTML = '';
+      PARTICLE_CONFIGS.forEach(cfg => {
+        const el = document.createElement('div');
+        el.className = 'particle';
+        el.style.cssText = `
+          width: ${cfg.size}px;
+          height: ${cfg.size}px;
+          background: ${cfg.color};
+          --x0: ${cfg.x0};
+          --x1: ${cfg.x1};
+          --y: ${cfg.y};
+          --delay: ${cfg.delay};
+          --dur: ${cfg.dur};
+        `;
+        container.appendChild(el);
+      });
+    }
+
+    // Build particles on load
+    buildParticles();
+
+    // ── Reveal handlers ─────────────────────────────────────────────────
+
+    function revealConcept(num) {
+      const section = document.querySelector(`.concept-${num}`);
+      const btn = document.getElementById(`trigger-${num}`);
+      if (!section || section.classList.contains('is-revealed')) return;
+
+      btn.disabled = true;
+      section.classList.add('is-revealed');
+
+      // Re-enable after animation completes
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = 'Revealed ✓';
+        btn.style.opacity = '0.5';
+        btn.style.pointerEvents = 'none';
+      }, 1200);
+    }
+
+    function replayConcept(num) {
+      const section = document.querySelector(`.concept-${num}`);
+      const btn = document.getElementById(`trigger-${num}`);
+      if (!section) return;
+
+      // Strip revealed state
+      section.classList.remove('is-revealed');
+
+      // Reset trigger button
+      btn.disabled = false;
+      btn.textContent = num === 1 ? 'Tap to open' : num === 2 ? 'Tap when ready' : 'Open the day';
+      btn.style.opacity = '';
+      btn.style.pointerEvents = '';
+
+      // For concept 3, rebuild particles so animations retrigger
+      if (num === 3) {
+        buildParticles();
+      }
+
+      // Tiny delay to flush class removal, then re-add for a clean retrigger
+      // (Not re-adding — user must click trigger again. Just reset.)
+      // Actually per brief: replay should trigger the animation automatically:
+      setTimeout(() => {
+        revealConcept(num);
+      }, 80);
+    }
+
+    // ── Wire up trigger buttons ─────────────────────────────────────────
+    [1, 2, 3].forEach(num => {
+      const triggerBtn = document.getElementById(`trigger-${num}`);
+      if (triggerBtn) {
+        triggerBtn.addEventListener('click', () => revealConcept(num));
+      }
+    });
+
+    // ── Wire up replay buttons ──────────────────────────────────────────
+    document.querySelectorAll('.replay-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const num = parseInt(btn.dataset.concept, 10);
+        replayConcept(num);
+      });
+    });
+
+  </script>
+</body>
+</html>

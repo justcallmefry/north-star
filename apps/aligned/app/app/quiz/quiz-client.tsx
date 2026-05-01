@@ -319,8 +319,8 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
           <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-100 text-brand-600" aria-hidden>
             <Check className="h-8 w-8" strokeWidth={2.5} />
           </span>
-          <p className="text-xl font-semibold text-slate-900">Done!</p>
-          <p className="text-sm text-slate-500">Taking you to your results…</p>
+          <p className="text-xl font-semibold text-slate-900">Quiz submitted.</p>
+          <p className="text-sm text-slate-500">We'll reveal results once you've both finished.</p>
         </div>
       </div>
     );
@@ -596,11 +596,25 @@ function QuizRevealView({
   const theyAreWinning = reveal.overallPartnerScore > reveal.overallMyScore;
   const isTie = reveal.overallMyScore === reveal.overallPartnerScore;
   const todayCombined = reveal.myScore + reveal.partnerScore;
-  const resultsLine = todayCombined >= 8 ? "You know each other well!" : "Keep playing to improve.";
+  const todayBothPerfect = reveal.myScore === 5 && reveal.partnerScore === 5;
+  const resultsLine = todayBothPerfect
+    ? "Perfect round — you know each other well."
+    : todayCombined >= 8
+      ? "Strong round. You're reading each other well."
+      : todayCombined >= 6
+        ? "Getting warmer — keep going."
+        : "Room to grow. Come back tomorrow.";
 
   return (
     <div className="space-y-5">
       {isFirstReveal && <RevealStamp totalMembers={2} />}
+      {isFirstReveal && todayBothPerfect && (
+        <div className="animate-calm-fade-in rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 text-center space-y-1">
+          <p className="text-2xl" aria-hidden>🎯</p>
+          <p className="text-lg font-semibold text-amber-900">Perfect round.</p>
+          <p className="text-sm text-amber-700">Both of you got 5/5 today.</p>
+        </div>
+      )}
       <p
         className={`text-center text-lg font-medium text-slate-700 sm:text-xl ${cascade} ${cascade ? "reveal-cascade-delay-1" : ""}`}
       >

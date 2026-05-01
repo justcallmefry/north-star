@@ -364,6 +364,25 @@ exports.Prisma.AgreementParticipationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.DareScalarFieldEnum = {
+  id: 'id',
+  weekKey: 'weekKey',
+  title: 'title',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DareCompletionScalarFieldEnum = {
+  id: 'id',
+  dareId: 'dareId',
+  relationshipId: 'relationshipId',
+  completedAt: 'completedAt',
+  photoUrl: 'photoUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -466,7 +485,9 @@ exports.Prisma.ModelName = {
   QuizSession: 'QuizSession',
   QuizParticipation: 'QuizParticipation',
   AgreementSession: 'AgreementSession',
-  AgreementParticipation: 'AgreementParticipation'
+  AgreementParticipation: 'AgreementParticipation',
+  Dare: 'Dare',
+  DareCompletion: 'DareCompletion'
 };
 
 /**

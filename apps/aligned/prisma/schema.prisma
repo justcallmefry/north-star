@@ -161,6 +161,7 @@ model Relationship {
   streak        Streak?
   subscriptions Subscription[]
   memories     Memory[]
+  dareCompletions DareCompletion[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -534,4 +535,43 @@ model AgreementParticipation {
   @@unique([agreementSessionId, userId])
   @@index([agreementSessionId])
   @@index([userId])
+}
+
+// ============== Date Night Dares ==============
+
+/// A weekly dare challenge available to all couples.
+model Dare {
+  id          String   @id @default(cuid())
+  /// ISO week key the dare is active, e.g. "2026-W18"
+  weekKey     String   @unique
+  title       String
+  description String   @db.Text
+
+  completions DareCompletion[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([weekKey])
+}
+
+/// Records that a couple completed a dare for a given week.
+model DareCompletion {
+  id             String   @id @default(cuid())
+  dareId         String
+  relationshipId String
+  /// When the couple marked it done.
+  completedAt    DateTime @default(now())
+  /// Optional photo URL (Vercel Blob) attached at completion time.
+  photoUrl       String?
+
+  dare         Dare         @relation(fields: [dareId], references: [id], onDelete: Cascade)
+  relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([dareId, relationshipId])
+  @@index([dareId])
+  @@index([relationshipId])
 }

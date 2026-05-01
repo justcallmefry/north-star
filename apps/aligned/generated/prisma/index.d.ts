@@ -129,6 +129,16 @@ export type AgreementSession = $Result.DefaultSelection<Prisma.$AgreementSession
  * 
  */
 export type AgreementParticipation = $Result.DefaultSelection<Prisma.$AgreementParticipationPayload>
+/**
+ * Model Dare
+ * A weekly dare challenge available to all couples.
+ */
+export type Dare = $Result.DefaultSelection<Prisma.$DarePayload>
+/**
+ * Model DareCompletion
+ * Records that a couple completed a dare for a given week.
+ */
+export type DareCompletion = $Result.DefaultSelection<Prisma.$DareCompletionPayload>
 
 /**
  * Enums
@@ -605,6 +615,26 @@ export class PrismaClient<
     * ```
     */
   get agreementParticipation(): Prisma.AgreementParticipationDelegate<ExtArgs>;
+
+  /**
+   * `prisma.dare`: Exposes CRUD operations for the **Dare** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Dares
+    * const dares = await prisma.dare.findMany()
+    * ```
+    */
+  get dare(): Prisma.DareDelegate<ExtArgs>;
+
+  /**
+   * `prisma.dareCompletion`: Exposes CRUD operations for the **DareCompletion** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DareCompletions
+    * const dareCompletions = await prisma.dareCompletion.findMany()
+    * ```
+    */
+  get dareCompletion(): Prisma.DareCompletionDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -1068,7 +1098,9 @@ export namespace Prisma {
     QuizSession: 'QuizSession',
     QuizParticipation: 'QuizParticipation',
     AgreementSession: 'AgreementSession',
-    AgreementParticipation: 'AgreementParticipation'
+    AgreementParticipation: 'AgreementParticipation',
+    Dare: 'Dare',
+    DareCompletion: 'DareCompletion'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1084,7 +1116,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "memory" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation"
+      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "memory" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation" | "dare" | "dareCompletion"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2698,6 +2730,146 @@ export namespace Prisma {
           }
         }
       }
+      Dare: {
+        payload: Prisma.$DarePayload<ExtArgs>
+        fields: Prisma.DareFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DareFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DarePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DareFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DarePayload>
+          }
+          findFirst: {
+            args: Prisma.DareFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DarePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DareFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DarePayload>
+          }
+          findMany: {
+            args: Prisma.DareFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DarePayload>[]
+          }
+          create: {
+            args: Prisma.DareCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DarePayload>
+          }
+          createMany: {
+            args: Prisma.DareCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DareCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DarePayload>[]
+          }
+          delete: {
+            args: Prisma.DareDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DarePayload>
+          }
+          update: {
+            args: Prisma.DareUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DarePayload>
+          }
+          deleteMany: {
+            args: Prisma.DareDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DareUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.DareUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DarePayload>
+          }
+          aggregate: {
+            args: Prisma.DareAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDare>
+          }
+          groupBy: {
+            args: Prisma.DareGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DareGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DareCountArgs<ExtArgs>
+            result: $Utils.Optional<DareCountAggregateOutputType> | number
+          }
+        }
+      }
+      DareCompletion: {
+        payload: Prisma.$DareCompletionPayload<ExtArgs>
+        fields: Prisma.DareCompletionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DareCompletionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DareCompletionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DareCompletionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DareCompletionPayload>
+          }
+          findFirst: {
+            args: Prisma.DareCompletionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DareCompletionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DareCompletionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DareCompletionPayload>
+          }
+          findMany: {
+            args: Prisma.DareCompletionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DareCompletionPayload>[]
+          }
+          create: {
+            args: Prisma.DareCompletionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DareCompletionPayload>
+          }
+          createMany: {
+            args: Prisma.DareCompletionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DareCompletionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DareCompletionPayload>[]
+          }
+          delete: {
+            args: Prisma.DareCompletionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DareCompletionPayload>
+          }
+          update: {
+            args: Prisma.DareCompletionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DareCompletionPayload>
+          }
+          deleteMany: {
+            args: Prisma.DareCompletionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DareCompletionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.DareCompletionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DareCompletionPayload>
+          }
+          aggregate: {
+            args: Prisma.DareCompletionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDareCompletion>
+          }
+          groupBy: {
+            args: Prisma.DareCompletionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DareCompletionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DareCompletionCountArgs<ExtArgs>
+            result: $Utils.Optional<DareCompletionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3006,6 +3178,7 @@ export namespace Prisma {
     meetings: number
     subscriptions: number
     memories: number
+    dareCompletions: number
   }
 
   export type RelationshipCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3017,6 +3190,7 @@ export namespace Prisma {
     meetings?: boolean | RelationshipCountOutputTypeCountMeetingsArgs
     subscriptions?: boolean | RelationshipCountOutputTypeCountSubscriptionsArgs
     memories?: boolean | RelationshipCountOutputTypeCountMemoriesArgs
+    dareCompletions?: boolean | RelationshipCountOutputTypeCountDareCompletionsArgs
   }
 
   // Custom InputTypes
@@ -3084,6 +3258,13 @@ export namespace Prisma {
    */
   export type RelationshipCountOutputTypeCountMemoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MemoryWhereInput
+  }
+
+  /**
+   * RelationshipCountOutputType without action
+   */
+  export type RelationshipCountOutputTypeCountDareCompletionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DareCompletionWhereInput
   }
 
 
@@ -3279,6 +3460,37 @@ export namespace Prisma {
    */
   export type AgreementSessionCountOutputTypeCountParticipationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AgreementParticipationWhereInput
+  }
+
+
+  /**
+   * Count Type DareCountOutputType
+   */
+
+  export type DareCountOutputType = {
+    completions: number
+  }
+
+  export type DareCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    completions?: boolean | DareCountOutputTypeCountCompletionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DareCountOutputType without action
+   */
+  export type DareCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DareCountOutputType
+     */
+    select?: DareCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DareCountOutputType without action
+   */
+  export type DareCountOutputTypeCountCompletionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DareCompletionWhereInput
   }
 
 
@@ -8534,6 +8746,7 @@ export namespace Prisma {
     streak?: boolean | Relationship$streakArgs<ExtArgs>
     subscriptions?: boolean | Relationship$subscriptionsArgs<ExtArgs>
     memories?: boolean | Relationship$memoriesArgs<ExtArgs>
+    dareCompletions?: boolean | Relationship$dareCompletionsArgs<ExtArgs>
     _count?: boolean | RelationshipCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["relationship"]>
 
@@ -8565,6 +8778,7 @@ export namespace Prisma {
     streak?: boolean | Relationship$streakArgs<ExtArgs>
     subscriptions?: boolean | Relationship$subscriptionsArgs<ExtArgs>
     memories?: boolean | Relationship$memoriesArgs<ExtArgs>
+    dareCompletions?: boolean | Relationship$dareCompletionsArgs<ExtArgs>
     _count?: boolean | RelationshipCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RelationshipIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -8581,6 +8795,7 @@ export namespace Prisma {
       streak: Prisma.$StreakPayload<ExtArgs> | null
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
       memories: Prisma.$MemoryPayload<ExtArgs>[]
+      dareCompletions: Prisma.$DareCompletionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8967,6 +9182,7 @@ export namespace Prisma {
     streak<T extends Relationship$streakArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$streakArgs<ExtArgs>>): Prisma__StreakClient<$Result.GetResult<Prisma.$StreakPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     subscriptions<T extends Relationship$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
     memories<T extends Relationship$memoriesArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$memoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany"> | Null>
+    dareCompletions<T extends Relationship$dareCompletionsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$dareCompletionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DareCompletionPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9488,6 +9704,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MemoryScalarFieldEnum | MemoryScalarFieldEnum[]
+  }
+
+  /**
+   * Relationship.dareCompletions
+   */
+  export type Relationship$dareCompletionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DareCompletion
+     */
+    select?: DareCompletionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareCompletionInclude<ExtArgs> | null
+    where?: DareCompletionWhereInput
+    orderBy?: DareCompletionOrderByWithRelationInput | DareCompletionOrderByWithRelationInput[]
+    cursor?: DareCompletionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DareCompletionScalarFieldEnum | DareCompletionScalarFieldEnum[]
   }
 
   /**
@@ -26287,6 +26523,1938 @@ export namespace Prisma {
 
 
   /**
+   * Model Dare
+   */
+
+  export type AggregateDare = {
+    _count: DareCountAggregateOutputType | null
+    _min: DareMinAggregateOutputType | null
+    _max: DareMaxAggregateOutputType | null
+  }
+
+  export type DareMinAggregateOutputType = {
+    id: string | null
+    weekKey: string | null
+    title: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DareMaxAggregateOutputType = {
+    id: string | null
+    weekKey: string | null
+    title: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DareCountAggregateOutputType = {
+    id: number
+    weekKey: number
+    title: number
+    description: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DareMinAggregateInputType = {
+    id?: true
+    weekKey?: true
+    title?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DareMaxAggregateInputType = {
+    id?: true
+    weekKey?: true
+    title?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DareCountAggregateInputType = {
+    id?: true
+    weekKey?: true
+    title?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DareAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Dare to aggregate.
+     */
+    where?: DareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dares to fetch.
+     */
+    orderBy?: DareOrderByWithRelationInput | DareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Dares
+    **/
+    _count?: true | DareCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DareMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DareMaxAggregateInputType
+  }
+
+  export type GetDareAggregateType<T extends DareAggregateArgs> = {
+        [P in keyof T & keyof AggregateDare]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDare[P]>
+      : GetScalarType<T[P], AggregateDare[P]>
+  }
+
+
+
+
+  export type DareGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DareWhereInput
+    orderBy?: DareOrderByWithAggregationInput | DareOrderByWithAggregationInput[]
+    by: DareScalarFieldEnum[] | DareScalarFieldEnum
+    having?: DareScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DareCountAggregateInputType | true
+    _min?: DareMinAggregateInputType
+    _max?: DareMaxAggregateInputType
+  }
+
+  export type DareGroupByOutputType = {
+    id: string
+    weekKey: string
+    title: string
+    description: string
+    createdAt: Date
+    updatedAt: Date
+    _count: DareCountAggregateOutputType | null
+    _min: DareMinAggregateOutputType | null
+    _max: DareMaxAggregateOutputType | null
+  }
+
+  type GetDareGroupByPayload<T extends DareGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DareGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DareGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DareGroupByOutputType[P]>
+            : GetScalarType<T[P], DareGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DareSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    weekKey?: boolean
+    title?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    completions?: boolean | Dare$completionsArgs<ExtArgs>
+    _count?: boolean | DareCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dare"]>
+
+  export type DareSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    weekKey?: boolean
+    title?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["dare"]>
+
+  export type DareSelectScalar = {
+    id?: boolean
+    weekKey?: boolean
+    title?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DareInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    completions?: boolean | Dare$completionsArgs<ExtArgs>
+    _count?: boolean | DareCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DareIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $DarePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Dare"
+    objects: {
+      completions: Prisma.$DareCompletionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      /**
+       * ISO week key the dare is active, e.g. "2026-W18"
+       */
+      weekKey: string
+      title: string
+      description: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["dare"]>
+    composites: {}
+  }
+
+  type DareGetPayload<S extends boolean | null | undefined | DareDefaultArgs> = $Result.GetResult<Prisma.$DarePayload, S>
+
+  type DareCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<DareFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: DareCountAggregateInputType | true
+    }
+
+  export interface DareDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Dare'], meta: { name: 'Dare' } }
+    /**
+     * Find zero or one Dare that matches the filter.
+     * @param {DareFindUniqueArgs} args - Arguments to find a Dare
+     * @example
+     * // Get one Dare
+     * const dare = await prisma.dare.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DareFindUniqueArgs>(args: SelectSubset<T, DareFindUniqueArgs<ExtArgs>>): Prisma__DareClient<$Result.GetResult<Prisma.$DarePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one Dare that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {DareFindUniqueOrThrowArgs} args - Arguments to find a Dare
+     * @example
+     * // Get one Dare
+     * const dare = await prisma.dare.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DareFindUniqueOrThrowArgs>(args: SelectSubset<T, DareFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DareClient<$Result.GetResult<Prisma.$DarePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first Dare that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DareFindFirstArgs} args - Arguments to find a Dare
+     * @example
+     * // Get one Dare
+     * const dare = await prisma.dare.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DareFindFirstArgs>(args?: SelectSubset<T, DareFindFirstArgs<ExtArgs>>): Prisma__DareClient<$Result.GetResult<Prisma.$DarePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first Dare that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DareFindFirstOrThrowArgs} args - Arguments to find a Dare
+     * @example
+     * // Get one Dare
+     * const dare = await prisma.dare.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DareFindFirstOrThrowArgs>(args?: SelectSubset<T, DareFindFirstOrThrowArgs<ExtArgs>>): Prisma__DareClient<$Result.GetResult<Prisma.$DarePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more Dares that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DareFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Dares
+     * const dares = await prisma.dare.findMany()
+     * 
+     * // Get first 10 Dares
+     * const dares = await prisma.dare.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dareWithIdOnly = await prisma.dare.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DareFindManyArgs>(args?: SelectSubset<T, DareFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DarePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a Dare.
+     * @param {DareCreateArgs} args - Arguments to create a Dare.
+     * @example
+     * // Create one Dare
+     * const Dare = await prisma.dare.create({
+     *   data: {
+     *     // ... data to create a Dare
+     *   }
+     * })
+     * 
+     */
+    create<T extends DareCreateArgs>(args: SelectSubset<T, DareCreateArgs<ExtArgs>>): Prisma__DareClient<$Result.GetResult<Prisma.$DarePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many Dares.
+     * @param {DareCreateManyArgs} args - Arguments to create many Dares.
+     * @example
+     * // Create many Dares
+     * const dare = await prisma.dare.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DareCreateManyArgs>(args?: SelectSubset<T, DareCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Dares and returns the data saved in the database.
+     * @param {DareCreateManyAndReturnArgs} args - Arguments to create many Dares.
+     * @example
+     * // Create many Dares
+     * const dare = await prisma.dare.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Dares and only return the `id`
+     * const dareWithIdOnly = await prisma.dare.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DareCreateManyAndReturnArgs>(args?: SelectSubset<T, DareCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DarePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a Dare.
+     * @param {DareDeleteArgs} args - Arguments to delete one Dare.
+     * @example
+     * // Delete one Dare
+     * const Dare = await prisma.dare.delete({
+     *   where: {
+     *     // ... filter to delete one Dare
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DareDeleteArgs>(args: SelectSubset<T, DareDeleteArgs<ExtArgs>>): Prisma__DareClient<$Result.GetResult<Prisma.$DarePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one Dare.
+     * @param {DareUpdateArgs} args - Arguments to update one Dare.
+     * @example
+     * // Update one Dare
+     * const dare = await prisma.dare.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DareUpdateArgs>(args: SelectSubset<T, DareUpdateArgs<ExtArgs>>): Prisma__DareClient<$Result.GetResult<Prisma.$DarePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more Dares.
+     * @param {DareDeleteManyArgs} args - Arguments to filter Dares to delete.
+     * @example
+     * // Delete a few Dares
+     * const { count } = await prisma.dare.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DareDeleteManyArgs>(args?: SelectSubset<T, DareDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Dares.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DareUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Dares
+     * const dare = await prisma.dare.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DareUpdateManyArgs>(args: SelectSubset<T, DareUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Dare.
+     * @param {DareUpsertArgs} args - Arguments to update or create a Dare.
+     * @example
+     * // Update or create a Dare
+     * const dare = await prisma.dare.upsert({
+     *   create: {
+     *     // ... data to create a Dare
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Dare we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DareUpsertArgs>(args: SelectSubset<T, DareUpsertArgs<ExtArgs>>): Prisma__DareClient<$Result.GetResult<Prisma.$DarePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of Dares.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DareCountArgs} args - Arguments to filter Dares to count.
+     * @example
+     * // Count the number of Dares
+     * const count = await prisma.dare.count({
+     *   where: {
+     *     // ... the filter for the Dares we want to count
+     *   }
+     * })
+    **/
+    count<T extends DareCountArgs>(
+      args?: Subset<T, DareCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DareCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Dare.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DareAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DareAggregateArgs>(args: Subset<T, DareAggregateArgs>): Prisma.PrismaPromise<GetDareAggregateType<T>>
+
+    /**
+     * Group by Dare.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DareGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DareGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DareGroupByArgs['orderBy'] }
+        : { orderBy?: DareGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DareGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDareGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Dare model
+   */
+  readonly fields: DareFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Dare.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DareClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    completions<T extends Dare$completionsArgs<ExtArgs> = {}>(args?: Subset<T, Dare$completionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DareCompletionPayload<ExtArgs>, T, "findMany"> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Dare model
+   */ 
+  interface DareFieldRefs {
+    readonly id: FieldRef<"Dare", 'String'>
+    readonly weekKey: FieldRef<"Dare", 'String'>
+    readonly title: FieldRef<"Dare", 'String'>
+    readonly description: FieldRef<"Dare", 'String'>
+    readonly createdAt: FieldRef<"Dare", 'DateTime'>
+    readonly updatedAt: FieldRef<"Dare", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Dare findUnique
+   */
+  export type DareFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dare
+     */
+    select?: DareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareInclude<ExtArgs> | null
+    /**
+     * Filter, which Dare to fetch.
+     */
+    where: DareWhereUniqueInput
+  }
+
+  /**
+   * Dare findUniqueOrThrow
+   */
+  export type DareFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dare
+     */
+    select?: DareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareInclude<ExtArgs> | null
+    /**
+     * Filter, which Dare to fetch.
+     */
+    where: DareWhereUniqueInput
+  }
+
+  /**
+   * Dare findFirst
+   */
+  export type DareFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dare
+     */
+    select?: DareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareInclude<ExtArgs> | null
+    /**
+     * Filter, which Dare to fetch.
+     */
+    where?: DareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dares to fetch.
+     */
+    orderBy?: DareOrderByWithRelationInput | DareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Dares.
+     */
+    cursor?: DareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Dares.
+     */
+    distinct?: DareScalarFieldEnum | DareScalarFieldEnum[]
+  }
+
+  /**
+   * Dare findFirstOrThrow
+   */
+  export type DareFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dare
+     */
+    select?: DareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareInclude<ExtArgs> | null
+    /**
+     * Filter, which Dare to fetch.
+     */
+    where?: DareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dares to fetch.
+     */
+    orderBy?: DareOrderByWithRelationInput | DareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Dares.
+     */
+    cursor?: DareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Dares.
+     */
+    distinct?: DareScalarFieldEnum | DareScalarFieldEnum[]
+  }
+
+  /**
+   * Dare findMany
+   */
+  export type DareFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dare
+     */
+    select?: DareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareInclude<ExtArgs> | null
+    /**
+     * Filter, which Dares to fetch.
+     */
+    where?: DareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dares to fetch.
+     */
+    orderBy?: DareOrderByWithRelationInput | DareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Dares.
+     */
+    cursor?: DareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dares.
+     */
+    skip?: number
+    distinct?: DareScalarFieldEnum | DareScalarFieldEnum[]
+  }
+
+  /**
+   * Dare create
+   */
+  export type DareCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dare
+     */
+    select?: DareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Dare.
+     */
+    data: XOR<DareCreateInput, DareUncheckedCreateInput>
+  }
+
+  /**
+   * Dare createMany
+   */
+  export type DareCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Dares.
+     */
+    data: DareCreateManyInput | DareCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Dare createManyAndReturn
+   */
+  export type DareCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dare
+     */
+    select?: DareSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many Dares.
+     */
+    data: DareCreateManyInput | DareCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Dare update
+   */
+  export type DareUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dare
+     */
+    select?: DareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Dare.
+     */
+    data: XOR<DareUpdateInput, DareUncheckedUpdateInput>
+    /**
+     * Choose, which Dare to update.
+     */
+    where: DareWhereUniqueInput
+  }
+
+  /**
+   * Dare updateMany
+   */
+  export type DareUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Dares.
+     */
+    data: XOR<DareUpdateManyMutationInput, DareUncheckedUpdateManyInput>
+    /**
+     * Filter which Dares to update
+     */
+    where?: DareWhereInput
+  }
+
+  /**
+   * Dare upsert
+   */
+  export type DareUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dare
+     */
+    select?: DareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Dare to update in case it exists.
+     */
+    where: DareWhereUniqueInput
+    /**
+     * In case the Dare found by the `where` argument doesn't exist, create a new Dare with this data.
+     */
+    create: XOR<DareCreateInput, DareUncheckedCreateInput>
+    /**
+     * In case the Dare was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DareUpdateInput, DareUncheckedUpdateInput>
+  }
+
+  /**
+   * Dare delete
+   */
+  export type DareDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dare
+     */
+    select?: DareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareInclude<ExtArgs> | null
+    /**
+     * Filter which Dare to delete.
+     */
+    where: DareWhereUniqueInput
+  }
+
+  /**
+   * Dare deleteMany
+   */
+  export type DareDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Dares to delete
+     */
+    where?: DareWhereInput
+  }
+
+  /**
+   * Dare.completions
+   */
+  export type Dare$completionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DareCompletion
+     */
+    select?: DareCompletionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareCompletionInclude<ExtArgs> | null
+    where?: DareCompletionWhereInput
+    orderBy?: DareCompletionOrderByWithRelationInput | DareCompletionOrderByWithRelationInput[]
+    cursor?: DareCompletionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DareCompletionScalarFieldEnum | DareCompletionScalarFieldEnum[]
+  }
+
+  /**
+   * Dare without action
+   */
+  export type DareDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dare
+     */
+    select?: DareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DareCompletion
+   */
+
+  export type AggregateDareCompletion = {
+    _count: DareCompletionCountAggregateOutputType | null
+    _min: DareCompletionMinAggregateOutputType | null
+    _max: DareCompletionMaxAggregateOutputType | null
+  }
+
+  export type DareCompletionMinAggregateOutputType = {
+    id: string | null
+    dareId: string | null
+    relationshipId: string | null
+    completedAt: Date | null
+    photoUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DareCompletionMaxAggregateOutputType = {
+    id: string | null
+    dareId: string | null
+    relationshipId: string | null
+    completedAt: Date | null
+    photoUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DareCompletionCountAggregateOutputType = {
+    id: number
+    dareId: number
+    relationshipId: number
+    completedAt: number
+    photoUrl: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DareCompletionMinAggregateInputType = {
+    id?: true
+    dareId?: true
+    relationshipId?: true
+    completedAt?: true
+    photoUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DareCompletionMaxAggregateInputType = {
+    id?: true
+    dareId?: true
+    relationshipId?: true
+    completedAt?: true
+    photoUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DareCompletionCountAggregateInputType = {
+    id?: true
+    dareId?: true
+    relationshipId?: true
+    completedAt?: true
+    photoUrl?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DareCompletionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DareCompletion to aggregate.
+     */
+    where?: DareCompletionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DareCompletions to fetch.
+     */
+    orderBy?: DareCompletionOrderByWithRelationInput | DareCompletionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DareCompletionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DareCompletions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DareCompletions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DareCompletions
+    **/
+    _count?: true | DareCompletionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DareCompletionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DareCompletionMaxAggregateInputType
+  }
+
+  export type GetDareCompletionAggregateType<T extends DareCompletionAggregateArgs> = {
+        [P in keyof T & keyof AggregateDareCompletion]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDareCompletion[P]>
+      : GetScalarType<T[P], AggregateDareCompletion[P]>
+  }
+
+
+
+
+  export type DareCompletionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DareCompletionWhereInput
+    orderBy?: DareCompletionOrderByWithAggregationInput | DareCompletionOrderByWithAggregationInput[]
+    by: DareCompletionScalarFieldEnum[] | DareCompletionScalarFieldEnum
+    having?: DareCompletionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DareCompletionCountAggregateInputType | true
+    _min?: DareCompletionMinAggregateInputType
+    _max?: DareCompletionMaxAggregateInputType
+  }
+
+  export type DareCompletionGroupByOutputType = {
+    id: string
+    dareId: string
+    relationshipId: string
+    completedAt: Date
+    photoUrl: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: DareCompletionCountAggregateOutputType | null
+    _min: DareCompletionMinAggregateOutputType | null
+    _max: DareCompletionMaxAggregateOutputType | null
+  }
+
+  type GetDareCompletionGroupByPayload<T extends DareCompletionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DareCompletionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DareCompletionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DareCompletionGroupByOutputType[P]>
+            : GetScalarType<T[P], DareCompletionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DareCompletionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dareId?: boolean
+    relationshipId?: boolean
+    completedAt?: boolean
+    photoUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    dare?: boolean | DareDefaultArgs<ExtArgs>
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dareCompletion"]>
+
+  export type DareCompletionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dareId?: boolean
+    relationshipId?: boolean
+    completedAt?: boolean
+    photoUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    dare?: boolean | DareDefaultArgs<ExtArgs>
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dareCompletion"]>
+
+  export type DareCompletionSelectScalar = {
+    id?: boolean
+    dareId?: boolean
+    relationshipId?: boolean
+    completedAt?: boolean
+    photoUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DareCompletionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dare?: boolean | DareDefaultArgs<ExtArgs>
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+  }
+  export type DareCompletionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dare?: boolean | DareDefaultArgs<ExtArgs>
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+  }
+
+  export type $DareCompletionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DareCompletion"
+    objects: {
+      dare: Prisma.$DarePayload<ExtArgs>
+      relationship: Prisma.$RelationshipPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      dareId: string
+      relationshipId: string
+      /**
+       * When the couple marked it done.
+       */
+      completedAt: Date
+      /**
+       * Optional photo URL (Vercel Blob) attached at completion time.
+       */
+      photoUrl: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["dareCompletion"]>
+    composites: {}
+  }
+
+  type DareCompletionGetPayload<S extends boolean | null | undefined | DareCompletionDefaultArgs> = $Result.GetResult<Prisma.$DareCompletionPayload, S>
+
+  type DareCompletionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<DareCompletionFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: DareCompletionCountAggregateInputType | true
+    }
+
+  export interface DareCompletionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DareCompletion'], meta: { name: 'DareCompletion' } }
+    /**
+     * Find zero or one DareCompletion that matches the filter.
+     * @param {DareCompletionFindUniqueArgs} args - Arguments to find a DareCompletion
+     * @example
+     * // Get one DareCompletion
+     * const dareCompletion = await prisma.dareCompletion.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DareCompletionFindUniqueArgs>(args: SelectSubset<T, DareCompletionFindUniqueArgs<ExtArgs>>): Prisma__DareCompletionClient<$Result.GetResult<Prisma.$DareCompletionPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one DareCompletion that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {DareCompletionFindUniqueOrThrowArgs} args - Arguments to find a DareCompletion
+     * @example
+     * // Get one DareCompletion
+     * const dareCompletion = await prisma.dareCompletion.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DareCompletionFindUniqueOrThrowArgs>(args: SelectSubset<T, DareCompletionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DareCompletionClient<$Result.GetResult<Prisma.$DareCompletionPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first DareCompletion that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DareCompletionFindFirstArgs} args - Arguments to find a DareCompletion
+     * @example
+     * // Get one DareCompletion
+     * const dareCompletion = await prisma.dareCompletion.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DareCompletionFindFirstArgs>(args?: SelectSubset<T, DareCompletionFindFirstArgs<ExtArgs>>): Prisma__DareCompletionClient<$Result.GetResult<Prisma.$DareCompletionPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first DareCompletion that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DareCompletionFindFirstOrThrowArgs} args - Arguments to find a DareCompletion
+     * @example
+     * // Get one DareCompletion
+     * const dareCompletion = await prisma.dareCompletion.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DareCompletionFindFirstOrThrowArgs>(args?: SelectSubset<T, DareCompletionFindFirstOrThrowArgs<ExtArgs>>): Prisma__DareCompletionClient<$Result.GetResult<Prisma.$DareCompletionPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more DareCompletions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DareCompletionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DareCompletions
+     * const dareCompletions = await prisma.dareCompletion.findMany()
+     * 
+     * // Get first 10 DareCompletions
+     * const dareCompletions = await prisma.dareCompletion.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dareCompletionWithIdOnly = await prisma.dareCompletion.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DareCompletionFindManyArgs>(args?: SelectSubset<T, DareCompletionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DareCompletionPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a DareCompletion.
+     * @param {DareCompletionCreateArgs} args - Arguments to create a DareCompletion.
+     * @example
+     * // Create one DareCompletion
+     * const DareCompletion = await prisma.dareCompletion.create({
+     *   data: {
+     *     // ... data to create a DareCompletion
+     *   }
+     * })
+     * 
+     */
+    create<T extends DareCompletionCreateArgs>(args: SelectSubset<T, DareCompletionCreateArgs<ExtArgs>>): Prisma__DareCompletionClient<$Result.GetResult<Prisma.$DareCompletionPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many DareCompletions.
+     * @param {DareCompletionCreateManyArgs} args - Arguments to create many DareCompletions.
+     * @example
+     * // Create many DareCompletions
+     * const dareCompletion = await prisma.dareCompletion.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DareCompletionCreateManyArgs>(args?: SelectSubset<T, DareCompletionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DareCompletions and returns the data saved in the database.
+     * @param {DareCompletionCreateManyAndReturnArgs} args - Arguments to create many DareCompletions.
+     * @example
+     * // Create many DareCompletions
+     * const dareCompletion = await prisma.dareCompletion.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DareCompletions and only return the `id`
+     * const dareCompletionWithIdOnly = await prisma.dareCompletion.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DareCompletionCreateManyAndReturnArgs>(args?: SelectSubset<T, DareCompletionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DareCompletionPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a DareCompletion.
+     * @param {DareCompletionDeleteArgs} args - Arguments to delete one DareCompletion.
+     * @example
+     * // Delete one DareCompletion
+     * const DareCompletion = await prisma.dareCompletion.delete({
+     *   where: {
+     *     // ... filter to delete one DareCompletion
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DareCompletionDeleteArgs>(args: SelectSubset<T, DareCompletionDeleteArgs<ExtArgs>>): Prisma__DareCompletionClient<$Result.GetResult<Prisma.$DareCompletionPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one DareCompletion.
+     * @param {DareCompletionUpdateArgs} args - Arguments to update one DareCompletion.
+     * @example
+     * // Update one DareCompletion
+     * const dareCompletion = await prisma.dareCompletion.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DareCompletionUpdateArgs>(args: SelectSubset<T, DareCompletionUpdateArgs<ExtArgs>>): Prisma__DareCompletionClient<$Result.GetResult<Prisma.$DareCompletionPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more DareCompletions.
+     * @param {DareCompletionDeleteManyArgs} args - Arguments to filter DareCompletions to delete.
+     * @example
+     * // Delete a few DareCompletions
+     * const { count } = await prisma.dareCompletion.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DareCompletionDeleteManyArgs>(args?: SelectSubset<T, DareCompletionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DareCompletions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DareCompletionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DareCompletions
+     * const dareCompletion = await prisma.dareCompletion.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DareCompletionUpdateManyArgs>(args: SelectSubset<T, DareCompletionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one DareCompletion.
+     * @param {DareCompletionUpsertArgs} args - Arguments to update or create a DareCompletion.
+     * @example
+     * // Update or create a DareCompletion
+     * const dareCompletion = await prisma.dareCompletion.upsert({
+     *   create: {
+     *     // ... data to create a DareCompletion
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DareCompletion we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DareCompletionUpsertArgs>(args: SelectSubset<T, DareCompletionUpsertArgs<ExtArgs>>): Prisma__DareCompletionClient<$Result.GetResult<Prisma.$DareCompletionPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of DareCompletions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DareCompletionCountArgs} args - Arguments to filter DareCompletions to count.
+     * @example
+     * // Count the number of DareCompletions
+     * const count = await prisma.dareCompletion.count({
+     *   where: {
+     *     // ... the filter for the DareCompletions we want to count
+     *   }
+     * })
+    **/
+    count<T extends DareCompletionCountArgs>(
+      args?: Subset<T, DareCompletionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DareCompletionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DareCompletion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DareCompletionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DareCompletionAggregateArgs>(args: Subset<T, DareCompletionAggregateArgs>): Prisma.PrismaPromise<GetDareCompletionAggregateType<T>>
+
+    /**
+     * Group by DareCompletion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DareCompletionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DareCompletionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DareCompletionGroupByArgs['orderBy'] }
+        : { orderBy?: DareCompletionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DareCompletionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDareCompletionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DareCompletion model
+   */
+  readonly fields: DareCompletionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DareCompletion.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DareCompletionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    dare<T extends DareDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DareDefaultArgs<ExtArgs>>): Prisma__DareClient<$Result.GetResult<Prisma.$DarePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    relationship<T extends RelationshipDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RelationshipDefaultArgs<ExtArgs>>): Prisma__RelationshipClient<$Result.GetResult<Prisma.$RelationshipPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DareCompletion model
+   */ 
+  interface DareCompletionFieldRefs {
+    readonly id: FieldRef<"DareCompletion", 'String'>
+    readonly dareId: FieldRef<"DareCompletion", 'String'>
+    readonly relationshipId: FieldRef<"DareCompletion", 'String'>
+    readonly completedAt: FieldRef<"DareCompletion", 'DateTime'>
+    readonly photoUrl: FieldRef<"DareCompletion", 'String'>
+    readonly createdAt: FieldRef<"DareCompletion", 'DateTime'>
+    readonly updatedAt: FieldRef<"DareCompletion", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DareCompletion findUnique
+   */
+  export type DareCompletionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DareCompletion
+     */
+    select?: DareCompletionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareCompletionInclude<ExtArgs> | null
+    /**
+     * Filter, which DareCompletion to fetch.
+     */
+    where: DareCompletionWhereUniqueInput
+  }
+
+  /**
+   * DareCompletion findUniqueOrThrow
+   */
+  export type DareCompletionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DareCompletion
+     */
+    select?: DareCompletionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareCompletionInclude<ExtArgs> | null
+    /**
+     * Filter, which DareCompletion to fetch.
+     */
+    where: DareCompletionWhereUniqueInput
+  }
+
+  /**
+   * DareCompletion findFirst
+   */
+  export type DareCompletionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DareCompletion
+     */
+    select?: DareCompletionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareCompletionInclude<ExtArgs> | null
+    /**
+     * Filter, which DareCompletion to fetch.
+     */
+    where?: DareCompletionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DareCompletions to fetch.
+     */
+    orderBy?: DareCompletionOrderByWithRelationInput | DareCompletionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DareCompletions.
+     */
+    cursor?: DareCompletionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DareCompletions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DareCompletions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DareCompletions.
+     */
+    distinct?: DareCompletionScalarFieldEnum | DareCompletionScalarFieldEnum[]
+  }
+
+  /**
+   * DareCompletion findFirstOrThrow
+   */
+  export type DareCompletionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DareCompletion
+     */
+    select?: DareCompletionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareCompletionInclude<ExtArgs> | null
+    /**
+     * Filter, which DareCompletion to fetch.
+     */
+    where?: DareCompletionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DareCompletions to fetch.
+     */
+    orderBy?: DareCompletionOrderByWithRelationInput | DareCompletionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DareCompletions.
+     */
+    cursor?: DareCompletionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DareCompletions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DareCompletions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DareCompletions.
+     */
+    distinct?: DareCompletionScalarFieldEnum | DareCompletionScalarFieldEnum[]
+  }
+
+  /**
+   * DareCompletion findMany
+   */
+  export type DareCompletionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DareCompletion
+     */
+    select?: DareCompletionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareCompletionInclude<ExtArgs> | null
+    /**
+     * Filter, which DareCompletions to fetch.
+     */
+    where?: DareCompletionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DareCompletions to fetch.
+     */
+    orderBy?: DareCompletionOrderByWithRelationInput | DareCompletionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DareCompletions.
+     */
+    cursor?: DareCompletionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DareCompletions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DareCompletions.
+     */
+    skip?: number
+    distinct?: DareCompletionScalarFieldEnum | DareCompletionScalarFieldEnum[]
+  }
+
+  /**
+   * DareCompletion create
+   */
+  export type DareCompletionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DareCompletion
+     */
+    select?: DareCompletionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareCompletionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DareCompletion.
+     */
+    data: XOR<DareCompletionCreateInput, DareCompletionUncheckedCreateInput>
+  }
+
+  /**
+   * DareCompletion createMany
+   */
+  export type DareCompletionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DareCompletions.
+     */
+    data: DareCompletionCreateManyInput | DareCompletionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DareCompletion createManyAndReturn
+   */
+  export type DareCompletionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DareCompletion
+     */
+    select?: DareCompletionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many DareCompletions.
+     */
+    data: DareCompletionCreateManyInput | DareCompletionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareCompletionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DareCompletion update
+   */
+  export type DareCompletionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DareCompletion
+     */
+    select?: DareCompletionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareCompletionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DareCompletion.
+     */
+    data: XOR<DareCompletionUpdateInput, DareCompletionUncheckedUpdateInput>
+    /**
+     * Choose, which DareCompletion to update.
+     */
+    where: DareCompletionWhereUniqueInput
+  }
+
+  /**
+   * DareCompletion updateMany
+   */
+  export type DareCompletionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DareCompletions.
+     */
+    data: XOR<DareCompletionUpdateManyMutationInput, DareCompletionUncheckedUpdateManyInput>
+    /**
+     * Filter which DareCompletions to update
+     */
+    where?: DareCompletionWhereInput
+  }
+
+  /**
+   * DareCompletion upsert
+   */
+  export type DareCompletionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DareCompletion
+     */
+    select?: DareCompletionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareCompletionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DareCompletion to update in case it exists.
+     */
+    where: DareCompletionWhereUniqueInput
+    /**
+     * In case the DareCompletion found by the `where` argument doesn't exist, create a new DareCompletion with this data.
+     */
+    create: XOR<DareCompletionCreateInput, DareCompletionUncheckedCreateInput>
+    /**
+     * In case the DareCompletion was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DareCompletionUpdateInput, DareCompletionUncheckedUpdateInput>
+  }
+
+  /**
+   * DareCompletion delete
+   */
+  export type DareCompletionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DareCompletion
+     */
+    select?: DareCompletionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareCompletionInclude<ExtArgs> | null
+    /**
+     * Filter which DareCompletion to delete.
+     */
+    where: DareCompletionWhereUniqueInput
+  }
+
+  /**
+   * DareCompletion deleteMany
+   */
+  export type DareCompletionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DareCompletions to delete
+     */
+    where?: DareCompletionWhereInput
+  }
+
+  /**
+   * DareCompletion without action
+   */
+  export type DareCompletionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DareCompletion
+     */
+    select?: DareCompletionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DareCompletionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -26609,6 +28777,31 @@ export namespace Prisma {
   };
 
   export type AgreementParticipationScalarFieldEnum = (typeof AgreementParticipationScalarFieldEnum)[keyof typeof AgreementParticipationScalarFieldEnum]
+
+
+  export const DareScalarFieldEnum: {
+    id: 'id',
+    weekKey: 'weekKey',
+    title: 'title',
+    description: 'description',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DareScalarFieldEnum = (typeof DareScalarFieldEnum)[keyof typeof DareScalarFieldEnum]
+
+
+  export const DareCompletionScalarFieldEnum: {
+    id: 'id',
+    dareId: 'dareId',
+    relationshipId: 'relationshipId',
+    completedAt: 'completedAt',
+    photoUrl: 'photoUrl',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DareCompletionScalarFieldEnum = (typeof DareCompletionScalarFieldEnum)[keyof typeof DareCompletionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -27236,6 +29429,7 @@ export namespace Prisma {
     streak?: XOR<StreakNullableRelationFilter, StreakWhereInput> | null
     subscriptions?: SubscriptionListRelationFilter
     memories?: MemoryListRelationFilter
+    dareCompletions?: DareCompletionListRelationFilter
   }
 
   export type RelationshipOrderByWithRelationInput = {
@@ -27254,6 +29448,7 @@ export namespace Prisma {
     streak?: StreakOrderByWithRelationInput
     subscriptions?: SubscriptionOrderByRelationAggregateInput
     memories?: MemoryOrderByRelationAggregateInput
+    dareCompletions?: DareCompletionOrderByRelationAggregateInput
   }
 
   export type RelationshipWhereUniqueInput = Prisma.AtLeast<{
@@ -27275,6 +29470,7 @@ export namespace Prisma {
     streak?: XOR<StreakNullableRelationFilter, StreakWhereInput> | null
     subscriptions?: SubscriptionListRelationFilter
     memories?: MemoryListRelationFilter
+    dareCompletions?: DareCompletionListRelationFilter
   }, "id">
 
   export type RelationshipOrderByWithAggregationInput = {
@@ -28534,6 +30730,135 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"AgreementParticipation"> | Date | string
   }
 
+  export type DareWhereInput = {
+    AND?: DareWhereInput | DareWhereInput[]
+    OR?: DareWhereInput[]
+    NOT?: DareWhereInput | DareWhereInput[]
+    id?: StringFilter<"Dare"> | string
+    weekKey?: StringFilter<"Dare"> | string
+    title?: StringFilter<"Dare"> | string
+    description?: StringFilter<"Dare"> | string
+    createdAt?: DateTimeFilter<"Dare"> | Date | string
+    updatedAt?: DateTimeFilter<"Dare"> | Date | string
+    completions?: DareCompletionListRelationFilter
+  }
+
+  export type DareOrderByWithRelationInput = {
+    id?: SortOrder
+    weekKey?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completions?: DareCompletionOrderByRelationAggregateInput
+  }
+
+  export type DareWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    weekKey?: string
+    AND?: DareWhereInput | DareWhereInput[]
+    OR?: DareWhereInput[]
+    NOT?: DareWhereInput | DareWhereInput[]
+    title?: StringFilter<"Dare"> | string
+    description?: StringFilter<"Dare"> | string
+    createdAt?: DateTimeFilter<"Dare"> | Date | string
+    updatedAt?: DateTimeFilter<"Dare"> | Date | string
+    completions?: DareCompletionListRelationFilter
+  }, "id" | "weekKey">
+
+  export type DareOrderByWithAggregationInput = {
+    id?: SortOrder
+    weekKey?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DareCountOrderByAggregateInput
+    _max?: DareMaxOrderByAggregateInput
+    _min?: DareMinOrderByAggregateInput
+  }
+
+  export type DareScalarWhereWithAggregatesInput = {
+    AND?: DareScalarWhereWithAggregatesInput | DareScalarWhereWithAggregatesInput[]
+    OR?: DareScalarWhereWithAggregatesInput[]
+    NOT?: DareScalarWhereWithAggregatesInput | DareScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Dare"> | string
+    weekKey?: StringWithAggregatesFilter<"Dare"> | string
+    title?: StringWithAggregatesFilter<"Dare"> | string
+    description?: StringWithAggregatesFilter<"Dare"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Dare"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Dare"> | Date | string
+  }
+
+  export type DareCompletionWhereInput = {
+    AND?: DareCompletionWhereInput | DareCompletionWhereInput[]
+    OR?: DareCompletionWhereInput[]
+    NOT?: DareCompletionWhereInput | DareCompletionWhereInput[]
+    id?: StringFilter<"DareCompletion"> | string
+    dareId?: StringFilter<"DareCompletion"> | string
+    relationshipId?: StringFilter<"DareCompletion"> | string
+    completedAt?: DateTimeFilter<"DareCompletion"> | Date | string
+    photoUrl?: StringNullableFilter<"DareCompletion"> | string | null
+    createdAt?: DateTimeFilter<"DareCompletion"> | Date | string
+    updatedAt?: DateTimeFilter<"DareCompletion"> | Date | string
+    dare?: XOR<DareRelationFilter, DareWhereInput>
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+  }
+
+  export type DareCompletionOrderByWithRelationInput = {
+    id?: SortOrder
+    dareId?: SortOrder
+    relationshipId?: SortOrder
+    completedAt?: SortOrder
+    photoUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    dare?: DareOrderByWithRelationInput
+    relationship?: RelationshipOrderByWithRelationInput
+  }
+
+  export type DareCompletionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    dareId_relationshipId?: DareCompletionDareIdRelationshipIdCompoundUniqueInput
+    AND?: DareCompletionWhereInput | DareCompletionWhereInput[]
+    OR?: DareCompletionWhereInput[]
+    NOT?: DareCompletionWhereInput | DareCompletionWhereInput[]
+    dareId?: StringFilter<"DareCompletion"> | string
+    relationshipId?: StringFilter<"DareCompletion"> | string
+    completedAt?: DateTimeFilter<"DareCompletion"> | Date | string
+    photoUrl?: StringNullableFilter<"DareCompletion"> | string | null
+    createdAt?: DateTimeFilter<"DareCompletion"> | Date | string
+    updatedAt?: DateTimeFilter<"DareCompletion"> | Date | string
+    dare?: XOR<DareRelationFilter, DareWhereInput>
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+  }, "id" | "dareId_relationshipId">
+
+  export type DareCompletionOrderByWithAggregationInput = {
+    id?: SortOrder
+    dareId?: SortOrder
+    relationshipId?: SortOrder
+    completedAt?: SortOrder
+    photoUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DareCompletionCountOrderByAggregateInput
+    _max?: DareCompletionMaxOrderByAggregateInput
+    _min?: DareCompletionMinOrderByAggregateInput
+  }
+
+  export type DareCompletionScalarWhereWithAggregatesInput = {
+    AND?: DareCompletionScalarWhereWithAggregatesInput | DareCompletionScalarWhereWithAggregatesInput[]
+    OR?: DareCompletionScalarWhereWithAggregatesInput[]
+    NOT?: DareCompletionScalarWhereWithAggregatesInput | DareCompletionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DareCompletion"> | string
+    dareId?: StringWithAggregatesFilter<"DareCompletion"> | string
+    relationshipId?: StringWithAggregatesFilter<"DareCompletion"> | string
+    completedAt?: DateTimeWithAggregatesFilter<"DareCompletion"> | Date | string
+    photoUrl?: StringNullableWithAggregatesFilter<"DareCompletion"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"DareCompletion"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"DareCompletion"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -28949,6 +31274,7 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateInput = {
@@ -28967,6 +31293,7 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUpdateInput = {
@@ -28985,6 +31312,7 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateInput = {
@@ -29003,6 +31331,7 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipCreateManyInput = {
@@ -30315,6 +32644,141 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DareCreateInput = {
+    id?: string
+    weekKey: string
+    title: string
+    description: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completions?: DareCompletionCreateNestedManyWithoutDareInput
+  }
+
+  export type DareUncheckedCreateInput = {
+    id?: string
+    weekKey: string
+    title: string
+    description: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completions?: DareCompletionUncheckedCreateNestedManyWithoutDareInput
+  }
+
+  export type DareUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completions?: DareCompletionUpdateManyWithoutDareNestedInput
+  }
+
+  export type DareUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completions?: DareCompletionUncheckedUpdateManyWithoutDareNestedInput
+  }
+
+  export type DareCreateManyInput = {
+    id?: string
+    weekKey: string
+    title: string
+    description: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DareUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DareUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DareCompletionCreateInput = {
+    id?: string
+    completedAt?: Date | string
+    photoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dare: DareCreateNestedOneWithoutCompletionsInput
+    relationship: RelationshipCreateNestedOneWithoutDareCompletionsInput
+  }
+
+  export type DareCompletionUncheckedCreateInput = {
+    id?: string
+    dareId: string
+    relationshipId: string
+    completedAt?: Date | string
+    photoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DareCompletionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dare?: DareUpdateOneRequiredWithoutCompletionsNestedInput
+    relationship?: RelationshipUpdateOneRequiredWithoutDareCompletionsNestedInput
+  }
+
+  export type DareCompletionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dareId?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DareCompletionCreateManyInput = {
+    id?: string
+    dareId: string
+    relationshipId: string
+    completedAt?: Date | string
+    photoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DareCompletionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DareCompletionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dareId?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -30802,6 +33266,12 @@ export namespace Prisma {
     isNot?: StreakWhereInput | null
   }
 
+  export type DareCompletionListRelationFilter = {
+    every?: DareCompletionWhereInput
+    some?: DareCompletionWhereInput
+    none?: DareCompletionWhereInput
+  }
+
   export type DailySessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -30815,6 +33285,10 @@ export namespace Prisma {
   }
 
   export type MeetingOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DareCompletionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -31754,6 +34228,73 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type DareCountOrderByAggregateInput = {
+    id?: SortOrder
+    weekKey?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DareMaxOrderByAggregateInput = {
+    id?: SortOrder
+    weekKey?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DareMinOrderByAggregateInput = {
+    id?: SortOrder
+    weekKey?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DareRelationFilter = {
+    is?: DareWhereInput
+    isNot?: DareWhereInput
+  }
+
+  export type DareCompletionDareIdRelationshipIdCompoundUniqueInput = {
+    dareId: string
+    relationshipId: string
+  }
+
+  export type DareCompletionCountOrderByAggregateInput = {
+    id?: SortOrder
+    dareId?: SortOrder
+    relationshipId?: SortOrder
+    completedAt?: SortOrder
+    photoUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DareCompletionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    dareId?: SortOrder
+    relationshipId?: SortOrder
+    completedAt?: SortOrder
+    photoUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DareCompletionMinOrderByAggregateInput = {
+    id?: SortOrder
+    dareId?: SortOrder
+    relationshipId?: SortOrder
+    completedAt?: SortOrder
+    photoUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -32428,6 +34969,13 @@ export namespace Prisma {
     connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
   }
 
+  export type DareCompletionCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<DareCompletionCreateWithoutRelationshipInput, DareCompletionUncheckedCreateWithoutRelationshipInput> | DareCompletionCreateWithoutRelationshipInput[] | DareCompletionUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: DareCompletionCreateOrConnectWithoutRelationshipInput | DareCompletionCreateOrConnectWithoutRelationshipInput[]
+    createMany?: DareCompletionCreateManyRelationshipInputEnvelope
+    connect?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+  }
+
   export type RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput = {
     create?: XOR<RelationshipMemberCreateWithoutRelationshipInput, RelationshipMemberUncheckedCreateWithoutRelationshipInput> | RelationshipMemberCreateWithoutRelationshipInput[] | RelationshipMemberUncheckedCreateWithoutRelationshipInput[]
     connectOrCreate?: RelationshipMemberCreateOrConnectWithoutRelationshipInput | RelationshipMemberCreateOrConnectWithoutRelationshipInput[]
@@ -32488,6 +35036,13 @@ export namespace Prisma {
     connectOrCreate?: MemoryCreateOrConnectWithoutRelationshipInput | MemoryCreateOrConnectWithoutRelationshipInput[]
     createMany?: MemoryCreateManyRelationshipInputEnvelope
     connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+  }
+
+  export type DareCompletionUncheckedCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<DareCompletionCreateWithoutRelationshipInput, DareCompletionUncheckedCreateWithoutRelationshipInput> | DareCompletionCreateWithoutRelationshipInput[] | DareCompletionUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: DareCompletionCreateOrConnectWithoutRelationshipInput | DareCompletionCreateOrConnectWithoutRelationshipInput[]
+    createMany?: DareCompletionCreateManyRelationshipInputEnvelope
+    connect?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
   }
 
   export type EnumRelationshipStatusFieldUpdateOperationsInput = {
@@ -32616,6 +35171,20 @@ export namespace Prisma {
     deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
   }
 
+  export type DareCompletionUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<DareCompletionCreateWithoutRelationshipInput, DareCompletionUncheckedCreateWithoutRelationshipInput> | DareCompletionCreateWithoutRelationshipInput[] | DareCompletionUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: DareCompletionCreateOrConnectWithoutRelationshipInput | DareCompletionCreateOrConnectWithoutRelationshipInput[]
+    upsert?: DareCompletionUpsertWithWhereUniqueWithoutRelationshipInput | DareCompletionUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: DareCompletionCreateManyRelationshipInputEnvelope
+    set?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    disconnect?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    delete?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    connect?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    update?: DareCompletionUpdateWithWhereUniqueWithoutRelationshipInput | DareCompletionUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: DareCompletionUpdateManyWithWhereWithoutRelationshipInput | DareCompletionUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: DareCompletionScalarWhereInput | DareCompletionScalarWhereInput[]
+  }
+
   export type RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput = {
     create?: XOR<RelationshipMemberCreateWithoutRelationshipInput, RelationshipMemberUncheckedCreateWithoutRelationshipInput> | RelationshipMemberCreateWithoutRelationshipInput[] | RelationshipMemberUncheckedCreateWithoutRelationshipInput[]
     connectOrCreate?: RelationshipMemberCreateOrConnectWithoutRelationshipInput | RelationshipMemberCreateOrConnectWithoutRelationshipInput[]
@@ -32736,6 +35305,20 @@ export namespace Prisma {
     update?: MemoryUpdateWithWhereUniqueWithoutRelationshipInput | MemoryUpdateWithWhereUniqueWithoutRelationshipInput[]
     updateMany?: MemoryUpdateManyWithWhereWithoutRelationshipInput | MemoryUpdateManyWithWhereWithoutRelationshipInput[]
     deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
+  }
+
+  export type DareCompletionUncheckedUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<DareCompletionCreateWithoutRelationshipInput, DareCompletionUncheckedCreateWithoutRelationshipInput> | DareCompletionCreateWithoutRelationshipInput[] | DareCompletionUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: DareCompletionCreateOrConnectWithoutRelationshipInput | DareCompletionCreateOrConnectWithoutRelationshipInput[]
+    upsert?: DareCompletionUpsertWithWhereUniqueWithoutRelationshipInput | DareCompletionUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: DareCompletionCreateManyRelationshipInputEnvelope
+    set?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    disconnect?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    delete?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    connect?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    update?: DareCompletionUpdateWithWhereUniqueWithoutRelationshipInput | DareCompletionUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: DareCompletionUpdateManyWithWhereWithoutRelationshipInput | DareCompletionUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: DareCompletionScalarWhereInput | DareCompletionScalarWhereInput[]
   }
 
   export type RelationshipCreateNestedOneWithoutMembersInput = {
@@ -33451,6 +36034,76 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutAgreementParticipationsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAgreementParticipationsInput, UserUpdateWithoutAgreementParticipationsInput>, UserUncheckedUpdateWithoutAgreementParticipationsInput>
+  }
+
+  export type DareCompletionCreateNestedManyWithoutDareInput = {
+    create?: XOR<DareCompletionCreateWithoutDareInput, DareCompletionUncheckedCreateWithoutDareInput> | DareCompletionCreateWithoutDareInput[] | DareCompletionUncheckedCreateWithoutDareInput[]
+    connectOrCreate?: DareCompletionCreateOrConnectWithoutDareInput | DareCompletionCreateOrConnectWithoutDareInput[]
+    createMany?: DareCompletionCreateManyDareInputEnvelope
+    connect?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+  }
+
+  export type DareCompletionUncheckedCreateNestedManyWithoutDareInput = {
+    create?: XOR<DareCompletionCreateWithoutDareInput, DareCompletionUncheckedCreateWithoutDareInput> | DareCompletionCreateWithoutDareInput[] | DareCompletionUncheckedCreateWithoutDareInput[]
+    connectOrCreate?: DareCompletionCreateOrConnectWithoutDareInput | DareCompletionCreateOrConnectWithoutDareInput[]
+    createMany?: DareCompletionCreateManyDareInputEnvelope
+    connect?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+  }
+
+  export type DareCompletionUpdateManyWithoutDareNestedInput = {
+    create?: XOR<DareCompletionCreateWithoutDareInput, DareCompletionUncheckedCreateWithoutDareInput> | DareCompletionCreateWithoutDareInput[] | DareCompletionUncheckedCreateWithoutDareInput[]
+    connectOrCreate?: DareCompletionCreateOrConnectWithoutDareInput | DareCompletionCreateOrConnectWithoutDareInput[]
+    upsert?: DareCompletionUpsertWithWhereUniqueWithoutDareInput | DareCompletionUpsertWithWhereUniqueWithoutDareInput[]
+    createMany?: DareCompletionCreateManyDareInputEnvelope
+    set?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    disconnect?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    delete?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    connect?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    update?: DareCompletionUpdateWithWhereUniqueWithoutDareInput | DareCompletionUpdateWithWhereUniqueWithoutDareInput[]
+    updateMany?: DareCompletionUpdateManyWithWhereWithoutDareInput | DareCompletionUpdateManyWithWhereWithoutDareInput[]
+    deleteMany?: DareCompletionScalarWhereInput | DareCompletionScalarWhereInput[]
+  }
+
+  export type DareCompletionUncheckedUpdateManyWithoutDareNestedInput = {
+    create?: XOR<DareCompletionCreateWithoutDareInput, DareCompletionUncheckedCreateWithoutDareInput> | DareCompletionCreateWithoutDareInput[] | DareCompletionUncheckedCreateWithoutDareInput[]
+    connectOrCreate?: DareCompletionCreateOrConnectWithoutDareInput | DareCompletionCreateOrConnectWithoutDareInput[]
+    upsert?: DareCompletionUpsertWithWhereUniqueWithoutDareInput | DareCompletionUpsertWithWhereUniqueWithoutDareInput[]
+    createMany?: DareCompletionCreateManyDareInputEnvelope
+    set?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    disconnect?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    delete?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    connect?: DareCompletionWhereUniqueInput | DareCompletionWhereUniqueInput[]
+    update?: DareCompletionUpdateWithWhereUniqueWithoutDareInput | DareCompletionUpdateWithWhereUniqueWithoutDareInput[]
+    updateMany?: DareCompletionUpdateManyWithWhereWithoutDareInput | DareCompletionUpdateManyWithWhereWithoutDareInput[]
+    deleteMany?: DareCompletionScalarWhereInput | DareCompletionScalarWhereInput[]
+  }
+
+  export type DareCreateNestedOneWithoutCompletionsInput = {
+    create?: XOR<DareCreateWithoutCompletionsInput, DareUncheckedCreateWithoutCompletionsInput>
+    connectOrCreate?: DareCreateOrConnectWithoutCompletionsInput
+    connect?: DareWhereUniqueInput
+  }
+
+  export type RelationshipCreateNestedOneWithoutDareCompletionsInput = {
+    create?: XOR<RelationshipCreateWithoutDareCompletionsInput, RelationshipUncheckedCreateWithoutDareCompletionsInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutDareCompletionsInput
+    connect?: RelationshipWhereUniqueInput
+  }
+
+  export type DareUpdateOneRequiredWithoutCompletionsNestedInput = {
+    create?: XOR<DareCreateWithoutCompletionsInput, DareUncheckedCreateWithoutCompletionsInput>
+    connectOrCreate?: DareCreateOrConnectWithoutCompletionsInput
+    upsert?: DareUpsertWithoutCompletionsInput
+    connect?: DareWhereUniqueInput
+    update?: XOR<XOR<DareUpdateToOneWithWhereWithoutCompletionsInput, DareUpdateWithoutCompletionsInput>, DareUncheckedUpdateWithoutCompletionsInput>
+  }
+
+  export type RelationshipUpdateOneRequiredWithoutDareCompletionsNestedInput = {
+    create?: XOR<RelationshipCreateWithoutDareCompletionsInput, RelationshipUncheckedCreateWithoutDareCompletionsInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutDareCompletionsInput
+    upsert?: RelationshipUpsertWithoutDareCompletionsInput
+    connect?: RelationshipWhereUniqueInput
+    update?: XOR<XOR<RelationshipUpdateToOneWithWhereWithoutDareCompletionsInput, RelationshipUpdateWithoutDareCompletionsInput>, RelationshipUncheckedUpdateWithoutDareCompletionsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -35197,6 +37850,34 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DareCompletionCreateWithoutRelationshipInput = {
+    id?: string
+    completedAt?: Date | string
+    photoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dare: DareCreateNestedOneWithoutCompletionsInput
+  }
+
+  export type DareCompletionUncheckedCreateWithoutRelationshipInput = {
+    id?: string
+    dareId: string
+    completedAt?: Date | string
+    photoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DareCompletionCreateOrConnectWithoutRelationshipInput = {
+    where: DareCompletionWhereUniqueInput
+    create: XOR<DareCompletionCreateWithoutRelationshipInput, DareCompletionUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type DareCompletionCreateManyRelationshipInputEnvelope = {
+    data: DareCompletionCreateManyRelationshipInput | DareCompletionCreateManyRelationshipInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RelationshipMemberUpsertWithWhereUniqueWithoutRelationshipInput = {
     where: RelationshipMemberWhereUniqueInput
     update: XOR<RelationshipMemberUpdateWithoutRelationshipInput, RelationshipMemberUncheckedUpdateWithoutRelationshipInput>
@@ -35396,6 +38077,35 @@ export namespace Prisma {
     data: XOR<MemoryUpdateManyMutationInput, MemoryUncheckedUpdateManyWithoutRelationshipInput>
   }
 
+  export type DareCompletionUpsertWithWhereUniqueWithoutRelationshipInput = {
+    where: DareCompletionWhereUniqueInput
+    update: XOR<DareCompletionUpdateWithoutRelationshipInput, DareCompletionUncheckedUpdateWithoutRelationshipInput>
+    create: XOR<DareCompletionCreateWithoutRelationshipInput, DareCompletionUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type DareCompletionUpdateWithWhereUniqueWithoutRelationshipInput = {
+    where: DareCompletionWhereUniqueInput
+    data: XOR<DareCompletionUpdateWithoutRelationshipInput, DareCompletionUncheckedUpdateWithoutRelationshipInput>
+  }
+
+  export type DareCompletionUpdateManyWithWhereWithoutRelationshipInput = {
+    where: DareCompletionScalarWhereInput
+    data: XOR<DareCompletionUpdateManyMutationInput, DareCompletionUncheckedUpdateManyWithoutRelationshipInput>
+  }
+
+  export type DareCompletionScalarWhereInput = {
+    AND?: DareCompletionScalarWhereInput | DareCompletionScalarWhereInput[]
+    OR?: DareCompletionScalarWhereInput[]
+    NOT?: DareCompletionScalarWhereInput | DareCompletionScalarWhereInput[]
+    id?: StringFilter<"DareCompletion"> | string
+    dareId?: StringFilter<"DareCompletion"> | string
+    relationshipId?: StringFilter<"DareCompletion"> | string
+    completedAt?: DateTimeFilter<"DareCompletion"> | Date | string
+    photoUrl?: StringNullableFilter<"DareCompletion"> | string | null
+    createdAt?: DateTimeFilter<"DareCompletion"> | Date | string
+    updatedAt?: DateTimeFilter<"DareCompletion"> | Date | string
+  }
+
   export type RelationshipCreateWithoutMembersInput = {
     id?: string
     name?: string | null
@@ -35411,6 +38121,7 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutMembersInput = {
@@ -35428,6 +38139,7 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutMembersInput = {
@@ -35514,6 +38226,7 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutMembersInput = {
@@ -35531,6 +38244,7 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type UserUpsertWithoutRelationshipMembersInput = {
@@ -35607,6 +38321,7 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutInvitesInput = {
@@ -35624,6 +38339,7 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutInvitesInput = {
@@ -35710,6 +38426,7 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutInvitesInput = {
@@ -35727,6 +38444,7 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type UserUpsertWithoutInvitesSentInput = {
@@ -35851,6 +38569,7 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutDailySessionsInput = {
@@ -35868,6 +38587,7 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutDailySessionsInput = {
@@ -36014,6 +38734,7 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutDailySessionsInput = {
@@ -36031,6 +38752,7 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type PromptUpsertWithoutDailySessionsInput = {
@@ -36691,6 +39413,7 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutMeetingsInput = {
@@ -36708,6 +39431,7 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutMeetingsInput = {
@@ -36775,6 +39499,7 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutMeetingsInput = {
@@ -36792,6 +39517,7 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type MeetingEntryUpsertWithWhereUniqueWithoutMeetingInput = {
@@ -36985,6 +39711,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutStreakInput = {
@@ -37002,6 +39729,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutStreakInput = {
@@ -37035,6 +39763,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutStreakInput = {
@@ -37052,6 +39781,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type UserCreateWithoutSubscriptionsInput = {
@@ -37122,6 +39852,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutSubscriptionsInput = {
@@ -37139,6 +39870,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutSubscriptionsInput = {
@@ -37231,6 +39963,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutSubscriptionsInput = {
@@ -37248,6 +39981,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipCreateWithoutMemoriesInput = {
@@ -37265,6 +39999,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutMemoriesInput = {
@@ -37282,6 +40017,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutMemoriesInput = {
@@ -37368,6 +40104,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutMemoriesInput = {
@@ -37385,6 +40122,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type UserUpsertWithoutMemoriesInput = {
@@ -37461,6 +40199,7 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutQuizSessionsInput = {
@@ -37478,6 +40217,7 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutQuizSessionsInput = {
@@ -37539,6 +40279,7 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutQuizSessionsInput = {
@@ -37556,6 +40297,7 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type QuizParticipationUpsertWithWhereUniqueWithoutQuizSessionInput = {
@@ -37753,6 +40495,7 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutAgreementSessionsInput = {
@@ -37770,6 +40513,7 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    dareCompletions?: DareCompletionUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutAgreementSessionsInput = {
@@ -37831,6 +40575,7 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutAgreementSessionsInput = {
@@ -37848,6 +40593,7 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    dareCompletions?: DareCompletionUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type AgreementParticipationUpsertWithWhereUniqueWithoutAgreementSessionInput = {
@@ -38028,6 +40774,190 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+  }
+
+  export type DareCompletionCreateWithoutDareInput = {
+    id?: string
+    completedAt?: Date | string
+    photoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutDareCompletionsInput
+  }
+
+  export type DareCompletionUncheckedCreateWithoutDareInput = {
+    id?: string
+    relationshipId: string
+    completedAt?: Date | string
+    photoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DareCompletionCreateOrConnectWithoutDareInput = {
+    where: DareCompletionWhereUniqueInput
+    create: XOR<DareCompletionCreateWithoutDareInput, DareCompletionUncheckedCreateWithoutDareInput>
+  }
+
+  export type DareCompletionCreateManyDareInputEnvelope = {
+    data: DareCompletionCreateManyDareInput | DareCompletionCreateManyDareInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DareCompletionUpsertWithWhereUniqueWithoutDareInput = {
+    where: DareCompletionWhereUniqueInput
+    update: XOR<DareCompletionUpdateWithoutDareInput, DareCompletionUncheckedUpdateWithoutDareInput>
+    create: XOR<DareCompletionCreateWithoutDareInput, DareCompletionUncheckedCreateWithoutDareInput>
+  }
+
+  export type DareCompletionUpdateWithWhereUniqueWithoutDareInput = {
+    where: DareCompletionWhereUniqueInput
+    data: XOR<DareCompletionUpdateWithoutDareInput, DareCompletionUncheckedUpdateWithoutDareInput>
+  }
+
+  export type DareCompletionUpdateManyWithWhereWithoutDareInput = {
+    where: DareCompletionScalarWhereInput
+    data: XOR<DareCompletionUpdateManyMutationInput, DareCompletionUncheckedUpdateManyWithoutDareInput>
+  }
+
+  export type DareCreateWithoutCompletionsInput = {
+    id?: string
+    weekKey: string
+    title: string
+    description: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DareUncheckedCreateWithoutCompletionsInput = {
+    id?: string
+    weekKey: string
+    title: string
+    description: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DareCreateOrConnectWithoutCompletionsInput = {
+    where: DareWhereUniqueInput
+    create: XOR<DareCreateWithoutCompletionsInput, DareUncheckedCreateWithoutCompletionsInput>
+  }
+
+  export type RelationshipCreateWithoutDareCompletionsInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
+    invites?: InviteCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingCreateNestedManyWithoutRelationshipInput
+    streak?: StreakCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipUncheckedCreateWithoutDareCompletionsInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
+    invites?: InviteUncheckedCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionUncheckedCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
+    streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipCreateOrConnectWithoutDareCompletionsInput = {
+    where: RelationshipWhereUniqueInput
+    create: XOR<RelationshipCreateWithoutDareCompletionsInput, RelationshipUncheckedCreateWithoutDareCompletionsInput>
+  }
+
+  export type DareUpsertWithoutCompletionsInput = {
+    update: XOR<DareUpdateWithoutCompletionsInput, DareUncheckedUpdateWithoutCompletionsInput>
+    create: XOR<DareCreateWithoutCompletionsInput, DareUncheckedCreateWithoutCompletionsInput>
+    where?: DareWhereInput
+  }
+
+  export type DareUpdateToOneWithWhereWithoutCompletionsInput = {
+    where?: DareWhereInput
+    data: XOR<DareUpdateWithoutCompletionsInput, DareUncheckedUpdateWithoutCompletionsInput>
+  }
+
+  export type DareUpdateWithoutCompletionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DareUncheckedUpdateWithoutCompletionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RelationshipUpsertWithoutDareCompletionsInput = {
+    update: XOR<RelationshipUpdateWithoutDareCompletionsInput, RelationshipUncheckedUpdateWithoutDareCompletionsInput>
+    create: XOR<RelationshipCreateWithoutDareCompletionsInput, RelationshipUncheckedCreateWithoutDareCompletionsInput>
+    where?: RelationshipWhereInput
+  }
+
+  export type RelationshipUpdateToOneWithWhereWithoutDareCompletionsInput = {
+    where?: RelationshipWhereInput
+    data: XOR<RelationshipUpdateWithoutDareCompletionsInput, RelationshipUncheckedUpdateWithoutDareCompletionsInput>
+  }
+
+  export type RelationshipUpdateWithoutDareCompletionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type RelationshipUncheckedUpdateWithoutDareCompletionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUncheckedUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -38616,6 +41546,15 @@ export namespace Prisma {
     savedAt?: Date | string
   }
 
+  export type DareCompletionCreateManyRelationshipInput = {
+    id?: string
+    dareId: string
+    completedAt?: Date | string
+    photoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type RelationshipMemberUpdateWithoutRelationshipInput = {
     id?: StringFieldUpdateOperationsInput | string
     role?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38852,6 +41791,33 @@ export namespace Prisma {
     sourceId?: NullableStringFieldUpdateOperationsInput | string | null
     snapshot?: JsonNullValueInput | InputJsonValue
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DareCompletionUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dare?: DareUpdateOneRequiredWithoutCompletionsNestedInput
+  }
+
+  export type DareCompletionUncheckedUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dareId?: StringFieldUpdateOperationsInput | string
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DareCompletionUncheckedUpdateManyWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dareId?: StringFieldUpdateOperationsInput | string
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DailySessionCreateManyPromptInput = {
@@ -39112,6 +42078,42 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DareCompletionCreateManyDareInput = {
+    id?: string
+    relationshipId: string
+    completedAt?: Date | string
+    photoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DareCompletionUpdateWithoutDareInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutDareCompletionsNestedInput
+  }
+
+  export type DareCompletionUncheckedUpdateWithoutDareInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DareCompletionUncheckedUpdateManyWithoutDareInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
 
 
   /**
@@ -39149,6 +42151,10 @@ export namespace Prisma {
      * @deprecated Use AgreementSessionCountOutputTypeDefaultArgs instead
      */
     export type AgreementSessionCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AgreementSessionCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use DareCountOutputTypeDefaultArgs instead
+     */
+    export type DareCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DareCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use UserDefaultArgs instead
      */
@@ -39241,6 +42247,14 @@ export namespace Prisma {
      * @deprecated Use AgreementParticipationDefaultArgs instead
      */
     export type AgreementParticipationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AgreementParticipationDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use DareDefaultArgs instead
+     */
+    export type DareArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DareDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use DareCompletionDefaultArgs instead
+     */
+    export type DareCompletionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DareCompletionDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

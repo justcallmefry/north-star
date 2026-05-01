@@ -115,8 +115,8 @@ export async function GET(request: Request) {
     const teaser = teaserForCategory(promptRow?.category ?? null);
 
     const payload = {
-      title: "Tomorrow on Aligned",
-      body: `Tomorrow's question is about ${teaser}.`,
+      title: "Tomorrow's question is almost here.",
+      body: `Something about ${teaser} — see you then.`,
       url: `${appUrl}/app`,
     };
 

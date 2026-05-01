@@ -6,13 +6,13 @@ import { requestPermissionAndSubscribe } from "@/lib/push-client";
 type Variant = "quiz" | "agreement";
 
 const MESSAGES: Record<Variant, string> = {
-  quiz: "I just finished the daily quiz — your turn! Think you can beat my score?",
-  agreement: "I just took the questions about being aligned. Take a look and let's see who gets closest to each other's answers.",
+  quiz: "I finished the daily quiz. Whenever you get a chance.",
+  agreement: "I filled out the alignment questions. Take a look when you're ready.",
 };
 
 const TITLES: Record<Variant, string> = {
-  quiz: "Quiz — your turn",
-  agreement: "Alignment check-in — your turn",
+  quiz: "Today's quiz is ready.",
+  agreement: "Alignment check-in is ready.",
 };
 
 const PATHS: Record<Variant, string> = {

@@ -14,13 +14,13 @@ type Props = {
 };
 
 const MESSAGES = {
-  your_turn: "I answered today's question. It's your turn. I'm excited to see what you say.",
-  reveal: "I answered the question. We both did – come reveal so we can see what we said.",
+  your_turn: "I already answered today's question. Whenever you're ready.",
+  reveal: "We both answered. Come see what each other wrote.",
 } as const;
 
 const TITLES = {
-  your_turn: "Your turn",
-  reveal: "Time to reveal",
+  your_turn: "They're curious what you'll say.",
+  reveal: "You're both in.",
 } as const;
 
 export function NotifyPartnerButton({

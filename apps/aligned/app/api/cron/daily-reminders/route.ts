@@ -72,15 +72,13 @@ export async function GET(request: Request) {
       .filter((email): email is string => !!email && email.includes("@"));
     if (to.length === 0) continue;
 
-    const relName = s.relationship.name ?? "your relationship";
-    const subject = "A quick nudge from Aligned";
+    const subject = "Today's question is up.";
     const link = `${appUrl}/app`;
     const html = `
       <p>Hi there,</p>
-      <p>This is a gentle reminder from <strong>Aligned: Connecting Couples</strong>.</p>
-      <p>You have today&apos;s question waiting for <strong>${relName}</strong>. When you both answer, you&apos;ll see each other&apos;s responses together.</p>
-      <p><a href="${link}">Open Aligned and answer today&apos;s question</a></p>
-      <p style="font-size:13px;color:#64748b;">We only send these occasionally to help you keep your rhythm. You can mute email from Aligned from your email client at any time.</p>
+      <p>Today&apos;s question is ready on <strong>Aligned</strong>. Whenever you get a chance.</p>
+      <p><a href="${link}">Open Aligned</a></p>
+      <p style="font-size:13px;color:#64748b;">You can mute email from Aligned from your email client at any time.</p>
     `;
 
     const { error } = await resend.emails.send({

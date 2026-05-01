@@ -49,7 +49,7 @@ export function DareClient({ dare: initial }: Props) {
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-dusk-600">
           This Week&apos;s Dare
         </p>
-        <p className="text-sm text-slate-500">A real-world challenge for both of you.</p>
+        <p className="text-sm text-slate-500">Get out of your routine. Do it together.</p>
       </div>
 
       <div className={`rounded-2xl border p-6 space-y-4 shadow-sm ${
@@ -77,9 +77,14 @@ export function DareClient({ dare: initial }: Props) {
       </div>
 
       {dare.completed ? (
-        <div className="text-center space-y-1">
-          <p className="text-base font-semibold text-emerald-700">You did it.</p>
-          <p className="text-sm text-slate-500">New dare next Monday.</p>
+        <div className="rounded-2xl bg-gradient-to-br from-emerald-50 to-white border border-emerald-200 px-5 py-6 text-center space-y-2 shadow-sm">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+            <CheckCircle className="h-8 w-8" strokeWidth={2} />
+          </div>
+          <p className="text-xl font-bold text-emerald-800">You did it together.</p>
+          <p className="text-sm text-slate-600 leading-relaxed">
+            That&apos;s what makes it count — doing it as a team. New dare arrives Monday.
+          </p>
         </div>
       ) : dare.accepted ? (
         <div className="space-y-3">

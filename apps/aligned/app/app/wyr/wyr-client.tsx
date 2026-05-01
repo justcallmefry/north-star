@@ -13,12 +13,35 @@ export function WyrClient({ initialData }: Props) {
   const router = useRouter();
   const [data, setData] = useState(initialData);
   const [loading, setLoading] = useState(false);
+  const [showReveal, setShowReveal] = useState(initialData.state === "revealed");
+  const [animPhase, setAnimPhase] = useState<"idle" | "breathe" | "drumroll" | "slam">(
+    initialData.state === "revealed" ? "slam" : "idle"
+  );
 
+  // When partner submits and data refreshes to "revealed", play drumroll first
   useEffect(() => {
-    if (data.state === "revealed") {
-      void haptic("reveal");
+    if (data.state === "revealed" && !showReveal) {
+      setAnimPhase("drumroll");
+      const t = setTimeout(() => {
+        setAnimPhase("slam");
+        setShowReveal(true);
+        void haptic("reveal");
+      }, 700);
+      return () => clearTimeout(t);
     }
-  }, [data.state]);
+  }, [data.state, showReveal]);
+
+  // Start breathing when user has picked but partner hasn't revealed yet
+  useEffect(() => {
+    if (data.myChoice != null && data.state === "open") {
+      setAnimPhase("breathe");
+    }
+  }, [data.myChoice, data.state]);
+
+  // Sync local state when server delivers fresh initialData (e.g. after router.refresh())
+  useEffect(() => {
+    setData(initialData);
+  }, [initialData]);
 
   async function handlePick(choice: 0 | 1) {
     if (loading) return;
@@ -27,7 +50,6 @@ export function WyrClient({ initialData }: Props) {
       await submitWyrChoice(data.wyrSessionId, choice);
       void haptic("tap");
       router.refresh();
-      // Optimistically update local state so UI feels instant
       setData((prev) => ({ ...prev, myChoice: choice }));
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to submit");
@@ -36,7 +58,7 @@ export function WyrClient({ initialData }: Props) {
     }
   }
 
-  const { question, state, myChoice, partnerSubmitted, partnerName, reveal } = data;
+  const { question, myChoice, partnerSubmitted, partnerName, reveal } = data;
 
   return (
     <div className="animate-calm-fade-in space-y-6">
@@ -52,7 +74,7 @@ export function WyrClient({ initialData }: Props) {
           const idx = i as 0 | 1;
           const isMine = myChoice === idx;
           const isPartners = reveal?.partnerChoice === idx;
-          const isRevealed = state === "revealed" && reveal != null;
+          const isRevealed = showReveal && reveal != null;
 
           let cardClass =
             "relative flex min-h-[88px] w-full items-center rounded-2xl border-2 px-5 py-4 text-left text-lg font-semibold leading-snug transition active:scale-[0.98] ";
@@ -65,10 +87,13 @@ export function WyrClient({ initialData }: Props) {
                 : isPartners
                   ? "border-violet-300 bg-violet-50/60 text-slate-900"
                   : "border-slate-100 bg-white text-slate-400";
+            if (animPhase === "slam") cardClass += " animate-wyr-slam";
           } else if (myChoice != null) {
             cardClass += isMine
-              ? "border-brand-400 bg-brand-50 text-brand-900"
+              ? "border-brand-400 bg-brand-50 text-brand-900 -translate-y-1 shadow-md"
               : "border-slate-100 bg-white text-slate-400";
+            if (animPhase === "breathe") cardClass += " animate-wyr-breathe";
+            if (animPhase === "drumroll") cardClass += " animate-wyr-drumroll";
           } else {
             cardClass += "border-slate-200 bg-white text-slate-900 hover:border-brand-300 hover:bg-brand-50/40 cursor-pointer";
           }
@@ -77,7 +102,7 @@ export function WyrClient({ initialData }: Props) {
             <button
               key={idx}
               type="button"
-              disabled={myChoice != null || loading}
+              disabled={myChoice != null || loading || animPhase === "drumroll"}
               onClick={() => handlePick(idx)}
               className={cardClass}
             >
@@ -104,29 +129,29 @@ export function WyrClient({ initialData }: Props) {
         <p className="text-center text-sm text-slate-400">Tap to pick. Your choice stays hidden until they answer.</p>
       )}
 
-      {myChoice != null && state === "open" && !partnerSubmitted && (
+      {myChoice != null && data.state === "open" && !partnerSubmitted && (
         <div className="rounded-2xl border border-dusk-100 bg-gradient-to-br from-dusk-50 to-white p-5 text-center">
           <p className="text-base font-semibold text-slate-900">{partnerName ?? "Them"} hasn&apos;t picked yet.</p>
           <p className="mt-1 text-sm text-slate-600">Your choice is locked in. We&apos;ll reveal the match the moment they do.</p>
         </div>
       )}
 
-      {myChoice != null && state === "open" && partnerSubmitted && (
+      {animPhase === "drumroll" && (
         <div className="rounded-2xl border border-dusk-100 bg-gradient-to-br from-dusk-50 to-white p-5 text-center animate-pulse">
           <p className="text-base font-semibold text-slate-900">Both picks are in.</p>
           <p className="mt-1 text-sm text-slate-600">Revealing your match now…</p>
         </div>
       )}
 
-      {state === "revealed" && reveal && (
+      {showReveal && reveal && (
         reveal.matched ? (
-          <div className="animate-calm-fade-in rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 via-white to-brand-50 px-5 py-5 text-center space-y-2">
+          <div className="animate-wyr-match-burst rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 via-white to-brand-50 px-5 py-5 text-center space-y-2">
             <p className="text-2xl" aria-hidden>✦</p>
             <p className="text-xl font-semibold text-emerald-800">You matched.</p>
             <p className="text-sm text-slate-600">Same instinct — that says something. Ask each other why.</p>
           </div>
         ) : (
-          <div className="animate-calm-fade-in rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50/60 via-white to-white px-5 py-5 text-center space-y-2">
+          <div className="animate-wyr-mismatch-reveal rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50/60 via-white to-white px-5 py-5 text-center space-y-2">
             <p className="text-2xl" aria-hidden>↔</p>
             <p className="text-xl font-semibold text-slate-800">You went different ways.</p>
             <p className="text-sm text-slate-600">Neither is wrong. This one&apos;s worth talking about tonight.</p>

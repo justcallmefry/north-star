@@ -42,7 +42,7 @@ export function SpotlightClient({ relationshipId, status }: Props) {
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
             {status.fromName ?? "Your partner"} wrote this for you
           </p>
-          <p className="text-sm text-slate-500">3 things they love about you this month.</p>
+          <p className="text-sm text-slate-500">Read slowly.</p>
         </div>
         <div className="rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-50 to-white px-6 py-6 space-y-4 shadow-sm">
           {status.fromImage && (
@@ -53,13 +53,20 @@ export function SpotlightClient({ relationshipId, status }: Props) {
             />
           )}
           {status.items.map((item, i) => (
-            <div key={i} className="flex gap-3">
-              <span className="mt-0.5 text-xl">{["💗", "✨", "🌟"][i] ?? "•"}</span>
-              <p className="text-lg leading-relaxed text-slate-900">{item}</p>
+            <div key={i} className="rounded-xl border border-brand-100 bg-white/70 px-4 py-3.5 flex gap-3 items-start">
+              <span className="text-xl shrink-0">{["💗", "✨", "🌟"][i] ?? "•"}</span>
+              <p className="text-base leading-relaxed text-slate-900 sm:text-lg">{item}</p>
             </div>
           ))}
+          {status.fromName && (
+            <p className="text-center text-sm font-medium text-brand-700 pt-2">
+              — {status.fromName}
+            </p>
+          )}
         </div>
-        <p className="text-center text-sm text-slate-500">New spotlight available next month.</p>
+        <p className="text-center text-sm text-slate-500 leading-relaxed">
+          Tell them you saw this. Words like these deserve a real response.
+        </p>
       </div>
     );
   }

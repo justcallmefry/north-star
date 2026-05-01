@@ -1,6 +1,8 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { getActiveMemberIds } from "@/lib/relationship-members";
+import { sendPushToUser } from "@/lib/push";
 
 /** Format a Date as YYYY-MM-DD (UTC date only). */
 function toDateString(d: Date): string {
@@ -12,6 +14,39 @@ function yesterdayOf(dateStr: string): string {
   const d = new Date(dateStr + "T12:00:00.000Z");
   d.setUTCDate(d.getUTCDate() - 1);
   return toDateString(d);
+}
+
+const MILESTONE_COPY: Record<number, { title: string; body: string }> = {
+  7: {
+    title: "A week together.",
+    body: "Seven days of showing up. That's a habit.",
+  },
+  30: {
+    title: "30 days. That's a rhythm.",
+    body: "A month of showing up. This is what becomes part of you two.",
+  },
+  100: {
+    title: "100 days.",
+    body: "Most couples don't get here. You did.",
+  },
+  365: {
+    title: "A whole year of showing up.",
+    body: "365 days of choosing each other in this small daily way.",
+  },
+};
+
+function isStreakMilestone(count: number): boolean {
+  return count === 7 || count === 30 || count === 100 || count === 365;
+}
+
+async function pushMilestone(userId: string, count: number): Promise<void> {
+  const c = MILESTONE_COPY[count];
+  if (!c) return;
+  try {
+    await sendPushToUser(userId, { title: c.title, body: c.body, url: "/app" });
+  } catch (err) {
+    console.error("[streak-milestone] push failed:", err);
+  }
 }
 
 export type StreakInfo = {
@@ -109,4 +144,9 @@ export async function updateStreakOnReveal(
       lastCompletedDate: new Date(completedStr + "T12:00:00.000Z"),
     },
   });
+
+  if (isStreakMilestone(newCurrent)) {
+    const memberIds = await getActiveMemberIds(relationshipId);
+    await Promise.all(memberIds.map((uid) => pushMilestone(uid, newCurrent)));
+  }
 }

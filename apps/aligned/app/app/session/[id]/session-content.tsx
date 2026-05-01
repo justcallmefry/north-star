@@ -590,7 +590,7 @@ export function SessionContent({ data, currentUserId }: Props) {
           <div className="space-y-2">
             {/* Two-step reveal: my answer first, then partner tap-to-reveal.
                 Skip two-step if already revealed on page load (data.state === "revealed"). */}
-            {responsesToShow.map((resp, idx) => {
+            {responsesToShow.map((resp) => {
               const isPartnerAnswer = !resp.isMe;
               const needsTap = isPartnerAnswer && revealed && !partnerRevealed && data.state !== "revealed";
               if (needsTap) return null;
@@ -618,6 +618,7 @@ export function SessionContent({ data, currentUserId }: Props) {
                     </span>
                   </div>
                   <p className="ns-card-inner px-3 py-3 text-2xl leading-relaxed text-slate-900 sm:text-3xl">
+                    {/* skip=true on page-reload (revealed=false); skip=false only on fresh in-session reveal */}
                     <StreamingText
                       text={streamText}
                       skip={!revealed}
@@ -654,7 +655,6 @@ export function SessionContent({ data, currentUserId }: Props) {
                 </div>
               );
 
-              void idx; // idx no longer used for class names; UnfoldCard handles entrance animation
               return revealed ? (
                 <UnfoldCard key={resp.key}>{cardInner}</UnfoldCard>
               ) : (
@@ -677,7 +677,7 @@ export function SessionContent({ data, currentUserId }: Props) {
           </div>
 
           {/* Shared-word highlight */}
-          {(partnerRevealed || data.state === "revealed") && (() => {
+          {((partnerRevealed && myStreamDone && partnerStreamDone) || data.state === "revealed") && (() => {
             const shared = findSharedWords(responsesToShow);
             if (shared.length === 0) return null;
             const myResp = responsesToShow.find((r) => r.isMe);

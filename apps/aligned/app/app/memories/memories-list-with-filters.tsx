@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { Bookmark } from "lucide-react";
 import { type MemoryListItem } from "@/lib/memories";
+import { getCouplePalette, type CouplePalette } from "@/lib/couple-colors";
 import { MemoriesFilterChips, type FilterKey } from "./memories-filter-chips";
 
 function formatDate(iso: string): string {
@@ -14,13 +15,22 @@ function formatDate(iso: string): string {
   });
 }
 
-function MemoryCard({ memory }: { memory: MemoryListItem }) {
+function MemoryCard({
+  memory,
+  palette,
+}: {
+  memory: MemoryListItem;
+  palette: CouplePalette;
+}) {
   const { snapshot } = memory;
   if (snapshot.kind === "session_reveal") {
     const myEntry = snapshot.responses[0];
     const partnerEntry = snapshot.responses[1];
     return (
-      <article className="ns-card space-y-3">
+      <article
+        className="ns-card space-y-3 border-l-[3px]"
+        style={{ borderLeftColor: palette.primary }}
+      >
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
           {formatDate(memory.savedAt)}
         </p>
@@ -54,7 +64,10 @@ function MemoryCard({ memory }: { memory: MemoryListItem }) {
   }
   if (snapshot.kind === "appreciation") {
     return (
-      <article className="rounded-2xl bg-gradient-to-br from-peach-300/30 to-peach-300/10 border border-peach-300/30 p-5 space-y-2">
+      <article
+        className="rounded-2xl bg-gradient-to-br from-peach-300/30 to-peach-300/10 border border-peach-300/30 p-5 space-y-2 border-l-[3px]"
+        style={{ borderLeftColor: palette.secondary }}
+      >
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-peach-600">
           Appreciation · {formatDate(memory.savedAt)}
         </p>
@@ -72,9 +85,11 @@ function MemoryCard({ memory }: { memory: MemoryListItem }) {
 
 type Props = {
   memories: MemoryListItem[];
+  relationshipId?: string | null;
 };
 
-export function MemoriesListWithFilters({ memories }: Props) {
+export function MemoriesListWithFilters({ memories, relationshipId }: Props) {
+  const palette = getCouplePalette(relationshipId);
   const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
 
   const counts = useMemo<Record<FilterKey, number>>(() => {
@@ -148,7 +163,7 @@ export function MemoriesListWithFilters({ memories }: Props) {
         <p className="text-sm text-slate-500">No {filterLabel} saved yet.</p>
       )}
       {visibleMemories.map((m) => (
-        <MemoryCard key={m.id} memory={m} />
+        <MemoryCard key={m.id} memory={m} palette={palette} />
       ))}
     </div>
   );

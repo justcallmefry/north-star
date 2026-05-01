@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CheckCircle, Circle } from "lucide-react";
 import type { GetTodayResult } from "@/lib/sessions";
+import { getCouplePalette } from "@/lib/couple-colors";
 import { DedicationBadge } from "./dedication-badge";
 import { NotifyPartnerButton } from "./notify-partner-button";
 import { StreakBadge } from "./streak-badge";
@@ -26,6 +27,7 @@ export function TodayCard({ today }: Props) {
 
   const { sessionId, relationshipId, promptText, momentText, state, hasUserResponded, hasPartnerResponded, canReveal, streak, dedication } = today;
   const done = hasUserResponded || state === "revealed" || (state === "open" && canReveal);
+  const palette = getCouplePalette(relationshipId);
 
   // Saturday rhythm: a softer visual cue. Doesn't change content yet —
   // a dedicated weekend prompt pool is a follow-up content pass.
@@ -46,7 +48,17 @@ export function TodayCard({ today }: Props) {
     <section className={sectionClass}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className={eyebrowChipClass}>
-          <span className={eyebrowDotClass} />
+          <span className="relative inline-flex items-center justify-center">
+            <span
+              className="absolute inset-[-3px] rounded-full"
+              style={{
+                background: `linear-gradient(135deg, ${palette.primary} 0%, ${palette.primary} 50%, ${palette.secondary} 50%, ${palette.secondary} 100%)`,
+                opacity: 0.45,
+              }}
+              aria-hidden
+            />
+            <span className={`${eyebrowDotClass} relative`} />
+          </span>
           <h2 className={eyebrowTextClass}>{eyebrowLabel}</h2>
         </div>
         {streak && streak.currentCount > 0 && (

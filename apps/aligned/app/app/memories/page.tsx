@@ -51,7 +51,7 @@ export default async function MemoriesPage() {
         partnerName={partner?.name ?? null}
       />
 
-      <MemoriesListWithFilters memories={memories} />
+      <MemoriesListWithFilters memories={memories} relationshipId={primary.id} />
     </main>
   );
 }

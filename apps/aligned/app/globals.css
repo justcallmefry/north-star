@@ -348,3 +348,150 @@ body {
 .animate-loading-dot {
   animation: loading-dot 1.0s ease-in-out infinite;
 }
+
+/* ───────────────────────────────────────────────────────────────────────
+   The Seal — reveal moment for daily-question sessions.
+   Plays once when the parent wrapper gets the .seal-opened class. The
+   envelope collapses to nothing as the wax cracks and the flap opens, so
+   the answer cascade can take the stage with no scroll.
+   Total duration: ~1.3s after .seal-opened is added.
+   ─────────────────────────────────────────────────────────────────────── */
+.seal-scene {
+  perspective: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.seal-envelope {
+  position: relative;
+  width: 220px;
+  height: 160px;
+  flex-shrink: 0;
+  max-height: 160px;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.75s,
+              max-height 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.75s,
+              opacity 0.45s ease 0.80s,
+              margin 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.75s;
+}
+
+.seal-envelope-body {
+  position: absolute;
+  inset: 0;
+  background: #EDE7DC;
+  border-radius: 4px 4px 8px 8px;
+  border: 1.5px solid rgba(31, 78, 115, 0.15);
+  overflow: hidden;
+}
+
+.seal-envelope-body::before,
+.seal-envelope-body::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+.seal-envelope-body::before {
+  left: 0;
+  border-width: 60px 0 0 110px;
+  border-color: transparent transparent transparent rgba(31, 78, 115, 0.06);
+}
+.seal-envelope-body::after {
+  right: 0;
+  border-width: 60px 110px 0 0;
+  border-color: transparent rgba(31, 78, 115, 0.06) transparent transparent;
+}
+
+.seal-envelope-flap {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 80px;
+  background: #E2D9CC;
+  border-radius: 4px 4px 0 0;
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.35s;
+  z-index: 3;
+  clip-path: polygon(0 0, 100% 0, 50% 65%);
+  border: 1.5px solid rgba(31, 78, 115, 0.12);
+}
+
+.seal-wax {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+  z-index: 10;
+  animation: seal-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes seal-pulse {
+  0%, 100% { opacity: 0.9; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.04); }
+}
+
+.seal-wax-half {
+  position: absolute;
+  top: 0;
+  width: 28px;
+  height: 56px;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.seal-wax-half-left  { left: 0;  transform-origin: left center; }
+.seal-wax-half-right { right: 0; transform-origin: right center; }
+
+.seal-particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Opened state — auto-plays once .seal-opened is added to .seal-scene */
+.seal-opened .seal-wax { animation: none; }
+.seal-opened .seal-wax-half-left  { transform: rotate(-18deg); }
+.seal-opened .seal-wax-half-right { transform: rotate(18deg); }
+
+.seal-opened .seal-particle { animation: seal-particle-burst 600ms forwards; }
+.seal-opened .seal-particle:nth-child(1) { --px: -18px; --py: -22px; animation-delay: 0ms; }
+.seal-opened .seal-particle:nth-child(2) { --px:  20px; --py: -18px; animation-delay: 40ms; }
+.seal-opened .seal-particle:nth-child(3) { --px: -22px; --py:  14px; animation-delay: 80ms; }
+.seal-opened .seal-particle:nth-child(4) { --px:  18px; --py:  20px; animation-delay: 20ms; }
+.seal-opened .seal-particle:nth-child(5) { --px:   4px; --py: -26px; animation-delay: 60ms; }
+
+@keyframes seal-particle-burst {
+  0%   { opacity: 1;   transform: translate(0, 0) scale(1); }
+  60%  { opacity: 0.7; }
+  100% { opacity: 0;   transform: translate(var(--px), var(--py)) scale(0.2); }
+}
+
+.seal-opened .seal-envelope-flap { transform: rotateX(-180deg); }
+
+.seal-opened .seal-envelope {
+  transform: scale(0.4) translateY(-18px);
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seal-envelope,
+  .seal-envelope-flap,
+  .seal-wax,
+  .seal-wax-half,
+  .seal-particle {
+    transition: none !important;
+    animation: none !important;
+  }
+  .seal-opened .seal-envelope {
+    opacity: 0;
+    max-height: 0;
+    margin: 0;
+  }
+}

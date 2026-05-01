@@ -159,7 +159,7 @@ export function SessionContent({ data, currentUserId }: Props) {
     try {
       await submitResponse(data.sessionId, text);
       void haptic("success");
-      toast.success("Answer saved.");
+      toast.success("Answer sealed. 🔒");
       router.refresh();
       // Keep loading as "submit" until refreshed data arrives (see useEffect below)
     } catch (err) {
@@ -434,9 +434,9 @@ export function SessionContent({ data, currentUserId }: Props) {
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder={ftsPrefix ? "…complete the sentence" : "Your answer..."}
+              placeholder={ftsPrefix ? "…complete the sentence" : "Write honestly — only they'll see this..."}
               rows={ftsPrefix ? 3 : 5}
-              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-4 text-lg leading-relaxed text-slate-900 placeholder:text-slate-500 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300"
+              className="w-full rounded-2xl border border-amber-100 bg-amber-50/30 px-4 py-4 text-lg leading-relaxed text-slate-900 placeholder:text-slate-500 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-300"
               required
             />
             <div className="flex justify-end">
@@ -458,14 +458,14 @@ export function SessionContent({ data, currentUserId }: Props) {
                 ? "You can tweak your answer any time before you both reveal."
                 : "You can tweak your answer any time before everyone reveals."
               : totalMembers === 2
-                ? "Your answer stays private until your partner responds."
-                : "Your answer stays private until everyone has responded."}
+                ? "Your words stay sealed until they answer too."
+                : "Your words stay sealed until everyone answers."}
           </p>
           <div className="flex flex-col items-center gap-4">
             {loading === "submit" ? (
               <div className="flex flex-col items-center gap-2">
                 <LoadingSpinner size="sm" />
-                <p className="text-sm text-slate-600">Saving your answer…</p>
+                <p className="text-sm text-slate-600">Sealing your answer…</p>
               </div>
             ) : (
               <button
@@ -473,7 +473,7 @@ export function SessionContent({ data, currentUserId }: Props) {
                 disabled={!!loading}
                 className="ns-btn-primary w-full py-3.5 text-lg transition-all duration-200 disabled:opacity-50"
               >
-                {data.hasUserResponded ? "Update my answer" : "Save my answer"}
+                {data.hasUserResponded ? "Update my answer →" : "Seal my answer →"}
               </button>
             )}
             <p className="text-base text-slate-600 sm:text-lg">

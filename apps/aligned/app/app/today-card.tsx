@@ -164,9 +164,12 @@ export function TodayCard({ today }: Props) {
         )}
         {state === "open" && canReveal && (
           <div className="space-y-2 w-full">
+            <p className="text-center text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
+              Both in
+            </p>
             <Link
               href={`/app/session/${sessionId}`}
-              className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-white shadow-lg shadow-brand-200/40 transition active:scale-[0.98]"
+              className="ns-btn-primary block w-full text-center py-3.5 ring-2 ring-brand-300/50 ring-offset-2 ring-offset-white animate-reveal-ready-breathe transition active:scale-[0.98]"
             >
               Reveal answers
             </Link>

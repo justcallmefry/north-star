@@ -178,17 +178,25 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-calm-fade-in,
+  .animate-fade-in-ease,
   .animate-reveal-stamp,
-  .animate-reveal-cascade {
+  .animate-reveal-cascade,
+  .animate-quiz-card-enter,
+  .animate-partner-reveal {
     animation: none;
     opacity: 1;
     transform: none;
   }
   .animate-reveal-shimmer,
   .animate-thinking-pulse,
-  .animate-thinking-breath {
+  .animate-thinking-breath,
+  .animate-loading-spin,
+  .animate-confetti-fall,
+  .animate-loading-dot,
+  .animate-quiz-card-exit {
     animation: none;
-    opacity: 1;
   }
 }
 
@@ -347,4 +355,15 @@ body {
 }
 .animate-loading-dot {
   animation: loading-dot 1.0s ease-in-out infinite;
+}
+
+@keyframes reveal-ready-breathe {
+  0%, 100% { box-shadow: 0 10px 24px -10px rgba(31, 78, 115, 0.35), 0 0 0 2px rgba(31, 78, 115, 0.30); }
+  50%      { box-shadow: 0 14px 32px -10px rgba(31, 78, 115, 0.55), 0 0 0 4px rgba(31, 78, 115, 0.20); }
+}
+.animate-reveal-ready-breathe {
+  animation: reveal-ready-breathe 2.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-reveal-ready-breathe { animation: none; }
 }

@@ -543,6 +543,7 @@ body {
 .animate-paper-unfold {
   animation: paper-unfold 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
   transform-origin: top center;
+  backface-visibility: hidden;
 }
 @media (prefers-reduced-motion: reduce) {
   .animate-paper-unfold { animation: none; opacity: 1; }
@@ -577,7 +578,7 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .animate-word-pulse,
-  .animate-word-pulse-2x { animation: none; }
+  .animate-word-pulse-2x { animation: none; box-shadow: none; }
 }
 
 /* ───────────────────────────────────────────────────────────────────────
@@ -593,7 +594,7 @@ body {
   animation: wyr-breathe 3s ease-in-out infinite;
 }
 @media (prefers-reduced-motion: reduce) {
-  .animate-wyr-breathe { animation: none; }
+  .animate-wyr-breathe { animation: none; transform: none; }
 }
 
 /* 3-beat drumroll pulse before reveal */
@@ -607,10 +608,10 @@ body {
   92%       { transform: scale(1); }
 }
 .animate-wyr-drumroll {
-  animation: wyr-drumroll 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: wyr-drumroll 700ms linear forwards;
 }
 @media (prefers-reduced-motion: reduce) {
-  .animate-wyr-drumroll { animation: none; }
+  .animate-wyr-drumroll { animation: none; transform: none; }
 }
 
 /* Cards snap into revealed state */
@@ -623,7 +624,7 @@ body {
   animation: wyr-slam 400ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 @media (prefers-reduced-motion: reduce) {
-  .animate-wyr-slam { animation: none; }
+  .animate-wyr-slam { animation: none; transform: none; }
 }
 
 /* Match result card bursts in */

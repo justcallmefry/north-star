@@ -531,6 +531,127 @@ body {
 }
 
 /* ───────────────────────────────────────────────────────────────────────
+   Reveal Polish — Daily Question
+   ─────────────────────────────────────────────────────────────────────── */
+
+/* Card unfolds like a letter from top — 500ms */
+@keyframes paper-unfold {
+  0%   { transform: perspective(800px) rotateX(-90deg); opacity: 0; }
+  60%  { transform: perspective(800px) rotateX(8deg);   opacity: 1; }
+  100% { transform: perspective(800px) rotateX(0deg);   opacity: 1; }
+}
+.animate-paper-unfold {
+  animation: paper-unfold 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform-origin: top center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-paper-unfold { animation: none; opacity: 1; }
+}
+
+/* Aligned stamp slides up + scale bounce */
+@keyframes aligned-stamp-in {
+  0%   { opacity: 0; transform: translateY(8px) scale(0.92); }
+  70%  { opacity: 1; transform: translateY(-2px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-aligned-stamp-in {
+  animation: aligned-stamp-in 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-aligned-stamp-in { animation: none; opacity: 1; }
+}
+
+/* Shared word pills pulse — single and double plays */
+@keyframes word-pulse-shared {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.12); box-shadow: 0 0 0 4px rgba(31, 78, 115, 0.12); }
+  60%  { transform: scale(0.97); }
+  100% { transform: scale(1); box-shadow: none; }
+}
+.animate-word-pulse {
+  animation: word-pulse-shared 1000ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.animate-word-pulse-2x {
+  animation: word-pulse-shared 1000ms cubic-bezier(0.22, 1, 0.36, 1) 0ms forwards,
+             word-pulse-shared 1000ms cubic-bezier(0.22, 1, 0.36, 1) 1100ms forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-word-pulse,
+  .animate-word-pulse-2x { animation: none; }
+}
+
+/* ───────────────────────────────────────────────────────────────────────
+   Reveal Polish — WYR
+   ─────────────────────────────────────────────────────────────────────── */
+
+/* Slow breathe on cards while waiting for partner */
+@keyframes wyr-breathe {
+  0%, 100% { transform: scale(1.000); }
+  50%       { transform: scale(1.015); }
+}
+.animate-wyr-breathe {
+  animation: wyr-breathe 3s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-wyr-breathe { animation: none; }
+}
+
+/* 3-beat drumroll pulse before reveal */
+@keyframes wyr-drumroll {
+  0%, 100% { transform: scale(1); }
+  15%       { transform: scale(1.025); }
+  30%       { transform: scale(1); }
+  48%       { transform: scale(1.025); }
+  63%       { transform: scale(1); }
+  78%       { transform: scale(1.025); }
+  92%       { transform: scale(1); }
+}
+.animate-wyr-drumroll {
+  animation: wyr-drumroll 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-wyr-drumroll { animation: none; }
+}
+
+/* Cards snap into revealed state */
+@keyframes wyr-slam {
+  0%   { transform: scale(0.97); }
+  60%  { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+.animate-wyr-slam {
+  animation: wyr-slam 400ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-wyr-slam { animation: none; }
+}
+
+/* Match result card bursts in */
+@keyframes wyr-match-burst {
+  0%   { transform: scale(0.9) translateY(8px); opacity: 0; }
+  60%  { transform: scale(1.03) translateY(-2px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+.animate-wyr-match-burst {
+  animation: wyr-match-burst 800ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-wyr-match-burst { animation: none; opacity: 1; }
+}
+
+/* Mismatch result card eases in */
+@keyframes wyr-mismatch-reveal {
+  0%   { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-wyr-mismatch-reveal {
+  animation: wyr-mismatch-reveal 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-wyr-mismatch-reveal { animation: none; opacity: 1; }
+}
+
+/* ───────────────────────────────────────────────────────────────────────
    Aligned: The Magazine — editorial typography stack.
    Used only inside .magazine-frame and its descendants. Scoped so we
    don't bleed serif type into the rest of the app.

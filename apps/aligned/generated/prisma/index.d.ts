@@ -105,6 +105,31 @@ export type Subscription = $Result.DefaultSelection<Prisma.$SubscriptionPayload>
  */
 export type Memory = $Result.DefaultSelection<Prisma.$MemoryPayload>
 /**
+ * Model Appreciation
+ * A prompted appreciation one partner sends to the other once per week.
+ */
+export type Appreciation = $Result.DefaultSelection<Prisma.$AppreciationPayload>
+/**
+ * Model WyrSession
+ * 
+ */
+export type WyrSession = $Result.DefaultSelection<Prisma.$WyrSessionPayload>
+/**
+ * Model WyrParticipation
+ * 
+ */
+export type WyrParticipation = $Result.DefaultSelection<Prisma.$WyrParticipationPayload>
+/**
+ * Model PartnerSpotlight
+ * Monthly "3 things I love about you" — one per person per month.
+ */
+export type PartnerSpotlight = $Result.DefaultSelection<Prisma.$PartnerSpotlightPayload>
+/**
+ * Model DateNightDare
+ * Weekly real-world challenge for the couple. One dare per week, couple-level tracking.
+ */
+export type DateNightDare = $Result.DefaultSelection<Prisma.$DateNightDarePayload>
+/**
  * Model BetaSignup
  * 
  */
@@ -200,6 +225,14 @@ export const SubscriptionStatus: {
 export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
 
 
+export const WyrState: {
+  open: 'open',
+  revealed: 'revealed'
+};
+
+export type WyrState = (typeof WyrState)[keyof typeof WyrState]
+
+
 export const QuizState: {
   open: 'open',
   revealed: 'revealed'
@@ -244,6 +277,10 @@ export const SessionState: typeof $Enums.SessionState
 export type SubscriptionStatus = $Enums.SubscriptionStatus
 
 export const SubscriptionStatus: typeof $Enums.SubscriptionStatus
+
+export type WyrState = $Enums.WyrState
+
+export const WyrState: typeof $Enums.WyrState
 
 export type QuizState = $Enums.QuizState
 
@@ -555,6 +592,56 @@ export class PrismaClient<
     * ```
     */
   get memory(): Prisma.MemoryDelegate<ExtArgs>;
+
+  /**
+   * `prisma.appreciation`: Exposes CRUD operations for the **Appreciation** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Appreciations
+    * const appreciations = await prisma.appreciation.findMany()
+    * ```
+    */
+  get appreciation(): Prisma.AppreciationDelegate<ExtArgs>;
+
+  /**
+   * `prisma.wyrSession`: Exposes CRUD operations for the **WyrSession** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more WyrSessions
+    * const wyrSessions = await prisma.wyrSession.findMany()
+    * ```
+    */
+  get wyrSession(): Prisma.WyrSessionDelegate<ExtArgs>;
+
+  /**
+   * `prisma.wyrParticipation`: Exposes CRUD operations for the **WyrParticipation** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more WyrParticipations
+    * const wyrParticipations = await prisma.wyrParticipation.findMany()
+    * ```
+    */
+  get wyrParticipation(): Prisma.WyrParticipationDelegate<ExtArgs>;
+
+  /**
+   * `prisma.partnerSpotlight`: Exposes CRUD operations for the **PartnerSpotlight** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PartnerSpotlights
+    * const partnerSpotlights = await prisma.partnerSpotlight.findMany()
+    * ```
+    */
+  get partnerSpotlight(): Prisma.PartnerSpotlightDelegate<ExtArgs>;
+
+  /**
+   * `prisma.dateNightDare`: Exposes CRUD operations for the **DateNightDare** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DateNightDares
+    * const dateNightDares = await prisma.dateNightDare.findMany()
+    * ```
+    */
+  get dateNightDare(): Prisma.DateNightDareDelegate<ExtArgs>;
 
   /**
    * `prisma.betaSignup`: Exposes CRUD operations for the **BetaSignup** model.
@@ -1064,6 +1151,11 @@ export namespace Prisma {
     Streak: 'Streak',
     Subscription: 'Subscription',
     Memory: 'Memory',
+    Appreciation: 'Appreciation',
+    WyrSession: 'WyrSession',
+    WyrParticipation: 'WyrParticipation',
+    PartnerSpotlight: 'PartnerSpotlight',
+    DateNightDare: 'DateNightDare',
     BetaSignup: 'BetaSignup',
     QuizSession: 'QuizSession',
     QuizParticipation: 'QuizParticipation',
@@ -1084,7 +1176,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "memory" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation"
+      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "memory" | "appreciation" | "wyrSession" | "wyrParticipation" | "partnerSpotlight" | "dateNightDare" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2348,6 +2440,356 @@ export namespace Prisma {
           }
         }
       }
+      Appreciation: {
+        payload: Prisma.$AppreciationPayload<ExtArgs>
+        fields: Prisma.AppreciationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AppreciationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppreciationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AppreciationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppreciationPayload>
+          }
+          findFirst: {
+            args: Prisma.AppreciationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppreciationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AppreciationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppreciationPayload>
+          }
+          findMany: {
+            args: Prisma.AppreciationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppreciationPayload>[]
+          }
+          create: {
+            args: Prisma.AppreciationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppreciationPayload>
+          }
+          createMany: {
+            args: Prisma.AppreciationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AppreciationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppreciationPayload>[]
+          }
+          delete: {
+            args: Prisma.AppreciationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppreciationPayload>
+          }
+          update: {
+            args: Prisma.AppreciationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppreciationPayload>
+          }
+          deleteMany: {
+            args: Prisma.AppreciationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AppreciationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.AppreciationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppreciationPayload>
+          }
+          aggregate: {
+            args: Prisma.AppreciationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAppreciation>
+          }
+          groupBy: {
+            args: Prisma.AppreciationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AppreciationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AppreciationCountArgs<ExtArgs>
+            result: $Utils.Optional<AppreciationCountAggregateOutputType> | number
+          }
+        }
+      }
+      WyrSession: {
+        payload: Prisma.$WyrSessionPayload<ExtArgs>
+        fields: Prisma.WyrSessionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WyrSessionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrSessionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WyrSessionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrSessionPayload>
+          }
+          findFirst: {
+            args: Prisma.WyrSessionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrSessionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WyrSessionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrSessionPayload>
+          }
+          findMany: {
+            args: Prisma.WyrSessionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrSessionPayload>[]
+          }
+          create: {
+            args: Prisma.WyrSessionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrSessionPayload>
+          }
+          createMany: {
+            args: Prisma.WyrSessionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.WyrSessionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrSessionPayload>[]
+          }
+          delete: {
+            args: Prisma.WyrSessionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrSessionPayload>
+          }
+          update: {
+            args: Prisma.WyrSessionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrSessionPayload>
+          }
+          deleteMany: {
+            args: Prisma.WyrSessionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WyrSessionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.WyrSessionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrSessionPayload>
+          }
+          aggregate: {
+            args: Prisma.WyrSessionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWyrSession>
+          }
+          groupBy: {
+            args: Prisma.WyrSessionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WyrSessionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WyrSessionCountArgs<ExtArgs>
+            result: $Utils.Optional<WyrSessionCountAggregateOutputType> | number
+          }
+        }
+      }
+      WyrParticipation: {
+        payload: Prisma.$WyrParticipationPayload<ExtArgs>
+        fields: Prisma.WyrParticipationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WyrParticipationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrParticipationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WyrParticipationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrParticipationPayload>
+          }
+          findFirst: {
+            args: Prisma.WyrParticipationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrParticipationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WyrParticipationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrParticipationPayload>
+          }
+          findMany: {
+            args: Prisma.WyrParticipationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrParticipationPayload>[]
+          }
+          create: {
+            args: Prisma.WyrParticipationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrParticipationPayload>
+          }
+          createMany: {
+            args: Prisma.WyrParticipationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.WyrParticipationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrParticipationPayload>[]
+          }
+          delete: {
+            args: Prisma.WyrParticipationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrParticipationPayload>
+          }
+          update: {
+            args: Prisma.WyrParticipationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrParticipationPayload>
+          }
+          deleteMany: {
+            args: Prisma.WyrParticipationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WyrParticipationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.WyrParticipationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WyrParticipationPayload>
+          }
+          aggregate: {
+            args: Prisma.WyrParticipationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWyrParticipation>
+          }
+          groupBy: {
+            args: Prisma.WyrParticipationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WyrParticipationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WyrParticipationCountArgs<ExtArgs>
+            result: $Utils.Optional<WyrParticipationCountAggregateOutputType> | number
+          }
+        }
+      }
+      PartnerSpotlight: {
+        payload: Prisma.$PartnerSpotlightPayload<ExtArgs>
+        fields: Prisma.PartnerSpotlightFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PartnerSpotlightFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartnerSpotlightPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PartnerSpotlightFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartnerSpotlightPayload>
+          }
+          findFirst: {
+            args: Prisma.PartnerSpotlightFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartnerSpotlightPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PartnerSpotlightFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartnerSpotlightPayload>
+          }
+          findMany: {
+            args: Prisma.PartnerSpotlightFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartnerSpotlightPayload>[]
+          }
+          create: {
+            args: Prisma.PartnerSpotlightCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartnerSpotlightPayload>
+          }
+          createMany: {
+            args: Prisma.PartnerSpotlightCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PartnerSpotlightCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartnerSpotlightPayload>[]
+          }
+          delete: {
+            args: Prisma.PartnerSpotlightDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartnerSpotlightPayload>
+          }
+          update: {
+            args: Prisma.PartnerSpotlightUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartnerSpotlightPayload>
+          }
+          deleteMany: {
+            args: Prisma.PartnerSpotlightDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PartnerSpotlightUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PartnerSpotlightUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PartnerSpotlightPayload>
+          }
+          aggregate: {
+            args: Prisma.PartnerSpotlightAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePartnerSpotlight>
+          }
+          groupBy: {
+            args: Prisma.PartnerSpotlightGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PartnerSpotlightGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PartnerSpotlightCountArgs<ExtArgs>
+            result: $Utils.Optional<PartnerSpotlightCountAggregateOutputType> | number
+          }
+        }
+      }
+      DateNightDare: {
+        payload: Prisma.$DateNightDarePayload<ExtArgs>
+        fields: Prisma.DateNightDareFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DateNightDareFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DateNightDarePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DateNightDareFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DateNightDarePayload>
+          }
+          findFirst: {
+            args: Prisma.DateNightDareFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DateNightDarePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DateNightDareFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DateNightDarePayload>
+          }
+          findMany: {
+            args: Prisma.DateNightDareFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DateNightDarePayload>[]
+          }
+          create: {
+            args: Prisma.DateNightDareCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DateNightDarePayload>
+          }
+          createMany: {
+            args: Prisma.DateNightDareCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DateNightDareCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DateNightDarePayload>[]
+          }
+          delete: {
+            args: Prisma.DateNightDareDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DateNightDarePayload>
+          }
+          update: {
+            args: Prisma.DateNightDareUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DateNightDarePayload>
+          }
+          deleteMany: {
+            args: Prisma.DateNightDareDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DateNightDareUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.DateNightDareUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DateNightDarePayload>
+          }
+          aggregate: {
+            args: Prisma.DateNightDareAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDateNightDare>
+          }
+          groupBy: {
+            args: Prisma.DateNightDareGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DateNightDareGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DateNightDareCountArgs<ExtArgs>
+            result: $Utils.Optional<DateNightDareCountAggregateOutputType> | number
+          }
+        }
+      }
       BetaSignup: {
         payload: Prisma.$BetaSignupPayload<ExtArgs>
         fields: Prisma.BetaSignupFieldRefs
@@ -2872,6 +3314,11 @@ export namespace Prisma {
     subscriptions: number
     pushSubscriptions: number
     memories: number
+    appreciationsSent: number
+    appreciationsReceived: number
+    wyrParticipations: number
+    spotlightsSent: number
+    spotlightsReceived: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2888,6 +3335,11 @@ export namespace Prisma {
     subscriptions?: boolean | UserCountOutputTypeCountSubscriptionsArgs
     pushSubscriptions?: boolean | UserCountOutputTypeCountPushSubscriptionsArgs
     memories?: boolean | UserCountOutputTypeCountMemoriesArgs
+    appreciationsSent?: boolean | UserCountOutputTypeCountAppreciationsSentArgs
+    appreciationsReceived?: boolean | UserCountOutputTypeCountAppreciationsReceivedArgs
+    wyrParticipations?: boolean | UserCountOutputTypeCountWyrParticipationsArgs
+    spotlightsSent?: boolean | UserCountOutputTypeCountSpotlightsSentArgs
+    spotlightsReceived?: boolean | UserCountOutputTypeCountSpotlightsReceivedArgs
   }
 
   // Custom InputTypes
@@ -2992,6 +3444,41 @@ export namespace Prisma {
     where?: MemoryWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAppreciationsSentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AppreciationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAppreciationsReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AppreciationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountWyrParticipationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WyrParticipationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSpotlightsSentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PartnerSpotlightWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSpotlightsReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PartnerSpotlightWhereInput
+  }
+
 
   /**
    * Count Type RelationshipCountOutputType
@@ -3006,6 +3493,10 @@ export namespace Prisma {
     meetings: number
     subscriptions: number
     memories: number
+    appreciations: number
+    wyrSessions: number
+    spotlights: number
+    dateNightDares: number
   }
 
   export type RelationshipCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3017,6 +3508,10 @@ export namespace Prisma {
     meetings?: boolean | RelationshipCountOutputTypeCountMeetingsArgs
     subscriptions?: boolean | RelationshipCountOutputTypeCountSubscriptionsArgs
     memories?: boolean | RelationshipCountOutputTypeCountMemoriesArgs
+    appreciations?: boolean | RelationshipCountOutputTypeCountAppreciationsArgs
+    wyrSessions?: boolean | RelationshipCountOutputTypeCountWyrSessionsArgs
+    spotlights?: boolean | RelationshipCountOutputTypeCountSpotlightsArgs
+    dateNightDares?: boolean | RelationshipCountOutputTypeCountDateNightDaresArgs
   }
 
   // Custom InputTypes
@@ -3084,6 +3579,34 @@ export namespace Prisma {
    */
   export type RelationshipCountOutputTypeCountMemoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MemoryWhereInput
+  }
+
+  /**
+   * RelationshipCountOutputType without action
+   */
+  export type RelationshipCountOutputTypeCountAppreciationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AppreciationWhereInput
+  }
+
+  /**
+   * RelationshipCountOutputType without action
+   */
+  export type RelationshipCountOutputTypeCountWyrSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WyrSessionWhereInput
+  }
+
+  /**
+   * RelationshipCountOutputType without action
+   */
+  export type RelationshipCountOutputTypeCountSpotlightsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PartnerSpotlightWhereInput
+  }
+
+  /**
+   * RelationshipCountOutputType without action
+   */
+  export type RelationshipCountOutputTypeCountDateNightDaresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DateNightDareWhereInput
   }
 
 
@@ -3217,6 +3740,37 @@ export namespace Prisma {
    */
   export type MeetingCountOutputTypeCountEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MeetingEntryWhereInput
+  }
+
+
+  /**
+   * Count Type WyrSessionCountOutputType
+   */
+
+  export type WyrSessionCountOutputType = {
+    participations: number
+  }
+
+  export type WyrSessionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    participations?: boolean | WyrSessionCountOutputTypeCountParticipationsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * WyrSessionCountOutputType without action
+   */
+  export type WyrSessionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrSessionCountOutputType
+     */
+    select?: WyrSessionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * WyrSessionCountOutputType without action
+   */
+  export type WyrSessionCountOutputTypeCountParticipationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WyrParticipationWhereInput
   }
 
 
@@ -3495,6 +4049,11 @@ export namespace Prisma {
     subscriptions?: boolean | User$subscriptionsArgs<ExtArgs>
     pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
     memories?: boolean | User$memoriesArgs<ExtArgs>
+    appreciationsSent?: boolean | User$appreciationsSentArgs<ExtArgs>
+    appreciationsReceived?: boolean | User$appreciationsReceivedArgs<ExtArgs>
+    wyrParticipations?: boolean | User$wyrParticipationsArgs<ExtArgs>
+    spotlightsSent?: boolean | User$spotlightsSentArgs<ExtArgs>
+    spotlightsReceived?: boolean | User$spotlightsReceivedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3536,6 +4095,11 @@ export namespace Prisma {
     subscriptions?: boolean | User$subscriptionsArgs<ExtArgs>
     pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
     memories?: boolean | User$memoriesArgs<ExtArgs>
+    appreciationsSent?: boolean | User$appreciationsSentArgs<ExtArgs>
+    appreciationsReceived?: boolean | User$appreciationsReceivedArgs<ExtArgs>
+    wyrParticipations?: boolean | User$wyrParticipationsArgs<ExtArgs>
+    spotlightsSent?: boolean | User$spotlightsSentArgs<ExtArgs>
+    spotlightsReceived?: boolean | User$spotlightsReceivedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3556,6 +4120,11 @@ export namespace Prisma {
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
       pushSubscriptions: Prisma.$PushSubscriptionPayload<ExtArgs>[]
       memories: Prisma.$MemoryPayload<ExtArgs>[]
+      appreciationsSent: Prisma.$AppreciationPayload<ExtArgs>[]
+      appreciationsReceived: Prisma.$AppreciationPayload<ExtArgs>[]
+      wyrParticipations: Prisma.$WyrParticipationPayload<ExtArgs>[]
+      spotlightsSent: Prisma.$PartnerSpotlightPayload<ExtArgs>[]
+      spotlightsReceived: Prisma.$PartnerSpotlightPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3944,6 +4513,11 @@ export namespace Prisma {
     subscriptions<T extends User$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
     pushSubscriptions<T extends User$pushSubscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$pushSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
     memories<T extends User$memoriesArgs<ExtArgs> = {}>(args?: Subset<T, User$memoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany"> | Null>
+    appreciationsSent<T extends User$appreciationsSentArgs<ExtArgs> = {}>(args?: Subset<T, User$appreciationsSentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "findMany"> | Null>
+    appreciationsReceived<T extends User$appreciationsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$appreciationsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "findMany"> | Null>
+    wyrParticipations<T extends User$wyrParticipationsArgs<ExtArgs> = {}>(args?: Subset<T, User$wyrParticipationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WyrParticipationPayload<ExtArgs>, T, "findMany"> | Null>
+    spotlightsSent<T extends User$spotlightsSentArgs<ExtArgs> = {}>(args?: Subset<T, User$spotlightsSentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "findMany"> | Null>
+    spotlightsReceived<T extends User$spotlightsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$spotlightsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4553,6 +5127,106 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MemoryScalarFieldEnum | MemoryScalarFieldEnum[]
+  }
+
+  /**
+   * User.appreciationsSent
+   */
+  export type User$appreciationsSentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appreciation
+     */
+    select?: AppreciationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppreciationInclude<ExtArgs> | null
+    where?: AppreciationWhereInput
+    orderBy?: AppreciationOrderByWithRelationInput | AppreciationOrderByWithRelationInput[]
+    cursor?: AppreciationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AppreciationScalarFieldEnum | AppreciationScalarFieldEnum[]
+  }
+
+  /**
+   * User.appreciationsReceived
+   */
+  export type User$appreciationsReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appreciation
+     */
+    select?: AppreciationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppreciationInclude<ExtArgs> | null
+    where?: AppreciationWhereInput
+    orderBy?: AppreciationOrderByWithRelationInput | AppreciationOrderByWithRelationInput[]
+    cursor?: AppreciationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AppreciationScalarFieldEnum | AppreciationScalarFieldEnum[]
+  }
+
+  /**
+   * User.wyrParticipations
+   */
+  export type User$wyrParticipationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrParticipation
+     */
+    select?: WyrParticipationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrParticipationInclude<ExtArgs> | null
+    where?: WyrParticipationWhereInput
+    orderBy?: WyrParticipationOrderByWithRelationInput | WyrParticipationOrderByWithRelationInput[]
+    cursor?: WyrParticipationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WyrParticipationScalarFieldEnum | WyrParticipationScalarFieldEnum[]
+  }
+
+  /**
+   * User.spotlightsSent
+   */
+  export type User$spotlightsSentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PartnerSpotlight
+     */
+    select?: PartnerSpotlightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartnerSpotlightInclude<ExtArgs> | null
+    where?: PartnerSpotlightWhereInput
+    orderBy?: PartnerSpotlightOrderByWithRelationInput | PartnerSpotlightOrderByWithRelationInput[]
+    cursor?: PartnerSpotlightWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PartnerSpotlightScalarFieldEnum | PartnerSpotlightScalarFieldEnum[]
+  }
+
+  /**
+   * User.spotlightsReceived
+   */
+  export type User$spotlightsReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PartnerSpotlight
+     */
+    select?: PartnerSpotlightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartnerSpotlightInclude<ExtArgs> | null
+    where?: PartnerSpotlightWhereInput
+    orderBy?: PartnerSpotlightOrderByWithRelationInput | PartnerSpotlightOrderByWithRelationInput[]
+    cursor?: PartnerSpotlightWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PartnerSpotlightScalarFieldEnum | PartnerSpotlightScalarFieldEnum[]
   }
 
   /**
@@ -8534,6 +9208,10 @@ export namespace Prisma {
     streak?: boolean | Relationship$streakArgs<ExtArgs>
     subscriptions?: boolean | Relationship$subscriptionsArgs<ExtArgs>
     memories?: boolean | Relationship$memoriesArgs<ExtArgs>
+    appreciations?: boolean | Relationship$appreciationsArgs<ExtArgs>
+    wyrSessions?: boolean | Relationship$wyrSessionsArgs<ExtArgs>
+    spotlights?: boolean | Relationship$spotlightsArgs<ExtArgs>
+    dateNightDares?: boolean | Relationship$dateNightDaresArgs<ExtArgs>
     _count?: boolean | RelationshipCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["relationship"]>
 
@@ -8565,6 +9243,10 @@ export namespace Prisma {
     streak?: boolean | Relationship$streakArgs<ExtArgs>
     subscriptions?: boolean | Relationship$subscriptionsArgs<ExtArgs>
     memories?: boolean | Relationship$memoriesArgs<ExtArgs>
+    appreciations?: boolean | Relationship$appreciationsArgs<ExtArgs>
+    wyrSessions?: boolean | Relationship$wyrSessionsArgs<ExtArgs>
+    spotlights?: boolean | Relationship$spotlightsArgs<ExtArgs>
+    dateNightDares?: boolean | Relationship$dateNightDaresArgs<ExtArgs>
     _count?: boolean | RelationshipCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RelationshipIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -8581,6 +9263,10 @@ export namespace Prisma {
       streak: Prisma.$StreakPayload<ExtArgs> | null
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
       memories: Prisma.$MemoryPayload<ExtArgs>[]
+      appreciations: Prisma.$AppreciationPayload<ExtArgs>[]
+      wyrSessions: Prisma.$WyrSessionPayload<ExtArgs>[]
+      spotlights: Prisma.$PartnerSpotlightPayload<ExtArgs>[]
+      dateNightDares: Prisma.$DateNightDarePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8967,6 +9653,10 @@ export namespace Prisma {
     streak<T extends Relationship$streakArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$streakArgs<ExtArgs>>): Prisma__StreakClient<$Result.GetResult<Prisma.$StreakPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     subscriptions<T extends Relationship$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
     memories<T extends Relationship$memoriesArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$memoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany"> | Null>
+    appreciations<T extends Relationship$appreciationsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$appreciationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "findMany"> | Null>
+    wyrSessions<T extends Relationship$wyrSessionsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$wyrSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WyrSessionPayload<ExtArgs>, T, "findMany"> | Null>
+    spotlights<T extends Relationship$spotlightsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$spotlightsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "findMany"> | Null>
+    dateNightDares<T extends Relationship$dateNightDaresArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$dateNightDaresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DateNightDarePayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9488,6 +10178,86 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MemoryScalarFieldEnum | MemoryScalarFieldEnum[]
+  }
+
+  /**
+   * Relationship.appreciations
+   */
+  export type Relationship$appreciationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appreciation
+     */
+    select?: AppreciationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppreciationInclude<ExtArgs> | null
+    where?: AppreciationWhereInput
+    orderBy?: AppreciationOrderByWithRelationInput | AppreciationOrderByWithRelationInput[]
+    cursor?: AppreciationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AppreciationScalarFieldEnum | AppreciationScalarFieldEnum[]
+  }
+
+  /**
+   * Relationship.wyrSessions
+   */
+  export type Relationship$wyrSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrSession
+     */
+    select?: WyrSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrSessionInclude<ExtArgs> | null
+    where?: WyrSessionWhereInput
+    orderBy?: WyrSessionOrderByWithRelationInput | WyrSessionOrderByWithRelationInput[]
+    cursor?: WyrSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WyrSessionScalarFieldEnum | WyrSessionScalarFieldEnum[]
+  }
+
+  /**
+   * Relationship.spotlights
+   */
+  export type Relationship$spotlightsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PartnerSpotlight
+     */
+    select?: PartnerSpotlightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartnerSpotlightInclude<ExtArgs> | null
+    where?: PartnerSpotlightWhereInput
+    orderBy?: PartnerSpotlightOrderByWithRelationInput | PartnerSpotlightOrderByWithRelationInput[]
+    cursor?: PartnerSpotlightWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PartnerSpotlightScalarFieldEnum | PartnerSpotlightScalarFieldEnum[]
+  }
+
+  /**
+   * Relationship.dateNightDares
+   */
+  export type Relationship$dateNightDaresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DateNightDare
+     */
+    select?: DateNightDareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DateNightDareInclude<ExtArgs> | null
+    where?: DateNightDareWhereInput
+    orderBy?: DateNightDareOrderByWithRelationInput | DateNightDareOrderByWithRelationInput[]
+    cursor?: DateNightDareWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DateNightDareScalarFieldEnum | DateNightDareScalarFieldEnum[]
   }
 
   /**
@@ -21565,6 +22335,4939 @@ export namespace Prisma {
 
 
   /**
+   * Model Appreciation
+   */
+
+  export type AggregateAppreciation = {
+    _count: AppreciationCountAggregateOutputType | null
+    _min: AppreciationMinAggregateOutputType | null
+    _max: AppreciationMaxAggregateOutputType | null
+  }
+
+  export type AppreciationMinAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    fromUserId: string | null
+    toUserId: string | null
+    content: string | null
+    weekKey: string | null
+    createdAt: Date | null
+  }
+
+  export type AppreciationMaxAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    fromUserId: string | null
+    toUserId: string | null
+    content: string | null
+    weekKey: string | null
+    createdAt: Date | null
+  }
+
+  export type AppreciationCountAggregateOutputType = {
+    id: number
+    relationshipId: number
+    fromUserId: number
+    toUserId: number
+    content: number
+    weekKey: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AppreciationMinAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    fromUserId?: true
+    toUserId?: true
+    content?: true
+    weekKey?: true
+    createdAt?: true
+  }
+
+  export type AppreciationMaxAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    fromUserId?: true
+    toUserId?: true
+    content?: true
+    weekKey?: true
+    createdAt?: true
+  }
+
+  export type AppreciationCountAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    fromUserId?: true
+    toUserId?: true
+    content?: true
+    weekKey?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AppreciationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Appreciation to aggregate.
+     */
+    where?: AppreciationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Appreciations to fetch.
+     */
+    orderBy?: AppreciationOrderByWithRelationInput | AppreciationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AppreciationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Appreciations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Appreciations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Appreciations
+    **/
+    _count?: true | AppreciationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AppreciationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AppreciationMaxAggregateInputType
+  }
+
+  export type GetAppreciationAggregateType<T extends AppreciationAggregateArgs> = {
+        [P in keyof T & keyof AggregateAppreciation]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAppreciation[P]>
+      : GetScalarType<T[P], AggregateAppreciation[P]>
+  }
+
+
+
+
+  export type AppreciationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AppreciationWhereInput
+    orderBy?: AppreciationOrderByWithAggregationInput | AppreciationOrderByWithAggregationInput[]
+    by: AppreciationScalarFieldEnum[] | AppreciationScalarFieldEnum
+    having?: AppreciationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AppreciationCountAggregateInputType | true
+    _min?: AppreciationMinAggregateInputType
+    _max?: AppreciationMaxAggregateInputType
+  }
+
+  export type AppreciationGroupByOutputType = {
+    id: string
+    relationshipId: string
+    fromUserId: string
+    toUserId: string
+    content: string
+    weekKey: string
+    createdAt: Date
+    _count: AppreciationCountAggregateOutputType | null
+    _min: AppreciationMinAggregateOutputType | null
+    _max: AppreciationMaxAggregateOutputType | null
+  }
+
+  type GetAppreciationGroupByPayload<T extends AppreciationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AppreciationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AppreciationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AppreciationGroupByOutputType[P]>
+            : GetScalarType<T[P], AppreciationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AppreciationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    fromUserId?: boolean
+    toUserId?: boolean
+    content?: boolean
+    weekKey?: boolean
+    createdAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    fromUser?: boolean | UserDefaultArgs<ExtArgs>
+    toUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["appreciation"]>
+
+  export type AppreciationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    fromUserId?: boolean
+    toUserId?: boolean
+    content?: boolean
+    weekKey?: boolean
+    createdAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    fromUser?: boolean | UserDefaultArgs<ExtArgs>
+    toUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["appreciation"]>
+
+  export type AppreciationSelectScalar = {
+    id?: boolean
+    relationshipId?: boolean
+    fromUserId?: boolean
+    toUserId?: boolean
+    content?: boolean
+    weekKey?: boolean
+    createdAt?: boolean
+  }
+
+  export type AppreciationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    fromUser?: boolean | UserDefaultArgs<ExtArgs>
+    toUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AppreciationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    fromUser?: boolean | UserDefaultArgs<ExtArgs>
+    toUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AppreciationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Appreciation"
+    objects: {
+      relationship: Prisma.$RelationshipPayload<ExtArgs>
+      fromUser: Prisma.$UserPayload<ExtArgs>
+      toUser: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      relationshipId: string
+      fromUserId: string
+      toUserId: string
+      content: string
+      /**
+       * ISO week key e.g. "2026-W18" — enforces one send per person per week
+       */
+      weekKey: string
+      createdAt: Date
+    }, ExtArgs["result"]["appreciation"]>
+    composites: {}
+  }
+
+  type AppreciationGetPayload<S extends boolean | null | undefined | AppreciationDefaultArgs> = $Result.GetResult<Prisma.$AppreciationPayload, S>
+
+  type AppreciationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<AppreciationFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: AppreciationCountAggregateInputType | true
+    }
+
+  export interface AppreciationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Appreciation'], meta: { name: 'Appreciation' } }
+    /**
+     * Find zero or one Appreciation that matches the filter.
+     * @param {AppreciationFindUniqueArgs} args - Arguments to find a Appreciation
+     * @example
+     * // Get one Appreciation
+     * const appreciation = await prisma.appreciation.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AppreciationFindUniqueArgs>(args: SelectSubset<T, AppreciationFindUniqueArgs<ExtArgs>>): Prisma__AppreciationClient<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one Appreciation that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {AppreciationFindUniqueOrThrowArgs} args - Arguments to find a Appreciation
+     * @example
+     * // Get one Appreciation
+     * const appreciation = await prisma.appreciation.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AppreciationFindUniqueOrThrowArgs>(args: SelectSubset<T, AppreciationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AppreciationClient<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first Appreciation that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppreciationFindFirstArgs} args - Arguments to find a Appreciation
+     * @example
+     * // Get one Appreciation
+     * const appreciation = await prisma.appreciation.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AppreciationFindFirstArgs>(args?: SelectSubset<T, AppreciationFindFirstArgs<ExtArgs>>): Prisma__AppreciationClient<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first Appreciation that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppreciationFindFirstOrThrowArgs} args - Arguments to find a Appreciation
+     * @example
+     * // Get one Appreciation
+     * const appreciation = await prisma.appreciation.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AppreciationFindFirstOrThrowArgs>(args?: SelectSubset<T, AppreciationFindFirstOrThrowArgs<ExtArgs>>): Prisma__AppreciationClient<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more Appreciations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppreciationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Appreciations
+     * const appreciations = await prisma.appreciation.findMany()
+     * 
+     * // Get first 10 Appreciations
+     * const appreciations = await prisma.appreciation.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const appreciationWithIdOnly = await prisma.appreciation.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AppreciationFindManyArgs>(args?: SelectSubset<T, AppreciationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a Appreciation.
+     * @param {AppreciationCreateArgs} args - Arguments to create a Appreciation.
+     * @example
+     * // Create one Appreciation
+     * const Appreciation = await prisma.appreciation.create({
+     *   data: {
+     *     // ... data to create a Appreciation
+     *   }
+     * })
+     * 
+     */
+    create<T extends AppreciationCreateArgs>(args: SelectSubset<T, AppreciationCreateArgs<ExtArgs>>): Prisma__AppreciationClient<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many Appreciations.
+     * @param {AppreciationCreateManyArgs} args - Arguments to create many Appreciations.
+     * @example
+     * // Create many Appreciations
+     * const appreciation = await prisma.appreciation.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AppreciationCreateManyArgs>(args?: SelectSubset<T, AppreciationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Appreciations and returns the data saved in the database.
+     * @param {AppreciationCreateManyAndReturnArgs} args - Arguments to create many Appreciations.
+     * @example
+     * // Create many Appreciations
+     * const appreciation = await prisma.appreciation.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Appreciations and only return the `id`
+     * const appreciationWithIdOnly = await prisma.appreciation.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AppreciationCreateManyAndReturnArgs>(args?: SelectSubset<T, AppreciationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a Appreciation.
+     * @param {AppreciationDeleteArgs} args - Arguments to delete one Appreciation.
+     * @example
+     * // Delete one Appreciation
+     * const Appreciation = await prisma.appreciation.delete({
+     *   where: {
+     *     // ... filter to delete one Appreciation
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AppreciationDeleteArgs>(args: SelectSubset<T, AppreciationDeleteArgs<ExtArgs>>): Prisma__AppreciationClient<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one Appreciation.
+     * @param {AppreciationUpdateArgs} args - Arguments to update one Appreciation.
+     * @example
+     * // Update one Appreciation
+     * const appreciation = await prisma.appreciation.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AppreciationUpdateArgs>(args: SelectSubset<T, AppreciationUpdateArgs<ExtArgs>>): Prisma__AppreciationClient<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more Appreciations.
+     * @param {AppreciationDeleteManyArgs} args - Arguments to filter Appreciations to delete.
+     * @example
+     * // Delete a few Appreciations
+     * const { count } = await prisma.appreciation.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AppreciationDeleteManyArgs>(args?: SelectSubset<T, AppreciationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Appreciations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppreciationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Appreciations
+     * const appreciation = await prisma.appreciation.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AppreciationUpdateManyArgs>(args: SelectSubset<T, AppreciationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Appreciation.
+     * @param {AppreciationUpsertArgs} args - Arguments to update or create a Appreciation.
+     * @example
+     * // Update or create a Appreciation
+     * const appreciation = await prisma.appreciation.upsert({
+     *   create: {
+     *     // ... data to create a Appreciation
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Appreciation we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AppreciationUpsertArgs>(args: SelectSubset<T, AppreciationUpsertArgs<ExtArgs>>): Prisma__AppreciationClient<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of Appreciations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppreciationCountArgs} args - Arguments to filter Appreciations to count.
+     * @example
+     * // Count the number of Appreciations
+     * const count = await prisma.appreciation.count({
+     *   where: {
+     *     // ... the filter for the Appreciations we want to count
+     *   }
+     * })
+    **/
+    count<T extends AppreciationCountArgs>(
+      args?: Subset<T, AppreciationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AppreciationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Appreciation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppreciationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AppreciationAggregateArgs>(args: Subset<T, AppreciationAggregateArgs>): Prisma.PrismaPromise<GetAppreciationAggregateType<T>>
+
+    /**
+     * Group by Appreciation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppreciationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AppreciationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AppreciationGroupByArgs['orderBy'] }
+        : { orderBy?: AppreciationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AppreciationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAppreciationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Appreciation model
+   */
+  readonly fields: AppreciationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Appreciation.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AppreciationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    relationship<T extends RelationshipDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RelationshipDefaultArgs<ExtArgs>>): Prisma__RelationshipClient<$Result.GetResult<Prisma.$RelationshipPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    fromUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    toUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Appreciation model
+   */ 
+  interface AppreciationFieldRefs {
+    readonly id: FieldRef<"Appreciation", 'String'>
+    readonly relationshipId: FieldRef<"Appreciation", 'String'>
+    readonly fromUserId: FieldRef<"Appreciation", 'String'>
+    readonly toUserId: FieldRef<"Appreciation", 'String'>
+    readonly content: FieldRef<"Appreciation", 'String'>
+    readonly weekKey: FieldRef<"Appreciation", 'String'>
+    readonly createdAt: FieldRef<"Appreciation", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Appreciation findUnique
+   */
+  export type AppreciationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appreciation
+     */
+    select?: AppreciationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppreciationInclude<ExtArgs> | null
+    /**
+     * Filter, which Appreciation to fetch.
+     */
+    where: AppreciationWhereUniqueInput
+  }
+
+  /**
+   * Appreciation findUniqueOrThrow
+   */
+  export type AppreciationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appreciation
+     */
+    select?: AppreciationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppreciationInclude<ExtArgs> | null
+    /**
+     * Filter, which Appreciation to fetch.
+     */
+    where: AppreciationWhereUniqueInput
+  }
+
+  /**
+   * Appreciation findFirst
+   */
+  export type AppreciationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appreciation
+     */
+    select?: AppreciationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppreciationInclude<ExtArgs> | null
+    /**
+     * Filter, which Appreciation to fetch.
+     */
+    where?: AppreciationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Appreciations to fetch.
+     */
+    orderBy?: AppreciationOrderByWithRelationInput | AppreciationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Appreciations.
+     */
+    cursor?: AppreciationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Appreciations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Appreciations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Appreciations.
+     */
+    distinct?: AppreciationScalarFieldEnum | AppreciationScalarFieldEnum[]
+  }
+
+  /**
+   * Appreciation findFirstOrThrow
+   */
+  export type AppreciationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appreciation
+     */
+    select?: AppreciationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppreciationInclude<ExtArgs> | null
+    /**
+     * Filter, which Appreciation to fetch.
+     */
+    where?: AppreciationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Appreciations to fetch.
+     */
+    orderBy?: AppreciationOrderByWithRelationInput | AppreciationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Appreciations.
+     */
+    cursor?: AppreciationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Appreciations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Appreciations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Appreciations.
+     */
+    distinct?: AppreciationScalarFieldEnum | AppreciationScalarFieldEnum[]
+  }
+
+  /**
+   * Appreciation findMany
+   */
+  export type AppreciationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appreciation
+     */
+    select?: AppreciationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppreciationInclude<ExtArgs> | null
+    /**
+     * Filter, which Appreciations to fetch.
+     */
+    where?: AppreciationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Appreciations to fetch.
+     */
+    orderBy?: AppreciationOrderByWithRelationInput | AppreciationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Appreciations.
+     */
+    cursor?: AppreciationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Appreciations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Appreciations.
+     */
+    skip?: number
+    distinct?: AppreciationScalarFieldEnum | AppreciationScalarFieldEnum[]
+  }
+
+  /**
+   * Appreciation create
+   */
+  export type AppreciationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appreciation
+     */
+    select?: AppreciationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppreciationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Appreciation.
+     */
+    data: XOR<AppreciationCreateInput, AppreciationUncheckedCreateInput>
+  }
+
+  /**
+   * Appreciation createMany
+   */
+  export type AppreciationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Appreciations.
+     */
+    data: AppreciationCreateManyInput | AppreciationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Appreciation createManyAndReturn
+   */
+  export type AppreciationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appreciation
+     */
+    select?: AppreciationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many Appreciations.
+     */
+    data: AppreciationCreateManyInput | AppreciationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppreciationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Appreciation update
+   */
+  export type AppreciationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appreciation
+     */
+    select?: AppreciationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppreciationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Appreciation.
+     */
+    data: XOR<AppreciationUpdateInput, AppreciationUncheckedUpdateInput>
+    /**
+     * Choose, which Appreciation to update.
+     */
+    where: AppreciationWhereUniqueInput
+  }
+
+  /**
+   * Appreciation updateMany
+   */
+  export type AppreciationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Appreciations.
+     */
+    data: XOR<AppreciationUpdateManyMutationInput, AppreciationUncheckedUpdateManyInput>
+    /**
+     * Filter which Appreciations to update
+     */
+    where?: AppreciationWhereInput
+  }
+
+  /**
+   * Appreciation upsert
+   */
+  export type AppreciationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appreciation
+     */
+    select?: AppreciationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppreciationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Appreciation to update in case it exists.
+     */
+    where: AppreciationWhereUniqueInput
+    /**
+     * In case the Appreciation found by the `where` argument doesn't exist, create a new Appreciation with this data.
+     */
+    create: XOR<AppreciationCreateInput, AppreciationUncheckedCreateInput>
+    /**
+     * In case the Appreciation was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AppreciationUpdateInput, AppreciationUncheckedUpdateInput>
+  }
+
+  /**
+   * Appreciation delete
+   */
+  export type AppreciationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appreciation
+     */
+    select?: AppreciationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppreciationInclude<ExtArgs> | null
+    /**
+     * Filter which Appreciation to delete.
+     */
+    where: AppreciationWhereUniqueInput
+  }
+
+  /**
+   * Appreciation deleteMany
+   */
+  export type AppreciationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Appreciations to delete
+     */
+    where?: AppreciationWhereInput
+  }
+
+  /**
+   * Appreciation without action
+   */
+  export type AppreciationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appreciation
+     */
+    select?: AppreciationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppreciationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model WyrSession
+   */
+
+  export type AggregateWyrSession = {
+    _count: WyrSessionCountAggregateOutputType | null
+    _avg: WyrSessionAvgAggregateOutputType | null
+    _sum: WyrSessionSumAggregateOutputType | null
+    _min: WyrSessionMinAggregateOutputType | null
+    _max: WyrSessionMaxAggregateOutputType | null
+  }
+
+  export type WyrSessionAvgAggregateOutputType = {
+    questionIndex: number | null
+  }
+
+  export type WyrSessionSumAggregateOutputType = {
+    questionIndex: number | null
+  }
+
+  export type WyrSessionMinAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    sessionDate: Date | null
+    questionIndex: number | null
+    state: $Enums.WyrState | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type WyrSessionMaxAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    sessionDate: Date | null
+    questionIndex: number | null
+    state: $Enums.WyrState | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type WyrSessionCountAggregateOutputType = {
+    id: number
+    relationshipId: number
+    sessionDate: number
+    questionIndex: number
+    state: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type WyrSessionAvgAggregateInputType = {
+    questionIndex?: true
+  }
+
+  export type WyrSessionSumAggregateInputType = {
+    questionIndex?: true
+  }
+
+  export type WyrSessionMinAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    sessionDate?: true
+    questionIndex?: true
+    state?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type WyrSessionMaxAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    sessionDate?: true
+    questionIndex?: true
+    state?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type WyrSessionCountAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    sessionDate?: true
+    questionIndex?: true
+    state?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type WyrSessionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WyrSession to aggregate.
+     */
+    where?: WyrSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WyrSessions to fetch.
+     */
+    orderBy?: WyrSessionOrderByWithRelationInput | WyrSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WyrSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WyrSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WyrSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned WyrSessions
+    **/
+    _count?: true | WyrSessionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: WyrSessionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WyrSessionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WyrSessionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WyrSessionMaxAggregateInputType
+  }
+
+  export type GetWyrSessionAggregateType<T extends WyrSessionAggregateArgs> = {
+        [P in keyof T & keyof AggregateWyrSession]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWyrSession[P]>
+      : GetScalarType<T[P], AggregateWyrSession[P]>
+  }
+
+
+
+
+  export type WyrSessionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WyrSessionWhereInput
+    orderBy?: WyrSessionOrderByWithAggregationInput | WyrSessionOrderByWithAggregationInput[]
+    by: WyrSessionScalarFieldEnum[] | WyrSessionScalarFieldEnum
+    having?: WyrSessionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WyrSessionCountAggregateInputType | true
+    _avg?: WyrSessionAvgAggregateInputType
+    _sum?: WyrSessionSumAggregateInputType
+    _min?: WyrSessionMinAggregateInputType
+    _max?: WyrSessionMaxAggregateInputType
+  }
+
+  export type WyrSessionGroupByOutputType = {
+    id: string
+    relationshipId: string
+    sessionDate: Date
+    questionIndex: number
+    state: $Enums.WyrState
+    createdAt: Date
+    updatedAt: Date
+    _count: WyrSessionCountAggregateOutputType | null
+    _avg: WyrSessionAvgAggregateOutputType | null
+    _sum: WyrSessionSumAggregateOutputType | null
+    _min: WyrSessionMinAggregateOutputType | null
+    _max: WyrSessionMaxAggregateOutputType | null
+  }
+
+  type GetWyrSessionGroupByPayload<T extends WyrSessionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WyrSessionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WyrSessionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WyrSessionGroupByOutputType[P]>
+            : GetScalarType<T[P], WyrSessionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WyrSessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    sessionDate?: boolean
+    questionIndex?: boolean
+    state?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    participations?: boolean | WyrSession$participationsArgs<ExtArgs>
+    _count?: boolean | WyrSessionCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["wyrSession"]>
+
+  export type WyrSessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    sessionDate?: boolean
+    questionIndex?: boolean
+    state?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["wyrSession"]>
+
+  export type WyrSessionSelectScalar = {
+    id?: boolean
+    relationshipId?: boolean
+    sessionDate?: boolean
+    questionIndex?: boolean
+    state?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type WyrSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    participations?: boolean | WyrSession$participationsArgs<ExtArgs>
+    _count?: boolean | WyrSessionCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type WyrSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+  }
+
+  export type $WyrSessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "WyrSession"
+    objects: {
+      relationship: Prisma.$RelationshipPayload<ExtArgs>
+      participations: Prisma.$WyrParticipationPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      relationshipId: string
+      sessionDate: Date
+      questionIndex: number
+      state: $Enums.WyrState
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["wyrSession"]>
+    composites: {}
+  }
+
+  type WyrSessionGetPayload<S extends boolean | null | undefined | WyrSessionDefaultArgs> = $Result.GetResult<Prisma.$WyrSessionPayload, S>
+
+  type WyrSessionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<WyrSessionFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: WyrSessionCountAggregateInputType | true
+    }
+
+  export interface WyrSessionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WyrSession'], meta: { name: 'WyrSession' } }
+    /**
+     * Find zero or one WyrSession that matches the filter.
+     * @param {WyrSessionFindUniqueArgs} args - Arguments to find a WyrSession
+     * @example
+     * // Get one WyrSession
+     * const wyrSession = await prisma.wyrSession.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends WyrSessionFindUniqueArgs>(args: SelectSubset<T, WyrSessionFindUniqueArgs<ExtArgs>>): Prisma__WyrSessionClient<$Result.GetResult<Prisma.$WyrSessionPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one WyrSession that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {WyrSessionFindUniqueOrThrowArgs} args - Arguments to find a WyrSession
+     * @example
+     * // Get one WyrSession
+     * const wyrSession = await prisma.wyrSession.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends WyrSessionFindUniqueOrThrowArgs>(args: SelectSubset<T, WyrSessionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WyrSessionClient<$Result.GetResult<Prisma.$WyrSessionPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first WyrSession that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WyrSessionFindFirstArgs} args - Arguments to find a WyrSession
+     * @example
+     * // Get one WyrSession
+     * const wyrSession = await prisma.wyrSession.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends WyrSessionFindFirstArgs>(args?: SelectSubset<T, WyrSessionFindFirstArgs<ExtArgs>>): Prisma__WyrSessionClient<$Result.GetResult<Prisma.$WyrSessionPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first WyrSession that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WyrSessionFindFirstOrThrowArgs} args - Arguments to find a WyrSession
+     * @example
+     * // Get one WyrSession
+     * const wyrSession = await prisma.wyrSession.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends WyrSessionFindFirstOrThrowArgs>(args?: SelectSubset<T, WyrSessionFindFirstOrThrowArgs<ExtArgs>>): Prisma__WyrSessionClient<$Result.GetResult<Prisma.$WyrSessionPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more WyrSessions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WyrSessionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all WyrSessions
+     * const wyrSessions = await prisma.wyrSession.findMany()
+     * 
+     * // Get first 10 WyrSessions
+     * const wyrSessions = await prisma.wyrSession.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const wyrSessionWithIdOnly = await prisma.wyrSession.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends WyrSessionFindManyArgs>(args?: SelectSubset<T, WyrSessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WyrSessionPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a WyrSession.
+     * @param {WyrSessionCreateArgs} args - Arguments to create a WyrSession.
+     * @example
+     * // Create one WyrSession
+     * const WyrSession = await prisma.wyrSession.create({
+     *   data: {
+     *     // ... data to create a WyrSession
+     *   }
+     * })
+     * 
+     */
+    create<T extends WyrSessionCreateArgs>(args: SelectSubset<T, WyrSessionCreateArgs<ExtArgs>>): Prisma__WyrSessionClient<$Result.GetResult<Prisma.$WyrSessionPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many WyrSessions.
+     * @param {WyrSessionCreateManyArgs} args - Arguments to create many WyrSessions.
+     * @example
+     * // Create many WyrSessions
+     * const wyrSession = await prisma.wyrSession.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends WyrSessionCreateManyArgs>(args?: SelectSubset<T, WyrSessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many WyrSessions and returns the data saved in the database.
+     * @param {WyrSessionCreateManyAndReturnArgs} args - Arguments to create many WyrSessions.
+     * @example
+     * // Create many WyrSessions
+     * const wyrSession = await prisma.wyrSession.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many WyrSessions and only return the `id`
+     * const wyrSessionWithIdOnly = await prisma.wyrSession.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends WyrSessionCreateManyAndReturnArgs>(args?: SelectSubset<T, WyrSessionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WyrSessionPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a WyrSession.
+     * @param {WyrSessionDeleteArgs} args - Arguments to delete one WyrSession.
+     * @example
+     * // Delete one WyrSession
+     * const WyrSession = await prisma.wyrSession.delete({
+     *   where: {
+     *     // ... filter to delete one WyrSession
+     *   }
+     * })
+     * 
+     */
+    delete<T extends WyrSessionDeleteArgs>(args: SelectSubset<T, WyrSessionDeleteArgs<ExtArgs>>): Prisma__WyrSessionClient<$Result.GetResult<Prisma.$WyrSessionPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one WyrSession.
+     * @param {WyrSessionUpdateArgs} args - Arguments to update one WyrSession.
+     * @example
+     * // Update one WyrSession
+     * const wyrSession = await prisma.wyrSession.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends WyrSessionUpdateArgs>(args: SelectSubset<T, WyrSessionUpdateArgs<ExtArgs>>): Prisma__WyrSessionClient<$Result.GetResult<Prisma.$WyrSessionPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more WyrSessions.
+     * @param {WyrSessionDeleteManyArgs} args - Arguments to filter WyrSessions to delete.
+     * @example
+     * // Delete a few WyrSessions
+     * const { count } = await prisma.wyrSession.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends WyrSessionDeleteManyArgs>(args?: SelectSubset<T, WyrSessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WyrSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WyrSessionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many WyrSessions
+     * const wyrSession = await prisma.wyrSession.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends WyrSessionUpdateManyArgs>(args: SelectSubset<T, WyrSessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one WyrSession.
+     * @param {WyrSessionUpsertArgs} args - Arguments to update or create a WyrSession.
+     * @example
+     * // Update or create a WyrSession
+     * const wyrSession = await prisma.wyrSession.upsert({
+     *   create: {
+     *     // ... data to create a WyrSession
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the WyrSession we want to update
+     *   }
+     * })
+     */
+    upsert<T extends WyrSessionUpsertArgs>(args: SelectSubset<T, WyrSessionUpsertArgs<ExtArgs>>): Prisma__WyrSessionClient<$Result.GetResult<Prisma.$WyrSessionPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of WyrSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WyrSessionCountArgs} args - Arguments to filter WyrSessions to count.
+     * @example
+     * // Count the number of WyrSessions
+     * const count = await prisma.wyrSession.count({
+     *   where: {
+     *     // ... the filter for the WyrSessions we want to count
+     *   }
+     * })
+    **/
+    count<T extends WyrSessionCountArgs>(
+      args?: Subset<T, WyrSessionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WyrSessionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a WyrSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WyrSessionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WyrSessionAggregateArgs>(args: Subset<T, WyrSessionAggregateArgs>): Prisma.PrismaPromise<GetWyrSessionAggregateType<T>>
+
+    /**
+     * Group by WyrSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WyrSessionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WyrSessionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WyrSessionGroupByArgs['orderBy'] }
+        : { orderBy?: WyrSessionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WyrSessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWyrSessionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the WyrSession model
+   */
+  readonly fields: WyrSessionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for WyrSession.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__WyrSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    relationship<T extends RelationshipDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RelationshipDefaultArgs<ExtArgs>>): Prisma__RelationshipClient<$Result.GetResult<Prisma.$RelationshipPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    participations<T extends WyrSession$participationsArgs<ExtArgs> = {}>(args?: Subset<T, WyrSession$participationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WyrParticipationPayload<ExtArgs>, T, "findMany"> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the WyrSession model
+   */ 
+  interface WyrSessionFieldRefs {
+    readonly id: FieldRef<"WyrSession", 'String'>
+    readonly relationshipId: FieldRef<"WyrSession", 'String'>
+    readonly sessionDate: FieldRef<"WyrSession", 'DateTime'>
+    readonly questionIndex: FieldRef<"WyrSession", 'Int'>
+    readonly state: FieldRef<"WyrSession", 'WyrState'>
+    readonly createdAt: FieldRef<"WyrSession", 'DateTime'>
+    readonly updatedAt: FieldRef<"WyrSession", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * WyrSession findUnique
+   */
+  export type WyrSessionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrSession
+     */
+    select?: WyrSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which WyrSession to fetch.
+     */
+    where: WyrSessionWhereUniqueInput
+  }
+
+  /**
+   * WyrSession findUniqueOrThrow
+   */
+  export type WyrSessionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrSession
+     */
+    select?: WyrSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which WyrSession to fetch.
+     */
+    where: WyrSessionWhereUniqueInput
+  }
+
+  /**
+   * WyrSession findFirst
+   */
+  export type WyrSessionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrSession
+     */
+    select?: WyrSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which WyrSession to fetch.
+     */
+    where?: WyrSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WyrSessions to fetch.
+     */
+    orderBy?: WyrSessionOrderByWithRelationInput | WyrSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WyrSessions.
+     */
+    cursor?: WyrSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WyrSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WyrSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WyrSessions.
+     */
+    distinct?: WyrSessionScalarFieldEnum | WyrSessionScalarFieldEnum[]
+  }
+
+  /**
+   * WyrSession findFirstOrThrow
+   */
+  export type WyrSessionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrSession
+     */
+    select?: WyrSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which WyrSession to fetch.
+     */
+    where?: WyrSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WyrSessions to fetch.
+     */
+    orderBy?: WyrSessionOrderByWithRelationInput | WyrSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WyrSessions.
+     */
+    cursor?: WyrSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WyrSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WyrSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WyrSessions.
+     */
+    distinct?: WyrSessionScalarFieldEnum | WyrSessionScalarFieldEnum[]
+  }
+
+  /**
+   * WyrSession findMany
+   */
+  export type WyrSessionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrSession
+     */
+    select?: WyrSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which WyrSessions to fetch.
+     */
+    where?: WyrSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WyrSessions to fetch.
+     */
+    orderBy?: WyrSessionOrderByWithRelationInput | WyrSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing WyrSessions.
+     */
+    cursor?: WyrSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WyrSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WyrSessions.
+     */
+    skip?: number
+    distinct?: WyrSessionScalarFieldEnum | WyrSessionScalarFieldEnum[]
+  }
+
+  /**
+   * WyrSession create
+   */
+  export type WyrSessionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrSession
+     */
+    select?: WyrSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrSessionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a WyrSession.
+     */
+    data: XOR<WyrSessionCreateInput, WyrSessionUncheckedCreateInput>
+  }
+
+  /**
+   * WyrSession createMany
+   */
+  export type WyrSessionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many WyrSessions.
+     */
+    data: WyrSessionCreateManyInput | WyrSessionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * WyrSession createManyAndReturn
+   */
+  export type WyrSessionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrSession
+     */
+    select?: WyrSessionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many WyrSessions.
+     */
+    data: WyrSessionCreateManyInput | WyrSessionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrSessionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * WyrSession update
+   */
+  export type WyrSessionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrSession
+     */
+    select?: WyrSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrSessionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a WyrSession.
+     */
+    data: XOR<WyrSessionUpdateInput, WyrSessionUncheckedUpdateInput>
+    /**
+     * Choose, which WyrSession to update.
+     */
+    where: WyrSessionWhereUniqueInput
+  }
+
+  /**
+   * WyrSession updateMany
+   */
+  export type WyrSessionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update WyrSessions.
+     */
+    data: XOR<WyrSessionUpdateManyMutationInput, WyrSessionUncheckedUpdateManyInput>
+    /**
+     * Filter which WyrSessions to update
+     */
+    where?: WyrSessionWhereInput
+  }
+
+  /**
+   * WyrSession upsert
+   */
+  export type WyrSessionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrSession
+     */
+    select?: WyrSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrSessionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the WyrSession to update in case it exists.
+     */
+    where: WyrSessionWhereUniqueInput
+    /**
+     * In case the WyrSession found by the `where` argument doesn't exist, create a new WyrSession with this data.
+     */
+    create: XOR<WyrSessionCreateInput, WyrSessionUncheckedCreateInput>
+    /**
+     * In case the WyrSession was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WyrSessionUpdateInput, WyrSessionUncheckedUpdateInput>
+  }
+
+  /**
+   * WyrSession delete
+   */
+  export type WyrSessionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrSession
+     */
+    select?: WyrSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrSessionInclude<ExtArgs> | null
+    /**
+     * Filter which WyrSession to delete.
+     */
+    where: WyrSessionWhereUniqueInput
+  }
+
+  /**
+   * WyrSession deleteMany
+   */
+  export type WyrSessionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WyrSessions to delete
+     */
+    where?: WyrSessionWhereInput
+  }
+
+  /**
+   * WyrSession.participations
+   */
+  export type WyrSession$participationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrParticipation
+     */
+    select?: WyrParticipationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrParticipationInclude<ExtArgs> | null
+    where?: WyrParticipationWhereInput
+    orderBy?: WyrParticipationOrderByWithRelationInput | WyrParticipationOrderByWithRelationInput[]
+    cursor?: WyrParticipationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WyrParticipationScalarFieldEnum | WyrParticipationScalarFieldEnum[]
+  }
+
+  /**
+   * WyrSession without action
+   */
+  export type WyrSessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrSession
+     */
+    select?: WyrSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrSessionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model WyrParticipation
+   */
+
+  export type AggregateWyrParticipation = {
+    _count: WyrParticipationCountAggregateOutputType | null
+    _avg: WyrParticipationAvgAggregateOutputType | null
+    _sum: WyrParticipationSumAggregateOutputType | null
+    _min: WyrParticipationMinAggregateOutputType | null
+    _max: WyrParticipationMaxAggregateOutputType | null
+  }
+
+  export type WyrParticipationAvgAggregateOutputType = {
+    choice: number | null
+  }
+
+  export type WyrParticipationSumAggregateOutputType = {
+    choice: number | null
+  }
+
+  export type WyrParticipationMinAggregateOutputType = {
+    id: string | null
+    wyrSessionId: string | null
+    userId: string | null
+    choice: number | null
+    createdAt: Date | null
+  }
+
+  export type WyrParticipationMaxAggregateOutputType = {
+    id: string | null
+    wyrSessionId: string | null
+    userId: string | null
+    choice: number | null
+    createdAt: Date | null
+  }
+
+  export type WyrParticipationCountAggregateOutputType = {
+    id: number
+    wyrSessionId: number
+    userId: number
+    choice: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type WyrParticipationAvgAggregateInputType = {
+    choice?: true
+  }
+
+  export type WyrParticipationSumAggregateInputType = {
+    choice?: true
+  }
+
+  export type WyrParticipationMinAggregateInputType = {
+    id?: true
+    wyrSessionId?: true
+    userId?: true
+    choice?: true
+    createdAt?: true
+  }
+
+  export type WyrParticipationMaxAggregateInputType = {
+    id?: true
+    wyrSessionId?: true
+    userId?: true
+    choice?: true
+    createdAt?: true
+  }
+
+  export type WyrParticipationCountAggregateInputType = {
+    id?: true
+    wyrSessionId?: true
+    userId?: true
+    choice?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type WyrParticipationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WyrParticipation to aggregate.
+     */
+    where?: WyrParticipationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WyrParticipations to fetch.
+     */
+    orderBy?: WyrParticipationOrderByWithRelationInput | WyrParticipationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WyrParticipationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WyrParticipations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WyrParticipations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned WyrParticipations
+    **/
+    _count?: true | WyrParticipationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: WyrParticipationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WyrParticipationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WyrParticipationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WyrParticipationMaxAggregateInputType
+  }
+
+  export type GetWyrParticipationAggregateType<T extends WyrParticipationAggregateArgs> = {
+        [P in keyof T & keyof AggregateWyrParticipation]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWyrParticipation[P]>
+      : GetScalarType<T[P], AggregateWyrParticipation[P]>
+  }
+
+
+
+
+  export type WyrParticipationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WyrParticipationWhereInput
+    orderBy?: WyrParticipationOrderByWithAggregationInput | WyrParticipationOrderByWithAggregationInput[]
+    by: WyrParticipationScalarFieldEnum[] | WyrParticipationScalarFieldEnum
+    having?: WyrParticipationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WyrParticipationCountAggregateInputType | true
+    _avg?: WyrParticipationAvgAggregateInputType
+    _sum?: WyrParticipationSumAggregateInputType
+    _min?: WyrParticipationMinAggregateInputType
+    _max?: WyrParticipationMaxAggregateInputType
+  }
+
+  export type WyrParticipationGroupByOutputType = {
+    id: string
+    wyrSessionId: string
+    userId: string
+    choice: number
+    createdAt: Date
+    _count: WyrParticipationCountAggregateOutputType | null
+    _avg: WyrParticipationAvgAggregateOutputType | null
+    _sum: WyrParticipationSumAggregateOutputType | null
+    _min: WyrParticipationMinAggregateOutputType | null
+    _max: WyrParticipationMaxAggregateOutputType | null
+  }
+
+  type GetWyrParticipationGroupByPayload<T extends WyrParticipationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WyrParticipationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WyrParticipationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WyrParticipationGroupByOutputType[P]>
+            : GetScalarType<T[P], WyrParticipationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WyrParticipationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    wyrSessionId?: boolean
+    userId?: boolean
+    choice?: boolean
+    createdAt?: boolean
+    wyrSession?: boolean | WyrSessionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["wyrParticipation"]>
+
+  export type WyrParticipationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    wyrSessionId?: boolean
+    userId?: boolean
+    choice?: boolean
+    createdAt?: boolean
+    wyrSession?: boolean | WyrSessionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["wyrParticipation"]>
+
+  export type WyrParticipationSelectScalar = {
+    id?: boolean
+    wyrSessionId?: boolean
+    userId?: boolean
+    choice?: boolean
+    createdAt?: boolean
+  }
+
+  export type WyrParticipationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    wyrSession?: boolean | WyrSessionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type WyrParticipationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    wyrSession?: boolean | WyrSessionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $WyrParticipationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "WyrParticipation"
+    objects: {
+      wyrSession: Prisma.$WyrSessionPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      wyrSessionId: string
+      userId: string
+      choice: number
+      createdAt: Date
+    }, ExtArgs["result"]["wyrParticipation"]>
+    composites: {}
+  }
+
+  type WyrParticipationGetPayload<S extends boolean | null | undefined | WyrParticipationDefaultArgs> = $Result.GetResult<Prisma.$WyrParticipationPayload, S>
+
+  type WyrParticipationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<WyrParticipationFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: WyrParticipationCountAggregateInputType | true
+    }
+
+  export interface WyrParticipationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WyrParticipation'], meta: { name: 'WyrParticipation' } }
+    /**
+     * Find zero or one WyrParticipation that matches the filter.
+     * @param {WyrParticipationFindUniqueArgs} args - Arguments to find a WyrParticipation
+     * @example
+     * // Get one WyrParticipation
+     * const wyrParticipation = await prisma.wyrParticipation.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends WyrParticipationFindUniqueArgs>(args: SelectSubset<T, WyrParticipationFindUniqueArgs<ExtArgs>>): Prisma__WyrParticipationClient<$Result.GetResult<Prisma.$WyrParticipationPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one WyrParticipation that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {WyrParticipationFindUniqueOrThrowArgs} args - Arguments to find a WyrParticipation
+     * @example
+     * // Get one WyrParticipation
+     * const wyrParticipation = await prisma.wyrParticipation.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends WyrParticipationFindUniqueOrThrowArgs>(args: SelectSubset<T, WyrParticipationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WyrParticipationClient<$Result.GetResult<Prisma.$WyrParticipationPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first WyrParticipation that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WyrParticipationFindFirstArgs} args - Arguments to find a WyrParticipation
+     * @example
+     * // Get one WyrParticipation
+     * const wyrParticipation = await prisma.wyrParticipation.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends WyrParticipationFindFirstArgs>(args?: SelectSubset<T, WyrParticipationFindFirstArgs<ExtArgs>>): Prisma__WyrParticipationClient<$Result.GetResult<Prisma.$WyrParticipationPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first WyrParticipation that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WyrParticipationFindFirstOrThrowArgs} args - Arguments to find a WyrParticipation
+     * @example
+     * // Get one WyrParticipation
+     * const wyrParticipation = await prisma.wyrParticipation.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends WyrParticipationFindFirstOrThrowArgs>(args?: SelectSubset<T, WyrParticipationFindFirstOrThrowArgs<ExtArgs>>): Prisma__WyrParticipationClient<$Result.GetResult<Prisma.$WyrParticipationPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more WyrParticipations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WyrParticipationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all WyrParticipations
+     * const wyrParticipations = await prisma.wyrParticipation.findMany()
+     * 
+     * // Get first 10 WyrParticipations
+     * const wyrParticipations = await prisma.wyrParticipation.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const wyrParticipationWithIdOnly = await prisma.wyrParticipation.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends WyrParticipationFindManyArgs>(args?: SelectSubset<T, WyrParticipationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WyrParticipationPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a WyrParticipation.
+     * @param {WyrParticipationCreateArgs} args - Arguments to create a WyrParticipation.
+     * @example
+     * // Create one WyrParticipation
+     * const WyrParticipation = await prisma.wyrParticipation.create({
+     *   data: {
+     *     // ... data to create a WyrParticipation
+     *   }
+     * })
+     * 
+     */
+    create<T extends WyrParticipationCreateArgs>(args: SelectSubset<T, WyrParticipationCreateArgs<ExtArgs>>): Prisma__WyrParticipationClient<$Result.GetResult<Prisma.$WyrParticipationPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many WyrParticipations.
+     * @param {WyrParticipationCreateManyArgs} args - Arguments to create many WyrParticipations.
+     * @example
+     * // Create many WyrParticipations
+     * const wyrParticipation = await prisma.wyrParticipation.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends WyrParticipationCreateManyArgs>(args?: SelectSubset<T, WyrParticipationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many WyrParticipations and returns the data saved in the database.
+     * @param {WyrParticipationCreateManyAndReturnArgs} args - Arguments to create many WyrParticipations.
+     * @example
+     * // Create many WyrParticipations
+     * const wyrParticipation = await prisma.wyrParticipation.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many WyrParticipations and only return the `id`
+     * const wyrParticipationWithIdOnly = await prisma.wyrParticipation.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends WyrParticipationCreateManyAndReturnArgs>(args?: SelectSubset<T, WyrParticipationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WyrParticipationPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a WyrParticipation.
+     * @param {WyrParticipationDeleteArgs} args - Arguments to delete one WyrParticipation.
+     * @example
+     * // Delete one WyrParticipation
+     * const WyrParticipation = await prisma.wyrParticipation.delete({
+     *   where: {
+     *     // ... filter to delete one WyrParticipation
+     *   }
+     * })
+     * 
+     */
+    delete<T extends WyrParticipationDeleteArgs>(args: SelectSubset<T, WyrParticipationDeleteArgs<ExtArgs>>): Prisma__WyrParticipationClient<$Result.GetResult<Prisma.$WyrParticipationPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one WyrParticipation.
+     * @param {WyrParticipationUpdateArgs} args - Arguments to update one WyrParticipation.
+     * @example
+     * // Update one WyrParticipation
+     * const wyrParticipation = await prisma.wyrParticipation.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends WyrParticipationUpdateArgs>(args: SelectSubset<T, WyrParticipationUpdateArgs<ExtArgs>>): Prisma__WyrParticipationClient<$Result.GetResult<Prisma.$WyrParticipationPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more WyrParticipations.
+     * @param {WyrParticipationDeleteManyArgs} args - Arguments to filter WyrParticipations to delete.
+     * @example
+     * // Delete a few WyrParticipations
+     * const { count } = await prisma.wyrParticipation.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends WyrParticipationDeleteManyArgs>(args?: SelectSubset<T, WyrParticipationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WyrParticipations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WyrParticipationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many WyrParticipations
+     * const wyrParticipation = await prisma.wyrParticipation.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends WyrParticipationUpdateManyArgs>(args: SelectSubset<T, WyrParticipationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one WyrParticipation.
+     * @param {WyrParticipationUpsertArgs} args - Arguments to update or create a WyrParticipation.
+     * @example
+     * // Update or create a WyrParticipation
+     * const wyrParticipation = await prisma.wyrParticipation.upsert({
+     *   create: {
+     *     // ... data to create a WyrParticipation
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the WyrParticipation we want to update
+     *   }
+     * })
+     */
+    upsert<T extends WyrParticipationUpsertArgs>(args: SelectSubset<T, WyrParticipationUpsertArgs<ExtArgs>>): Prisma__WyrParticipationClient<$Result.GetResult<Prisma.$WyrParticipationPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of WyrParticipations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WyrParticipationCountArgs} args - Arguments to filter WyrParticipations to count.
+     * @example
+     * // Count the number of WyrParticipations
+     * const count = await prisma.wyrParticipation.count({
+     *   where: {
+     *     // ... the filter for the WyrParticipations we want to count
+     *   }
+     * })
+    **/
+    count<T extends WyrParticipationCountArgs>(
+      args?: Subset<T, WyrParticipationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WyrParticipationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a WyrParticipation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WyrParticipationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WyrParticipationAggregateArgs>(args: Subset<T, WyrParticipationAggregateArgs>): Prisma.PrismaPromise<GetWyrParticipationAggregateType<T>>
+
+    /**
+     * Group by WyrParticipation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WyrParticipationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WyrParticipationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WyrParticipationGroupByArgs['orderBy'] }
+        : { orderBy?: WyrParticipationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WyrParticipationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWyrParticipationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the WyrParticipation model
+   */
+  readonly fields: WyrParticipationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for WyrParticipation.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__WyrParticipationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    wyrSession<T extends WyrSessionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WyrSessionDefaultArgs<ExtArgs>>): Prisma__WyrSessionClient<$Result.GetResult<Prisma.$WyrSessionPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the WyrParticipation model
+   */ 
+  interface WyrParticipationFieldRefs {
+    readonly id: FieldRef<"WyrParticipation", 'String'>
+    readonly wyrSessionId: FieldRef<"WyrParticipation", 'String'>
+    readonly userId: FieldRef<"WyrParticipation", 'String'>
+    readonly choice: FieldRef<"WyrParticipation", 'Int'>
+    readonly createdAt: FieldRef<"WyrParticipation", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * WyrParticipation findUnique
+   */
+  export type WyrParticipationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrParticipation
+     */
+    select?: WyrParticipationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrParticipationInclude<ExtArgs> | null
+    /**
+     * Filter, which WyrParticipation to fetch.
+     */
+    where: WyrParticipationWhereUniqueInput
+  }
+
+  /**
+   * WyrParticipation findUniqueOrThrow
+   */
+  export type WyrParticipationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrParticipation
+     */
+    select?: WyrParticipationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrParticipationInclude<ExtArgs> | null
+    /**
+     * Filter, which WyrParticipation to fetch.
+     */
+    where: WyrParticipationWhereUniqueInput
+  }
+
+  /**
+   * WyrParticipation findFirst
+   */
+  export type WyrParticipationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrParticipation
+     */
+    select?: WyrParticipationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrParticipationInclude<ExtArgs> | null
+    /**
+     * Filter, which WyrParticipation to fetch.
+     */
+    where?: WyrParticipationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WyrParticipations to fetch.
+     */
+    orderBy?: WyrParticipationOrderByWithRelationInput | WyrParticipationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WyrParticipations.
+     */
+    cursor?: WyrParticipationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WyrParticipations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WyrParticipations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WyrParticipations.
+     */
+    distinct?: WyrParticipationScalarFieldEnum | WyrParticipationScalarFieldEnum[]
+  }
+
+  /**
+   * WyrParticipation findFirstOrThrow
+   */
+  export type WyrParticipationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrParticipation
+     */
+    select?: WyrParticipationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrParticipationInclude<ExtArgs> | null
+    /**
+     * Filter, which WyrParticipation to fetch.
+     */
+    where?: WyrParticipationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WyrParticipations to fetch.
+     */
+    orderBy?: WyrParticipationOrderByWithRelationInput | WyrParticipationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WyrParticipations.
+     */
+    cursor?: WyrParticipationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WyrParticipations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WyrParticipations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WyrParticipations.
+     */
+    distinct?: WyrParticipationScalarFieldEnum | WyrParticipationScalarFieldEnum[]
+  }
+
+  /**
+   * WyrParticipation findMany
+   */
+  export type WyrParticipationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrParticipation
+     */
+    select?: WyrParticipationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrParticipationInclude<ExtArgs> | null
+    /**
+     * Filter, which WyrParticipations to fetch.
+     */
+    where?: WyrParticipationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WyrParticipations to fetch.
+     */
+    orderBy?: WyrParticipationOrderByWithRelationInput | WyrParticipationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing WyrParticipations.
+     */
+    cursor?: WyrParticipationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WyrParticipations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WyrParticipations.
+     */
+    skip?: number
+    distinct?: WyrParticipationScalarFieldEnum | WyrParticipationScalarFieldEnum[]
+  }
+
+  /**
+   * WyrParticipation create
+   */
+  export type WyrParticipationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrParticipation
+     */
+    select?: WyrParticipationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrParticipationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a WyrParticipation.
+     */
+    data: XOR<WyrParticipationCreateInput, WyrParticipationUncheckedCreateInput>
+  }
+
+  /**
+   * WyrParticipation createMany
+   */
+  export type WyrParticipationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many WyrParticipations.
+     */
+    data: WyrParticipationCreateManyInput | WyrParticipationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * WyrParticipation createManyAndReturn
+   */
+  export type WyrParticipationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrParticipation
+     */
+    select?: WyrParticipationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many WyrParticipations.
+     */
+    data: WyrParticipationCreateManyInput | WyrParticipationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrParticipationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * WyrParticipation update
+   */
+  export type WyrParticipationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrParticipation
+     */
+    select?: WyrParticipationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrParticipationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a WyrParticipation.
+     */
+    data: XOR<WyrParticipationUpdateInput, WyrParticipationUncheckedUpdateInput>
+    /**
+     * Choose, which WyrParticipation to update.
+     */
+    where: WyrParticipationWhereUniqueInput
+  }
+
+  /**
+   * WyrParticipation updateMany
+   */
+  export type WyrParticipationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update WyrParticipations.
+     */
+    data: XOR<WyrParticipationUpdateManyMutationInput, WyrParticipationUncheckedUpdateManyInput>
+    /**
+     * Filter which WyrParticipations to update
+     */
+    where?: WyrParticipationWhereInput
+  }
+
+  /**
+   * WyrParticipation upsert
+   */
+  export type WyrParticipationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrParticipation
+     */
+    select?: WyrParticipationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrParticipationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the WyrParticipation to update in case it exists.
+     */
+    where: WyrParticipationWhereUniqueInput
+    /**
+     * In case the WyrParticipation found by the `where` argument doesn't exist, create a new WyrParticipation with this data.
+     */
+    create: XOR<WyrParticipationCreateInput, WyrParticipationUncheckedCreateInput>
+    /**
+     * In case the WyrParticipation was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WyrParticipationUpdateInput, WyrParticipationUncheckedUpdateInput>
+  }
+
+  /**
+   * WyrParticipation delete
+   */
+  export type WyrParticipationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrParticipation
+     */
+    select?: WyrParticipationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrParticipationInclude<ExtArgs> | null
+    /**
+     * Filter which WyrParticipation to delete.
+     */
+    where: WyrParticipationWhereUniqueInput
+  }
+
+  /**
+   * WyrParticipation deleteMany
+   */
+  export type WyrParticipationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WyrParticipations to delete
+     */
+    where?: WyrParticipationWhereInput
+  }
+
+  /**
+   * WyrParticipation without action
+   */
+  export type WyrParticipationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WyrParticipation
+     */
+    select?: WyrParticipationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WyrParticipationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PartnerSpotlight
+   */
+
+  export type AggregatePartnerSpotlight = {
+    _count: PartnerSpotlightCountAggregateOutputType | null
+    _min: PartnerSpotlightMinAggregateOutputType | null
+    _max: PartnerSpotlightMaxAggregateOutputType | null
+  }
+
+  export type PartnerSpotlightMinAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    fromUserId: string | null
+    toUserId: string | null
+    monthKey: string | null
+    createdAt: Date | null
+  }
+
+  export type PartnerSpotlightMaxAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    fromUserId: string | null
+    toUserId: string | null
+    monthKey: string | null
+    createdAt: Date | null
+  }
+
+  export type PartnerSpotlightCountAggregateOutputType = {
+    id: number
+    relationshipId: number
+    fromUserId: number
+    toUserId: number
+    items: number
+    monthKey: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PartnerSpotlightMinAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    fromUserId?: true
+    toUserId?: true
+    monthKey?: true
+    createdAt?: true
+  }
+
+  export type PartnerSpotlightMaxAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    fromUserId?: true
+    toUserId?: true
+    monthKey?: true
+    createdAt?: true
+  }
+
+  export type PartnerSpotlightCountAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    fromUserId?: true
+    toUserId?: true
+    items?: true
+    monthKey?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PartnerSpotlightAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PartnerSpotlight to aggregate.
+     */
+    where?: PartnerSpotlightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PartnerSpotlights to fetch.
+     */
+    orderBy?: PartnerSpotlightOrderByWithRelationInput | PartnerSpotlightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PartnerSpotlightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PartnerSpotlights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PartnerSpotlights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PartnerSpotlights
+    **/
+    _count?: true | PartnerSpotlightCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PartnerSpotlightMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PartnerSpotlightMaxAggregateInputType
+  }
+
+  export type GetPartnerSpotlightAggregateType<T extends PartnerSpotlightAggregateArgs> = {
+        [P in keyof T & keyof AggregatePartnerSpotlight]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePartnerSpotlight[P]>
+      : GetScalarType<T[P], AggregatePartnerSpotlight[P]>
+  }
+
+
+
+
+  export type PartnerSpotlightGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PartnerSpotlightWhereInput
+    orderBy?: PartnerSpotlightOrderByWithAggregationInput | PartnerSpotlightOrderByWithAggregationInput[]
+    by: PartnerSpotlightScalarFieldEnum[] | PartnerSpotlightScalarFieldEnum
+    having?: PartnerSpotlightScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PartnerSpotlightCountAggregateInputType | true
+    _min?: PartnerSpotlightMinAggregateInputType
+    _max?: PartnerSpotlightMaxAggregateInputType
+  }
+
+  export type PartnerSpotlightGroupByOutputType = {
+    id: string
+    relationshipId: string
+    fromUserId: string
+    toUserId: string
+    items: JsonValue
+    monthKey: string
+    createdAt: Date
+    _count: PartnerSpotlightCountAggregateOutputType | null
+    _min: PartnerSpotlightMinAggregateOutputType | null
+    _max: PartnerSpotlightMaxAggregateOutputType | null
+  }
+
+  type GetPartnerSpotlightGroupByPayload<T extends PartnerSpotlightGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PartnerSpotlightGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PartnerSpotlightGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PartnerSpotlightGroupByOutputType[P]>
+            : GetScalarType<T[P], PartnerSpotlightGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PartnerSpotlightSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    fromUserId?: boolean
+    toUserId?: boolean
+    items?: boolean
+    monthKey?: boolean
+    createdAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    fromUser?: boolean | UserDefaultArgs<ExtArgs>
+    toUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["partnerSpotlight"]>
+
+  export type PartnerSpotlightSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    fromUserId?: boolean
+    toUserId?: boolean
+    items?: boolean
+    monthKey?: boolean
+    createdAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    fromUser?: boolean | UserDefaultArgs<ExtArgs>
+    toUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["partnerSpotlight"]>
+
+  export type PartnerSpotlightSelectScalar = {
+    id?: boolean
+    relationshipId?: boolean
+    fromUserId?: boolean
+    toUserId?: boolean
+    items?: boolean
+    monthKey?: boolean
+    createdAt?: boolean
+  }
+
+  export type PartnerSpotlightInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    fromUser?: boolean | UserDefaultArgs<ExtArgs>
+    toUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PartnerSpotlightIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    fromUser?: boolean | UserDefaultArgs<ExtArgs>
+    toUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PartnerSpotlightPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PartnerSpotlight"
+    objects: {
+      relationship: Prisma.$RelationshipPayload<ExtArgs>
+      fromUser: Prisma.$UserPayload<ExtArgs>
+      toUser: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      relationshipId: string
+      fromUserId: string
+      toUserId: string
+      items: Prisma.JsonValue
+      monthKey: string
+      createdAt: Date
+    }, ExtArgs["result"]["partnerSpotlight"]>
+    composites: {}
+  }
+
+  type PartnerSpotlightGetPayload<S extends boolean | null | undefined | PartnerSpotlightDefaultArgs> = $Result.GetResult<Prisma.$PartnerSpotlightPayload, S>
+
+  type PartnerSpotlightCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<PartnerSpotlightFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: PartnerSpotlightCountAggregateInputType | true
+    }
+
+  export interface PartnerSpotlightDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PartnerSpotlight'], meta: { name: 'PartnerSpotlight' } }
+    /**
+     * Find zero or one PartnerSpotlight that matches the filter.
+     * @param {PartnerSpotlightFindUniqueArgs} args - Arguments to find a PartnerSpotlight
+     * @example
+     * // Get one PartnerSpotlight
+     * const partnerSpotlight = await prisma.partnerSpotlight.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PartnerSpotlightFindUniqueArgs>(args: SelectSubset<T, PartnerSpotlightFindUniqueArgs<ExtArgs>>): Prisma__PartnerSpotlightClient<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one PartnerSpotlight that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {PartnerSpotlightFindUniqueOrThrowArgs} args - Arguments to find a PartnerSpotlight
+     * @example
+     * // Get one PartnerSpotlight
+     * const partnerSpotlight = await prisma.partnerSpotlight.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PartnerSpotlightFindUniqueOrThrowArgs>(args: SelectSubset<T, PartnerSpotlightFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PartnerSpotlightClient<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first PartnerSpotlight that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PartnerSpotlightFindFirstArgs} args - Arguments to find a PartnerSpotlight
+     * @example
+     * // Get one PartnerSpotlight
+     * const partnerSpotlight = await prisma.partnerSpotlight.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PartnerSpotlightFindFirstArgs>(args?: SelectSubset<T, PartnerSpotlightFindFirstArgs<ExtArgs>>): Prisma__PartnerSpotlightClient<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first PartnerSpotlight that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PartnerSpotlightFindFirstOrThrowArgs} args - Arguments to find a PartnerSpotlight
+     * @example
+     * // Get one PartnerSpotlight
+     * const partnerSpotlight = await prisma.partnerSpotlight.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PartnerSpotlightFindFirstOrThrowArgs>(args?: SelectSubset<T, PartnerSpotlightFindFirstOrThrowArgs<ExtArgs>>): Prisma__PartnerSpotlightClient<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more PartnerSpotlights that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PartnerSpotlightFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PartnerSpotlights
+     * const partnerSpotlights = await prisma.partnerSpotlight.findMany()
+     * 
+     * // Get first 10 PartnerSpotlights
+     * const partnerSpotlights = await prisma.partnerSpotlight.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const partnerSpotlightWithIdOnly = await prisma.partnerSpotlight.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PartnerSpotlightFindManyArgs>(args?: SelectSubset<T, PartnerSpotlightFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a PartnerSpotlight.
+     * @param {PartnerSpotlightCreateArgs} args - Arguments to create a PartnerSpotlight.
+     * @example
+     * // Create one PartnerSpotlight
+     * const PartnerSpotlight = await prisma.partnerSpotlight.create({
+     *   data: {
+     *     // ... data to create a PartnerSpotlight
+     *   }
+     * })
+     * 
+     */
+    create<T extends PartnerSpotlightCreateArgs>(args: SelectSubset<T, PartnerSpotlightCreateArgs<ExtArgs>>): Prisma__PartnerSpotlightClient<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many PartnerSpotlights.
+     * @param {PartnerSpotlightCreateManyArgs} args - Arguments to create many PartnerSpotlights.
+     * @example
+     * // Create many PartnerSpotlights
+     * const partnerSpotlight = await prisma.partnerSpotlight.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PartnerSpotlightCreateManyArgs>(args?: SelectSubset<T, PartnerSpotlightCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PartnerSpotlights and returns the data saved in the database.
+     * @param {PartnerSpotlightCreateManyAndReturnArgs} args - Arguments to create many PartnerSpotlights.
+     * @example
+     * // Create many PartnerSpotlights
+     * const partnerSpotlight = await prisma.partnerSpotlight.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PartnerSpotlights and only return the `id`
+     * const partnerSpotlightWithIdOnly = await prisma.partnerSpotlight.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PartnerSpotlightCreateManyAndReturnArgs>(args?: SelectSubset<T, PartnerSpotlightCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a PartnerSpotlight.
+     * @param {PartnerSpotlightDeleteArgs} args - Arguments to delete one PartnerSpotlight.
+     * @example
+     * // Delete one PartnerSpotlight
+     * const PartnerSpotlight = await prisma.partnerSpotlight.delete({
+     *   where: {
+     *     // ... filter to delete one PartnerSpotlight
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PartnerSpotlightDeleteArgs>(args: SelectSubset<T, PartnerSpotlightDeleteArgs<ExtArgs>>): Prisma__PartnerSpotlightClient<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one PartnerSpotlight.
+     * @param {PartnerSpotlightUpdateArgs} args - Arguments to update one PartnerSpotlight.
+     * @example
+     * // Update one PartnerSpotlight
+     * const partnerSpotlight = await prisma.partnerSpotlight.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PartnerSpotlightUpdateArgs>(args: SelectSubset<T, PartnerSpotlightUpdateArgs<ExtArgs>>): Prisma__PartnerSpotlightClient<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more PartnerSpotlights.
+     * @param {PartnerSpotlightDeleteManyArgs} args - Arguments to filter PartnerSpotlights to delete.
+     * @example
+     * // Delete a few PartnerSpotlights
+     * const { count } = await prisma.partnerSpotlight.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PartnerSpotlightDeleteManyArgs>(args?: SelectSubset<T, PartnerSpotlightDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PartnerSpotlights.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PartnerSpotlightUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PartnerSpotlights
+     * const partnerSpotlight = await prisma.partnerSpotlight.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PartnerSpotlightUpdateManyArgs>(args: SelectSubset<T, PartnerSpotlightUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PartnerSpotlight.
+     * @param {PartnerSpotlightUpsertArgs} args - Arguments to update or create a PartnerSpotlight.
+     * @example
+     * // Update or create a PartnerSpotlight
+     * const partnerSpotlight = await prisma.partnerSpotlight.upsert({
+     *   create: {
+     *     // ... data to create a PartnerSpotlight
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PartnerSpotlight we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PartnerSpotlightUpsertArgs>(args: SelectSubset<T, PartnerSpotlightUpsertArgs<ExtArgs>>): Prisma__PartnerSpotlightClient<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of PartnerSpotlights.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PartnerSpotlightCountArgs} args - Arguments to filter PartnerSpotlights to count.
+     * @example
+     * // Count the number of PartnerSpotlights
+     * const count = await prisma.partnerSpotlight.count({
+     *   where: {
+     *     // ... the filter for the PartnerSpotlights we want to count
+     *   }
+     * })
+    **/
+    count<T extends PartnerSpotlightCountArgs>(
+      args?: Subset<T, PartnerSpotlightCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PartnerSpotlightCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PartnerSpotlight.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PartnerSpotlightAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PartnerSpotlightAggregateArgs>(args: Subset<T, PartnerSpotlightAggregateArgs>): Prisma.PrismaPromise<GetPartnerSpotlightAggregateType<T>>
+
+    /**
+     * Group by PartnerSpotlight.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PartnerSpotlightGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PartnerSpotlightGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PartnerSpotlightGroupByArgs['orderBy'] }
+        : { orderBy?: PartnerSpotlightGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PartnerSpotlightGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPartnerSpotlightGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PartnerSpotlight model
+   */
+  readonly fields: PartnerSpotlightFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PartnerSpotlight.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PartnerSpotlightClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    relationship<T extends RelationshipDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RelationshipDefaultArgs<ExtArgs>>): Prisma__RelationshipClient<$Result.GetResult<Prisma.$RelationshipPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    fromUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    toUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PartnerSpotlight model
+   */ 
+  interface PartnerSpotlightFieldRefs {
+    readonly id: FieldRef<"PartnerSpotlight", 'String'>
+    readonly relationshipId: FieldRef<"PartnerSpotlight", 'String'>
+    readonly fromUserId: FieldRef<"PartnerSpotlight", 'String'>
+    readonly toUserId: FieldRef<"PartnerSpotlight", 'String'>
+    readonly items: FieldRef<"PartnerSpotlight", 'Json'>
+    readonly monthKey: FieldRef<"PartnerSpotlight", 'String'>
+    readonly createdAt: FieldRef<"PartnerSpotlight", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PartnerSpotlight findUnique
+   */
+  export type PartnerSpotlightFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PartnerSpotlight
+     */
+    select?: PartnerSpotlightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartnerSpotlightInclude<ExtArgs> | null
+    /**
+     * Filter, which PartnerSpotlight to fetch.
+     */
+    where: PartnerSpotlightWhereUniqueInput
+  }
+
+  /**
+   * PartnerSpotlight findUniqueOrThrow
+   */
+  export type PartnerSpotlightFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PartnerSpotlight
+     */
+    select?: PartnerSpotlightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartnerSpotlightInclude<ExtArgs> | null
+    /**
+     * Filter, which PartnerSpotlight to fetch.
+     */
+    where: PartnerSpotlightWhereUniqueInput
+  }
+
+  /**
+   * PartnerSpotlight findFirst
+   */
+  export type PartnerSpotlightFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PartnerSpotlight
+     */
+    select?: PartnerSpotlightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartnerSpotlightInclude<ExtArgs> | null
+    /**
+     * Filter, which PartnerSpotlight to fetch.
+     */
+    where?: PartnerSpotlightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PartnerSpotlights to fetch.
+     */
+    orderBy?: PartnerSpotlightOrderByWithRelationInput | PartnerSpotlightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PartnerSpotlights.
+     */
+    cursor?: PartnerSpotlightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PartnerSpotlights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PartnerSpotlights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PartnerSpotlights.
+     */
+    distinct?: PartnerSpotlightScalarFieldEnum | PartnerSpotlightScalarFieldEnum[]
+  }
+
+  /**
+   * PartnerSpotlight findFirstOrThrow
+   */
+  export type PartnerSpotlightFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PartnerSpotlight
+     */
+    select?: PartnerSpotlightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartnerSpotlightInclude<ExtArgs> | null
+    /**
+     * Filter, which PartnerSpotlight to fetch.
+     */
+    where?: PartnerSpotlightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PartnerSpotlights to fetch.
+     */
+    orderBy?: PartnerSpotlightOrderByWithRelationInput | PartnerSpotlightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PartnerSpotlights.
+     */
+    cursor?: PartnerSpotlightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PartnerSpotlights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PartnerSpotlights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PartnerSpotlights.
+     */
+    distinct?: PartnerSpotlightScalarFieldEnum | PartnerSpotlightScalarFieldEnum[]
+  }
+
+  /**
+   * PartnerSpotlight findMany
+   */
+  export type PartnerSpotlightFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PartnerSpotlight
+     */
+    select?: PartnerSpotlightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartnerSpotlightInclude<ExtArgs> | null
+    /**
+     * Filter, which PartnerSpotlights to fetch.
+     */
+    where?: PartnerSpotlightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PartnerSpotlights to fetch.
+     */
+    orderBy?: PartnerSpotlightOrderByWithRelationInput | PartnerSpotlightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PartnerSpotlights.
+     */
+    cursor?: PartnerSpotlightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PartnerSpotlights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PartnerSpotlights.
+     */
+    skip?: number
+    distinct?: PartnerSpotlightScalarFieldEnum | PartnerSpotlightScalarFieldEnum[]
+  }
+
+  /**
+   * PartnerSpotlight create
+   */
+  export type PartnerSpotlightCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PartnerSpotlight
+     */
+    select?: PartnerSpotlightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartnerSpotlightInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PartnerSpotlight.
+     */
+    data: XOR<PartnerSpotlightCreateInput, PartnerSpotlightUncheckedCreateInput>
+  }
+
+  /**
+   * PartnerSpotlight createMany
+   */
+  export type PartnerSpotlightCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PartnerSpotlights.
+     */
+    data: PartnerSpotlightCreateManyInput | PartnerSpotlightCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PartnerSpotlight createManyAndReturn
+   */
+  export type PartnerSpotlightCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PartnerSpotlight
+     */
+    select?: PartnerSpotlightSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many PartnerSpotlights.
+     */
+    data: PartnerSpotlightCreateManyInput | PartnerSpotlightCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartnerSpotlightIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PartnerSpotlight update
+   */
+  export type PartnerSpotlightUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PartnerSpotlight
+     */
+    select?: PartnerSpotlightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartnerSpotlightInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PartnerSpotlight.
+     */
+    data: XOR<PartnerSpotlightUpdateInput, PartnerSpotlightUncheckedUpdateInput>
+    /**
+     * Choose, which PartnerSpotlight to update.
+     */
+    where: PartnerSpotlightWhereUniqueInput
+  }
+
+  /**
+   * PartnerSpotlight updateMany
+   */
+  export type PartnerSpotlightUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PartnerSpotlights.
+     */
+    data: XOR<PartnerSpotlightUpdateManyMutationInput, PartnerSpotlightUncheckedUpdateManyInput>
+    /**
+     * Filter which PartnerSpotlights to update
+     */
+    where?: PartnerSpotlightWhereInput
+  }
+
+  /**
+   * PartnerSpotlight upsert
+   */
+  export type PartnerSpotlightUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PartnerSpotlight
+     */
+    select?: PartnerSpotlightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartnerSpotlightInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PartnerSpotlight to update in case it exists.
+     */
+    where: PartnerSpotlightWhereUniqueInput
+    /**
+     * In case the PartnerSpotlight found by the `where` argument doesn't exist, create a new PartnerSpotlight with this data.
+     */
+    create: XOR<PartnerSpotlightCreateInput, PartnerSpotlightUncheckedCreateInput>
+    /**
+     * In case the PartnerSpotlight was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PartnerSpotlightUpdateInput, PartnerSpotlightUncheckedUpdateInput>
+  }
+
+  /**
+   * PartnerSpotlight delete
+   */
+  export type PartnerSpotlightDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PartnerSpotlight
+     */
+    select?: PartnerSpotlightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartnerSpotlightInclude<ExtArgs> | null
+    /**
+     * Filter which PartnerSpotlight to delete.
+     */
+    where: PartnerSpotlightWhereUniqueInput
+  }
+
+  /**
+   * PartnerSpotlight deleteMany
+   */
+  export type PartnerSpotlightDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PartnerSpotlights to delete
+     */
+    where?: PartnerSpotlightWhereInput
+  }
+
+  /**
+   * PartnerSpotlight without action
+   */
+  export type PartnerSpotlightDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PartnerSpotlight
+     */
+    select?: PartnerSpotlightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PartnerSpotlightInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DateNightDare
+   */
+
+  export type AggregateDateNightDare = {
+    _count: DateNightDareCountAggregateOutputType | null
+    _avg: DateNightDareAvgAggregateOutputType | null
+    _sum: DateNightDareSumAggregateOutputType | null
+    _min: DateNightDareMinAggregateOutputType | null
+    _max: DateNightDareMaxAggregateOutputType | null
+  }
+
+  export type DateNightDareAvgAggregateOutputType = {
+    dareIndex: number | null
+  }
+
+  export type DateNightDareSumAggregateOutputType = {
+    dareIndex: number | null
+  }
+
+  export type DateNightDareMinAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    weekKey: string | null
+    dareIndex: number | null
+    acceptedAt: Date | null
+    completedAt: Date | null
+    photoUrl: string | null
+    createdAt: Date | null
+  }
+
+  export type DateNightDareMaxAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    weekKey: string | null
+    dareIndex: number | null
+    acceptedAt: Date | null
+    completedAt: Date | null
+    photoUrl: string | null
+    createdAt: Date | null
+  }
+
+  export type DateNightDareCountAggregateOutputType = {
+    id: number
+    relationshipId: number
+    weekKey: number
+    dareIndex: number
+    acceptedAt: number
+    completedAt: number
+    photoUrl: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type DateNightDareAvgAggregateInputType = {
+    dareIndex?: true
+  }
+
+  export type DateNightDareSumAggregateInputType = {
+    dareIndex?: true
+  }
+
+  export type DateNightDareMinAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    weekKey?: true
+    dareIndex?: true
+    acceptedAt?: true
+    completedAt?: true
+    photoUrl?: true
+    createdAt?: true
+  }
+
+  export type DateNightDareMaxAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    weekKey?: true
+    dareIndex?: true
+    acceptedAt?: true
+    completedAt?: true
+    photoUrl?: true
+    createdAt?: true
+  }
+
+  export type DateNightDareCountAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    weekKey?: true
+    dareIndex?: true
+    acceptedAt?: true
+    completedAt?: true
+    photoUrl?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type DateNightDareAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DateNightDare to aggregate.
+     */
+    where?: DateNightDareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DateNightDares to fetch.
+     */
+    orderBy?: DateNightDareOrderByWithRelationInput | DateNightDareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DateNightDareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DateNightDares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DateNightDares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DateNightDares
+    **/
+    _count?: true | DateNightDareCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DateNightDareAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DateNightDareSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DateNightDareMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DateNightDareMaxAggregateInputType
+  }
+
+  export type GetDateNightDareAggregateType<T extends DateNightDareAggregateArgs> = {
+        [P in keyof T & keyof AggregateDateNightDare]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDateNightDare[P]>
+      : GetScalarType<T[P], AggregateDateNightDare[P]>
+  }
+
+
+
+
+  export type DateNightDareGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DateNightDareWhereInput
+    orderBy?: DateNightDareOrderByWithAggregationInput | DateNightDareOrderByWithAggregationInput[]
+    by: DateNightDareScalarFieldEnum[] | DateNightDareScalarFieldEnum
+    having?: DateNightDareScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DateNightDareCountAggregateInputType | true
+    _avg?: DateNightDareAvgAggregateInputType
+    _sum?: DateNightDareSumAggregateInputType
+    _min?: DateNightDareMinAggregateInputType
+    _max?: DateNightDareMaxAggregateInputType
+  }
+
+  export type DateNightDareGroupByOutputType = {
+    id: string
+    relationshipId: string
+    weekKey: string
+    dareIndex: number
+    acceptedAt: Date | null
+    completedAt: Date | null
+    photoUrl: string | null
+    createdAt: Date
+    _count: DateNightDareCountAggregateOutputType | null
+    _avg: DateNightDareAvgAggregateOutputType | null
+    _sum: DateNightDareSumAggregateOutputType | null
+    _min: DateNightDareMinAggregateOutputType | null
+    _max: DateNightDareMaxAggregateOutputType | null
+  }
+
+  type GetDateNightDareGroupByPayload<T extends DateNightDareGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DateNightDareGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DateNightDareGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DateNightDareGroupByOutputType[P]>
+            : GetScalarType<T[P], DateNightDareGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DateNightDareSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    weekKey?: boolean
+    dareIndex?: boolean
+    acceptedAt?: boolean
+    completedAt?: boolean
+    photoUrl?: boolean
+    createdAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dateNightDare"]>
+
+  export type DateNightDareSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    weekKey?: boolean
+    dareIndex?: boolean
+    acceptedAt?: boolean
+    completedAt?: boolean
+    photoUrl?: boolean
+    createdAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dateNightDare"]>
+
+  export type DateNightDareSelectScalar = {
+    id?: boolean
+    relationshipId?: boolean
+    weekKey?: boolean
+    dareIndex?: boolean
+    acceptedAt?: boolean
+    completedAt?: boolean
+    photoUrl?: boolean
+    createdAt?: boolean
+  }
+
+  export type DateNightDareInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+  }
+  export type DateNightDareIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+  }
+
+  export type $DateNightDarePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DateNightDare"
+    objects: {
+      relationship: Prisma.$RelationshipPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      relationshipId: string
+      weekKey: string
+      dareIndex: number
+      acceptedAt: Date | null
+      completedAt: Date | null
+      /**
+       * Optional photo (Vercel Blob URL) attached when the couple marked the dare complete.
+       */
+      photoUrl: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["dateNightDare"]>
+    composites: {}
+  }
+
+  type DateNightDareGetPayload<S extends boolean | null | undefined | DateNightDareDefaultArgs> = $Result.GetResult<Prisma.$DateNightDarePayload, S>
+
+  type DateNightDareCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<DateNightDareFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: DateNightDareCountAggregateInputType | true
+    }
+
+  export interface DateNightDareDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DateNightDare'], meta: { name: 'DateNightDare' } }
+    /**
+     * Find zero or one DateNightDare that matches the filter.
+     * @param {DateNightDareFindUniqueArgs} args - Arguments to find a DateNightDare
+     * @example
+     * // Get one DateNightDare
+     * const dateNightDare = await prisma.dateNightDare.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DateNightDareFindUniqueArgs>(args: SelectSubset<T, DateNightDareFindUniqueArgs<ExtArgs>>): Prisma__DateNightDareClient<$Result.GetResult<Prisma.$DateNightDarePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one DateNightDare that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {DateNightDareFindUniqueOrThrowArgs} args - Arguments to find a DateNightDare
+     * @example
+     * // Get one DateNightDare
+     * const dateNightDare = await prisma.dateNightDare.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DateNightDareFindUniqueOrThrowArgs>(args: SelectSubset<T, DateNightDareFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DateNightDareClient<$Result.GetResult<Prisma.$DateNightDarePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first DateNightDare that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DateNightDareFindFirstArgs} args - Arguments to find a DateNightDare
+     * @example
+     * // Get one DateNightDare
+     * const dateNightDare = await prisma.dateNightDare.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DateNightDareFindFirstArgs>(args?: SelectSubset<T, DateNightDareFindFirstArgs<ExtArgs>>): Prisma__DateNightDareClient<$Result.GetResult<Prisma.$DateNightDarePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first DateNightDare that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DateNightDareFindFirstOrThrowArgs} args - Arguments to find a DateNightDare
+     * @example
+     * // Get one DateNightDare
+     * const dateNightDare = await prisma.dateNightDare.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DateNightDareFindFirstOrThrowArgs>(args?: SelectSubset<T, DateNightDareFindFirstOrThrowArgs<ExtArgs>>): Prisma__DateNightDareClient<$Result.GetResult<Prisma.$DateNightDarePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more DateNightDares that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DateNightDareFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DateNightDares
+     * const dateNightDares = await prisma.dateNightDare.findMany()
+     * 
+     * // Get first 10 DateNightDares
+     * const dateNightDares = await prisma.dateNightDare.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dateNightDareWithIdOnly = await prisma.dateNightDare.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DateNightDareFindManyArgs>(args?: SelectSubset<T, DateNightDareFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DateNightDarePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a DateNightDare.
+     * @param {DateNightDareCreateArgs} args - Arguments to create a DateNightDare.
+     * @example
+     * // Create one DateNightDare
+     * const DateNightDare = await prisma.dateNightDare.create({
+     *   data: {
+     *     // ... data to create a DateNightDare
+     *   }
+     * })
+     * 
+     */
+    create<T extends DateNightDareCreateArgs>(args: SelectSubset<T, DateNightDareCreateArgs<ExtArgs>>): Prisma__DateNightDareClient<$Result.GetResult<Prisma.$DateNightDarePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many DateNightDares.
+     * @param {DateNightDareCreateManyArgs} args - Arguments to create many DateNightDares.
+     * @example
+     * // Create many DateNightDares
+     * const dateNightDare = await prisma.dateNightDare.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DateNightDareCreateManyArgs>(args?: SelectSubset<T, DateNightDareCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DateNightDares and returns the data saved in the database.
+     * @param {DateNightDareCreateManyAndReturnArgs} args - Arguments to create many DateNightDares.
+     * @example
+     * // Create many DateNightDares
+     * const dateNightDare = await prisma.dateNightDare.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DateNightDares and only return the `id`
+     * const dateNightDareWithIdOnly = await prisma.dateNightDare.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DateNightDareCreateManyAndReturnArgs>(args?: SelectSubset<T, DateNightDareCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DateNightDarePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a DateNightDare.
+     * @param {DateNightDareDeleteArgs} args - Arguments to delete one DateNightDare.
+     * @example
+     * // Delete one DateNightDare
+     * const DateNightDare = await prisma.dateNightDare.delete({
+     *   where: {
+     *     // ... filter to delete one DateNightDare
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DateNightDareDeleteArgs>(args: SelectSubset<T, DateNightDareDeleteArgs<ExtArgs>>): Prisma__DateNightDareClient<$Result.GetResult<Prisma.$DateNightDarePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one DateNightDare.
+     * @param {DateNightDareUpdateArgs} args - Arguments to update one DateNightDare.
+     * @example
+     * // Update one DateNightDare
+     * const dateNightDare = await prisma.dateNightDare.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DateNightDareUpdateArgs>(args: SelectSubset<T, DateNightDareUpdateArgs<ExtArgs>>): Prisma__DateNightDareClient<$Result.GetResult<Prisma.$DateNightDarePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more DateNightDares.
+     * @param {DateNightDareDeleteManyArgs} args - Arguments to filter DateNightDares to delete.
+     * @example
+     * // Delete a few DateNightDares
+     * const { count } = await prisma.dateNightDare.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DateNightDareDeleteManyArgs>(args?: SelectSubset<T, DateNightDareDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DateNightDares.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DateNightDareUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DateNightDares
+     * const dateNightDare = await prisma.dateNightDare.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DateNightDareUpdateManyArgs>(args: SelectSubset<T, DateNightDareUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one DateNightDare.
+     * @param {DateNightDareUpsertArgs} args - Arguments to update or create a DateNightDare.
+     * @example
+     * // Update or create a DateNightDare
+     * const dateNightDare = await prisma.dateNightDare.upsert({
+     *   create: {
+     *     // ... data to create a DateNightDare
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DateNightDare we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DateNightDareUpsertArgs>(args: SelectSubset<T, DateNightDareUpsertArgs<ExtArgs>>): Prisma__DateNightDareClient<$Result.GetResult<Prisma.$DateNightDarePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of DateNightDares.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DateNightDareCountArgs} args - Arguments to filter DateNightDares to count.
+     * @example
+     * // Count the number of DateNightDares
+     * const count = await prisma.dateNightDare.count({
+     *   where: {
+     *     // ... the filter for the DateNightDares we want to count
+     *   }
+     * })
+    **/
+    count<T extends DateNightDareCountArgs>(
+      args?: Subset<T, DateNightDareCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DateNightDareCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DateNightDare.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DateNightDareAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DateNightDareAggregateArgs>(args: Subset<T, DateNightDareAggregateArgs>): Prisma.PrismaPromise<GetDateNightDareAggregateType<T>>
+
+    /**
+     * Group by DateNightDare.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DateNightDareGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DateNightDareGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DateNightDareGroupByArgs['orderBy'] }
+        : { orderBy?: DateNightDareGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DateNightDareGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDateNightDareGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DateNightDare model
+   */
+  readonly fields: DateNightDareFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DateNightDare.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DateNightDareClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    relationship<T extends RelationshipDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RelationshipDefaultArgs<ExtArgs>>): Prisma__RelationshipClient<$Result.GetResult<Prisma.$RelationshipPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DateNightDare model
+   */ 
+  interface DateNightDareFieldRefs {
+    readonly id: FieldRef<"DateNightDare", 'String'>
+    readonly relationshipId: FieldRef<"DateNightDare", 'String'>
+    readonly weekKey: FieldRef<"DateNightDare", 'String'>
+    readonly dareIndex: FieldRef<"DateNightDare", 'Int'>
+    readonly acceptedAt: FieldRef<"DateNightDare", 'DateTime'>
+    readonly completedAt: FieldRef<"DateNightDare", 'DateTime'>
+    readonly photoUrl: FieldRef<"DateNightDare", 'String'>
+    readonly createdAt: FieldRef<"DateNightDare", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DateNightDare findUnique
+   */
+  export type DateNightDareFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DateNightDare
+     */
+    select?: DateNightDareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DateNightDareInclude<ExtArgs> | null
+    /**
+     * Filter, which DateNightDare to fetch.
+     */
+    where: DateNightDareWhereUniqueInput
+  }
+
+  /**
+   * DateNightDare findUniqueOrThrow
+   */
+  export type DateNightDareFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DateNightDare
+     */
+    select?: DateNightDareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DateNightDareInclude<ExtArgs> | null
+    /**
+     * Filter, which DateNightDare to fetch.
+     */
+    where: DateNightDareWhereUniqueInput
+  }
+
+  /**
+   * DateNightDare findFirst
+   */
+  export type DateNightDareFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DateNightDare
+     */
+    select?: DateNightDareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DateNightDareInclude<ExtArgs> | null
+    /**
+     * Filter, which DateNightDare to fetch.
+     */
+    where?: DateNightDareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DateNightDares to fetch.
+     */
+    orderBy?: DateNightDareOrderByWithRelationInput | DateNightDareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DateNightDares.
+     */
+    cursor?: DateNightDareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DateNightDares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DateNightDares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DateNightDares.
+     */
+    distinct?: DateNightDareScalarFieldEnum | DateNightDareScalarFieldEnum[]
+  }
+
+  /**
+   * DateNightDare findFirstOrThrow
+   */
+  export type DateNightDareFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DateNightDare
+     */
+    select?: DateNightDareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DateNightDareInclude<ExtArgs> | null
+    /**
+     * Filter, which DateNightDare to fetch.
+     */
+    where?: DateNightDareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DateNightDares to fetch.
+     */
+    orderBy?: DateNightDareOrderByWithRelationInput | DateNightDareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DateNightDares.
+     */
+    cursor?: DateNightDareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DateNightDares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DateNightDares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DateNightDares.
+     */
+    distinct?: DateNightDareScalarFieldEnum | DateNightDareScalarFieldEnum[]
+  }
+
+  /**
+   * DateNightDare findMany
+   */
+  export type DateNightDareFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DateNightDare
+     */
+    select?: DateNightDareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DateNightDareInclude<ExtArgs> | null
+    /**
+     * Filter, which DateNightDares to fetch.
+     */
+    where?: DateNightDareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DateNightDares to fetch.
+     */
+    orderBy?: DateNightDareOrderByWithRelationInput | DateNightDareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DateNightDares.
+     */
+    cursor?: DateNightDareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DateNightDares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DateNightDares.
+     */
+    skip?: number
+    distinct?: DateNightDareScalarFieldEnum | DateNightDareScalarFieldEnum[]
+  }
+
+  /**
+   * DateNightDare create
+   */
+  export type DateNightDareCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DateNightDare
+     */
+    select?: DateNightDareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DateNightDareInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DateNightDare.
+     */
+    data: XOR<DateNightDareCreateInput, DateNightDareUncheckedCreateInput>
+  }
+
+  /**
+   * DateNightDare createMany
+   */
+  export type DateNightDareCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DateNightDares.
+     */
+    data: DateNightDareCreateManyInput | DateNightDareCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DateNightDare createManyAndReturn
+   */
+  export type DateNightDareCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DateNightDare
+     */
+    select?: DateNightDareSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many DateNightDares.
+     */
+    data: DateNightDareCreateManyInput | DateNightDareCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DateNightDareIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DateNightDare update
+   */
+  export type DateNightDareUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DateNightDare
+     */
+    select?: DateNightDareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DateNightDareInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DateNightDare.
+     */
+    data: XOR<DateNightDareUpdateInput, DateNightDareUncheckedUpdateInput>
+    /**
+     * Choose, which DateNightDare to update.
+     */
+    where: DateNightDareWhereUniqueInput
+  }
+
+  /**
+   * DateNightDare updateMany
+   */
+  export type DateNightDareUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DateNightDares.
+     */
+    data: XOR<DateNightDareUpdateManyMutationInput, DateNightDareUncheckedUpdateManyInput>
+    /**
+     * Filter which DateNightDares to update
+     */
+    where?: DateNightDareWhereInput
+  }
+
+  /**
+   * DateNightDare upsert
+   */
+  export type DateNightDareUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DateNightDare
+     */
+    select?: DateNightDareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DateNightDareInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DateNightDare to update in case it exists.
+     */
+    where: DateNightDareWhereUniqueInput
+    /**
+     * In case the DateNightDare found by the `where` argument doesn't exist, create a new DateNightDare with this data.
+     */
+    create: XOR<DateNightDareCreateInput, DateNightDareUncheckedCreateInput>
+    /**
+     * In case the DateNightDare was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DateNightDareUpdateInput, DateNightDareUncheckedUpdateInput>
+  }
+
+  /**
+   * DateNightDare delete
+   */
+  export type DateNightDareDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DateNightDare
+     */
+    select?: DateNightDareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DateNightDareInclude<ExtArgs> | null
+    /**
+     * Filter which DateNightDare to delete.
+     */
+    where: DateNightDareWhereUniqueInput
+  }
+
+  /**
+   * DateNightDare deleteMany
+   */
+  export type DateNightDareDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DateNightDares to delete
+     */
+    where?: DateNightDareWhereInput
+  }
+
+  /**
+   * DateNightDare without action
+   */
+  export type DateNightDareDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DateNightDare
+     */
+    select?: DateNightDareSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DateNightDareInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model BetaSignup
    */
 
@@ -26552,6 +32255,70 @@ export namespace Prisma {
   export type MemoryScalarFieldEnum = (typeof MemoryScalarFieldEnum)[keyof typeof MemoryScalarFieldEnum]
 
 
+  export const AppreciationScalarFieldEnum: {
+    id: 'id',
+    relationshipId: 'relationshipId',
+    fromUserId: 'fromUserId',
+    toUserId: 'toUserId',
+    content: 'content',
+    weekKey: 'weekKey',
+    createdAt: 'createdAt'
+  };
+
+  export type AppreciationScalarFieldEnum = (typeof AppreciationScalarFieldEnum)[keyof typeof AppreciationScalarFieldEnum]
+
+
+  export const WyrSessionScalarFieldEnum: {
+    id: 'id',
+    relationshipId: 'relationshipId',
+    sessionDate: 'sessionDate',
+    questionIndex: 'questionIndex',
+    state: 'state',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type WyrSessionScalarFieldEnum = (typeof WyrSessionScalarFieldEnum)[keyof typeof WyrSessionScalarFieldEnum]
+
+
+  export const WyrParticipationScalarFieldEnum: {
+    id: 'id',
+    wyrSessionId: 'wyrSessionId',
+    userId: 'userId',
+    choice: 'choice',
+    createdAt: 'createdAt'
+  };
+
+  export type WyrParticipationScalarFieldEnum = (typeof WyrParticipationScalarFieldEnum)[keyof typeof WyrParticipationScalarFieldEnum]
+
+
+  export const PartnerSpotlightScalarFieldEnum: {
+    id: 'id',
+    relationshipId: 'relationshipId',
+    fromUserId: 'fromUserId',
+    toUserId: 'toUserId',
+    items: 'items',
+    monthKey: 'monthKey',
+    createdAt: 'createdAt'
+  };
+
+  export type PartnerSpotlightScalarFieldEnum = (typeof PartnerSpotlightScalarFieldEnum)[keyof typeof PartnerSpotlightScalarFieldEnum]
+
+
+  export const DateNightDareScalarFieldEnum: {
+    id: 'id',
+    relationshipId: 'relationshipId',
+    weekKey: 'weekKey',
+    dareIndex: 'dareIndex',
+    acceptedAt: 'acceptedAt',
+    completedAt: 'completedAt',
+    photoUrl: 'photoUrl',
+    createdAt: 'createdAt'
+  };
+
+  export type DateNightDareScalarFieldEnum = (typeof DateNightDareScalarFieldEnum)[keyof typeof DateNightDareScalarFieldEnum]
+
+
   export const BetaSignupScalarFieldEnum: {
     id: 'id',
     email: 'email',
@@ -26811,6 +32578,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'WyrState'
+   */
+  export type EnumWyrStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WyrState'>
+    
+
+
+  /**
+   * Reference to a field of type 'WyrState[]'
+   */
+  export type ListEnumWyrStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WyrState[]'>
+    
+
+
+  /**
    * Reference to a field of type 'QuizState'
    */
   export type EnumQuizStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuizState'>
@@ -26881,6 +32662,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionListRelationFilter
     pushSubscriptions?: PushSubscriptionListRelationFilter
     memories?: MemoryListRelationFilter
+    appreciationsSent?: AppreciationListRelationFilter
+    appreciationsReceived?: AppreciationListRelationFilter
+    wyrParticipations?: WyrParticipationListRelationFilter
+    spotlightsSent?: PartnerSpotlightListRelationFilter
+    spotlightsReceived?: PartnerSpotlightListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -26906,6 +32692,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionOrderByRelationAggregateInput
     pushSubscriptions?: PushSubscriptionOrderByRelationAggregateInput
     memories?: MemoryOrderByRelationAggregateInput
+    appreciationsSent?: AppreciationOrderByRelationAggregateInput
+    appreciationsReceived?: AppreciationOrderByRelationAggregateInput
+    wyrParticipations?: WyrParticipationOrderByRelationAggregateInput
+    spotlightsSent?: PartnerSpotlightOrderByRelationAggregateInput
+    spotlightsReceived?: PartnerSpotlightOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -26934,6 +32725,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionListRelationFilter
     pushSubscriptions?: PushSubscriptionListRelationFilter
     memories?: MemoryListRelationFilter
+    appreciationsSent?: AppreciationListRelationFilter
+    appreciationsReceived?: AppreciationListRelationFilter
+    wyrParticipations?: WyrParticipationListRelationFilter
+    spotlightsSent?: PartnerSpotlightListRelationFilter
+    spotlightsReceived?: PartnerSpotlightListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -27236,6 +33032,10 @@ export namespace Prisma {
     streak?: XOR<StreakNullableRelationFilter, StreakWhereInput> | null
     subscriptions?: SubscriptionListRelationFilter
     memories?: MemoryListRelationFilter
+    appreciations?: AppreciationListRelationFilter
+    wyrSessions?: WyrSessionListRelationFilter
+    spotlights?: PartnerSpotlightListRelationFilter
+    dateNightDares?: DateNightDareListRelationFilter
   }
 
   export type RelationshipOrderByWithRelationInput = {
@@ -27254,6 +33054,10 @@ export namespace Prisma {
     streak?: StreakOrderByWithRelationInput
     subscriptions?: SubscriptionOrderByRelationAggregateInput
     memories?: MemoryOrderByRelationAggregateInput
+    appreciations?: AppreciationOrderByRelationAggregateInput
+    wyrSessions?: WyrSessionOrderByRelationAggregateInput
+    spotlights?: PartnerSpotlightOrderByRelationAggregateInput
+    dateNightDares?: DateNightDareOrderByRelationAggregateInput
   }
 
   export type RelationshipWhereUniqueInput = Prisma.AtLeast<{
@@ -27275,6 +33079,10 @@ export namespace Prisma {
     streak?: XOR<StreakNullableRelationFilter, StreakWhereInput> | null
     subscriptions?: SubscriptionListRelationFilter
     memories?: MemoryListRelationFilter
+    appreciations?: AppreciationListRelationFilter
+    wyrSessions?: WyrSessionListRelationFilter
+    spotlights?: PartnerSpotlightListRelationFilter
+    dateNightDares?: DateNightDareListRelationFilter
   }, "id">
 
   export type RelationshipOrderByWithAggregationInput = {
@@ -28226,6 +34034,355 @@ export namespace Prisma {
     savedAt?: DateTimeWithAggregatesFilter<"Memory"> | Date | string
   }
 
+  export type AppreciationWhereInput = {
+    AND?: AppreciationWhereInput | AppreciationWhereInput[]
+    OR?: AppreciationWhereInput[]
+    NOT?: AppreciationWhereInput | AppreciationWhereInput[]
+    id?: StringFilter<"Appreciation"> | string
+    relationshipId?: StringFilter<"Appreciation"> | string
+    fromUserId?: StringFilter<"Appreciation"> | string
+    toUserId?: StringFilter<"Appreciation"> | string
+    content?: StringFilter<"Appreciation"> | string
+    weekKey?: StringFilter<"Appreciation"> | string
+    createdAt?: DateTimeFilter<"Appreciation"> | Date | string
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+    fromUser?: XOR<UserRelationFilter, UserWhereInput>
+    toUser?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type AppreciationOrderByWithRelationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    content?: SortOrder
+    weekKey?: SortOrder
+    createdAt?: SortOrder
+    relationship?: RelationshipOrderByWithRelationInput
+    fromUser?: UserOrderByWithRelationInput
+    toUser?: UserOrderByWithRelationInput
+  }
+
+  export type AppreciationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    relationshipId_fromUserId_weekKey?: AppreciationRelationshipIdFromUserIdWeekKeyCompoundUniqueInput
+    AND?: AppreciationWhereInput | AppreciationWhereInput[]
+    OR?: AppreciationWhereInput[]
+    NOT?: AppreciationWhereInput | AppreciationWhereInput[]
+    relationshipId?: StringFilter<"Appreciation"> | string
+    fromUserId?: StringFilter<"Appreciation"> | string
+    toUserId?: StringFilter<"Appreciation"> | string
+    content?: StringFilter<"Appreciation"> | string
+    weekKey?: StringFilter<"Appreciation"> | string
+    createdAt?: DateTimeFilter<"Appreciation"> | Date | string
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+    fromUser?: XOR<UserRelationFilter, UserWhereInput>
+    toUser?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id" | "relationshipId_fromUserId_weekKey">
+
+  export type AppreciationOrderByWithAggregationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    content?: SortOrder
+    weekKey?: SortOrder
+    createdAt?: SortOrder
+    _count?: AppreciationCountOrderByAggregateInput
+    _max?: AppreciationMaxOrderByAggregateInput
+    _min?: AppreciationMinOrderByAggregateInput
+  }
+
+  export type AppreciationScalarWhereWithAggregatesInput = {
+    AND?: AppreciationScalarWhereWithAggregatesInput | AppreciationScalarWhereWithAggregatesInput[]
+    OR?: AppreciationScalarWhereWithAggregatesInput[]
+    NOT?: AppreciationScalarWhereWithAggregatesInput | AppreciationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Appreciation"> | string
+    relationshipId?: StringWithAggregatesFilter<"Appreciation"> | string
+    fromUserId?: StringWithAggregatesFilter<"Appreciation"> | string
+    toUserId?: StringWithAggregatesFilter<"Appreciation"> | string
+    content?: StringWithAggregatesFilter<"Appreciation"> | string
+    weekKey?: StringWithAggregatesFilter<"Appreciation"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Appreciation"> | Date | string
+  }
+
+  export type WyrSessionWhereInput = {
+    AND?: WyrSessionWhereInput | WyrSessionWhereInput[]
+    OR?: WyrSessionWhereInput[]
+    NOT?: WyrSessionWhereInput | WyrSessionWhereInput[]
+    id?: StringFilter<"WyrSession"> | string
+    relationshipId?: StringFilter<"WyrSession"> | string
+    sessionDate?: DateTimeFilter<"WyrSession"> | Date | string
+    questionIndex?: IntFilter<"WyrSession"> | number
+    state?: EnumWyrStateFilter<"WyrSession"> | $Enums.WyrState
+    createdAt?: DateTimeFilter<"WyrSession"> | Date | string
+    updatedAt?: DateTimeFilter<"WyrSession"> | Date | string
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+    participations?: WyrParticipationListRelationFilter
+  }
+
+  export type WyrSessionOrderByWithRelationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    sessionDate?: SortOrder
+    questionIndex?: SortOrder
+    state?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    relationship?: RelationshipOrderByWithRelationInput
+    participations?: WyrParticipationOrderByRelationAggregateInput
+  }
+
+  export type WyrSessionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    relationshipId_sessionDate?: WyrSessionRelationshipIdSessionDateCompoundUniqueInput
+    AND?: WyrSessionWhereInput | WyrSessionWhereInput[]
+    OR?: WyrSessionWhereInput[]
+    NOT?: WyrSessionWhereInput | WyrSessionWhereInput[]
+    relationshipId?: StringFilter<"WyrSession"> | string
+    sessionDate?: DateTimeFilter<"WyrSession"> | Date | string
+    questionIndex?: IntFilter<"WyrSession"> | number
+    state?: EnumWyrStateFilter<"WyrSession"> | $Enums.WyrState
+    createdAt?: DateTimeFilter<"WyrSession"> | Date | string
+    updatedAt?: DateTimeFilter<"WyrSession"> | Date | string
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+    participations?: WyrParticipationListRelationFilter
+  }, "id" | "relationshipId_sessionDate">
+
+  export type WyrSessionOrderByWithAggregationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    sessionDate?: SortOrder
+    questionIndex?: SortOrder
+    state?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: WyrSessionCountOrderByAggregateInput
+    _avg?: WyrSessionAvgOrderByAggregateInput
+    _max?: WyrSessionMaxOrderByAggregateInput
+    _min?: WyrSessionMinOrderByAggregateInput
+    _sum?: WyrSessionSumOrderByAggregateInput
+  }
+
+  export type WyrSessionScalarWhereWithAggregatesInput = {
+    AND?: WyrSessionScalarWhereWithAggregatesInput | WyrSessionScalarWhereWithAggregatesInput[]
+    OR?: WyrSessionScalarWhereWithAggregatesInput[]
+    NOT?: WyrSessionScalarWhereWithAggregatesInput | WyrSessionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"WyrSession"> | string
+    relationshipId?: StringWithAggregatesFilter<"WyrSession"> | string
+    sessionDate?: DateTimeWithAggregatesFilter<"WyrSession"> | Date | string
+    questionIndex?: IntWithAggregatesFilter<"WyrSession"> | number
+    state?: EnumWyrStateWithAggregatesFilter<"WyrSession"> | $Enums.WyrState
+    createdAt?: DateTimeWithAggregatesFilter<"WyrSession"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"WyrSession"> | Date | string
+  }
+
+  export type WyrParticipationWhereInput = {
+    AND?: WyrParticipationWhereInput | WyrParticipationWhereInput[]
+    OR?: WyrParticipationWhereInput[]
+    NOT?: WyrParticipationWhereInput | WyrParticipationWhereInput[]
+    id?: StringFilter<"WyrParticipation"> | string
+    wyrSessionId?: StringFilter<"WyrParticipation"> | string
+    userId?: StringFilter<"WyrParticipation"> | string
+    choice?: IntFilter<"WyrParticipation"> | number
+    createdAt?: DateTimeFilter<"WyrParticipation"> | Date | string
+    wyrSession?: XOR<WyrSessionRelationFilter, WyrSessionWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type WyrParticipationOrderByWithRelationInput = {
+    id?: SortOrder
+    wyrSessionId?: SortOrder
+    userId?: SortOrder
+    choice?: SortOrder
+    createdAt?: SortOrder
+    wyrSession?: WyrSessionOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type WyrParticipationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    wyrSessionId_userId?: WyrParticipationWyrSessionIdUserIdCompoundUniqueInput
+    AND?: WyrParticipationWhereInput | WyrParticipationWhereInput[]
+    OR?: WyrParticipationWhereInput[]
+    NOT?: WyrParticipationWhereInput | WyrParticipationWhereInput[]
+    wyrSessionId?: StringFilter<"WyrParticipation"> | string
+    userId?: StringFilter<"WyrParticipation"> | string
+    choice?: IntFilter<"WyrParticipation"> | number
+    createdAt?: DateTimeFilter<"WyrParticipation"> | Date | string
+    wyrSession?: XOR<WyrSessionRelationFilter, WyrSessionWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id" | "wyrSessionId_userId">
+
+  export type WyrParticipationOrderByWithAggregationInput = {
+    id?: SortOrder
+    wyrSessionId?: SortOrder
+    userId?: SortOrder
+    choice?: SortOrder
+    createdAt?: SortOrder
+    _count?: WyrParticipationCountOrderByAggregateInput
+    _avg?: WyrParticipationAvgOrderByAggregateInput
+    _max?: WyrParticipationMaxOrderByAggregateInput
+    _min?: WyrParticipationMinOrderByAggregateInput
+    _sum?: WyrParticipationSumOrderByAggregateInput
+  }
+
+  export type WyrParticipationScalarWhereWithAggregatesInput = {
+    AND?: WyrParticipationScalarWhereWithAggregatesInput | WyrParticipationScalarWhereWithAggregatesInput[]
+    OR?: WyrParticipationScalarWhereWithAggregatesInput[]
+    NOT?: WyrParticipationScalarWhereWithAggregatesInput | WyrParticipationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"WyrParticipation"> | string
+    wyrSessionId?: StringWithAggregatesFilter<"WyrParticipation"> | string
+    userId?: StringWithAggregatesFilter<"WyrParticipation"> | string
+    choice?: IntWithAggregatesFilter<"WyrParticipation"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"WyrParticipation"> | Date | string
+  }
+
+  export type PartnerSpotlightWhereInput = {
+    AND?: PartnerSpotlightWhereInput | PartnerSpotlightWhereInput[]
+    OR?: PartnerSpotlightWhereInput[]
+    NOT?: PartnerSpotlightWhereInput | PartnerSpotlightWhereInput[]
+    id?: StringFilter<"PartnerSpotlight"> | string
+    relationshipId?: StringFilter<"PartnerSpotlight"> | string
+    fromUserId?: StringFilter<"PartnerSpotlight"> | string
+    toUserId?: StringFilter<"PartnerSpotlight"> | string
+    items?: JsonFilter<"PartnerSpotlight">
+    monthKey?: StringFilter<"PartnerSpotlight"> | string
+    createdAt?: DateTimeFilter<"PartnerSpotlight"> | Date | string
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+    fromUser?: XOR<UserRelationFilter, UserWhereInput>
+    toUser?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type PartnerSpotlightOrderByWithRelationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    items?: SortOrder
+    monthKey?: SortOrder
+    createdAt?: SortOrder
+    relationship?: RelationshipOrderByWithRelationInput
+    fromUser?: UserOrderByWithRelationInput
+    toUser?: UserOrderByWithRelationInput
+  }
+
+  export type PartnerSpotlightWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    relationshipId_fromUserId_monthKey?: PartnerSpotlightRelationshipIdFromUserIdMonthKeyCompoundUniqueInput
+    AND?: PartnerSpotlightWhereInput | PartnerSpotlightWhereInput[]
+    OR?: PartnerSpotlightWhereInput[]
+    NOT?: PartnerSpotlightWhereInput | PartnerSpotlightWhereInput[]
+    relationshipId?: StringFilter<"PartnerSpotlight"> | string
+    fromUserId?: StringFilter<"PartnerSpotlight"> | string
+    toUserId?: StringFilter<"PartnerSpotlight"> | string
+    items?: JsonFilter<"PartnerSpotlight">
+    monthKey?: StringFilter<"PartnerSpotlight"> | string
+    createdAt?: DateTimeFilter<"PartnerSpotlight"> | Date | string
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+    fromUser?: XOR<UserRelationFilter, UserWhereInput>
+    toUser?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id" | "relationshipId_fromUserId_monthKey">
+
+  export type PartnerSpotlightOrderByWithAggregationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    items?: SortOrder
+    monthKey?: SortOrder
+    createdAt?: SortOrder
+    _count?: PartnerSpotlightCountOrderByAggregateInput
+    _max?: PartnerSpotlightMaxOrderByAggregateInput
+    _min?: PartnerSpotlightMinOrderByAggregateInput
+  }
+
+  export type PartnerSpotlightScalarWhereWithAggregatesInput = {
+    AND?: PartnerSpotlightScalarWhereWithAggregatesInput | PartnerSpotlightScalarWhereWithAggregatesInput[]
+    OR?: PartnerSpotlightScalarWhereWithAggregatesInput[]
+    NOT?: PartnerSpotlightScalarWhereWithAggregatesInput | PartnerSpotlightScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PartnerSpotlight"> | string
+    relationshipId?: StringWithAggregatesFilter<"PartnerSpotlight"> | string
+    fromUserId?: StringWithAggregatesFilter<"PartnerSpotlight"> | string
+    toUserId?: StringWithAggregatesFilter<"PartnerSpotlight"> | string
+    items?: JsonWithAggregatesFilter<"PartnerSpotlight">
+    monthKey?: StringWithAggregatesFilter<"PartnerSpotlight"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"PartnerSpotlight"> | Date | string
+  }
+
+  export type DateNightDareWhereInput = {
+    AND?: DateNightDareWhereInput | DateNightDareWhereInput[]
+    OR?: DateNightDareWhereInput[]
+    NOT?: DateNightDareWhereInput | DateNightDareWhereInput[]
+    id?: StringFilter<"DateNightDare"> | string
+    relationshipId?: StringFilter<"DateNightDare"> | string
+    weekKey?: StringFilter<"DateNightDare"> | string
+    dareIndex?: IntFilter<"DateNightDare"> | number
+    acceptedAt?: DateTimeNullableFilter<"DateNightDare"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"DateNightDare"> | Date | string | null
+    photoUrl?: StringNullableFilter<"DateNightDare"> | string | null
+    createdAt?: DateTimeFilter<"DateNightDare"> | Date | string
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+  }
+
+  export type DateNightDareOrderByWithRelationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    weekKey?: SortOrder
+    dareIndex?: SortOrder
+    acceptedAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    photoUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    relationship?: RelationshipOrderByWithRelationInput
+  }
+
+  export type DateNightDareWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    relationshipId_weekKey?: DateNightDareRelationshipIdWeekKeyCompoundUniqueInput
+    AND?: DateNightDareWhereInput | DateNightDareWhereInput[]
+    OR?: DateNightDareWhereInput[]
+    NOT?: DateNightDareWhereInput | DateNightDareWhereInput[]
+    relationshipId?: StringFilter<"DateNightDare"> | string
+    weekKey?: StringFilter<"DateNightDare"> | string
+    dareIndex?: IntFilter<"DateNightDare"> | number
+    acceptedAt?: DateTimeNullableFilter<"DateNightDare"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"DateNightDare"> | Date | string | null
+    photoUrl?: StringNullableFilter<"DateNightDare"> | string | null
+    createdAt?: DateTimeFilter<"DateNightDare"> | Date | string
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+  }, "id" | "relationshipId_weekKey">
+
+  export type DateNightDareOrderByWithAggregationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    weekKey?: SortOrder
+    dareIndex?: SortOrder
+    acceptedAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    photoUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: DateNightDareCountOrderByAggregateInput
+    _avg?: DateNightDareAvgOrderByAggregateInput
+    _max?: DateNightDareMaxOrderByAggregateInput
+    _min?: DateNightDareMinOrderByAggregateInput
+    _sum?: DateNightDareSumOrderByAggregateInput
+  }
+
+  export type DateNightDareScalarWhereWithAggregatesInput = {
+    AND?: DateNightDareScalarWhereWithAggregatesInput | DateNightDareScalarWhereWithAggregatesInput[]
+    OR?: DateNightDareScalarWhereWithAggregatesInput[]
+    NOT?: DateNightDareScalarWhereWithAggregatesInput | DateNightDareScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DateNightDare"> | string
+    relationshipId?: StringWithAggregatesFilter<"DateNightDare"> | string
+    weekKey?: StringWithAggregatesFilter<"DateNightDare"> | string
+    dareIndex?: IntWithAggregatesFilter<"DateNightDare"> | number
+    acceptedAt?: DateTimeNullableWithAggregatesFilter<"DateNightDare"> | Date | string | null
+    completedAt?: DateTimeNullableWithAggregatesFilter<"DateNightDare"> | Date | string | null
+    photoUrl?: StringNullableWithAggregatesFilter<"DateNightDare"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"DateNightDare"> | Date | string
+  }
+
   export type BetaSignupWhereInput = {
     AND?: BetaSignupWhereInput | BetaSignupWhereInput[]
     OR?: BetaSignupWhereInput[]
@@ -28557,6 +34714,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -28582,6 +34744,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserUpdateInput = {
@@ -28607,6 +34774,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -28632,6 +34804,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -28949,6 +35126,10 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateInput = {
@@ -28967,6 +35148,10 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUpdateInput = {
@@ -28985,6 +35170,10 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateInput = {
@@ -29003,6 +35192,10 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipCreateManyInput = {
@@ -30005,6 +36198,343 @@ export namespace Prisma {
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AppreciationCreateInput = {
+    id?: string
+    content: string
+    weekKey: string
+    createdAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutAppreciationsInput
+    fromUser: UserCreateNestedOneWithoutAppreciationsSentInput
+    toUser: UserCreateNestedOneWithoutAppreciationsReceivedInput
+  }
+
+  export type AppreciationUncheckedCreateInput = {
+    id?: string
+    relationshipId: string
+    fromUserId: string
+    toUserId: string
+    content: string
+    weekKey: string
+    createdAt?: Date | string
+  }
+
+  export type AppreciationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutAppreciationsNestedInput
+    fromUser?: UserUpdateOneRequiredWithoutAppreciationsSentNestedInput
+    toUser?: UserUpdateOneRequiredWithoutAppreciationsReceivedNestedInput
+  }
+
+  export type AppreciationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppreciationCreateManyInput = {
+    id?: string
+    relationshipId: string
+    fromUserId: string
+    toUserId: string
+    content: string
+    weekKey: string
+    createdAt?: Date | string
+  }
+
+  export type AppreciationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppreciationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WyrSessionCreateInput = {
+    id?: string
+    sessionDate: Date | string
+    questionIndex: number
+    state?: $Enums.WyrState
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutWyrSessionsInput
+    participations?: WyrParticipationCreateNestedManyWithoutWyrSessionInput
+  }
+
+  export type WyrSessionUncheckedCreateInput = {
+    id?: string
+    relationshipId: string
+    sessionDate: Date | string
+    questionIndex: number
+    state?: $Enums.WyrState
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participations?: WyrParticipationUncheckedCreateNestedManyWithoutWyrSessionInput
+  }
+
+  export type WyrSessionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    questionIndex?: IntFieldUpdateOperationsInput | number
+    state?: EnumWyrStateFieldUpdateOperationsInput | $Enums.WyrState
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutWyrSessionsNestedInput
+    participations?: WyrParticipationUpdateManyWithoutWyrSessionNestedInput
+  }
+
+  export type WyrSessionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    questionIndex?: IntFieldUpdateOperationsInput | number
+    state?: EnumWyrStateFieldUpdateOperationsInput | $Enums.WyrState
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participations?: WyrParticipationUncheckedUpdateManyWithoutWyrSessionNestedInput
+  }
+
+  export type WyrSessionCreateManyInput = {
+    id?: string
+    relationshipId: string
+    sessionDate: Date | string
+    questionIndex: number
+    state?: $Enums.WyrState
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WyrSessionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    questionIndex?: IntFieldUpdateOperationsInput | number
+    state?: EnumWyrStateFieldUpdateOperationsInput | $Enums.WyrState
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WyrSessionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    questionIndex?: IntFieldUpdateOperationsInput | number
+    state?: EnumWyrStateFieldUpdateOperationsInput | $Enums.WyrState
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WyrParticipationCreateInput = {
+    id?: string
+    choice: number
+    createdAt?: Date | string
+    wyrSession: WyrSessionCreateNestedOneWithoutParticipationsInput
+    user: UserCreateNestedOneWithoutWyrParticipationsInput
+  }
+
+  export type WyrParticipationUncheckedCreateInput = {
+    id?: string
+    wyrSessionId: string
+    userId: string
+    choice: number
+    createdAt?: Date | string
+  }
+
+  export type WyrParticipationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    choice?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    wyrSession?: WyrSessionUpdateOneRequiredWithoutParticipationsNestedInput
+    user?: UserUpdateOneRequiredWithoutWyrParticipationsNestedInput
+  }
+
+  export type WyrParticipationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    wyrSessionId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    choice?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WyrParticipationCreateManyInput = {
+    id?: string
+    wyrSessionId: string
+    userId: string
+    choice: number
+    createdAt?: Date | string
+  }
+
+  export type WyrParticipationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    choice?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WyrParticipationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    wyrSessionId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    choice?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PartnerSpotlightCreateInput = {
+    id?: string
+    items: JsonNullValueInput | InputJsonValue
+    monthKey: string
+    createdAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutSpotlightsInput
+    fromUser: UserCreateNestedOneWithoutSpotlightsSentInput
+    toUser: UserCreateNestedOneWithoutSpotlightsReceivedInput
+  }
+
+  export type PartnerSpotlightUncheckedCreateInput = {
+    id?: string
+    relationshipId: string
+    fromUserId: string
+    toUserId: string
+    items: JsonNullValueInput | InputJsonValue
+    monthKey: string
+    createdAt?: Date | string
+  }
+
+  export type PartnerSpotlightUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    items?: JsonNullValueInput | InputJsonValue
+    monthKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutSpotlightsNestedInput
+    fromUser?: UserUpdateOneRequiredWithoutSpotlightsSentNestedInput
+    toUser?: UserUpdateOneRequiredWithoutSpotlightsReceivedNestedInput
+  }
+
+  export type PartnerSpotlightUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    items?: JsonNullValueInput | InputJsonValue
+    monthKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PartnerSpotlightCreateManyInput = {
+    id?: string
+    relationshipId: string
+    fromUserId: string
+    toUserId: string
+    items: JsonNullValueInput | InputJsonValue
+    monthKey: string
+    createdAt?: Date | string
+  }
+
+  export type PartnerSpotlightUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    items?: JsonNullValueInput | InputJsonValue
+    monthKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PartnerSpotlightUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    items?: JsonNullValueInput | InputJsonValue
+    monthKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DateNightDareCreateInput = {
+    id?: string
+    weekKey: string
+    dareIndex: number
+    acceptedAt?: Date | string | null
+    completedAt?: Date | string | null
+    photoUrl?: string | null
+    createdAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutDateNightDaresInput
+  }
+
+  export type DateNightDareUncheckedCreateInput = {
+    id?: string
+    relationshipId: string
+    weekKey: string
+    dareIndex: number
+    acceptedAt?: Date | string | null
+    completedAt?: Date | string | null
+    photoUrl?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DateNightDareUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    dareIndex?: IntFieldUpdateOperationsInput | number
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutDateNightDaresNestedInput
+  }
+
+  export type DateNightDareUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    dareIndex?: IntFieldUpdateOperationsInput | number
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DateNightDareCreateManyInput = {
+    id?: string
+    relationshipId: string
+    weekKey: string
+    dareIndex: number
+    acceptedAt?: Date | string | null
+    completedAt?: Date | string | null
+    photoUrl?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DateNightDareUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    dareIndex?: IntFieldUpdateOperationsInput | number
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DateNightDareUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    dareIndex?: IntFieldUpdateOperationsInput | number
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type BetaSignupCreateInput = {
     id?: string
     email: string
@@ -30445,6 +36975,24 @@ export namespace Prisma {
     none?: MemoryWhereInput
   }
 
+  export type AppreciationListRelationFilter = {
+    every?: AppreciationWhereInput
+    some?: AppreciationWhereInput
+    none?: AppreciationWhereInput
+  }
+
+  export type WyrParticipationListRelationFilter = {
+    every?: WyrParticipationWhereInput
+    some?: WyrParticipationWhereInput
+    none?: WyrParticipationWhereInput
+  }
+
+  export type PartnerSpotlightListRelationFilter = {
+    every?: PartnerSpotlightWhereInput
+    some?: PartnerSpotlightWhereInput
+    none?: PartnerSpotlightWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -30499,6 +37047,18 @@ export namespace Prisma {
   }
 
   export type MemoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AppreciationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type WyrParticipationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PartnerSpotlightOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -30802,6 +37362,18 @@ export namespace Prisma {
     isNot?: StreakWhereInput | null
   }
 
+  export type WyrSessionListRelationFilter = {
+    every?: WyrSessionWhereInput
+    some?: WyrSessionWhereInput
+    none?: WyrSessionWhereInput
+  }
+
+  export type DateNightDareListRelationFilter = {
+    every?: DateNightDareWhereInput
+    some?: DateNightDareWhereInput
+    none?: DateNightDareWhereInput
+  }
+
   export type DailySessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -30815,6 +37387,14 @@ export namespace Prisma {
   }
 
   export type MeetingOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type WyrSessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DateNightDareOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -31558,6 +38138,224 @@ export namespace Prisma {
     _max?: NestedJsonFilter<$PrismaModel>
   }
 
+  export type AppreciationRelationshipIdFromUserIdWeekKeyCompoundUniqueInput = {
+    relationshipId: string
+    fromUserId: string
+    weekKey: string
+  }
+
+  export type AppreciationCountOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    content?: SortOrder
+    weekKey?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AppreciationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    content?: SortOrder
+    weekKey?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AppreciationMinOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    content?: SortOrder
+    weekKey?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumWyrStateFilter<$PrismaModel = never> = {
+    equals?: $Enums.WyrState | EnumWyrStateFieldRefInput<$PrismaModel>
+    in?: $Enums.WyrState[] | ListEnumWyrStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WyrState[] | ListEnumWyrStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumWyrStateFilter<$PrismaModel> | $Enums.WyrState
+  }
+
+  export type WyrSessionRelationshipIdSessionDateCompoundUniqueInput = {
+    relationshipId: string
+    sessionDate: Date | string
+  }
+
+  export type WyrSessionCountOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    sessionDate?: SortOrder
+    questionIndex?: SortOrder
+    state?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WyrSessionAvgOrderByAggregateInput = {
+    questionIndex?: SortOrder
+  }
+
+  export type WyrSessionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    sessionDate?: SortOrder
+    questionIndex?: SortOrder
+    state?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WyrSessionMinOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    sessionDate?: SortOrder
+    questionIndex?: SortOrder
+    state?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WyrSessionSumOrderByAggregateInput = {
+    questionIndex?: SortOrder
+  }
+
+  export type EnumWyrStateWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.WyrState | EnumWyrStateFieldRefInput<$PrismaModel>
+    in?: $Enums.WyrState[] | ListEnumWyrStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WyrState[] | ListEnumWyrStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumWyrStateWithAggregatesFilter<$PrismaModel> | $Enums.WyrState
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumWyrStateFilter<$PrismaModel>
+    _max?: NestedEnumWyrStateFilter<$PrismaModel>
+  }
+
+  export type WyrSessionRelationFilter = {
+    is?: WyrSessionWhereInput
+    isNot?: WyrSessionWhereInput
+  }
+
+  export type WyrParticipationWyrSessionIdUserIdCompoundUniqueInput = {
+    wyrSessionId: string
+    userId: string
+  }
+
+  export type WyrParticipationCountOrderByAggregateInput = {
+    id?: SortOrder
+    wyrSessionId?: SortOrder
+    userId?: SortOrder
+    choice?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type WyrParticipationAvgOrderByAggregateInput = {
+    choice?: SortOrder
+  }
+
+  export type WyrParticipationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    wyrSessionId?: SortOrder
+    userId?: SortOrder
+    choice?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type WyrParticipationMinOrderByAggregateInput = {
+    id?: SortOrder
+    wyrSessionId?: SortOrder
+    userId?: SortOrder
+    choice?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type WyrParticipationSumOrderByAggregateInput = {
+    choice?: SortOrder
+  }
+
+  export type PartnerSpotlightRelationshipIdFromUserIdMonthKeyCompoundUniqueInput = {
+    relationshipId: string
+    fromUserId: string
+    monthKey: string
+  }
+
+  export type PartnerSpotlightCountOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    items?: SortOrder
+    monthKey?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PartnerSpotlightMaxOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    monthKey?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PartnerSpotlightMinOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    monthKey?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DateNightDareRelationshipIdWeekKeyCompoundUniqueInput = {
+    relationshipId: string
+    weekKey: string
+  }
+
+  export type DateNightDareCountOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    weekKey?: SortOrder
+    dareIndex?: SortOrder
+    acceptedAt?: SortOrder
+    completedAt?: SortOrder
+    photoUrl?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DateNightDareAvgOrderByAggregateInput = {
+    dareIndex?: SortOrder
+  }
+
+  export type DateNightDareMaxOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    weekKey?: SortOrder
+    dareIndex?: SortOrder
+    acceptedAt?: SortOrder
+    completedAt?: SortOrder
+    photoUrl?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DateNightDareMinOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    weekKey?: SortOrder
+    dareIndex?: SortOrder
+    acceptedAt?: SortOrder
+    completedAt?: SortOrder
+    photoUrl?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DateNightDareSumOrderByAggregateInput = {
+    dareIndex?: SortOrder
+  }
+
   export type BetaSignupCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
@@ -31845,6 +38643,41 @@ export namespace Prisma {
     connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
   }
 
+  export type AppreciationCreateNestedManyWithoutFromUserInput = {
+    create?: XOR<AppreciationCreateWithoutFromUserInput, AppreciationUncheckedCreateWithoutFromUserInput> | AppreciationCreateWithoutFromUserInput[] | AppreciationUncheckedCreateWithoutFromUserInput[]
+    connectOrCreate?: AppreciationCreateOrConnectWithoutFromUserInput | AppreciationCreateOrConnectWithoutFromUserInput[]
+    createMany?: AppreciationCreateManyFromUserInputEnvelope
+    connect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+  }
+
+  export type AppreciationCreateNestedManyWithoutToUserInput = {
+    create?: XOR<AppreciationCreateWithoutToUserInput, AppreciationUncheckedCreateWithoutToUserInput> | AppreciationCreateWithoutToUserInput[] | AppreciationUncheckedCreateWithoutToUserInput[]
+    connectOrCreate?: AppreciationCreateOrConnectWithoutToUserInput | AppreciationCreateOrConnectWithoutToUserInput[]
+    createMany?: AppreciationCreateManyToUserInputEnvelope
+    connect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+  }
+
+  export type WyrParticipationCreateNestedManyWithoutUserInput = {
+    create?: XOR<WyrParticipationCreateWithoutUserInput, WyrParticipationUncheckedCreateWithoutUserInput> | WyrParticipationCreateWithoutUserInput[] | WyrParticipationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WyrParticipationCreateOrConnectWithoutUserInput | WyrParticipationCreateOrConnectWithoutUserInput[]
+    createMany?: WyrParticipationCreateManyUserInputEnvelope
+    connect?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+  }
+
+  export type PartnerSpotlightCreateNestedManyWithoutFromUserInput = {
+    create?: XOR<PartnerSpotlightCreateWithoutFromUserInput, PartnerSpotlightUncheckedCreateWithoutFromUserInput> | PartnerSpotlightCreateWithoutFromUserInput[] | PartnerSpotlightUncheckedCreateWithoutFromUserInput[]
+    connectOrCreate?: PartnerSpotlightCreateOrConnectWithoutFromUserInput | PartnerSpotlightCreateOrConnectWithoutFromUserInput[]
+    createMany?: PartnerSpotlightCreateManyFromUserInputEnvelope
+    connect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+  }
+
+  export type PartnerSpotlightCreateNestedManyWithoutToUserInput = {
+    create?: XOR<PartnerSpotlightCreateWithoutToUserInput, PartnerSpotlightUncheckedCreateWithoutToUserInput> | PartnerSpotlightCreateWithoutToUserInput[] | PartnerSpotlightUncheckedCreateWithoutToUserInput[]
+    connectOrCreate?: PartnerSpotlightCreateOrConnectWithoutToUserInput | PartnerSpotlightCreateOrConnectWithoutToUserInput[]
+    createMany?: PartnerSpotlightCreateManyToUserInputEnvelope
+    connect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -31934,6 +38767,41 @@ export namespace Prisma {
     connectOrCreate?: MemoryCreateOrConnectWithoutSavedByUserInput | MemoryCreateOrConnectWithoutSavedByUserInput[]
     createMany?: MemoryCreateManySavedByUserInputEnvelope
     connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+  }
+
+  export type AppreciationUncheckedCreateNestedManyWithoutFromUserInput = {
+    create?: XOR<AppreciationCreateWithoutFromUserInput, AppreciationUncheckedCreateWithoutFromUserInput> | AppreciationCreateWithoutFromUserInput[] | AppreciationUncheckedCreateWithoutFromUserInput[]
+    connectOrCreate?: AppreciationCreateOrConnectWithoutFromUserInput | AppreciationCreateOrConnectWithoutFromUserInput[]
+    createMany?: AppreciationCreateManyFromUserInputEnvelope
+    connect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+  }
+
+  export type AppreciationUncheckedCreateNestedManyWithoutToUserInput = {
+    create?: XOR<AppreciationCreateWithoutToUserInput, AppreciationUncheckedCreateWithoutToUserInput> | AppreciationCreateWithoutToUserInput[] | AppreciationUncheckedCreateWithoutToUserInput[]
+    connectOrCreate?: AppreciationCreateOrConnectWithoutToUserInput | AppreciationCreateOrConnectWithoutToUserInput[]
+    createMany?: AppreciationCreateManyToUserInputEnvelope
+    connect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+  }
+
+  export type WyrParticipationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<WyrParticipationCreateWithoutUserInput, WyrParticipationUncheckedCreateWithoutUserInput> | WyrParticipationCreateWithoutUserInput[] | WyrParticipationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WyrParticipationCreateOrConnectWithoutUserInput | WyrParticipationCreateOrConnectWithoutUserInput[]
+    createMany?: WyrParticipationCreateManyUserInputEnvelope
+    connect?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+  }
+
+  export type PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput = {
+    create?: XOR<PartnerSpotlightCreateWithoutFromUserInput, PartnerSpotlightUncheckedCreateWithoutFromUserInput> | PartnerSpotlightCreateWithoutFromUserInput[] | PartnerSpotlightUncheckedCreateWithoutFromUserInput[]
+    connectOrCreate?: PartnerSpotlightCreateOrConnectWithoutFromUserInput | PartnerSpotlightCreateOrConnectWithoutFromUserInput[]
+    createMany?: PartnerSpotlightCreateManyFromUserInputEnvelope
+    connect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+  }
+
+  export type PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput = {
+    create?: XOR<PartnerSpotlightCreateWithoutToUserInput, PartnerSpotlightUncheckedCreateWithoutToUserInput> | PartnerSpotlightCreateWithoutToUserInput[] | PartnerSpotlightUncheckedCreateWithoutToUserInput[]
+    connectOrCreate?: PartnerSpotlightCreateOrConnectWithoutToUserInput | PartnerSpotlightCreateOrConnectWithoutToUserInput[]
+    createMany?: PartnerSpotlightCreateManyToUserInputEnvelope
+    connect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -32134,6 +39002,76 @@ export namespace Prisma {
     deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
   }
 
+  export type AppreciationUpdateManyWithoutFromUserNestedInput = {
+    create?: XOR<AppreciationCreateWithoutFromUserInput, AppreciationUncheckedCreateWithoutFromUserInput> | AppreciationCreateWithoutFromUserInput[] | AppreciationUncheckedCreateWithoutFromUserInput[]
+    connectOrCreate?: AppreciationCreateOrConnectWithoutFromUserInput | AppreciationCreateOrConnectWithoutFromUserInput[]
+    upsert?: AppreciationUpsertWithWhereUniqueWithoutFromUserInput | AppreciationUpsertWithWhereUniqueWithoutFromUserInput[]
+    createMany?: AppreciationCreateManyFromUserInputEnvelope
+    set?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    disconnect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    delete?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    connect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    update?: AppreciationUpdateWithWhereUniqueWithoutFromUserInput | AppreciationUpdateWithWhereUniqueWithoutFromUserInput[]
+    updateMany?: AppreciationUpdateManyWithWhereWithoutFromUserInput | AppreciationUpdateManyWithWhereWithoutFromUserInput[]
+    deleteMany?: AppreciationScalarWhereInput | AppreciationScalarWhereInput[]
+  }
+
+  export type AppreciationUpdateManyWithoutToUserNestedInput = {
+    create?: XOR<AppreciationCreateWithoutToUserInput, AppreciationUncheckedCreateWithoutToUserInput> | AppreciationCreateWithoutToUserInput[] | AppreciationUncheckedCreateWithoutToUserInput[]
+    connectOrCreate?: AppreciationCreateOrConnectWithoutToUserInput | AppreciationCreateOrConnectWithoutToUserInput[]
+    upsert?: AppreciationUpsertWithWhereUniqueWithoutToUserInput | AppreciationUpsertWithWhereUniqueWithoutToUserInput[]
+    createMany?: AppreciationCreateManyToUserInputEnvelope
+    set?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    disconnect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    delete?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    connect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    update?: AppreciationUpdateWithWhereUniqueWithoutToUserInput | AppreciationUpdateWithWhereUniqueWithoutToUserInput[]
+    updateMany?: AppreciationUpdateManyWithWhereWithoutToUserInput | AppreciationUpdateManyWithWhereWithoutToUserInput[]
+    deleteMany?: AppreciationScalarWhereInput | AppreciationScalarWhereInput[]
+  }
+
+  export type WyrParticipationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WyrParticipationCreateWithoutUserInput, WyrParticipationUncheckedCreateWithoutUserInput> | WyrParticipationCreateWithoutUserInput[] | WyrParticipationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WyrParticipationCreateOrConnectWithoutUserInput | WyrParticipationCreateOrConnectWithoutUserInput[]
+    upsert?: WyrParticipationUpsertWithWhereUniqueWithoutUserInput | WyrParticipationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WyrParticipationCreateManyUserInputEnvelope
+    set?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    disconnect?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    delete?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    connect?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    update?: WyrParticipationUpdateWithWhereUniqueWithoutUserInput | WyrParticipationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WyrParticipationUpdateManyWithWhereWithoutUserInput | WyrParticipationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WyrParticipationScalarWhereInput | WyrParticipationScalarWhereInput[]
+  }
+
+  export type PartnerSpotlightUpdateManyWithoutFromUserNestedInput = {
+    create?: XOR<PartnerSpotlightCreateWithoutFromUserInput, PartnerSpotlightUncheckedCreateWithoutFromUserInput> | PartnerSpotlightCreateWithoutFromUserInput[] | PartnerSpotlightUncheckedCreateWithoutFromUserInput[]
+    connectOrCreate?: PartnerSpotlightCreateOrConnectWithoutFromUserInput | PartnerSpotlightCreateOrConnectWithoutFromUserInput[]
+    upsert?: PartnerSpotlightUpsertWithWhereUniqueWithoutFromUserInput | PartnerSpotlightUpsertWithWhereUniqueWithoutFromUserInput[]
+    createMany?: PartnerSpotlightCreateManyFromUserInputEnvelope
+    set?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    disconnect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    delete?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    connect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    update?: PartnerSpotlightUpdateWithWhereUniqueWithoutFromUserInput | PartnerSpotlightUpdateWithWhereUniqueWithoutFromUserInput[]
+    updateMany?: PartnerSpotlightUpdateManyWithWhereWithoutFromUserInput | PartnerSpotlightUpdateManyWithWhereWithoutFromUserInput[]
+    deleteMany?: PartnerSpotlightScalarWhereInput | PartnerSpotlightScalarWhereInput[]
+  }
+
+  export type PartnerSpotlightUpdateManyWithoutToUserNestedInput = {
+    create?: XOR<PartnerSpotlightCreateWithoutToUserInput, PartnerSpotlightUncheckedCreateWithoutToUserInput> | PartnerSpotlightCreateWithoutToUserInput[] | PartnerSpotlightUncheckedCreateWithoutToUserInput[]
+    connectOrCreate?: PartnerSpotlightCreateOrConnectWithoutToUserInput | PartnerSpotlightCreateOrConnectWithoutToUserInput[]
+    upsert?: PartnerSpotlightUpsertWithWhereUniqueWithoutToUserInput | PartnerSpotlightUpsertWithWhereUniqueWithoutToUserInput[]
+    createMany?: PartnerSpotlightCreateManyToUserInputEnvelope
+    set?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    disconnect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    delete?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    connect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    update?: PartnerSpotlightUpdateWithWhereUniqueWithoutToUserInput | PartnerSpotlightUpdateWithWhereUniqueWithoutToUserInput[]
+    updateMany?: PartnerSpotlightUpdateManyWithWhereWithoutToUserInput | PartnerSpotlightUpdateManyWithWhereWithoutToUserInput[]
+    deleteMany?: PartnerSpotlightScalarWhereInput | PartnerSpotlightScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -32316,6 +39254,76 @@ export namespace Prisma {
     deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
   }
 
+  export type AppreciationUncheckedUpdateManyWithoutFromUserNestedInput = {
+    create?: XOR<AppreciationCreateWithoutFromUserInput, AppreciationUncheckedCreateWithoutFromUserInput> | AppreciationCreateWithoutFromUserInput[] | AppreciationUncheckedCreateWithoutFromUserInput[]
+    connectOrCreate?: AppreciationCreateOrConnectWithoutFromUserInput | AppreciationCreateOrConnectWithoutFromUserInput[]
+    upsert?: AppreciationUpsertWithWhereUniqueWithoutFromUserInput | AppreciationUpsertWithWhereUniqueWithoutFromUserInput[]
+    createMany?: AppreciationCreateManyFromUserInputEnvelope
+    set?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    disconnect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    delete?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    connect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    update?: AppreciationUpdateWithWhereUniqueWithoutFromUserInput | AppreciationUpdateWithWhereUniqueWithoutFromUserInput[]
+    updateMany?: AppreciationUpdateManyWithWhereWithoutFromUserInput | AppreciationUpdateManyWithWhereWithoutFromUserInput[]
+    deleteMany?: AppreciationScalarWhereInput | AppreciationScalarWhereInput[]
+  }
+
+  export type AppreciationUncheckedUpdateManyWithoutToUserNestedInput = {
+    create?: XOR<AppreciationCreateWithoutToUserInput, AppreciationUncheckedCreateWithoutToUserInput> | AppreciationCreateWithoutToUserInput[] | AppreciationUncheckedCreateWithoutToUserInput[]
+    connectOrCreate?: AppreciationCreateOrConnectWithoutToUserInput | AppreciationCreateOrConnectWithoutToUserInput[]
+    upsert?: AppreciationUpsertWithWhereUniqueWithoutToUserInput | AppreciationUpsertWithWhereUniqueWithoutToUserInput[]
+    createMany?: AppreciationCreateManyToUserInputEnvelope
+    set?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    disconnect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    delete?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    connect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    update?: AppreciationUpdateWithWhereUniqueWithoutToUserInput | AppreciationUpdateWithWhereUniqueWithoutToUserInput[]
+    updateMany?: AppreciationUpdateManyWithWhereWithoutToUserInput | AppreciationUpdateManyWithWhereWithoutToUserInput[]
+    deleteMany?: AppreciationScalarWhereInput | AppreciationScalarWhereInput[]
+  }
+
+  export type WyrParticipationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WyrParticipationCreateWithoutUserInput, WyrParticipationUncheckedCreateWithoutUserInput> | WyrParticipationCreateWithoutUserInput[] | WyrParticipationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WyrParticipationCreateOrConnectWithoutUserInput | WyrParticipationCreateOrConnectWithoutUserInput[]
+    upsert?: WyrParticipationUpsertWithWhereUniqueWithoutUserInput | WyrParticipationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WyrParticipationCreateManyUserInputEnvelope
+    set?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    disconnect?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    delete?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    connect?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    update?: WyrParticipationUpdateWithWhereUniqueWithoutUserInput | WyrParticipationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WyrParticipationUpdateManyWithWhereWithoutUserInput | WyrParticipationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WyrParticipationScalarWhereInput | WyrParticipationScalarWhereInput[]
+  }
+
+  export type PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput = {
+    create?: XOR<PartnerSpotlightCreateWithoutFromUserInput, PartnerSpotlightUncheckedCreateWithoutFromUserInput> | PartnerSpotlightCreateWithoutFromUserInput[] | PartnerSpotlightUncheckedCreateWithoutFromUserInput[]
+    connectOrCreate?: PartnerSpotlightCreateOrConnectWithoutFromUserInput | PartnerSpotlightCreateOrConnectWithoutFromUserInput[]
+    upsert?: PartnerSpotlightUpsertWithWhereUniqueWithoutFromUserInput | PartnerSpotlightUpsertWithWhereUniqueWithoutFromUserInput[]
+    createMany?: PartnerSpotlightCreateManyFromUserInputEnvelope
+    set?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    disconnect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    delete?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    connect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    update?: PartnerSpotlightUpdateWithWhereUniqueWithoutFromUserInput | PartnerSpotlightUpdateWithWhereUniqueWithoutFromUserInput[]
+    updateMany?: PartnerSpotlightUpdateManyWithWhereWithoutFromUserInput | PartnerSpotlightUpdateManyWithWhereWithoutFromUserInput[]
+    deleteMany?: PartnerSpotlightScalarWhereInput | PartnerSpotlightScalarWhereInput[]
+  }
+
+  export type PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput = {
+    create?: XOR<PartnerSpotlightCreateWithoutToUserInput, PartnerSpotlightUncheckedCreateWithoutToUserInput> | PartnerSpotlightCreateWithoutToUserInput[] | PartnerSpotlightUncheckedCreateWithoutToUserInput[]
+    connectOrCreate?: PartnerSpotlightCreateOrConnectWithoutToUserInput | PartnerSpotlightCreateOrConnectWithoutToUserInput[]
+    upsert?: PartnerSpotlightUpsertWithWhereUniqueWithoutToUserInput | PartnerSpotlightUpsertWithWhereUniqueWithoutToUserInput[]
+    createMany?: PartnerSpotlightCreateManyToUserInputEnvelope
+    set?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    disconnect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    delete?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    connect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    update?: PartnerSpotlightUpdateWithWhereUniqueWithoutToUserInput | PartnerSpotlightUpdateWithWhereUniqueWithoutToUserInput[]
+    updateMany?: PartnerSpotlightUpdateManyWithWhereWithoutToUserInput | PartnerSpotlightUpdateManyWithWhereWithoutToUserInput[]
+    deleteMany?: PartnerSpotlightScalarWhereInput | PartnerSpotlightScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutPushSubscriptionsInput = {
     create?: XOR<UserCreateWithoutPushSubscriptionsInput, UserUncheckedCreateWithoutPushSubscriptionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutPushSubscriptionsInput
@@ -32428,6 +39436,34 @@ export namespace Prisma {
     connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
   }
 
+  export type AppreciationCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<AppreciationCreateWithoutRelationshipInput, AppreciationUncheckedCreateWithoutRelationshipInput> | AppreciationCreateWithoutRelationshipInput[] | AppreciationUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: AppreciationCreateOrConnectWithoutRelationshipInput | AppreciationCreateOrConnectWithoutRelationshipInput[]
+    createMany?: AppreciationCreateManyRelationshipInputEnvelope
+    connect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+  }
+
+  export type WyrSessionCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<WyrSessionCreateWithoutRelationshipInput, WyrSessionUncheckedCreateWithoutRelationshipInput> | WyrSessionCreateWithoutRelationshipInput[] | WyrSessionUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: WyrSessionCreateOrConnectWithoutRelationshipInput | WyrSessionCreateOrConnectWithoutRelationshipInput[]
+    createMany?: WyrSessionCreateManyRelationshipInputEnvelope
+    connect?: WyrSessionWhereUniqueInput | WyrSessionWhereUniqueInput[]
+  }
+
+  export type PartnerSpotlightCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<PartnerSpotlightCreateWithoutRelationshipInput, PartnerSpotlightUncheckedCreateWithoutRelationshipInput> | PartnerSpotlightCreateWithoutRelationshipInput[] | PartnerSpotlightUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: PartnerSpotlightCreateOrConnectWithoutRelationshipInput | PartnerSpotlightCreateOrConnectWithoutRelationshipInput[]
+    createMany?: PartnerSpotlightCreateManyRelationshipInputEnvelope
+    connect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+  }
+
+  export type DateNightDareCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<DateNightDareCreateWithoutRelationshipInput, DateNightDareUncheckedCreateWithoutRelationshipInput> | DateNightDareCreateWithoutRelationshipInput[] | DateNightDareUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: DateNightDareCreateOrConnectWithoutRelationshipInput | DateNightDareCreateOrConnectWithoutRelationshipInput[]
+    createMany?: DateNightDareCreateManyRelationshipInputEnvelope
+    connect?: DateNightDareWhereUniqueInput | DateNightDareWhereUniqueInput[]
+  }
+
   export type RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput = {
     create?: XOR<RelationshipMemberCreateWithoutRelationshipInput, RelationshipMemberUncheckedCreateWithoutRelationshipInput> | RelationshipMemberCreateWithoutRelationshipInput[] | RelationshipMemberUncheckedCreateWithoutRelationshipInput[]
     connectOrCreate?: RelationshipMemberCreateOrConnectWithoutRelationshipInput | RelationshipMemberCreateOrConnectWithoutRelationshipInput[]
@@ -32488,6 +39524,34 @@ export namespace Prisma {
     connectOrCreate?: MemoryCreateOrConnectWithoutRelationshipInput | MemoryCreateOrConnectWithoutRelationshipInput[]
     createMany?: MemoryCreateManyRelationshipInputEnvelope
     connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+  }
+
+  export type AppreciationUncheckedCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<AppreciationCreateWithoutRelationshipInput, AppreciationUncheckedCreateWithoutRelationshipInput> | AppreciationCreateWithoutRelationshipInput[] | AppreciationUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: AppreciationCreateOrConnectWithoutRelationshipInput | AppreciationCreateOrConnectWithoutRelationshipInput[]
+    createMany?: AppreciationCreateManyRelationshipInputEnvelope
+    connect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+  }
+
+  export type WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<WyrSessionCreateWithoutRelationshipInput, WyrSessionUncheckedCreateWithoutRelationshipInput> | WyrSessionCreateWithoutRelationshipInput[] | WyrSessionUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: WyrSessionCreateOrConnectWithoutRelationshipInput | WyrSessionCreateOrConnectWithoutRelationshipInput[]
+    createMany?: WyrSessionCreateManyRelationshipInputEnvelope
+    connect?: WyrSessionWhereUniqueInput | WyrSessionWhereUniqueInput[]
+  }
+
+  export type PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<PartnerSpotlightCreateWithoutRelationshipInput, PartnerSpotlightUncheckedCreateWithoutRelationshipInput> | PartnerSpotlightCreateWithoutRelationshipInput[] | PartnerSpotlightUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: PartnerSpotlightCreateOrConnectWithoutRelationshipInput | PartnerSpotlightCreateOrConnectWithoutRelationshipInput[]
+    createMany?: PartnerSpotlightCreateManyRelationshipInputEnvelope
+    connect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+  }
+
+  export type DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<DateNightDareCreateWithoutRelationshipInput, DateNightDareUncheckedCreateWithoutRelationshipInput> | DateNightDareCreateWithoutRelationshipInput[] | DateNightDareUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: DateNightDareCreateOrConnectWithoutRelationshipInput | DateNightDareCreateOrConnectWithoutRelationshipInput[]
+    createMany?: DateNightDareCreateManyRelationshipInputEnvelope
+    connect?: DateNightDareWhereUniqueInput | DateNightDareWhereUniqueInput[]
   }
 
   export type EnumRelationshipStatusFieldUpdateOperationsInput = {
@@ -32616,6 +39680,62 @@ export namespace Prisma {
     deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
   }
 
+  export type AppreciationUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<AppreciationCreateWithoutRelationshipInput, AppreciationUncheckedCreateWithoutRelationshipInput> | AppreciationCreateWithoutRelationshipInput[] | AppreciationUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: AppreciationCreateOrConnectWithoutRelationshipInput | AppreciationCreateOrConnectWithoutRelationshipInput[]
+    upsert?: AppreciationUpsertWithWhereUniqueWithoutRelationshipInput | AppreciationUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: AppreciationCreateManyRelationshipInputEnvelope
+    set?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    disconnect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    delete?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    connect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    update?: AppreciationUpdateWithWhereUniqueWithoutRelationshipInput | AppreciationUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: AppreciationUpdateManyWithWhereWithoutRelationshipInput | AppreciationUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: AppreciationScalarWhereInput | AppreciationScalarWhereInput[]
+  }
+
+  export type WyrSessionUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<WyrSessionCreateWithoutRelationshipInput, WyrSessionUncheckedCreateWithoutRelationshipInput> | WyrSessionCreateWithoutRelationshipInput[] | WyrSessionUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: WyrSessionCreateOrConnectWithoutRelationshipInput | WyrSessionCreateOrConnectWithoutRelationshipInput[]
+    upsert?: WyrSessionUpsertWithWhereUniqueWithoutRelationshipInput | WyrSessionUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: WyrSessionCreateManyRelationshipInputEnvelope
+    set?: WyrSessionWhereUniqueInput | WyrSessionWhereUniqueInput[]
+    disconnect?: WyrSessionWhereUniqueInput | WyrSessionWhereUniqueInput[]
+    delete?: WyrSessionWhereUniqueInput | WyrSessionWhereUniqueInput[]
+    connect?: WyrSessionWhereUniqueInput | WyrSessionWhereUniqueInput[]
+    update?: WyrSessionUpdateWithWhereUniqueWithoutRelationshipInput | WyrSessionUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: WyrSessionUpdateManyWithWhereWithoutRelationshipInput | WyrSessionUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: WyrSessionScalarWhereInput | WyrSessionScalarWhereInput[]
+  }
+
+  export type PartnerSpotlightUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<PartnerSpotlightCreateWithoutRelationshipInput, PartnerSpotlightUncheckedCreateWithoutRelationshipInput> | PartnerSpotlightCreateWithoutRelationshipInput[] | PartnerSpotlightUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: PartnerSpotlightCreateOrConnectWithoutRelationshipInput | PartnerSpotlightCreateOrConnectWithoutRelationshipInput[]
+    upsert?: PartnerSpotlightUpsertWithWhereUniqueWithoutRelationshipInput | PartnerSpotlightUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: PartnerSpotlightCreateManyRelationshipInputEnvelope
+    set?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    disconnect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    delete?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    connect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    update?: PartnerSpotlightUpdateWithWhereUniqueWithoutRelationshipInput | PartnerSpotlightUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: PartnerSpotlightUpdateManyWithWhereWithoutRelationshipInput | PartnerSpotlightUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: PartnerSpotlightScalarWhereInput | PartnerSpotlightScalarWhereInput[]
+  }
+
+  export type DateNightDareUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<DateNightDareCreateWithoutRelationshipInput, DateNightDareUncheckedCreateWithoutRelationshipInput> | DateNightDareCreateWithoutRelationshipInput[] | DateNightDareUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: DateNightDareCreateOrConnectWithoutRelationshipInput | DateNightDareCreateOrConnectWithoutRelationshipInput[]
+    upsert?: DateNightDareUpsertWithWhereUniqueWithoutRelationshipInput | DateNightDareUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: DateNightDareCreateManyRelationshipInputEnvelope
+    set?: DateNightDareWhereUniqueInput | DateNightDareWhereUniqueInput[]
+    disconnect?: DateNightDareWhereUniqueInput | DateNightDareWhereUniqueInput[]
+    delete?: DateNightDareWhereUniqueInput | DateNightDareWhereUniqueInput[]
+    connect?: DateNightDareWhereUniqueInput | DateNightDareWhereUniqueInput[]
+    update?: DateNightDareUpdateWithWhereUniqueWithoutRelationshipInput | DateNightDareUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: DateNightDareUpdateManyWithWhereWithoutRelationshipInput | DateNightDareUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: DateNightDareScalarWhereInput | DateNightDareScalarWhereInput[]
+  }
+
   export type RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput = {
     create?: XOR<RelationshipMemberCreateWithoutRelationshipInput, RelationshipMemberUncheckedCreateWithoutRelationshipInput> | RelationshipMemberCreateWithoutRelationshipInput[] | RelationshipMemberUncheckedCreateWithoutRelationshipInput[]
     connectOrCreate?: RelationshipMemberCreateOrConnectWithoutRelationshipInput | RelationshipMemberCreateOrConnectWithoutRelationshipInput[]
@@ -32736,6 +39856,62 @@ export namespace Prisma {
     update?: MemoryUpdateWithWhereUniqueWithoutRelationshipInput | MemoryUpdateWithWhereUniqueWithoutRelationshipInput[]
     updateMany?: MemoryUpdateManyWithWhereWithoutRelationshipInput | MemoryUpdateManyWithWhereWithoutRelationshipInput[]
     deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
+  }
+
+  export type AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<AppreciationCreateWithoutRelationshipInput, AppreciationUncheckedCreateWithoutRelationshipInput> | AppreciationCreateWithoutRelationshipInput[] | AppreciationUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: AppreciationCreateOrConnectWithoutRelationshipInput | AppreciationCreateOrConnectWithoutRelationshipInput[]
+    upsert?: AppreciationUpsertWithWhereUniqueWithoutRelationshipInput | AppreciationUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: AppreciationCreateManyRelationshipInputEnvelope
+    set?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    disconnect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    delete?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    connect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+    update?: AppreciationUpdateWithWhereUniqueWithoutRelationshipInput | AppreciationUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: AppreciationUpdateManyWithWhereWithoutRelationshipInput | AppreciationUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: AppreciationScalarWhereInput | AppreciationScalarWhereInput[]
+  }
+
+  export type WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<WyrSessionCreateWithoutRelationshipInput, WyrSessionUncheckedCreateWithoutRelationshipInput> | WyrSessionCreateWithoutRelationshipInput[] | WyrSessionUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: WyrSessionCreateOrConnectWithoutRelationshipInput | WyrSessionCreateOrConnectWithoutRelationshipInput[]
+    upsert?: WyrSessionUpsertWithWhereUniqueWithoutRelationshipInput | WyrSessionUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: WyrSessionCreateManyRelationshipInputEnvelope
+    set?: WyrSessionWhereUniqueInput | WyrSessionWhereUniqueInput[]
+    disconnect?: WyrSessionWhereUniqueInput | WyrSessionWhereUniqueInput[]
+    delete?: WyrSessionWhereUniqueInput | WyrSessionWhereUniqueInput[]
+    connect?: WyrSessionWhereUniqueInput | WyrSessionWhereUniqueInput[]
+    update?: WyrSessionUpdateWithWhereUniqueWithoutRelationshipInput | WyrSessionUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: WyrSessionUpdateManyWithWhereWithoutRelationshipInput | WyrSessionUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: WyrSessionScalarWhereInput | WyrSessionScalarWhereInput[]
+  }
+
+  export type PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<PartnerSpotlightCreateWithoutRelationshipInput, PartnerSpotlightUncheckedCreateWithoutRelationshipInput> | PartnerSpotlightCreateWithoutRelationshipInput[] | PartnerSpotlightUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: PartnerSpotlightCreateOrConnectWithoutRelationshipInput | PartnerSpotlightCreateOrConnectWithoutRelationshipInput[]
+    upsert?: PartnerSpotlightUpsertWithWhereUniqueWithoutRelationshipInput | PartnerSpotlightUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: PartnerSpotlightCreateManyRelationshipInputEnvelope
+    set?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    disconnect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    delete?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    connect?: PartnerSpotlightWhereUniqueInput | PartnerSpotlightWhereUniqueInput[]
+    update?: PartnerSpotlightUpdateWithWhereUniqueWithoutRelationshipInput | PartnerSpotlightUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: PartnerSpotlightUpdateManyWithWhereWithoutRelationshipInput | PartnerSpotlightUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: PartnerSpotlightScalarWhereInput | PartnerSpotlightScalarWhereInput[]
+  }
+
+  export type DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<DateNightDareCreateWithoutRelationshipInput, DateNightDareUncheckedCreateWithoutRelationshipInput> | DateNightDareCreateWithoutRelationshipInput[] | DateNightDareUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: DateNightDareCreateOrConnectWithoutRelationshipInput | DateNightDareCreateOrConnectWithoutRelationshipInput[]
+    upsert?: DateNightDareUpsertWithWhereUniqueWithoutRelationshipInput | DateNightDareUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: DateNightDareCreateManyRelationshipInputEnvelope
+    set?: DateNightDareWhereUniqueInput | DateNightDareWhereUniqueInput[]
+    disconnect?: DateNightDareWhereUniqueInput | DateNightDareWhereUniqueInput[]
+    delete?: DateNightDareWhereUniqueInput | DateNightDareWhereUniqueInput[]
+    connect?: DateNightDareWhereUniqueInput | DateNightDareWhereUniqueInput[]
+    update?: DateNightDareUpdateWithWhereUniqueWithoutRelationshipInput | DateNightDareUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: DateNightDareUpdateManyWithWhereWithoutRelationshipInput | DateNightDareUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: DateNightDareScalarWhereInput | DateNightDareScalarWhereInput[]
   }
 
   export type RelationshipCreateNestedOneWithoutMembersInput = {
@@ -33277,6 +40453,192 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMemoriesInput, UserUpdateWithoutMemoriesInput>, UserUncheckedUpdateWithoutMemoriesInput>
   }
 
+  export type RelationshipCreateNestedOneWithoutAppreciationsInput = {
+    create?: XOR<RelationshipCreateWithoutAppreciationsInput, RelationshipUncheckedCreateWithoutAppreciationsInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutAppreciationsInput
+    connect?: RelationshipWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAppreciationsSentInput = {
+    create?: XOR<UserCreateWithoutAppreciationsSentInput, UserUncheckedCreateWithoutAppreciationsSentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAppreciationsSentInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAppreciationsReceivedInput = {
+    create?: XOR<UserCreateWithoutAppreciationsReceivedInput, UserUncheckedCreateWithoutAppreciationsReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAppreciationsReceivedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type RelationshipUpdateOneRequiredWithoutAppreciationsNestedInput = {
+    create?: XOR<RelationshipCreateWithoutAppreciationsInput, RelationshipUncheckedCreateWithoutAppreciationsInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutAppreciationsInput
+    upsert?: RelationshipUpsertWithoutAppreciationsInput
+    connect?: RelationshipWhereUniqueInput
+    update?: XOR<XOR<RelationshipUpdateToOneWithWhereWithoutAppreciationsInput, RelationshipUpdateWithoutAppreciationsInput>, RelationshipUncheckedUpdateWithoutAppreciationsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutAppreciationsSentNestedInput = {
+    create?: XOR<UserCreateWithoutAppreciationsSentInput, UserUncheckedCreateWithoutAppreciationsSentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAppreciationsSentInput
+    upsert?: UserUpsertWithoutAppreciationsSentInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAppreciationsSentInput, UserUpdateWithoutAppreciationsSentInput>, UserUncheckedUpdateWithoutAppreciationsSentInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutAppreciationsReceivedNestedInput = {
+    create?: XOR<UserCreateWithoutAppreciationsReceivedInput, UserUncheckedCreateWithoutAppreciationsReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAppreciationsReceivedInput
+    upsert?: UserUpsertWithoutAppreciationsReceivedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAppreciationsReceivedInput, UserUpdateWithoutAppreciationsReceivedInput>, UserUncheckedUpdateWithoutAppreciationsReceivedInput>
+  }
+
+  export type RelationshipCreateNestedOneWithoutWyrSessionsInput = {
+    create?: XOR<RelationshipCreateWithoutWyrSessionsInput, RelationshipUncheckedCreateWithoutWyrSessionsInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutWyrSessionsInput
+    connect?: RelationshipWhereUniqueInput
+  }
+
+  export type WyrParticipationCreateNestedManyWithoutWyrSessionInput = {
+    create?: XOR<WyrParticipationCreateWithoutWyrSessionInput, WyrParticipationUncheckedCreateWithoutWyrSessionInput> | WyrParticipationCreateWithoutWyrSessionInput[] | WyrParticipationUncheckedCreateWithoutWyrSessionInput[]
+    connectOrCreate?: WyrParticipationCreateOrConnectWithoutWyrSessionInput | WyrParticipationCreateOrConnectWithoutWyrSessionInput[]
+    createMany?: WyrParticipationCreateManyWyrSessionInputEnvelope
+    connect?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+  }
+
+  export type WyrParticipationUncheckedCreateNestedManyWithoutWyrSessionInput = {
+    create?: XOR<WyrParticipationCreateWithoutWyrSessionInput, WyrParticipationUncheckedCreateWithoutWyrSessionInput> | WyrParticipationCreateWithoutWyrSessionInput[] | WyrParticipationUncheckedCreateWithoutWyrSessionInput[]
+    connectOrCreate?: WyrParticipationCreateOrConnectWithoutWyrSessionInput | WyrParticipationCreateOrConnectWithoutWyrSessionInput[]
+    createMany?: WyrParticipationCreateManyWyrSessionInputEnvelope
+    connect?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+  }
+
+  export type EnumWyrStateFieldUpdateOperationsInput = {
+    set?: $Enums.WyrState
+  }
+
+  export type RelationshipUpdateOneRequiredWithoutWyrSessionsNestedInput = {
+    create?: XOR<RelationshipCreateWithoutWyrSessionsInput, RelationshipUncheckedCreateWithoutWyrSessionsInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutWyrSessionsInput
+    upsert?: RelationshipUpsertWithoutWyrSessionsInput
+    connect?: RelationshipWhereUniqueInput
+    update?: XOR<XOR<RelationshipUpdateToOneWithWhereWithoutWyrSessionsInput, RelationshipUpdateWithoutWyrSessionsInput>, RelationshipUncheckedUpdateWithoutWyrSessionsInput>
+  }
+
+  export type WyrParticipationUpdateManyWithoutWyrSessionNestedInput = {
+    create?: XOR<WyrParticipationCreateWithoutWyrSessionInput, WyrParticipationUncheckedCreateWithoutWyrSessionInput> | WyrParticipationCreateWithoutWyrSessionInput[] | WyrParticipationUncheckedCreateWithoutWyrSessionInput[]
+    connectOrCreate?: WyrParticipationCreateOrConnectWithoutWyrSessionInput | WyrParticipationCreateOrConnectWithoutWyrSessionInput[]
+    upsert?: WyrParticipationUpsertWithWhereUniqueWithoutWyrSessionInput | WyrParticipationUpsertWithWhereUniqueWithoutWyrSessionInput[]
+    createMany?: WyrParticipationCreateManyWyrSessionInputEnvelope
+    set?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    disconnect?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    delete?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    connect?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    update?: WyrParticipationUpdateWithWhereUniqueWithoutWyrSessionInput | WyrParticipationUpdateWithWhereUniqueWithoutWyrSessionInput[]
+    updateMany?: WyrParticipationUpdateManyWithWhereWithoutWyrSessionInput | WyrParticipationUpdateManyWithWhereWithoutWyrSessionInput[]
+    deleteMany?: WyrParticipationScalarWhereInput | WyrParticipationScalarWhereInput[]
+  }
+
+  export type WyrParticipationUncheckedUpdateManyWithoutWyrSessionNestedInput = {
+    create?: XOR<WyrParticipationCreateWithoutWyrSessionInput, WyrParticipationUncheckedCreateWithoutWyrSessionInput> | WyrParticipationCreateWithoutWyrSessionInput[] | WyrParticipationUncheckedCreateWithoutWyrSessionInput[]
+    connectOrCreate?: WyrParticipationCreateOrConnectWithoutWyrSessionInput | WyrParticipationCreateOrConnectWithoutWyrSessionInput[]
+    upsert?: WyrParticipationUpsertWithWhereUniqueWithoutWyrSessionInput | WyrParticipationUpsertWithWhereUniqueWithoutWyrSessionInput[]
+    createMany?: WyrParticipationCreateManyWyrSessionInputEnvelope
+    set?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    disconnect?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    delete?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    connect?: WyrParticipationWhereUniqueInput | WyrParticipationWhereUniqueInput[]
+    update?: WyrParticipationUpdateWithWhereUniqueWithoutWyrSessionInput | WyrParticipationUpdateWithWhereUniqueWithoutWyrSessionInput[]
+    updateMany?: WyrParticipationUpdateManyWithWhereWithoutWyrSessionInput | WyrParticipationUpdateManyWithWhereWithoutWyrSessionInput[]
+    deleteMany?: WyrParticipationScalarWhereInput | WyrParticipationScalarWhereInput[]
+  }
+
+  export type WyrSessionCreateNestedOneWithoutParticipationsInput = {
+    create?: XOR<WyrSessionCreateWithoutParticipationsInput, WyrSessionUncheckedCreateWithoutParticipationsInput>
+    connectOrCreate?: WyrSessionCreateOrConnectWithoutParticipationsInput
+    connect?: WyrSessionWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutWyrParticipationsInput = {
+    create?: XOR<UserCreateWithoutWyrParticipationsInput, UserUncheckedCreateWithoutWyrParticipationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWyrParticipationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type WyrSessionUpdateOneRequiredWithoutParticipationsNestedInput = {
+    create?: XOR<WyrSessionCreateWithoutParticipationsInput, WyrSessionUncheckedCreateWithoutParticipationsInput>
+    connectOrCreate?: WyrSessionCreateOrConnectWithoutParticipationsInput
+    upsert?: WyrSessionUpsertWithoutParticipationsInput
+    connect?: WyrSessionWhereUniqueInput
+    update?: XOR<XOR<WyrSessionUpdateToOneWithWhereWithoutParticipationsInput, WyrSessionUpdateWithoutParticipationsInput>, WyrSessionUncheckedUpdateWithoutParticipationsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutWyrParticipationsNestedInput = {
+    create?: XOR<UserCreateWithoutWyrParticipationsInput, UserUncheckedCreateWithoutWyrParticipationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWyrParticipationsInput
+    upsert?: UserUpsertWithoutWyrParticipationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWyrParticipationsInput, UserUpdateWithoutWyrParticipationsInput>, UserUncheckedUpdateWithoutWyrParticipationsInput>
+  }
+
+  export type RelationshipCreateNestedOneWithoutSpotlightsInput = {
+    create?: XOR<RelationshipCreateWithoutSpotlightsInput, RelationshipUncheckedCreateWithoutSpotlightsInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutSpotlightsInput
+    connect?: RelationshipWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutSpotlightsSentInput = {
+    create?: XOR<UserCreateWithoutSpotlightsSentInput, UserUncheckedCreateWithoutSpotlightsSentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSpotlightsSentInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutSpotlightsReceivedInput = {
+    create?: XOR<UserCreateWithoutSpotlightsReceivedInput, UserUncheckedCreateWithoutSpotlightsReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSpotlightsReceivedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type RelationshipUpdateOneRequiredWithoutSpotlightsNestedInput = {
+    create?: XOR<RelationshipCreateWithoutSpotlightsInput, RelationshipUncheckedCreateWithoutSpotlightsInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutSpotlightsInput
+    upsert?: RelationshipUpsertWithoutSpotlightsInput
+    connect?: RelationshipWhereUniqueInput
+    update?: XOR<XOR<RelationshipUpdateToOneWithWhereWithoutSpotlightsInput, RelationshipUpdateWithoutSpotlightsInput>, RelationshipUncheckedUpdateWithoutSpotlightsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutSpotlightsSentNestedInput = {
+    create?: XOR<UserCreateWithoutSpotlightsSentInput, UserUncheckedCreateWithoutSpotlightsSentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSpotlightsSentInput
+    upsert?: UserUpsertWithoutSpotlightsSentInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSpotlightsSentInput, UserUpdateWithoutSpotlightsSentInput>, UserUncheckedUpdateWithoutSpotlightsSentInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutSpotlightsReceivedNestedInput = {
+    create?: XOR<UserCreateWithoutSpotlightsReceivedInput, UserUncheckedCreateWithoutSpotlightsReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSpotlightsReceivedInput
+    upsert?: UserUpsertWithoutSpotlightsReceivedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSpotlightsReceivedInput, UserUpdateWithoutSpotlightsReceivedInput>, UserUncheckedUpdateWithoutSpotlightsReceivedInput>
+  }
+
+  export type RelationshipCreateNestedOneWithoutDateNightDaresInput = {
+    create?: XOR<RelationshipCreateWithoutDateNightDaresInput, RelationshipUncheckedCreateWithoutDateNightDaresInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutDateNightDaresInput
+    connect?: RelationshipWhereUniqueInput
+  }
+
+  export type RelationshipUpdateOneRequiredWithoutDateNightDaresNestedInput = {
+    create?: XOR<RelationshipCreateWithoutDateNightDaresInput, RelationshipUncheckedCreateWithoutDateNightDaresInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutDateNightDaresInput
+    upsert?: RelationshipUpsertWithoutDateNightDaresInput
+    connect?: RelationshipWhereUniqueInput
+    update?: XOR<XOR<RelationshipUpdateToOneWithWhereWithoutDateNightDaresInput, RelationshipUpdateWithoutDateNightDaresInput>, RelationshipUncheckedUpdateWithoutDateNightDaresInput>
+  }
+
   export type RelationshipCreateNestedOneWithoutQuizSessionsInput = {
     create?: XOR<RelationshipCreateWithoutQuizSessionsInput, RelationshipUncheckedCreateWithoutQuizSessionsInput>
     connectOrCreate?: RelationshipCreateOrConnectWithoutQuizSessionsInput
@@ -33795,6 +41157,23 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type NestedEnumWyrStateFilter<$PrismaModel = never> = {
+    equals?: $Enums.WyrState | EnumWyrStateFieldRefInput<$PrismaModel>
+    in?: $Enums.WyrState[] | ListEnumWyrStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WyrState[] | ListEnumWyrStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumWyrStateFilter<$PrismaModel> | $Enums.WyrState
+  }
+
+  export type NestedEnumWyrStateWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.WyrState | EnumWyrStateFieldRefInput<$PrismaModel>
+    in?: $Enums.WyrState[] | ListEnumWyrStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WyrState[] | ListEnumWyrStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumWyrStateWithAggregatesFilter<$PrismaModel> | $Enums.WyrState
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumWyrStateFilter<$PrismaModel>
+    _max?: NestedEnumWyrStateFilter<$PrismaModel>
+  }
+
   export type NestedEnumQuizStateFilter<$PrismaModel = never> = {
     equals?: $Enums.QuizState | EnumQuizStateFieldRefInput<$PrismaModel>
     in?: $Enums.QuizState[] | ListEnumQuizStateFieldRefInput<$PrismaModel>
@@ -34215,6 +41594,142 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AppreciationCreateWithoutFromUserInput = {
+    id?: string
+    content: string
+    weekKey: string
+    createdAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutAppreciationsInput
+    toUser: UserCreateNestedOneWithoutAppreciationsReceivedInput
+  }
+
+  export type AppreciationUncheckedCreateWithoutFromUserInput = {
+    id?: string
+    relationshipId: string
+    toUserId: string
+    content: string
+    weekKey: string
+    createdAt?: Date | string
+  }
+
+  export type AppreciationCreateOrConnectWithoutFromUserInput = {
+    where: AppreciationWhereUniqueInput
+    create: XOR<AppreciationCreateWithoutFromUserInput, AppreciationUncheckedCreateWithoutFromUserInput>
+  }
+
+  export type AppreciationCreateManyFromUserInputEnvelope = {
+    data: AppreciationCreateManyFromUserInput | AppreciationCreateManyFromUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AppreciationCreateWithoutToUserInput = {
+    id?: string
+    content: string
+    weekKey: string
+    createdAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutAppreciationsInput
+    fromUser: UserCreateNestedOneWithoutAppreciationsSentInput
+  }
+
+  export type AppreciationUncheckedCreateWithoutToUserInput = {
+    id?: string
+    relationshipId: string
+    fromUserId: string
+    content: string
+    weekKey: string
+    createdAt?: Date | string
+  }
+
+  export type AppreciationCreateOrConnectWithoutToUserInput = {
+    where: AppreciationWhereUniqueInput
+    create: XOR<AppreciationCreateWithoutToUserInput, AppreciationUncheckedCreateWithoutToUserInput>
+  }
+
+  export type AppreciationCreateManyToUserInputEnvelope = {
+    data: AppreciationCreateManyToUserInput | AppreciationCreateManyToUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WyrParticipationCreateWithoutUserInput = {
+    id?: string
+    choice: number
+    createdAt?: Date | string
+    wyrSession: WyrSessionCreateNestedOneWithoutParticipationsInput
+  }
+
+  export type WyrParticipationUncheckedCreateWithoutUserInput = {
+    id?: string
+    wyrSessionId: string
+    choice: number
+    createdAt?: Date | string
+  }
+
+  export type WyrParticipationCreateOrConnectWithoutUserInput = {
+    where: WyrParticipationWhereUniqueInput
+    create: XOR<WyrParticipationCreateWithoutUserInput, WyrParticipationUncheckedCreateWithoutUserInput>
+  }
+
+  export type WyrParticipationCreateManyUserInputEnvelope = {
+    data: WyrParticipationCreateManyUserInput | WyrParticipationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PartnerSpotlightCreateWithoutFromUserInput = {
+    id?: string
+    items: JsonNullValueInput | InputJsonValue
+    monthKey: string
+    createdAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutSpotlightsInput
+    toUser: UserCreateNestedOneWithoutSpotlightsReceivedInput
+  }
+
+  export type PartnerSpotlightUncheckedCreateWithoutFromUserInput = {
+    id?: string
+    relationshipId: string
+    toUserId: string
+    items: JsonNullValueInput | InputJsonValue
+    monthKey: string
+    createdAt?: Date | string
+  }
+
+  export type PartnerSpotlightCreateOrConnectWithoutFromUserInput = {
+    where: PartnerSpotlightWhereUniqueInput
+    create: XOR<PartnerSpotlightCreateWithoutFromUserInput, PartnerSpotlightUncheckedCreateWithoutFromUserInput>
+  }
+
+  export type PartnerSpotlightCreateManyFromUserInputEnvelope = {
+    data: PartnerSpotlightCreateManyFromUserInput | PartnerSpotlightCreateManyFromUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PartnerSpotlightCreateWithoutToUserInput = {
+    id?: string
+    items: JsonNullValueInput | InputJsonValue
+    monthKey: string
+    createdAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutSpotlightsInput
+    fromUser: UserCreateNestedOneWithoutSpotlightsSentInput
+  }
+
+  export type PartnerSpotlightUncheckedCreateWithoutToUserInput = {
+    id?: string
+    relationshipId: string
+    fromUserId: string
+    items: JsonNullValueInput | InputJsonValue
+    monthKey: string
+    createdAt?: Date | string
+  }
+
+  export type PartnerSpotlightCreateOrConnectWithoutToUserInput = {
+    where: PartnerSpotlightWhereUniqueInput
+    create: XOR<PartnerSpotlightCreateWithoutToUserInput, PartnerSpotlightUncheckedCreateWithoutToUserInput>
+  }
+
+  export type PartnerSpotlightCreateManyToUserInputEnvelope = {
+    data: PartnerSpotlightCreateManyToUserInput | PartnerSpotlightCreateManyToUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -34602,6 +42117,123 @@ export namespace Prisma {
     savedAt?: DateTimeFilter<"Memory"> | Date | string
   }
 
+  export type AppreciationUpsertWithWhereUniqueWithoutFromUserInput = {
+    where: AppreciationWhereUniqueInput
+    update: XOR<AppreciationUpdateWithoutFromUserInput, AppreciationUncheckedUpdateWithoutFromUserInput>
+    create: XOR<AppreciationCreateWithoutFromUserInput, AppreciationUncheckedCreateWithoutFromUserInput>
+  }
+
+  export type AppreciationUpdateWithWhereUniqueWithoutFromUserInput = {
+    where: AppreciationWhereUniqueInput
+    data: XOR<AppreciationUpdateWithoutFromUserInput, AppreciationUncheckedUpdateWithoutFromUserInput>
+  }
+
+  export type AppreciationUpdateManyWithWhereWithoutFromUserInput = {
+    where: AppreciationScalarWhereInput
+    data: XOR<AppreciationUpdateManyMutationInput, AppreciationUncheckedUpdateManyWithoutFromUserInput>
+  }
+
+  export type AppreciationScalarWhereInput = {
+    AND?: AppreciationScalarWhereInput | AppreciationScalarWhereInput[]
+    OR?: AppreciationScalarWhereInput[]
+    NOT?: AppreciationScalarWhereInput | AppreciationScalarWhereInput[]
+    id?: StringFilter<"Appreciation"> | string
+    relationshipId?: StringFilter<"Appreciation"> | string
+    fromUserId?: StringFilter<"Appreciation"> | string
+    toUserId?: StringFilter<"Appreciation"> | string
+    content?: StringFilter<"Appreciation"> | string
+    weekKey?: StringFilter<"Appreciation"> | string
+    createdAt?: DateTimeFilter<"Appreciation"> | Date | string
+  }
+
+  export type AppreciationUpsertWithWhereUniqueWithoutToUserInput = {
+    where: AppreciationWhereUniqueInput
+    update: XOR<AppreciationUpdateWithoutToUserInput, AppreciationUncheckedUpdateWithoutToUserInput>
+    create: XOR<AppreciationCreateWithoutToUserInput, AppreciationUncheckedCreateWithoutToUserInput>
+  }
+
+  export type AppreciationUpdateWithWhereUniqueWithoutToUserInput = {
+    where: AppreciationWhereUniqueInput
+    data: XOR<AppreciationUpdateWithoutToUserInput, AppreciationUncheckedUpdateWithoutToUserInput>
+  }
+
+  export type AppreciationUpdateManyWithWhereWithoutToUserInput = {
+    where: AppreciationScalarWhereInput
+    data: XOR<AppreciationUpdateManyMutationInput, AppreciationUncheckedUpdateManyWithoutToUserInput>
+  }
+
+  export type WyrParticipationUpsertWithWhereUniqueWithoutUserInput = {
+    where: WyrParticipationWhereUniqueInput
+    update: XOR<WyrParticipationUpdateWithoutUserInput, WyrParticipationUncheckedUpdateWithoutUserInput>
+    create: XOR<WyrParticipationCreateWithoutUserInput, WyrParticipationUncheckedCreateWithoutUserInput>
+  }
+
+  export type WyrParticipationUpdateWithWhereUniqueWithoutUserInput = {
+    where: WyrParticipationWhereUniqueInput
+    data: XOR<WyrParticipationUpdateWithoutUserInput, WyrParticipationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type WyrParticipationUpdateManyWithWhereWithoutUserInput = {
+    where: WyrParticipationScalarWhereInput
+    data: XOR<WyrParticipationUpdateManyMutationInput, WyrParticipationUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type WyrParticipationScalarWhereInput = {
+    AND?: WyrParticipationScalarWhereInput | WyrParticipationScalarWhereInput[]
+    OR?: WyrParticipationScalarWhereInput[]
+    NOT?: WyrParticipationScalarWhereInput | WyrParticipationScalarWhereInput[]
+    id?: StringFilter<"WyrParticipation"> | string
+    wyrSessionId?: StringFilter<"WyrParticipation"> | string
+    userId?: StringFilter<"WyrParticipation"> | string
+    choice?: IntFilter<"WyrParticipation"> | number
+    createdAt?: DateTimeFilter<"WyrParticipation"> | Date | string
+  }
+
+  export type PartnerSpotlightUpsertWithWhereUniqueWithoutFromUserInput = {
+    where: PartnerSpotlightWhereUniqueInput
+    update: XOR<PartnerSpotlightUpdateWithoutFromUserInput, PartnerSpotlightUncheckedUpdateWithoutFromUserInput>
+    create: XOR<PartnerSpotlightCreateWithoutFromUserInput, PartnerSpotlightUncheckedCreateWithoutFromUserInput>
+  }
+
+  export type PartnerSpotlightUpdateWithWhereUniqueWithoutFromUserInput = {
+    where: PartnerSpotlightWhereUniqueInput
+    data: XOR<PartnerSpotlightUpdateWithoutFromUserInput, PartnerSpotlightUncheckedUpdateWithoutFromUserInput>
+  }
+
+  export type PartnerSpotlightUpdateManyWithWhereWithoutFromUserInput = {
+    where: PartnerSpotlightScalarWhereInput
+    data: XOR<PartnerSpotlightUpdateManyMutationInput, PartnerSpotlightUncheckedUpdateManyWithoutFromUserInput>
+  }
+
+  export type PartnerSpotlightScalarWhereInput = {
+    AND?: PartnerSpotlightScalarWhereInput | PartnerSpotlightScalarWhereInput[]
+    OR?: PartnerSpotlightScalarWhereInput[]
+    NOT?: PartnerSpotlightScalarWhereInput | PartnerSpotlightScalarWhereInput[]
+    id?: StringFilter<"PartnerSpotlight"> | string
+    relationshipId?: StringFilter<"PartnerSpotlight"> | string
+    fromUserId?: StringFilter<"PartnerSpotlight"> | string
+    toUserId?: StringFilter<"PartnerSpotlight"> | string
+    items?: JsonFilter<"PartnerSpotlight">
+    monthKey?: StringFilter<"PartnerSpotlight"> | string
+    createdAt?: DateTimeFilter<"PartnerSpotlight"> | Date | string
+  }
+
+  export type PartnerSpotlightUpsertWithWhereUniqueWithoutToUserInput = {
+    where: PartnerSpotlightWhereUniqueInput
+    update: XOR<PartnerSpotlightUpdateWithoutToUserInput, PartnerSpotlightUncheckedUpdateWithoutToUserInput>
+    create: XOR<PartnerSpotlightCreateWithoutToUserInput, PartnerSpotlightUncheckedCreateWithoutToUserInput>
+  }
+
+  export type PartnerSpotlightUpdateWithWhereUniqueWithoutToUserInput = {
+    where: PartnerSpotlightWhereUniqueInput
+    data: XOR<PartnerSpotlightUpdateWithoutToUserInput, PartnerSpotlightUncheckedUpdateWithoutToUserInput>
+  }
+
+  export type PartnerSpotlightUpdateManyWithWhereWithoutToUserInput = {
+    where: PartnerSpotlightScalarWhereInput
+    data: XOR<PartnerSpotlightUpdateManyMutationInput, PartnerSpotlightUncheckedUpdateManyWithoutToUserInput>
+  }
+
   export type UserCreateWithoutPushSubscriptionsInput = {
     id?: string
     email: string
@@ -34624,6 +42256,11 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -34648,6 +42285,11 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -34688,6 +42330,11 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -34712,6 +42359,11 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -34736,6 +42388,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -34760,6 +42417,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -34800,6 +42462,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -34824,6 +42491,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -34848,6 +42520,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -34872,6 +42549,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -34912,6 +42594,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -34936,6 +42623,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type RelationshipMemberCreateWithoutRelationshipInput = {
@@ -35197,6 +42889,122 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AppreciationCreateWithoutRelationshipInput = {
+    id?: string
+    content: string
+    weekKey: string
+    createdAt?: Date | string
+    fromUser: UserCreateNestedOneWithoutAppreciationsSentInput
+    toUser: UserCreateNestedOneWithoutAppreciationsReceivedInput
+  }
+
+  export type AppreciationUncheckedCreateWithoutRelationshipInput = {
+    id?: string
+    fromUserId: string
+    toUserId: string
+    content: string
+    weekKey: string
+    createdAt?: Date | string
+  }
+
+  export type AppreciationCreateOrConnectWithoutRelationshipInput = {
+    where: AppreciationWhereUniqueInput
+    create: XOR<AppreciationCreateWithoutRelationshipInput, AppreciationUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type AppreciationCreateManyRelationshipInputEnvelope = {
+    data: AppreciationCreateManyRelationshipInput | AppreciationCreateManyRelationshipInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WyrSessionCreateWithoutRelationshipInput = {
+    id?: string
+    sessionDate: Date | string
+    questionIndex: number
+    state?: $Enums.WyrState
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participations?: WyrParticipationCreateNestedManyWithoutWyrSessionInput
+  }
+
+  export type WyrSessionUncheckedCreateWithoutRelationshipInput = {
+    id?: string
+    sessionDate: Date | string
+    questionIndex: number
+    state?: $Enums.WyrState
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participations?: WyrParticipationUncheckedCreateNestedManyWithoutWyrSessionInput
+  }
+
+  export type WyrSessionCreateOrConnectWithoutRelationshipInput = {
+    where: WyrSessionWhereUniqueInput
+    create: XOR<WyrSessionCreateWithoutRelationshipInput, WyrSessionUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type WyrSessionCreateManyRelationshipInputEnvelope = {
+    data: WyrSessionCreateManyRelationshipInput | WyrSessionCreateManyRelationshipInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PartnerSpotlightCreateWithoutRelationshipInput = {
+    id?: string
+    items: JsonNullValueInput | InputJsonValue
+    monthKey: string
+    createdAt?: Date | string
+    fromUser: UserCreateNestedOneWithoutSpotlightsSentInput
+    toUser: UserCreateNestedOneWithoutSpotlightsReceivedInput
+  }
+
+  export type PartnerSpotlightUncheckedCreateWithoutRelationshipInput = {
+    id?: string
+    fromUserId: string
+    toUserId: string
+    items: JsonNullValueInput | InputJsonValue
+    monthKey: string
+    createdAt?: Date | string
+  }
+
+  export type PartnerSpotlightCreateOrConnectWithoutRelationshipInput = {
+    where: PartnerSpotlightWhereUniqueInput
+    create: XOR<PartnerSpotlightCreateWithoutRelationshipInput, PartnerSpotlightUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type PartnerSpotlightCreateManyRelationshipInputEnvelope = {
+    data: PartnerSpotlightCreateManyRelationshipInput | PartnerSpotlightCreateManyRelationshipInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DateNightDareCreateWithoutRelationshipInput = {
+    id?: string
+    weekKey: string
+    dareIndex: number
+    acceptedAt?: Date | string | null
+    completedAt?: Date | string | null
+    photoUrl?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DateNightDareUncheckedCreateWithoutRelationshipInput = {
+    id?: string
+    weekKey: string
+    dareIndex: number
+    acceptedAt?: Date | string | null
+    completedAt?: Date | string | null
+    photoUrl?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DateNightDareCreateOrConnectWithoutRelationshipInput = {
+    where: DateNightDareWhereUniqueInput
+    create: XOR<DateNightDareCreateWithoutRelationshipInput, DateNightDareUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type DateNightDareCreateManyRelationshipInputEnvelope = {
+    data: DateNightDareCreateManyRelationshipInput | DateNightDareCreateManyRelationshipInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RelationshipMemberUpsertWithWhereUniqueWithoutRelationshipInput = {
     where: RelationshipMemberWhereUniqueInput
     update: XOR<RelationshipMemberUpdateWithoutRelationshipInput, RelationshipMemberUncheckedUpdateWithoutRelationshipInput>
@@ -35396,6 +43204,97 @@ export namespace Prisma {
     data: XOR<MemoryUpdateManyMutationInput, MemoryUncheckedUpdateManyWithoutRelationshipInput>
   }
 
+  export type AppreciationUpsertWithWhereUniqueWithoutRelationshipInput = {
+    where: AppreciationWhereUniqueInput
+    update: XOR<AppreciationUpdateWithoutRelationshipInput, AppreciationUncheckedUpdateWithoutRelationshipInput>
+    create: XOR<AppreciationCreateWithoutRelationshipInput, AppreciationUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type AppreciationUpdateWithWhereUniqueWithoutRelationshipInput = {
+    where: AppreciationWhereUniqueInput
+    data: XOR<AppreciationUpdateWithoutRelationshipInput, AppreciationUncheckedUpdateWithoutRelationshipInput>
+  }
+
+  export type AppreciationUpdateManyWithWhereWithoutRelationshipInput = {
+    where: AppreciationScalarWhereInput
+    data: XOR<AppreciationUpdateManyMutationInput, AppreciationUncheckedUpdateManyWithoutRelationshipInput>
+  }
+
+  export type WyrSessionUpsertWithWhereUniqueWithoutRelationshipInput = {
+    where: WyrSessionWhereUniqueInput
+    update: XOR<WyrSessionUpdateWithoutRelationshipInput, WyrSessionUncheckedUpdateWithoutRelationshipInput>
+    create: XOR<WyrSessionCreateWithoutRelationshipInput, WyrSessionUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type WyrSessionUpdateWithWhereUniqueWithoutRelationshipInput = {
+    where: WyrSessionWhereUniqueInput
+    data: XOR<WyrSessionUpdateWithoutRelationshipInput, WyrSessionUncheckedUpdateWithoutRelationshipInput>
+  }
+
+  export type WyrSessionUpdateManyWithWhereWithoutRelationshipInput = {
+    where: WyrSessionScalarWhereInput
+    data: XOR<WyrSessionUpdateManyMutationInput, WyrSessionUncheckedUpdateManyWithoutRelationshipInput>
+  }
+
+  export type WyrSessionScalarWhereInput = {
+    AND?: WyrSessionScalarWhereInput | WyrSessionScalarWhereInput[]
+    OR?: WyrSessionScalarWhereInput[]
+    NOT?: WyrSessionScalarWhereInput | WyrSessionScalarWhereInput[]
+    id?: StringFilter<"WyrSession"> | string
+    relationshipId?: StringFilter<"WyrSession"> | string
+    sessionDate?: DateTimeFilter<"WyrSession"> | Date | string
+    questionIndex?: IntFilter<"WyrSession"> | number
+    state?: EnumWyrStateFilter<"WyrSession"> | $Enums.WyrState
+    createdAt?: DateTimeFilter<"WyrSession"> | Date | string
+    updatedAt?: DateTimeFilter<"WyrSession"> | Date | string
+  }
+
+  export type PartnerSpotlightUpsertWithWhereUniqueWithoutRelationshipInput = {
+    where: PartnerSpotlightWhereUniqueInput
+    update: XOR<PartnerSpotlightUpdateWithoutRelationshipInput, PartnerSpotlightUncheckedUpdateWithoutRelationshipInput>
+    create: XOR<PartnerSpotlightCreateWithoutRelationshipInput, PartnerSpotlightUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type PartnerSpotlightUpdateWithWhereUniqueWithoutRelationshipInput = {
+    where: PartnerSpotlightWhereUniqueInput
+    data: XOR<PartnerSpotlightUpdateWithoutRelationshipInput, PartnerSpotlightUncheckedUpdateWithoutRelationshipInput>
+  }
+
+  export type PartnerSpotlightUpdateManyWithWhereWithoutRelationshipInput = {
+    where: PartnerSpotlightScalarWhereInput
+    data: XOR<PartnerSpotlightUpdateManyMutationInput, PartnerSpotlightUncheckedUpdateManyWithoutRelationshipInput>
+  }
+
+  export type DateNightDareUpsertWithWhereUniqueWithoutRelationshipInput = {
+    where: DateNightDareWhereUniqueInput
+    update: XOR<DateNightDareUpdateWithoutRelationshipInput, DateNightDareUncheckedUpdateWithoutRelationshipInput>
+    create: XOR<DateNightDareCreateWithoutRelationshipInput, DateNightDareUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type DateNightDareUpdateWithWhereUniqueWithoutRelationshipInput = {
+    where: DateNightDareWhereUniqueInput
+    data: XOR<DateNightDareUpdateWithoutRelationshipInput, DateNightDareUncheckedUpdateWithoutRelationshipInput>
+  }
+
+  export type DateNightDareUpdateManyWithWhereWithoutRelationshipInput = {
+    where: DateNightDareScalarWhereInput
+    data: XOR<DateNightDareUpdateManyMutationInput, DateNightDareUncheckedUpdateManyWithoutRelationshipInput>
+  }
+
+  export type DateNightDareScalarWhereInput = {
+    AND?: DateNightDareScalarWhereInput | DateNightDareScalarWhereInput[]
+    OR?: DateNightDareScalarWhereInput[]
+    NOT?: DateNightDareScalarWhereInput | DateNightDareScalarWhereInput[]
+    id?: StringFilter<"DateNightDare"> | string
+    relationshipId?: StringFilter<"DateNightDare"> | string
+    weekKey?: StringFilter<"DateNightDare"> | string
+    dareIndex?: IntFilter<"DateNightDare"> | number
+    acceptedAt?: DateTimeNullableFilter<"DateNightDare"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"DateNightDare"> | Date | string | null
+    photoUrl?: StringNullableFilter<"DateNightDare"> | string | null
+    createdAt?: DateTimeFilter<"DateNightDare"> | Date | string
+  }
+
   export type RelationshipCreateWithoutMembersInput = {
     id?: string
     name?: string | null
@@ -35411,6 +43310,10 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutMembersInput = {
@@ -35428,6 +43331,10 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutMembersInput = {
@@ -35457,6 +43364,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateWithoutRelationshipMembersInput = {
@@ -35481,6 +43393,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserCreateOrConnectWithoutRelationshipMembersInput = {
@@ -35514,6 +43431,10 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutMembersInput = {
@@ -35531,6 +43452,10 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type UserUpsertWithoutRelationshipMembersInput = {
@@ -35566,6 +43491,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRelationshipMembersInput = {
@@ -35590,6 +43520,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type RelationshipCreateWithoutInvitesInput = {
@@ -35607,6 +43542,10 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutInvitesInput = {
@@ -35624,6 +43563,10 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutInvitesInput = {
@@ -35653,6 +43596,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateWithoutInvitesSentInput = {
@@ -35677,6 +43625,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserCreateOrConnectWithoutInvitesSentInput = {
@@ -35710,6 +43663,10 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutInvitesInput = {
@@ -35727,6 +43684,10 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type UserUpsertWithoutInvitesSentInput = {
@@ -35762,6 +43723,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvitesSentInput = {
@@ -35786,6 +43752,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type DailySessionCreateWithoutPromptInput = {
@@ -35851,6 +43822,10 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutDailySessionsInput = {
@@ -35868,6 +43843,10 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutDailySessionsInput = {
@@ -36014,6 +43993,10 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutDailySessionsInput = {
@@ -36031,6 +44014,10 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type PromptUpsertWithoutDailySessionsInput = {
@@ -36177,6 +44164,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateWithoutResponsesInput = {
@@ -36201,6 +44193,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserCreateOrConnectWithoutResponsesInput = {
@@ -36298,6 +44295,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutResponsesInput = {
@@ -36322,6 +44324,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type ResponseValidationUpsertWithWhereUniqueWithoutResponseInput = {
@@ -36385,6 +44392,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateWithoutResponseValidationsInput = {
@@ -36409,6 +44421,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserCreateOrConnectWithoutResponseValidationsInput = {
@@ -36478,6 +44495,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutResponseValidationsInput = {
@@ -36502,6 +44524,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type DailySessionCreateWithoutReflectionsInput = {
@@ -36553,6 +44580,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateWithoutReflectionsInput = {
@@ -36577,6 +44609,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserCreateOrConnectWithoutReflectionsInput = {
@@ -36650,6 +44687,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReflectionsInput = {
@@ -36674,6 +44716,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type RelationshipCreateWithoutMeetingsInput = {
@@ -36691,6 +44738,10 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutMeetingsInput = {
@@ -36708,6 +44759,10 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutMeetingsInput = {
@@ -36775,6 +44830,10 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutMeetingsInput = {
@@ -36792,6 +44851,10 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type MeetingEntryUpsertWithWhereUniqueWithoutMeetingInput = {
@@ -36853,6 +44916,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateWithoutMeetingEntriesInput = {
@@ -36877,6 +44945,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserCreateOrConnectWithoutMeetingEntriesInput = {
@@ -36944,6 +45017,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMeetingEntriesInput = {
@@ -36968,6 +45046,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type RelationshipCreateWithoutStreakInput = {
@@ -36985,6 +45068,10 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutStreakInput = {
@@ -37002,6 +45089,10 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutStreakInput = {
@@ -37035,6 +45126,10 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutStreakInput = {
@@ -37052,6 +45147,10 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type UserCreateWithoutSubscriptionsInput = {
@@ -37076,6 +45175,11 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -37100,6 +45204,11 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -37122,6 +45231,10 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutSubscriptionsInput = {
@@ -37139,6 +45252,10 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutSubscriptionsInput = {
@@ -37179,6 +45296,11 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -37203,6 +45325,11 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type RelationshipUpsertWithoutSubscriptionsInput = {
@@ -37231,6 +45358,10 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutSubscriptionsInput = {
@@ -37248,6 +45379,10 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipCreateWithoutMemoriesInput = {
@@ -37265,6 +45400,10 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutRelationshipInput
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutMemoriesInput = {
@@ -37282,6 +45421,10 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutMemoriesInput = {
@@ -37311,6 +45454,11 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateWithoutMemoriesInput = {
@@ -37335,6 +45483,11 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserCreateOrConnectWithoutMemoriesInput = {
@@ -37368,6 +45521,10 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutMemoriesInput = {
@@ -37385,6 +45542,10 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type UserUpsertWithoutMemoriesInput = {
@@ -37420,6 +45581,11 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMemoriesInput = {
@@ -37444,6 +45610,1167 @@ export namespace Prisma {
     meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
+  }
+
+  export type RelationshipCreateWithoutAppreciationsInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
+    invites?: InviteCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingCreateNestedManyWithoutRelationshipInput
+    streak?: StreakCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipUncheckedCreateWithoutAppreciationsInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
+    invites?: InviteUncheckedCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionUncheckedCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
+    streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipCreateOrConnectWithoutAppreciationsInput = {
+    where: RelationshipWhereUniqueInput
+    create: XOR<RelationshipCreateWithoutAppreciationsInput, RelationshipUncheckedCreateWithoutAppreciationsInput>
+  }
+
+  export type UserCreateWithoutAppreciationsSentInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberCreateNestedManyWithoutUserInput
+    invitesSent?: InviteCreateNestedManyWithoutSenderInput
+    responses?: ResponseCreateNestedManyWithoutUserInput
+    reflections?: ReflectionCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAppreciationsSentInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutSenderInput
+    responses?: ResponseUncheckedCreateNestedManyWithoutUserInput
+    reflections?: ReflectionUncheckedCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationUncheckedCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationUncheckedCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAppreciationsSentInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAppreciationsSentInput, UserUncheckedCreateWithoutAppreciationsSentInput>
+  }
+
+  export type UserCreateWithoutAppreciationsReceivedInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberCreateNestedManyWithoutUserInput
+    invitesSent?: InviteCreateNestedManyWithoutSenderInput
+    responses?: ResponseCreateNestedManyWithoutUserInput
+    reflections?: ReflectionCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAppreciationsReceivedInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutSenderInput
+    responses?: ResponseUncheckedCreateNestedManyWithoutUserInput
+    reflections?: ReflectionUncheckedCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationUncheckedCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationUncheckedCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAppreciationsReceivedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAppreciationsReceivedInput, UserUncheckedCreateWithoutAppreciationsReceivedInput>
+  }
+
+  export type RelationshipUpsertWithoutAppreciationsInput = {
+    update: XOR<RelationshipUpdateWithoutAppreciationsInput, RelationshipUncheckedUpdateWithoutAppreciationsInput>
+    create: XOR<RelationshipCreateWithoutAppreciationsInput, RelationshipUncheckedCreateWithoutAppreciationsInput>
+    where?: RelationshipWhereInput
+  }
+
+  export type RelationshipUpdateToOneWithWhereWithoutAppreciationsInput = {
+    where?: RelationshipWhereInput
+    data: XOR<RelationshipUpdateWithoutAppreciationsInput, RelationshipUncheckedUpdateWithoutAppreciationsInput>
+  }
+
+  export type RelationshipUpdateWithoutAppreciationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type RelationshipUncheckedUpdateWithoutAppreciationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUncheckedUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type UserUpsertWithoutAppreciationsSentInput = {
+    update: XOR<UserUpdateWithoutAppreciationsSentInput, UserUncheckedUpdateWithoutAppreciationsSentInput>
+    create: XOR<UserCreateWithoutAppreciationsSentInput, UserUncheckedCreateWithoutAppreciationsSentInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAppreciationsSentInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAppreciationsSentInput, UserUncheckedUpdateWithoutAppreciationsSentInput>
+  }
+
+  export type UserUpdateWithoutAppreciationsSentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAppreciationsSentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUncheckedUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUncheckedUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUncheckedUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUncheckedUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
+  }
+
+  export type UserUpsertWithoutAppreciationsReceivedInput = {
+    update: XOR<UserUpdateWithoutAppreciationsReceivedInput, UserUncheckedUpdateWithoutAppreciationsReceivedInput>
+    create: XOR<UserCreateWithoutAppreciationsReceivedInput, UserUncheckedCreateWithoutAppreciationsReceivedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAppreciationsReceivedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAppreciationsReceivedInput, UserUncheckedUpdateWithoutAppreciationsReceivedInput>
+  }
+
+  export type UserUpdateWithoutAppreciationsReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAppreciationsReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUncheckedUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUncheckedUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUncheckedUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUncheckedUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
+  }
+
+  export type RelationshipCreateWithoutWyrSessionsInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
+    invites?: InviteCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingCreateNestedManyWithoutRelationshipInput
+    streak?: StreakCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipUncheckedCreateWithoutWyrSessionsInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
+    invites?: InviteUncheckedCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionUncheckedCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
+    streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipCreateOrConnectWithoutWyrSessionsInput = {
+    where: RelationshipWhereUniqueInput
+    create: XOR<RelationshipCreateWithoutWyrSessionsInput, RelationshipUncheckedCreateWithoutWyrSessionsInput>
+  }
+
+  export type WyrParticipationCreateWithoutWyrSessionInput = {
+    id?: string
+    choice: number
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutWyrParticipationsInput
+  }
+
+  export type WyrParticipationUncheckedCreateWithoutWyrSessionInput = {
+    id?: string
+    userId: string
+    choice: number
+    createdAt?: Date | string
+  }
+
+  export type WyrParticipationCreateOrConnectWithoutWyrSessionInput = {
+    where: WyrParticipationWhereUniqueInput
+    create: XOR<WyrParticipationCreateWithoutWyrSessionInput, WyrParticipationUncheckedCreateWithoutWyrSessionInput>
+  }
+
+  export type WyrParticipationCreateManyWyrSessionInputEnvelope = {
+    data: WyrParticipationCreateManyWyrSessionInput | WyrParticipationCreateManyWyrSessionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RelationshipUpsertWithoutWyrSessionsInput = {
+    update: XOR<RelationshipUpdateWithoutWyrSessionsInput, RelationshipUncheckedUpdateWithoutWyrSessionsInput>
+    create: XOR<RelationshipCreateWithoutWyrSessionsInput, RelationshipUncheckedCreateWithoutWyrSessionsInput>
+    where?: RelationshipWhereInput
+  }
+
+  export type RelationshipUpdateToOneWithWhereWithoutWyrSessionsInput = {
+    where?: RelationshipWhereInput
+    data: XOR<RelationshipUpdateWithoutWyrSessionsInput, RelationshipUncheckedUpdateWithoutWyrSessionsInput>
+  }
+
+  export type RelationshipUpdateWithoutWyrSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type RelationshipUncheckedUpdateWithoutWyrSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUncheckedUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type WyrParticipationUpsertWithWhereUniqueWithoutWyrSessionInput = {
+    where: WyrParticipationWhereUniqueInput
+    update: XOR<WyrParticipationUpdateWithoutWyrSessionInput, WyrParticipationUncheckedUpdateWithoutWyrSessionInput>
+    create: XOR<WyrParticipationCreateWithoutWyrSessionInput, WyrParticipationUncheckedCreateWithoutWyrSessionInput>
+  }
+
+  export type WyrParticipationUpdateWithWhereUniqueWithoutWyrSessionInput = {
+    where: WyrParticipationWhereUniqueInput
+    data: XOR<WyrParticipationUpdateWithoutWyrSessionInput, WyrParticipationUncheckedUpdateWithoutWyrSessionInput>
+  }
+
+  export type WyrParticipationUpdateManyWithWhereWithoutWyrSessionInput = {
+    where: WyrParticipationScalarWhereInput
+    data: XOR<WyrParticipationUpdateManyMutationInput, WyrParticipationUncheckedUpdateManyWithoutWyrSessionInput>
+  }
+
+  export type WyrSessionCreateWithoutParticipationsInput = {
+    id?: string
+    sessionDate: Date | string
+    questionIndex: number
+    state?: $Enums.WyrState
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutWyrSessionsInput
+  }
+
+  export type WyrSessionUncheckedCreateWithoutParticipationsInput = {
+    id?: string
+    relationshipId: string
+    sessionDate: Date | string
+    questionIndex: number
+    state?: $Enums.WyrState
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WyrSessionCreateOrConnectWithoutParticipationsInput = {
+    where: WyrSessionWhereUniqueInput
+    create: XOR<WyrSessionCreateWithoutParticipationsInput, WyrSessionUncheckedCreateWithoutParticipationsInput>
+  }
+
+  export type UserCreateWithoutWyrParticipationsInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberCreateNestedManyWithoutUserInput
+    invitesSent?: InviteCreateNestedManyWithoutSenderInput
+    responses?: ResponseCreateNestedManyWithoutUserInput
+    reflections?: ReflectionCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserUncheckedCreateWithoutWyrParticipationsInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutSenderInput
+    responses?: ResponseUncheckedCreateNestedManyWithoutUserInput
+    reflections?: ReflectionUncheckedCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationUncheckedCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationUncheckedCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserCreateOrConnectWithoutWyrParticipationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutWyrParticipationsInput, UserUncheckedCreateWithoutWyrParticipationsInput>
+  }
+
+  export type WyrSessionUpsertWithoutParticipationsInput = {
+    update: XOR<WyrSessionUpdateWithoutParticipationsInput, WyrSessionUncheckedUpdateWithoutParticipationsInput>
+    create: XOR<WyrSessionCreateWithoutParticipationsInput, WyrSessionUncheckedCreateWithoutParticipationsInput>
+    where?: WyrSessionWhereInput
+  }
+
+  export type WyrSessionUpdateToOneWithWhereWithoutParticipationsInput = {
+    where?: WyrSessionWhereInput
+    data: XOR<WyrSessionUpdateWithoutParticipationsInput, WyrSessionUncheckedUpdateWithoutParticipationsInput>
+  }
+
+  export type WyrSessionUpdateWithoutParticipationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    questionIndex?: IntFieldUpdateOperationsInput | number
+    state?: EnumWyrStateFieldUpdateOperationsInput | $Enums.WyrState
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutWyrSessionsNestedInput
+  }
+
+  export type WyrSessionUncheckedUpdateWithoutParticipationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    questionIndex?: IntFieldUpdateOperationsInput | number
+    state?: EnumWyrStateFieldUpdateOperationsInput | $Enums.WyrState
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutWyrParticipationsInput = {
+    update: XOR<UserUpdateWithoutWyrParticipationsInput, UserUncheckedUpdateWithoutWyrParticipationsInput>
+    create: XOR<UserCreateWithoutWyrParticipationsInput, UserUncheckedCreateWithoutWyrParticipationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutWyrParticipationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutWyrParticipationsInput, UserUncheckedUpdateWithoutWyrParticipationsInput>
+  }
+
+  export type UserUpdateWithoutWyrParticipationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutWyrParticipationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUncheckedUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUncheckedUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUncheckedUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUncheckedUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
+  }
+
+  export type RelationshipCreateWithoutSpotlightsInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
+    invites?: InviteCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingCreateNestedManyWithoutRelationshipInput
+    streak?: StreakCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipUncheckedCreateWithoutSpotlightsInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
+    invites?: InviteUncheckedCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionUncheckedCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
+    streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipCreateOrConnectWithoutSpotlightsInput = {
+    where: RelationshipWhereUniqueInput
+    create: XOR<RelationshipCreateWithoutSpotlightsInput, RelationshipUncheckedCreateWithoutSpotlightsInput>
+  }
+
+  export type UserCreateWithoutSpotlightsSentInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberCreateNestedManyWithoutUserInput
+    invitesSent?: InviteCreateNestedManyWithoutSenderInput
+    responses?: ResponseCreateNestedManyWithoutUserInput
+    reflections?: ReflectionCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSpotlightsSentInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutSenderInput
+    responses?: ResponseUncheckedCreateNestedManyWithoutUserInput
+    reflections?: ReflectionUncheckedCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationUncheckedCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationUncheckedCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSpotlightsSentInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSpotlightsSentInput, UserUncheckedCreateWithoutSpotlightsSentInput>
+  }
+
+  export type UserCreateWithoutSpotlightsReceivedInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberCreateNestedManyWithoutUserInput
+    invitesSent?: InviteCreateNestedManyWithoutSenderInput
+    responses?: ResponseCreateNestedManyWithoutUserInput
+    reflections?: ReflectionCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSpotlightsReceivedInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutSenderInput
+    responses?: ResponseUncheckedCreateNestedManyWithoutUserInput
+    reflections?: ReflectionUncheckedCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationUncheckedCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationUncheckedCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSpotlightsReceivedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSpotlightsReceivedInput, UserUncheckedCreateWithoutSpotlightsReceivedInput>
+  }
+
+  export type RelationshipUpsertWithoutSpotlightsInput = {
+    update: XOR<RelationshipUpdateWithoutSpotlightsInput, RelationshipUncheckedUpdateWithoutSpotlightsInput>
+    create: XOR<RelationshipCreateWithoutSpotlightsInput, RelationshipUncheckedCreateWithoutSpotlightsInput>
+    where?: RelationshipWhereInput
+  }
+
+  export type RelationshipUpdateToOneWithWhereWithoutSpotlightsInput = {
+    where?: RelationshipWhereInput
+    data: XOR<RelationshipUpdateWithoutSpotlightsInput, RelationshipUncheckedUpdateWithoutSpotlightsInput>
+  }
+
+  export type RelationshipUpdateWithoutSpotlightsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type RelationshipUncheckedUpdateWithoutSpotlightsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUncheckedUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type UserUpsertWithoutSpotlightsSentInput = {
+    update: XOR<UserUpdateWithoutSpotlightsSentInput, UserUncheckedUpdateWithoutSpotlightsSentInput>
+    create: XOR<UserCreateWithoutSpotlightsSentInput, UserUncheckedCreateWithoutSpotlightsSentInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSpotlightsSentInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSpotlightsSentInput, UserUncheckedUpdateWithoutSpotlightsSentInput>
+  }
+
+  export type UserUpdateWithoutSpotlightsSentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSpotlightsSentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUncheckedUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUncheckedUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUncheckedUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUncheckedUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
+  }
+
+  export type UserUpsertWithoutSpotlightsReceivedInput = {
+    update: XOR<UserUpdateWithoutSpotlightsReceivedInput, UserUncheckedUpdateWithoutSpotlightsReceivedInput>
+    create: XOR<UserCreateWithoutSpotlightsReceivedInput, UserUncheckedCreateWithoutSpotlightsReceivedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSpotlightsReceivedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSpotlightsReceivedInput, UserUncheckedUpdateWithoutSpotlightsReceivedInput>
+  }
+
+  export type UserUpdateWithoutSpotlightsReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSpotlightsReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUncheckedUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUncheckedUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUncheckedUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUncheckedUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+  }
+
+  export type RelationshipCreateWithoutDateNightDaresInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
+    invites?: InviteCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingCreateNestedManyWithoutRelationshipInput
+    streak?: StreakCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipUncheckedCreateWithoutDateNightDaresInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
+    invites?: InviteUncheckedCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionUncheckedCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
+    streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipCreateOrConnectWithoutDateNightDaresInput = {
+    where: RelationshipWhereUniqueInput
+    create: XOR<RelationshipCreateWithoutDateNightDaresInput, RelationshipUncheckedCreateWithoutDateNightDaresInput>
+  }
+
+  export type RelationshipUpsertWithoutDateNightDaresInput = {
+    update: XOR<RelationshipUpdateWithoutDateNightDaresInput, RelationshipUncheckedUpdateWithoutDateNightDaresInput>
+    create: XOR<RelationshipCreateWithoutDateNightDaresInput, RelationshipUncheckedCreateWithoutDateNightDaresInput>
+    where?: RelationshipWhereInput
+  }
+
+  export type RelationshipUpdateToOneWithWhereWithoutDateNightDaresInput = {
+    where?: RelationshipWhereInput
+    data: XOR<RelationshipUpdateWithoutDateNightDaresInput, RelationshipUncheckedUpdateWithoutDateNightDaresInput>
+  }
+
+  export type RelationshipUpdateWithoutDateNightDaresInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type RelationshipUncheckedUpdateWithoutDateNightDaresInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUncheckedUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipCreateWithoutQuizSessionsInput = {
@@ -37461,6 +46788,10 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutQuizSessionsInput = {
@@ -37478,6 +46809,10 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutQuizSessionsInput = {
@@ -37539,6 +46874,10 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutQuizSessionsInput = {
@@ -37556,6 +46895,10 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type QuizParticipationUpsertWithWhereUniqueWithoutQuizSessionInput = {
@@ -37619,6 +46962,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateWithoutQuizParticipationsInput = {
@@ -37643,6 +46991,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserCreateOrConnectWithoutQuizParticipationsInput = {
@@ -37712,6 +47065,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutQuizParticipationsInput = {
@@ -37736,6 +47094,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type RelationshipCreateWithoutAgreementSessionsInput = {
@@ -37753,6 +47116,10 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipUncheckedCreateWithoutAgreementSessionsInput = {
@@ -37770,6 +47137,10 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
   }
 
   export type RelationshipCreateOrConnectWithoutAgreementSessionsInput = {
@@ -37831,6 +47202,10 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
   }
 
   export type RelationshipUncheckedUpdateWithoutAgreementSessionsInput = {
@@ -37848,6 +47223,10 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type AgreementParticipationUpsertWithWhereUniqueWithoutAgreementSessionInput = {
@@ -37911,6 +47290,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateWithoutAgreementParticipationsInput = {
@@ -37935,6 +47319,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserCreateOrConnectWithoutAgreementParticipationsInput = {
@@ -38004,6 +47393,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAgreementParticipationsInput = {
@@ -38028,6 +47422,11 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -38155,6 +47554,49 @@ export namespace Prisma {
     sourceId?: string | null
     snapshot: JsonNullValueInput | InputJsonValue
     savedAt?: Date | string
+  }
+
+  export type AppreciationCreateManyFromUserInput = {
+    id?: string
+    relationshipId: string
+    toUserId: string
+    content: string
+    weekKey: string
+    createdAt?: Date | string
+  }
+
+  export type AppreciationCreateManyToUserInput = {
+    id?: string
+    relationshipId: string
+    fromUserId: string
+    content: string
+    weekKey: string
+    createdAt?: Date | string
+  }
+
+  export type WyrParticipationCreateManyUserInput = {
+    id?: string
+    wyrSessionId: string
+    choice: number
+    createdAt?: Date | string
+  }
+
+  export type PartnerSpotlightCreateManyFromUserInput = {
+    id?: string
+    relationshipId: string
+    toUserId: string
+    items: JsonNullValueInput | InputJsonValue
+    monthKey: string
+    createdAt?: Date | string
+  }
+
+  export type PartnerSpotlightCreateManyToUserInput = {
+    id?: string
+    relationshipId: string
+    fromUserId: string
+    items: JsonNullValueInput | InputJsonValue
+    monthKey: string
+    createdAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -38540,6 +47982,135 @@ export namespace Prisma {
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AppreciationUpdateWithoutFromUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutAppreciationsNestedInput
+    toUser?: UserUpdateOneRequiredWithoutAppreciationsReceivedNestedInput
+  }
+
+  export type AppreciationUncheckedUpdateWithoutFromUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppreciationUncheckedUpdateManyWithoutFromUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppreciationUpdateWithoutToUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutAppreciationsNestedInput
+    fromUser?: UserUpdateOneRequiredWithoutAppreciationsSentNestedInput
+  }
+
+  export type AppreciationUncheckedUpdateWithoutToUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppreciationUncheckedUpdateManyWithoutToUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WyrParticipationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    choice?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    wyrSession?: WyrSessionUpdateOneRequiredWithoutParticipationsNestedInput
+  }
+
+  export type WyrParticipationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    wyrSessionId?: StringFieldUpdateOperationsInput | string
+    choice?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WyrParticipationUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    wyrSessionId?: StringFieldUpdateOperationsInput | string
+    choice?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PartnerSpotlightUpdateWithoutFromUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    items?: JsonNullValueInput | InputJsonValue
+    monthKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutSpotlightsNestedInput
+    toUser?: UserUpdateOneRequiredWithoutSpotlightsReceivedNestedInput
+  }
+
+  export type PartnerSpotlightUncheckedUpdateWithoutFromUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    items?: JsonNullValueInput | InputJsonValue
+    monthKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PartnerSpotlightUncheckedUpdateManyWithoutFromUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    items?: JsonNullValueInput | InputJsonValue
+    monthKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PartnerSpotlightUpdateWithoutToUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    items?: JsonNullValueInput | InputJsonValue
+    monthKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutSpotlightsNestedInput
+    fromUser?: UserUpdateOneRequiredWithoutSpotlightsSentNestedInput
+  }
+
+  export type PartnerSpotlightUncheckedUpdateWithoutToUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    items?: JsonNullValueInput | InputJsonValue
+    monthKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PartnerSpotlightUncheckedUpdateManyWithoutToUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    items?: JsonNullValueInput | InputJsonValue
+    monthKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type RelationshipMemberCreateManyRelationshipInput = {
     id?: string
     userId: string
@@ -38614,6 +48185,43 @@ export namespace Prisma {
     sourceId?: string | null
     snapshot: JsonNullValueInput | InputJsonValue
     savedAt?: Date | string
+  }
+
+  export type AppreciationCreateManyRelationshipInput = {
+    id?: string
+    fromUserId: string
+    toUserId: string
+    content: string
+    weekKey: string
+    createdAt?: Date | string
+  }
+
+  export type WyrSessionCreateManyRelationshipInput = {
+    id?: string
+    sessionDate: Date | string
+    questionIndex: number
+    state?: $Enums.WyrState
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PartnerSpotlightCreateManyRelationshipInput = {
+    id?: string
+    fromUserId: string
+    toUserId: string
+    items: JsonNullValueInput | InputJsonValue
+    monthKey: string
+    createdAt?: Date | string
+  }
+
+  export type DateNightDareCreateManyRelationshipInput = {
+    id?: string
+    weekKey: string
+    dareIndex: number
+    acceptedAt?: Date | string | null
+    completedAt?: Date | string | null
+    photoUrl?: string | null
+    createdAt?: Date | string
   }
 
   export type RelationshipMemberUpdateWithoutRelationshipInput = {
@@ -38854,6 +48462,119 @@ export namespace Prisma {
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AppreciationUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fromUser?: UserUpdateOneRequiredWithoutAppreciationsSentNestedInput
+    toUser?: UserUpdateOneRequiredWithoutAppreciationsReceivedNestedInput
+  }
+
+  export type AppreciationUncheckedUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppreciationUncheckedUpdateManyWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WyrSessionUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    questionIndex?: IntFieldUpdateOperationsInput | number
+    state?: EnumWyrStateFieldUpdateOperationsInput | $Enums.WyrState
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participations?: WyrParticipationUpdateManyWithoutWyrSessionNestedInput
+  }
+
+  export type WyrSessionUncheckedUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    questionIndex?: IntFieldUpdateOperationsInput | number
+    state?: EnumWyrStateFieldUpdateOperationsInput | $Enums.WyrState
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participations?: WyrParticipationUncheckedUpdateManyWithoutWyrSessionNestedInput
+  }
+
+  export type WyrSessionUncheckedUpdateManyWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    questionIndex?: IntFieldUpdateOperationsInput | number
+    state?: EnumWyrStateFieldUpdateOperationsInput | $Enums.WyrState
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PartnerSpotlightUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    items?: JsonNullValueInput | InputJsonValue
+    monthKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fromUser?: UserUpdateOneRequiredWithoutSpotlightsSentNestedInput
+    toUser?: UserUpdateOneRequiredWithoutSpotlightsReceivedNestedInput
+  }
+
+  export type PartnerSpotlightUncheckedUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    items?: JsonNullValueInput | InputJsonValue
+    monthKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PartnerSpotlightUncheckedUpdateManyWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    items?: JsonNullValueInput | InputJsonValue
+    monthKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DateNightDareUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    dareIndex?: IntFieldUpdateOperationsInput | number
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DateNightDareUncheckedUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    dareIndex?: IntFieldUpdateOperationsInput | number
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DateNightDareUncheckedUpdateManyWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekKey?: StringFieldUpdateOperationsInput | string
+    dareIndex?: IntFieldUpdateOperationsInput | number
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DailySessionCreateManyPromptInput = {
     id?: string
     relationshipId: string
@@ -39040,6 +48761,34 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type WyrParticipationCreateManyWyrSessionInput = {
+    id?: string
+    userId: string
+    choice: number
+    createdAt?: Date | string
+  }
+
+  export type WyrParticipationUpdateWithoutWyrSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    choice?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutWyrParticipationsNestedInput
+  }
+
+  export type WyrParticipationUncheckedUpdateWithoutWyrSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    choice?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WyrParticipationUncheckedUpdateManyWithoutWyrSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    choice?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type QuizParticipationCreateManyQuizSessionInput = {
     id?: string
     userId: string
@@ -39142,6 +48891,10 @@ export namespace Prisma {
      */
     export type MeetingCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MeetingCountOutputTypeDefaultArgs<ExtArgs>
     /**
+     * @deprecated Use WyrSessionCountOutputTypeDefaultArgs instead
+     */
+    export type WyrSessionCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WyrSessionCountOutputTypeDefaultArgs<ExtArgs>
+    /**
      * @deprecated Use QuizSessionCountOutputTypeDefaultArgs instead
      */
     export type QuizSessionCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = QuizSessionCountOutputTypeDefaultArgs<ExtArgs>
@@ -39221,6 +48974,26 @@ export namespace Prisma {
      * @deprecated Use MemoryDefaultArgs instead
      */
     export type MemoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MemoryDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use AppreciationDefaultArgs instead
+     */
+    export type AppreciationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AppreciationDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use WyrSessionDefaultArgs instead
+     */
+    export type WyrSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WyrSessionDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use WyrParticipationDefaultArgs instead
+     */
+    export type WyrParticipationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WyrParticipationDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use PartnerSpotlightDefaultArgs instead
+     */
+    export type PartnerSpotlightArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PartnerSpotlightDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use DateNightDareDefaultArgs instead
+     */
+    export type DateNightDareArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DateNightDareDefaultArgs<ExtArgs>
     /**
      * @deprecated Use BetaSignupDefaultArgs instead
      */

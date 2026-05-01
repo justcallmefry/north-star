@@ -544,6 +544,8 @@ model DateNightDare {
   dareIndex      Int
   acceptedAt     DateTime?
   completedAt    DateTime?
+  /// Optional photo (Vercel Blob URL) attached when the couple marked the dare complete.
+  photoUrl       String?
 
   relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
 

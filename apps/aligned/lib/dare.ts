@@ -59,6 +59,7 @@ export type DareForWeekResult = {
   weekKey: string;
   accepted: boolean;
   completed: boolean;
+  photoUrl: string | null;
 };
 
 export async function getDareForWeek(relationshipId: string): Promise<DareForWeekResult> {
@@ -84,6 +85,7 @@ export async function getDareForWeek(relationshipId: string): Promise<DareForWee
     weekKey,
     accepted: !!dare.acceptedAt,
     completed: !!dare.completedAt,
+    photoUrl: dare.photoUrl ?? null,
   };
 }
 
@@ -100,7 +102,7 @@ export async function acceptDare(dareId: string): Promise<void> {
   revalidatePath("/app");
 }
 
-export async function completeDare(dareId: string): Promise<void> {
+export async function completeDare(dareId: string, photoUrl?: string): Promise<void> {
   const session = await getServerAuthSession();
   if (!session?.user?.id) throw new Error("Not signed in");
   const dare = await prisma.dateNightDare.findUnique({ where: { id: dareId } });
@@ -108,7 +110,12 @@ export async function completeDare(dareId: string): Promise<void> {
   await requireActiveMember(session.user.id, dare.relationshipId);
   await prisma.dateNightDare.update({
     where: { id: dareId },
-    data: { acceptedAt: dare.acceptedAt ?? new Date(), completedAt: new Date() },
+    data: {
+      acceptedAt: dare.acceptedAt ?? new Date(),
+      completedAt: new Date(),
+      // Only overwrite photoUrl when one was provided this call.
+      ...(photoUrl ? { photoUrl } : {}),
+    },
   });
   revalidatePath("/app/dare");
   revalidatePath("/app");

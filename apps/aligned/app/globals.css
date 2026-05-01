@@ -178,17 +178,22 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-calm-fade-in,
+  .animate-fade-in-ease,
   .animate-reveal-stamp,
-  .animate-reveal-cascade {
+  .animate-reveal-cascade,
+  .animate-quiz-card-enter {
     animation: none;
     opacity: 1;
     transform: none;
   }
   .animate-reveal-shimmer,
   .animate-thinking-pulse,
-  .animate-thinking-breath {
+  .animate-thinking-breath,
+  .animate-loading-spin,
+  .animate-quiz-card-exit {
     animation: none;
-    opacity: 1;
   }
 }
 

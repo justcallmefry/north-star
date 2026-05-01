@@ -80,72 +80,48 @@ export default async function UsPage() {
   return (
     <main className="flex h-full flex-col ns-stack">
       <header className="space-y-1">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-500 sm:text-sm">
-          Profile
-        </p>
         <h1 className="font-display text-2xl font-semibold text-slate-900 sm:text-3xl">
-          You & your relationship
+          {currentName ? `Hi, ${currentName.split(" ")[0]}` : "Your profile"}
         </h1>
-        <p className="mt-1 text-sm text-slate-600 sm:text-base">
-          Update your name and icon. Manage your relationship.
+        <p className="text-sm text-slate-600 sm:text-base">
+          Your relationship dashboard
         </p>
       </header>
 
-      <section className="ns-stack-tight">
-        <div className="ns-card">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
-            Your profile
-          </h2>
-          <p className="mt-1 text-lg font-semibold text-slate-900 sm:text-xl">How you appear</p>
-          <p className="mt-1 text-sm text-slate-600 sm:text-base">
-            Change your display name, photo (JPG or PNG, max 2MB), or pick an icon. Your email stays the
-            same for sign-in.
-          </p>
-
-          <ProfileForm currentName={currentName} currentAvatar={currentAvatar} />
-        </div>
-
-        <div className="ns-card mt-6">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
-            Sign-in
-          </h2>
-          <p className="mt-1 text-lg font-semibold text-slate-900 sm:text-xl">
-            {hasPassword ? "Change password" : "Set a password"}
-          </p>
-          <p className="mt-1 text-sm text-slate-600 sm:text-base">
-            {hasPassword
-              ? "Use a password to sign in with email next time."
-              : "You signed in with a magic link. Set a password to use email + password on the login page."}
-          </p>
-          <PasswordForm hasPassword={hasPassword} />
-          <SignOutButton />
-        </div>
-
-        {primary && (
-          <Link
-            href="/app/history"
-            className="ns-card flex items-center justify-between gap-3 transition active:scale-[0.99] hover:border-dusk-300/70"
-          >
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-sm">
-                Your story so far
-              </p>
-              <p className="mt-1 text-base font-semibold text-slate-900 sm:text-lg">
-                Past responses
-              </p>
-              <p className="mt-1 text-sm text-slate-600">
-                Browse everything you&apos;ve answered together.
-              </p>
-            </div>
-            <span className="text-xl text-slate-400" aria-hidden>→</span>
-          </Link>
-        )}
-
-        <AccountDataSection />
-      </section>
-
       {primary ? (
-        <section className="space-y-4">
+        <section className="ns-stack-tight">
+          {/* 1. Stats hero */}
+          {insights && (
+            <section className="rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-50 via-white to-dusk-50 p-5 space-y-4">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">Your story so far</span>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-slate-900">{insights.answeredCount}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">questions</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-slate-900">{insights.longestStreak}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">day best streak</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-slate-900">{insights.currentStreak}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">day streak now</p>
+                </div>
+              </div>
+              {insights.topCategory && (
+                <p className="text-sm text-slate-600">
+                  You lean toward <span className="font-semibold text-slate-900">{insights.topCategory}</span> questions.
+                </p>
+              )}
+              <Link href="/app/insights" className="ns-btn-secondary block w-full text-center py-2.5 text-sm">
+                View couple insights →
+              </Link>
+            </section>
+          )}
+
+          {/* 2. Relationship card */}
           <div className="ns-shadow-glow rounded-2xl border border-brand-100/80 bg-white px-4 py-4 sm:px-5 sm:py-5">
             <div className="flex items-center justify-between gap-3">
               <div className="space-y-2">
@@ -184,75 +160,113 @@ export default async function UsPage() {
             </div>
           </div>
 
-          {insights && (
-            <div className="ns-card">
-              <div className="flex items-start justify-between gap-3">
-                <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
-                  How you&apos;ve been showing up
-                </h2>
-                <Link
-                  href="/app/insights"
-                  className="shrink-0 text-sm font-medium text-brand-600 hover:text-brand-700"
-                >
-                  Couple insights →
-                </Link>
-              </div>
-              <div className="mt-3 space-y-1.5 text-sm text-slate-700 sm:text-base">
-                <p>
-                  You&apos;ve answered{" "}
-                  <span className="font-semibold text-slate-900">
-                    {insights.answeredCount}
-                  </span>{" "}
-                  questions together.
-                </p>
-                {insights.topCategory && (
-                  <p>
-                    You tend to lean toward{" "}
-                    <span className="font-semibold text-slate-900">
-                      {insights.topCategory}
-                    </span>{" "}
-                    questions.
-                  </p>
-                )}
-                {insights.longestStreak > 0 && (
-                  <p>
-                    Your longest streak so far is{" "}
-                    <span className="font-semibold text-slate-900">
-                      {insights.longestStreak} day
-                      {insights.longestStreak === 1 ? "" : "s"}
-                    </span>
-                    .
-                  </p>
-                )}
-              </div>
+          {/* 3. Past responses */}
+          <Link
+            href="/app/history"
+            className="ns-card flex items-center justify-between gap-3 transition active:scale-[0.99] hover:border-dusk-300/70"
+          >
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-sm">
+                Your story so far
+              </p>
+              <p className="mt-1 text-base font-semibold text-slate-900 sm:text-lg">
+                Past responses
+              </p>
+              <p className="mt-1 text-sm text-slate-600">
+                Browse everything you&apos;ve answered together.
+              </p>
             </div>
-          )}
+            <span className="text-xl text-slate-400" aria-hidden>→</span>
+          </Link>
+
+          {/* 4. Profile editing */}
+          <div className="ns-card">
+            <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Edit profile</h2>
+            <p className="mt-1 text-sm text-slate-600 sm:text-base">
+              Change your display name, photo (JPG or PNG, max 2MB), or pick an icon. Your email stays the
+              same for sign-in.
+            </p>
+
+            <ProfileForm currentName={currentName} currentAvatar={currentAvatar} />
+          </div>
+
+          {/* 5. Sign-in / password */}
+          <div className="ns-card">
+            <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
+              Sign-in
+            </h2>
+            <p className="mt-1 text-lg font-semibold text-slate-900 sm:text-xl">
+              {hasPassword ? "Change password" : "Set a password"}
+            </p>
+            <p className="mt-1 text-sm text-slate-600 sm:text-base">
+              {hasPassword
+                ? "Use a password to sign in with email next time."
+                : "You signed in with a magic link. Set a password to use email + password on the login page."}
+            </p>
+            <PasswordForm hasPassword={hasPassword} />
+            <SignOutButton />
+          </div>
+
+          {/* 6. Account data */}
+          <AccountDataSection />
         </section>
       ) : (
-        <section className="mt-4 flex flex-1 items-center justify-center">
-          <div className="ns-card max-w-md text-center">
-            <div className="flex justify-center">
-              <EmptyTogetherIllustration className="w-28 h-28 sm:w-32 sm:h-32" />
+        <>
+          <section className="mt-4 flex flex-1 items-center justify-center">
+            <div className="ns-card max-w-md text-center">
+              <div className="flex justify-center">
+                <EmptyTogetherIllustration className="w-28 h-28 sm:w-32 sm:h-32" />
+              </div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 sm:text-sm">
+                Welcome
+              </p>
+              <p className="mt-3 text-xl font-semibold text-slate-900 sm:text-2xl">
+                Set up your relationship
+              </p>
+              <p className="mt-2 text-sm text-slate-600 sm:text-base">
+                Get an invite code to text your partner, or enter the code they sent you.
+              </p>
+              <Link
+                href="/app/pair"
+                className="ns-btn-primary mt-5 block w-full text-center py-3.5"
+              >
+                Pair with partner
+              </Link>
             </div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 sm:text-sm">
-              Welcome
-            </p>
-            <p className="mt-3 text-xl font-semibold text-slate-900 sm:text-2xl">
-              Set up your relationship
-            </p>
-            <p className="mt-2 text-sm text-slate-600 sm:text-base">
-              Get an invite code to text your partner, or enter the code they sent you.
-            </p>
-            <Link
-              href="/app/pair"
-              className="ns-btn-primary mt-5 block w-full text-center py-3.5"
-            >
-              Pair with partner
-            </Link>
-          </div>
-        </section>
+          </section>
+
+          <section className="ns-stack-tight mt-4">
+            {/* Profile editing for solo users */}
+            <div className="ns-card">
+              <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Edit profile</h2>
+              <p className="mt-1 text-sm text-slate-600 sm:text-base">
+                Change your display name, photo (JPG or PNG, max 2MB), or pick an icon. Your email stays the
+                same for sign-in.
+              </p>
+
+              <ProfileForm currentName={currentName} currentAvatar={currentAvatar} />
+            </div>
+
+            <div className="ns-card">
+              <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
+                Sign-in
+              </h2>
+              <p className="mt-1 text-lg font-semibold text-slate-900 sm:text-xl">
+                {hasPassword ? "Change password" : "Set a password"}
+              </p>
+              <p className="mt-1 text-sm text-slate-600 sm:text-base">
+                {hasPassword
+                  ? "Use a password to sign in with email next time."
+                  : "You signed in with a magic link. Set a password to use email + password on the login page."}
+              </p>
+              <PasswordForm hasPassword={hasPassword} />
+              <SignOutButton />
+            </div>
+
+            <AccountDataSection />
+          </section>
+        </>
       )}
     </main>
   );
 }
-

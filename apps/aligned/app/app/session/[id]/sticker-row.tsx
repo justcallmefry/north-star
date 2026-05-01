@@ -10,6 +10,23 @@ import { haptic } from "@/lib/haptics";
  * Replace with hand-illustrated SVGs once design lands; the data
  * shape (single string per sticker) is forward-compatible.
  */
+
+/** Maps each sticker glyph to a distinct haptic pattern. */
+const HAPTIC_BY_GLYPH: Record<string, Parameters<typeof haptic>[0]> = {
+  "💗": "react-heart",
+  "🥺": "react-soft",
+  "😊": "react-soft",
+  "🫶": "react-heart",
+  "✨": "react-soft",
+  "🤣": "react-laugh",
+  "😮": "react-mark",
+  "🥹": "react-soft",
+  "🫂": "react-heart",
+  "💭": "react-soft",
+  "🤝": "react-mark",
+  "🌿": "react-soft",
+};
+
 const STICKERS: Array<{ key: string; glyph: string; label: string }> = [
   { key: "soft_heart", glyph: "💗", label: "Soft heart" },
   { key: "tender", glyph: "🥺", label: "Tender" },
@@ -39,7 +56,7 @@ export function StickerRow({ sessionId }: Props) {
     try {
       await submitReflection(sessionId, s.glyph, undefined);
       setSentKey(s.key);
-      void haptic("tap");
+      void haptic(HAPTIC_BY_GLYPH[s.glyph] ?? "tap");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Couldn't send.");
     } finally {

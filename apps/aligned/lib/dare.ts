@@ -120,3 +120,11 @@ export async function completeDare(dareId: string, photoUrl?: string): Promise<v
   revalidatePath("/app/dare");
   revalidatePath("/app");
 }
+
+/**
+ * Public accessor for a dare's display copy by index. Used by the magazine
+ * generator so it doesn't have to import the full DARES array.
+ */
+export function getDareCopy(idx: number): Dare | null {
+  return DARES[idx] ?? null;
+}

@@ -171,6 +171,7 @@ model Relationship {
   wyrSessions       WyrSession[]
   spotlights        PartnerSpotlight[]
   dateNightDares    DateNightDare[]
+  issues            Issue[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -644,4 +645,38 @@ model AgreementParticipation {
   @@unique([agreementSessionId, userId])
   @@index([agreementSessionId])
   @@index([userId])
+}
+
+enum IssueCadence {
+  weekly
+  monthly
+  yearly
+  milestone
+}
+
+model Issue {
+  id             String       @id @default(cuid())
+  relationshipId String
+  cadence        IssueCadence
+  milestoneType  String?
+  issueNumber    Int
+  volumeNumber   Int          @default(1)
+  windowStart    DateTime
+  windowEnd      DateTime
+  publishedAt    DateTime     @default(now())
+
+  headline       String
+  coverPhotoUrl  String?
+  coverGradient  Json?
+  sections       Json
+
+  savedAt        DateTime?
+  openedByA      DateTime?
+  openedByB      DateTime?
+  isPremium      Boolean      @default(false)
+
+  relationship   Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+
+  @@unique([relationshipId, cadence, issueNumber])
+  @@index([relationshipId, publishedAt])
 }

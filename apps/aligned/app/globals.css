@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -526,4 +528,86 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .animate-wyr-match-glow { animation: none; }
+}
+
+/* ───────────────────────────────────────────────────────────────────────
+   Aligned: The Magazine — editorial typography stack.
+   Used only inside .magazine-frame and its descendants. Scoped so we
+   don't bleed serif type into the rest of the app.
+   ─────────────────────────────────────────────────────────────────────── */
+.magazine-frame {
+  background: #faf7f2;
+  color: #2d2d2d;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+.magazine-frame .mag-display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+.magazine-frame .mag-body {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #3d3d3d;
+}
+.magazine-frame .mag-label {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.magazine-frame .mag-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #d4cdbe;
+}
+.magazine-frame .mag-meta {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #888;
+}
+.magazine-frame .mag-divider {
+  width: 32px;
+  height: 1px;
+  background: #2d2d2d;
+}
+.magazine-frame .mag-section {
+  padding: 48px 32px;
+  border-bottom: 1px solid #e8e2d6;
+}
+.magazine-frame .mag-section:last-child { border-bottom: none; }
+.magazine-frame .mag-pullquote {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.6rem;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+/* Scroll-reveal for sections — gracefully degrades if motion is reduced */
+.magazine-frame .mag-reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.magazine-frame .mag-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .magazine-frame .mag-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

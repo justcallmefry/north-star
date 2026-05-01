@@ -1,10 +1,10 @@
 import { Clock, ThumbsUp, Heart, Lock } from "lucide-react";
 
 const BENEFITS = [
-  { icon: Clock, text: "Under 3 minutes a day." },
-  { icon: ThumbsUp, text: "Reluctant-partner approved." },
-  { icon: Heart, text: "The most valuable screen time you'll do today." },
-  { icon: Lock, text: "No gimmicks. Fully private. Always positive." },
+  { icon: Clock, text: "Under 3 minutes. No pressure, ever." },
+  { icon: ThumbsUp, text: "Works even if your partner is skeptical." },
+  { icon: Heart, text: "The conversation you meant to have tonight." },
+  { icon: Lock, text: "Private by design. No feed. No notifications spam." },
 ] as const;
 
 export function WelcomeHero() {
@@ -14,19 +14,14 @@ export function WelcomeHero() {
         className="inline-flex items-center rounded-full bg-gradient-to-r from-brand-50 to-brand-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand-600 ring-1 ring-brand-100/80"
         aria-hidden
       >
-        3 min / day
+        Free to start · 3 min/day
       </span>
 
       <h2 className="mt-4 text-center text-xl font-semibold leading-snug text-slate-900 sm:text-2xl">
-        <span className="block">One question a day.</span>
-        <span className="mt-1 block">Answer privately.</span>
-        <span className="mt-1 block">Reveal together.</span>
+        The daily ritual your relationship deserves.
       </h2>
       <p className="mt-2 text-center text-base text-slate-600">
-        Connect daily, effortlessly. Reflect positively. Grow stronger together.
-      </p>
-      <p className="mt-2 text-center text-sm font-medium text-brand-700">
-        Built for couples who don&apos;t want another chore.
+        One question a day. Both answer privately. Reveal together. Just you two.
       </p>
 
       <div
@@ -45,11 +40,11 @@ export function WelcomeHero() {
         </ul>
       </div>
 
-      <p className="mt-5 text-center text-xs text-slate-500">
-        Private by design • No ads • No social feed
+      <p className="mt-5 text-center text-sm text-slate-600">
+        Thousands of couples check in together every day.
       </p>
       <p className="mt-3 text-center text-xs font-medium text-brand-600">
-        Couples use Aligned to stay connected.
+        The most meaningful 3 minutes of your day.
       </p>
     </div>
   );

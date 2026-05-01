@@ -60,8 +60,14 @@ export function WelcomeContent() {
               href={signupHref}
               className="ns-btn-accent block w-full py-3.5 text-center text-base font-medium"
             >
-              CREATE ACCOUNT
+              Start your first question →
             </a>
+            <p className="mt-3 text-center text-sm text-slate-500">
+              Already have an account?{" "}
+              <a href={loginHref} className="font-medium text-brand-600 hover:text-brand-700 underline underline-offset-2">
+                Sign in
+              </a>
+            </p>
           </div>
         </section>
 

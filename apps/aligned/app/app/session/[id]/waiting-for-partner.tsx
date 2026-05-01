@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Lock } from "lucide-react";
 import { NotifyPartnerButton } from "../../notify-partner-button";
 
 const POLL_MS = 30_000;
@@ -41,6 +42,9 @@ export function WaitingForPartner({
       className="flex flex-col items-center gap-5 rounded-2xl border border-brand-100/80 bg-white p-6 text-center sm:p-7"
       aria-live="polite"
     >
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 ring-1 ring-brand-100 mb-1">
+        <Lock className="h-4 w-4 text-brand-500" strokeWidth={2} />
+      </span>
       <div className="relative flex h-20 w-20 items-center justify-center">
         <span
           className="absolute inset-0 rounded-full bg-brand-300 animate-thinking-pulse"
@@ -63,11 +67,13 @@ export function WaitingForPartner({
 
       <div className="space-y-1">
         <p className="text-lg font-semibold text-slate-900 sm:text-xl">
-          <span>{subjectName}</span>{" "}
-          <span className="text-brand-700 animate-thinking-breath">is thinking…</span>
+          Your answer is sealed.
+        </p>
+        <p className="text-base text-brand-700 animate-thinking-breath sm:text-lg">
+          Waiting for {subjectName}…
         </p>
         <p className="text-sm text-slate-600 sm:text-base">
-          Your answer stays private until {totalMembers === 2 ? "they" : "everyone"} answers.
+          It&apos;ll open the moment they reply. You&apos;ll both see it at the same time.
         </p>
       </div>
 

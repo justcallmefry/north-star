@@ -19540,11 +19540,13 @@ export namespace Prisma {
   export type StreakAvgAggregateOutputType = {
     currentCount: number | null
     longestCount: number | null
+    graceDays: number | null
   }
 
   export type StreakSumAggregateOutputType = {
     currentCount: number | null
     longestCount: number | null
+    graceDays: number | null
   }
 
   export type StreakMinAggregateOutputType = {
@@ -19552,6 +19554,8 @@ export namespace Prisma {
     currentCount: number | null
     longestCount: number | null
     lastCompletedDate: Date | null
+    graceDays: number | null
+    graceUsedDate: Date | null
   }
 
   export type StreakMaxAggregateOutputType = {
@@ -19559,6 +19563,8 @@ export namespace Prisma {
     currentCount: number | null
     longestCount: number | null
     lastCompletedDate: Date | null
+    graceDays: number | null
+    graceUsedDate: Date | null
   }
 
   export type StreakCountAggregateOutputType = {
@@ -19566,6 +19572,8 @@ export namespace Prisma {
     currentCount: number
     longestCount: number
     lastCompletedDate: number
+    graceDays: number
+    graceUsedDate: number
     _all: number
   }
 
@@ -19573,11 +19581,13 @@ export namespace Prisma {
   export type StreakAvgAggregateInputType = {
     currentCount?: true
     longestCount?: true
+    graceDays?: true
   }
 
   export type StreakSumAggregateInputType = {
     currentCount?: true
     longestCount?: true
+    graceDays?: true
   }
 
   export type StreakMinAggregateInputType = {
@@ -19585,6 +19595,8 @@ export namespace Prisma {
     currentCount?: true
     longestCount?: true
     lastCompletedDate?: true
+    graceDays?: true
+    graceUsedDate?: true
   }
 
   export type StreakMaxAggregateInputType = {
@@ -19592,6 +19604,8 @@ export namespace Prisma {
     currentCount?: true
     longestCount?: true
     lastCompletedDate?: true
+    graceDays?: true
+    graceUsedDate?: true
   }
 
   export type StreakCountAggregateInputType = {
@@ -19599,6 +19613,8 @@ export namespace Prisma {
     currentCount?: true
     longestCount?: true
     lastCompletedDate?: true
+    graceDays?: true
+    graceUsedDate?: true
     _all?: true
   }
 
@@ -19693,6 +19709,8 @@ export namespace Prisma {
     currentCount: number
     longestCount: number
     lastCompletedDate: Date | null
+    graceDays: number
+    graceUsedDate: Date | null
     _count: StreakCountAggregateOutputType | null
     _avg: StreakAvgAggregateOutputType | null
     _sum: StreakSumAggregateOutputType | null
@@ -19719,6 +19737,8 @@ export namespace Prisma {
     currentCount?: boolean
     longestCount?: boolean
     lastCompletedDate?: boolean
+    graceDays?: boolean
+    graceUsedDate?: boolean
     relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["streak"]>
 
@@ -19727,6 +19747,8 @@ export namespace Prisma {
     currentCount?: boolean
     longestCount?: boolean
     lastCompletedDate?: boolean
+    graceDays?: boolean
+    graceUsedDate?: boolean
     relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["streak"]>
 
@@ -19735,6 +19757,8 @@ export namespace Prisma {
     currentCount?: boolean
     longestCount?: boolean
     lastCompletedDate?: boolean
+    graceDays?: boolean
+    graceUsedDate?: boolean
   }
 
   export type StreakInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19754,6 +19778,16 @@ export namespace Prisma {
       currentCount: number
       longestCount: number
       lastCompletedDate: Date | null
+      /**
+       * Banked "Grace Days" — earned every 7th consecutive day (cap 2).
+       * One is auto-consumed to bridge a single missed day. Never purchasable.
+       */
+      graceDays: number
+      /**
+       * The missed day a Grace Day most recently bridged — lets the UI say
+       * "your Grace Day held the streak" honestly.
+       */
+      graceUsedDate: Date | null
     }, ExtArgs["result"]["streak"]>
     composites: {}
   }
@@ -20152,6 +20186,8 @@ export namespace Prisma {
     readonly currentCount: FieldRef<"Streak", 'Int'>
     readonly longestCount: FieldRef<"Streak", 'Int'>
     readonly lastCompletedDate: FieldRef<"Streak", 'DateTime'>
+    readonly graceDays: FieldRef<"Streak", 'Int'>
+    readonly graceUsedDate: FieldRef<"Streak", 'DateTime'>
   }
     
 
@@ -24470,10 +24506,12 @@ export namespace Prisma {
 
   export type WyrParticipationAvgAggregateOutputType = {
     choice: number | null
+    guess: number | null
   }
 
   export type WyrParticipationSumAggregateOutputType = {
     choice: number | null
+    guess: number | null
   }
 
   export type WyrParticipationMinAggregateOutputType = {
@@ -24481,6 +24519,7 @@ export namespace Prisma {
     wyrSessionId: string | null
     userId: string | null
     choice: number | null
+    guess: number | null
     createdAt: Date | null
   }
 
@@ -24489,6 +24528,7 @@ export namespace Prisma {
     wyrSessionId: string | null
     userId: string | null
     choice: number | null
+    guess: number | null
     createdAt: Date | null
   }
 
@@ -24497,6 +24537,7 @@ export namespace Prisma {
     wyrSessionId: number
     userId: number
     choice: number
+    guess: number
     createdAt: number
     _all: number
   }
@@ -24504,10 +24545,12 @@ export namespace Prisma {
 
   export type WyrParticipationAvgAggregateInputType = {
     choice?: true
+    guess?: true
   }
 
   export type WyrParticipationSumAggregateInputType = {
     choice?: true
+    guess?: true
   }
 
   export type WyrParticipationMinAggregateInputType = {
@@ -24515,6 +24558,7 @@ export namespace Prisma {
     wyrSessionId?: true
     userId?: true
     choice?: true
+    guess?: true
     createdAt?: true
   }
 
@@ -24523,6 +24567,7 @@ export namespace Prisma {
     wyrSessionId?: true
     userId?: true
     choice?: true
+    guess?: true
     createdAt?: true
   }
 
@@ -24531,6 +24576,7 @@ export namespace Prisma {
     wyrSessionId?: true
     userId?: true
     choice?: true
+    guess?: true
     createdAt?: true
     _all?: true
   }
@@ -24626,6 +24672,7 @@ export namespace Prisma {
     wyrSessionId: string
     userId: string
     choice: number
+    guess: number | null
     createdAt: Date
     _count: WyrParticipationCountAggregateOutputType | null
     _avg: WyrParticipationAvgAggregateOutputType | null
@@ -24653,6 +24700,7 @@ export namespace Prisma {
     wyrSessionId?: boolean
     userId?: boolean
     choice?: boolean
+    guess?: boolean
     createdAt?: boolean
     wyrSession?: boolean | WyrSessionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -24663,6 +24711,7 @@ export namespace Prisma {
     wyrSessionId?: boolean
     userId?: boolean
     choice?: boolean
+    guess?: boolean
     createdAt?: boolean
     wyrSession?: boolean | WyrSessionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -24673,6 +24722,7 @@ export namespace Prisma {
     wyrSessionId?: boolean
     userId?: boolean
     choice?: boolean
+    guess?: boolean
     createdAt?: boolean
   }
 
@@ -24696,6 +24746,10 @@ export namespace Prisma {
       wyrSessionId: string
       userId: string
       choice: number
+      /**
+       * Optional "call it" — the choice this user predicted their partner made.
+       */
+      guess: number | null
       createdAt: Date
     }, ExtArgs["result"]["wyrParticipation"]>
     composites: {}
@@ -25096,6 +25150,7 @@ export namespace Prisma {
     readonly wyrSessionId: FieldRef<"WyrParticipation", 'String'>
     readonly userId: FieldRef<"WyrParticipation", 'String'>
     readonly choice: FieldRef<"WyrParticipation", 'Int'>
+    readonly guess: FieldRef<"WyrParticipation", 'Int'>
     readonly createdAt: FieldRef<"WyrParticipation", 'DateTime'>
   }
     
@@ -33460,7 +33515,9 @@ export namespace Prisma {
     relationshipId: 'relationshipId',
     currentCount: 'currentCount',
     longestCount: 'longestCount',
-    lastCompletedDate: 'lastCompletedDate'
+    lastCompletedDate: 'lastCompletedDate',
+    graceDays: 'graceDays',
+    graceUsedDate: 'graceUsedDate'
   };
 
   export type StreakScalarFieldEnum = (typeof StreakScalarFieldEnum)[keyof typeof StreakScalarFieldEnum]
@@ -33526,6 +33583,7 @@ export namespace Prisma {
     wyrSessionId: 'wyrSessionId',
     userId: 'userId',
     choice: 'choice',
+    guess: 'guess',
     createdAt: 'createdAt'
   };
 
@@ -35127,6 +35185,8 @@ export namespace Prisma {
     currentCount?: IntFilter<"Streak"> | number
     longestCount?: IntFilter<"Streak"> | number
     lastCompletedDate?: DateTimeNullableFilter<"Streak"> | Date | string | null
+    graceDays?: IntFilter<"Streak"> | number
+    graceUsedDate?: DateTimeNullableFilter<"Streak"> | Date | string | null
     relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
   }
 
@@ -35135,6 +35195,8 @@ export namespace Prisma {
     currentCount?: SortOrder
     longestCount?: SortOrder
     lastCompletedDate?: SortOrderInput | SortOrder
+    graceDays?: SortOrder
+    graceUsedDate?: SortOrderInput | SortOrder
     relationship?: RelationshipOrderByWithRelationInput
   }
 
@@ -35146,6 +35208,8 @@ export namespace Prisma {
     currentCount?: IntFilter<"Streak"> | number
     longestCount?: IntFilter<"Streak"> | number
     lastCompletedDate?: DateTimeNullableFilter<"Streak"> | Date | string | null
+    graceDays?: IntFilter<"Streak"> | number
+    graceUsedDate?: DateTimeNullableFilter<"Streak"> | Date | string | null
     relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
   }, "relationshipId">
 
@@ -35154,6 +35218,8 @@ export namespace Prisma {
     currentCount?: SortOrder
     longestCount?: SortOrder
     lastCompletedDate?: SortOrderInput | SortOrder
+    graceDays?: SortOrder
+    graceUsedDate?: SortOrderInput | SortOrder
     _count?: StreakCountOrderByAggregateInput
     _avg?: StreakAvgOrderByAggregateInput
     _max?: StreakMaxOrderByAggregateInput
@@ -35169,6 +35235,8 @@ export namespace Prisma {
     currentCount?: IntWithAggregatesFilter<"Streak"> | number
     longestCount?: IntWithAggregatesFilter<"Streak"> | number
     lastCompletedDate?: DateTimeNullableWithAggregatesFilter<"Streak"> | Date | string | null
+    graceDays?: IntWithAggregatesFilter<"Streak"> | number
+    graceUsedDate?: DateTimeNullableWithAggregatesFilter<"Streak"> | Date | string | null
   }
 
   export type SubscriptionWhereInput = {
@@ -35473,6 +35541,7 @@ export namespace Prisma {
     wyrSessionId?: StringFilter<"WyrParticipation"> | string
     userId?: StringFilter<"WyrParticipation"> | string
     choice?: IntFilter<"WyrParticipation"> | number
+    guess?: IntNullableFilter<"WyrParticipation"> | number | null
     createdAt?: DateTimeFilter<"WyrParticipation"> | Date | string
     wyrSession?: XOR<WyrSessionRelationFilter, WyrSessionWhereInput>
     user?: XOR<UserRelationFilter, UserWhereInput>
@@ -35483,6 +35552,7 @@ export namespace Prisma {
     wyrSessionId?: SortOrder
     userId?: SortOrder
     choice?: SortOrder
+    guess?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     wyrSession?: WyrSessionOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
@@ -35497,6 +35567,7 @@ export namespace Prisma {
     wyrSessionId?: StringFilter<"WyrParticipation"> | string
     userId?: StringFilter<"WyrParticipation"> | string
     choice?: IntFilter<"WyrParticipation"> | number
+    guess?: IntNullableFilter<"WyrParticipation"> | number | null
     createdAt?: DateTimeFilter<"WyrParticipation"> | Date | string
     wyrSession?: XOR<WyrSessionRelationFilter, WyrSessionWhereInput>
     user?: XOR<UserRelationFilter, UserWhereInput>
@@ -35507,6 +35578,7 @@ export namespace Prisma {
     wyrSessionId?: SortOrder
     userId?: SortOrder
     choice?: SortOrder
+    guess?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: WyrParticipationCountOrderByAggregateInput
     _avg?: WyrParticipationAvgOrderByAggregateInput
@@ -35523,6 +35595,7 @@ export namespace Prisma {
     wyrSessionId?: StringWithAggregatesFilter<"WyrParticipation"> | string
     userId?: StringWithAggregatesFilter<"WyrParticipation"> | string
     choice?: IntWithAggregatesFilter<"WyrParticipation"> | number
+    guess?: IntNullableWithAggregatesFilter<"WyrParticipation"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"WyrParticipation"> | Date | string
   }
 
@@ -37407,6 +37480,8 @@ export namespace Prisma {
     currentCount?: number
     longestCount?: number
     lastCompletedDate?: Date | string | null
+    graceDays?: number
+    graceUsedDate?: Date | string | null
     relationship: RelationshipCreateNestedOneWithoutStreakInput
   }
 
@@ -37415,12 +37490,16 @@ export namespace Prisma {
     currentCount?: number
     longestCount?: number
     lastCompletedDate?: Date | string | null
+    graceDays?: number
+    graceUsedDate?: Date | string | null
   }
 
   export type StreakUpdateInput = {
     currentCount?: IntFieldUpdateOperationsInput | number
     longestCount?: IntFieldUpdateOperationsInput | number
     lastCompletedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    graceDays?: IntFieldUpdateOperationsInput | number
+    graceUsedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     relationship?: RelationshipUpdateOneRequiredWithoutStreakNestedInput
   }
 
@@ -37429,6 +37508,8 @@ export namespace Prisma {
     currentCount?: IntFieldUpdateOperationsInput | number
     longestCount?: IntFieldUpdateOperationsInput | number
     lastCompletedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    graceDays?: IntFieldUpdateOperationsInput | number
+    graceUsedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type StreakCreateManyInput = {
@@ -37436,12 +37517,16 @@ export namespace Prisma {
     currentCount?: number
     longestCount?: number
     lastCompletedDate?: Date | string | null
+    graceDays?: number
+    graceUsedDate?: Date | string | null
   }
 
   export type StreakUpdateManyMutationInput = {
     currentCount?: IntFieldUpdateOperationsInput | number
     longestCount?: IntFieldUpdateOperationsInput | number
     lastCompletedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    graceDays?: IntFieldUpdateOperationsInput | number
+    graceUsedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type StreakUncheckedUpdateManyInput = {
@@ -37449,6 +37534,8 @@ export namespace Prisma {
     currentCount?: IntFieldUpdateOperationsInput | number
     longestCount?: IntFieldUpdateOperationsInput | number
     lastCompletedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    graceDays?: IntFieldUpdateOperationsInput | number
+    graceUsedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type SubscriptionCreateInput = {
@@ -37751,6 +37838,7 @@ export namespace Prisma {
   export type WyrParticipationCreateInput = {
     id?: string
     choice: number
+    guess?: number | null
     createdAt?: Date | string
     wyrSession: WyrSessionCreateNestedOneWithoutParticipationsInput
     user: UserCreateNestedOneWithoutWyrParticipationsInput
@@ -37761,12 +37849,14 @@ export namespace Prisma {
     wyrSessionId: string
     userId: string
     choice: number
+    guess?: number | null
     createdAt?: Date | string
   }
 
   export type WyrParticipationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     choice?: IntFieldUpdateOperationsInput | number
+    guess?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     wyrSession?: WyrSessionUpdateOneRequiredWithoutParticipationsNestedInput
     user?: UserUpdateOneRequiredWithoutWyrParticipationsNestedInput
@@ -37777,6 +37867,7 @@ export namespace Prisma {
     wyrSessionId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     choice?: IntFieldUpdateOperationsInput | number
+    guess?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -37785,12 +37876,14 @@ export namespace Prisma {
     wyrSessionId: string
     userId: string
     choice: number
+    guess?: number | null
     createdAt?: Date | string
   }
 
   export type WyrParticipationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     choice?: IntFieldUpdateOperationsInput | number
+    guess?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -37799,6 +37892,7 @@ export namespace Prisma {
     wyrSessionId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     choice?: IntFieldUpdateOperationsInput | number
+    guess?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -39535,11 +39629,14 @@ export namespace Prisma {
     currentCount?: SortOrder
     longestCount?: SortOrder
     lastCompletedDate?: SortOrder
+    graceDays?: SortOrder
+    graceUsedDate?: SortOrder
   }
 
   export type StreakAvgOrderByAggregateInput = {
     currentCount?: SortOrder
     longestCount?: SortOrder
+    graceDays?: SortOrder
   }
 
   export type StreakMaxOrderByAggregateInput = {
@@ -39547,6 +39644,8 @@ export namespace Prisma {
     currentCount?: SortOrder
     longestCount?: SortOrder
     lastCompletedDate?: SortOrder
+    graceDays?: SortOrder
+    graceUsedDate?: SortOrder
   }
 
   export type StreakMinOrderByAggregateInput = {
@@ -39554,11 +39653,14 @@ export namespace Prisma {
     currentCount?: SortOrder
     longestCount?: SortOrder
     lastCompletedDate?: SortOrder
+    graceDays?: SortOrder
+    graceUsedDate?: SortOrder
   }
 
   export type StreakSumOrderByAggregateInput = {
     currentCount?: SortOrder
     longestCount?: SortOrder
+    graceDays?: SortOrder
   }
 
   export type EnumSubscriptionStatusFilter<$PrismaModel = never> = {
@@ -39808,11 +39910,13 @@ export namespace Prisma {
     wyrSessionId?: SortOrder
     userId?: SortOrder
     choice?: SortOrder
+    guess?: SortOrder
     createdAt?: SortOrder
   }
 
   export type WyrParticipationAvgOrderByAggregateInput = {
     choice?: SortOrder
+    guess?: SortOrder
   }
 
   export type WyrParticipationMaxOrderByAggregateInput = {
@@ -39820,6 +39924,7 @@ export namespace Prisma {
     wyrSessionId?: SortOrder
     userId?: SortOrder
     choice?: SortOrder
+    guess?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -39828,11 +39933,13 @@ export namespace Prisma {
     wyrSessionId?: SortOrder
     userId?: SortOrder
     choice?: SortOrder
+    guess?: SortOrder
     createdAt?: SortOrder
   }
 
   export type WyrParticipationSumOrderByAggregateInput = {
     choice?: SortOrder
+    guess?: SortOrder
   }
 
   export type PartnerSpotlightRelationshipIdFromUserIdMonthKeyCompoundUniqueInput = {
@@ -43447,6 +43554,7 @@ export namespace Prisma {
   export type WyrParticipationCreateWithoutUserInput = {
     id?: string
     choice: number
+    guess?: number | null
     createdAt?: Date | string
     wyrSession: WyrSessionCreateNestedOneWithoutParticipationsInput
   }
@@ -43455,6 +43563,7 @@ export namespace Prisma {
     id?: string
     wyrSessionId: string
     choice: number
+    guess?: number | null
     createdAt?: Date | string
   }
 
@@ -43980,6 +44089,7 @@ export namespace Prisma {
     wyrSessionId?: StringFilter<"WyrParticipation"> | string
     userId?: StringFilter<"WyrParticipation"> | string
     choice?: IntFilter<"WyrParticipation"> | number
+    guess?: IntNullableFilter<"WyrParticipation"> | number | null
     createdAt?: DateTimeFilter<"WyrParticipation"> | Date | string
   }
 
@@ -44608,12 +44718,16 @@ export namespace Prisma {
     currentCount?: number
     longestCount?: number
     lastCompletedDate?: Date | string | null
+    graceDays?: number
+    graceUsedDate?: Date | string | null
   }
 
   export type StreakUncheckedCreateWithoutRelationshipInput = {
     currentCount?: number
     longestCount?: number
     lastCompletedDate?: Date | string | null
+    graceDays?: number
+    graceUsedDate?: Date | string | null
   }
 
   export type StreakCreateOrConnectWithoutRelationshipInput = {
@@ -45006,12 +45120,16 @@ export namespace Prisma {
     currentCount?: IntFieldUpdateOperationsInput | number
     longestCount?: IntFieldUpdateOperationsInput | number
     lastCompletedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    graceDays?: IntFieldUpdateOperationsInput | number
+    graceUsedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type StreakUncheckedUpdateWithoutRelationshipInput = {
     currentCount?: IntFieldUpdateOperationsInput | number
     longestCount?: IntFieldUpdateOperationsInput | number
     lastCompletedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    graceDays?: IntFieldUpdateOperationsInput | number
+    graceUsedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type SubscriptionUpsertWithWhereUniqueWithoutRelationshipInput = {
@@ -47946,6 +48064,7 @@ export namespace Prisma {
   export type WyrParticipationCreateWithoutWyrSessionInput = {
     id?: string
     choice: number
+    guess?: number | null
     createdAt?: Date | string
     user: UserCreateNestedOneWithoutWyrParticipationsInput
   }
@@ -47954,6 +48073,7 @@ export namespace Prisma {
     id?: string
     userId: string
     choice: number
+    guess?: number | null
     createdAt?: Date | string
   }
 
@@ -49615,6 +49735,7 @@ export namespace Prisma {
     id?: string
     wyrSessionId: string
     choice: number
+    guess?: number | null
     createdAt?: Date | string
   }
 
@@ -50076,6 +50197,7 @@ export namespace Prisma {
   export type WyrParticipationUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     choice?: IntFieldUpdateOperationsInput | number
+    guess?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     wyrSession?: WyrSessionUpdateOneRequiredWithoutParticipationsNestedInput
   }
@@ -50084,6 +50206,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     wyrSessionId?: StringFieldUpdateOperationsInput | string
     choice?: IntFieldUpdateOperationsInput | number
+    guess?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -50091,6 +50214,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     wyrSessionId?: StringFieldUpdateOperationsInput | string
     choice?: IntFieldUpdateOperationsInput | number
+    guess?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -50878,12 +51002,14 @@ export namespace Prisma {
     id?: string
     userId: string
     choice: number
+    guess?: number | null
     createdAt?: Date | string
   }
 
   export type WyrParticipationUpdateWithoutWyrSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     choice?: IntFieldUpdateOperationsInput | number
+    guess?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWyrParticipationsNestedInput
   }
@@ -50892,6 +51018,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     choice?: IntFieldUpdateOperationsInput | number
+    guess?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -50899,6 +51026,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     choice?: IntFieldUpdateOperationsInput | number
+    guess?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getDedication } from "@/lib/dedication";
-import { getStreak, updateStreakOnReveal } from "@/lib/streak";
+import { getStreak, updateStreakOnReveal, type StreakInfo } from "@/lib/streak";
 import { getActiveMemberIds, requireActiveMember, todayUTC } from "@/lib/relationship-members";
 import { pickPrompt } from "@/lib/prompt-scheduler";
 import { getThrowbackForToday } from "@/lib/throwback";
@@ -169,7 +169,7 @@ export type GetTodayResult = {
   canReveal: boolean;
   partnerName?: string | null;
   /** Consecutive days the couple has completed the question (revealed). */
-  streak?: { currentCount: number; longestCount: number; justReset?: boolean } | null;
+  streak?: StreakInfo | null;
   /** This user's total daily check-ins in this relationship (never resets). */
   dedication?: { totalCheckIns: number } | null;
   /** Prompt category for the meta line + featured-slot logic. */
@@ -533,7 +533,7 @@ export type GetSessionResult = {
   /** Number of members who have submitted a response this session. */
   respondedCount?: number;
   /** Consecutive days the couple has completed the question (revealed). */
-  streak?: { currentCount: number; longestCount: number; justReset?: boolean } | null;
+  streak?: StreakInfo | null;
   /** This user's total daily check-ins in this relationship (never resets). */
   dedication?: { totalCheckIns: number } | null;
   /** True when this is the first revealed daily session for this relationship. */

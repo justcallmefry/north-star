@@ -406,6 +406,12 @@ model Streak {
   currentCount      Int       @default(0)
   longestCount      Int       @default(0)
   lastCompletedDate DateTime? @db.Date
+  /// Banked "Grace Days" — earned every 7th consecutive day (cap 2).
+  /// One is auto-consumed to bridge a single missed day. Never purchasable.
+  graceDays         Int       @default(0)
+  /// The missed day a Grace Day most recently bridged — lets the UI say
+  /// "your Grace Day held the streak" honestly.
+  graceUsedDate     DateTime? @db.Date
 
   relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
 
@@ -507,6 +513,8 @@ model WyrParticipation {
   wyrSessionId String
   userId       String
   choice       Int    // 0 = optionA, 1 = optionB
+  /// Optional "call it" — the choice this user predicted their partner made.
+  guess        Int?   // 0 = optionA, 1 = optionB
 
   wyrSession WyrSession @relation(fields: [wyrSessionId], references: [id], onDelete: Cascade)
   user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -137,6 +137,15 @@ north-star/
 
 **Design doc:** `docs/superpowers/specs/2026-05-01-reveal-polish-design.md`
 
+### Game Layer Phase 1 ✅ (shipped)
+**What:** First slice of the "co-op game" direction — a prediction layer ("Called It") plus streak insurance ("Grace Days"). Strategic frame: the couple is the player; no couple-vs-couple competition, ever.
+
+- **Called It (WYR):** after picking your own answer, the first answerer can predict which way their partner went while waiting. Reveal shows "🔮 You called it" or a gentle miss line. Guess stored server-side (`WyrParticipation.guess`).
+- **Called It (Daily Question):** the pre-reveal guess is now shown for *all* prompts (was gated on `partnerGuessEnabled`) and gets a payoff — guessed words matching the partner's answer light up as "🔮 Called it" pills (`lib/reveal/called-it.ts`, device-local storage).
+- **Grace Days:** earn 1 per 7 consecutive days (cap 2, never purchasable); one is auto-consumed to bridge a single missed day. Pure logic in `lib/streak-core.ts` (unit-checked via `npm run check:game-layer`), DB fields `Streak.graceDays` / `Streak.graceUsedDate`, leaf indicators in `StreakBadge`, gentle earn/hold/used copy on Today card and post-reveal.
+
+**Design doc:** `docs/superpowers/specs/2026-07-03-game-layer-phase-1-design.md` (includes Phase 2 direction: Couple Constellation progression + weekly co-op quests feeding Magazine covers)
+
 ---
 
 ## Key Conventions

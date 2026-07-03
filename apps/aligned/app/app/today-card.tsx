@@ -73,6 +73,7 @@ export function TodayCard({ today }: Props) {
           <StreakBadge
             currentCount={streak.currentCount}
             longestCount={streak.longestCount}
+            graceDays={streak.graceDays}
             variant="compact"
           />
         )}
@@ -90,6 +91,11 @@ export function TodayCard({ today }: Props) {
       {streak && !streak.currentCount && streak.justReset && (
         <p className="mt-2 text-xs font-medium text-amber-800">
           Every day is a fresh start.
+        </p>
+      )}
+      {streak && streak.graceArmed && (
+        <p className="mt-2 text-xs font-medium text-emerald-700">
+          A Grace Day is holding your streak — answer today and it carries on.
         </p>
       )}
       {dedication && dedication.totalCheckIns > 0 && (

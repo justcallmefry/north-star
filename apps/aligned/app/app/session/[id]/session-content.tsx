@@ -25,6 +25,7 @@ import { UnfoldCard } from "./unfold-card";
 import { StreamingText } from "./streaming-text";
 import { AlignedStamp } from "./aligned-stamp";
 import { detectAligned } from "@/lib/reveal/aligned";
+import { detectCalledIt } from "@/lib/reveal/called-it";
 import { saveSessionReveal } from "@/lib/memories";
 import { MilestonePromptCard } from "../../milestone-prompt-card";
 import type { MilestoneContext } from "@/lib/milestones";
@@ -513,12 +514,10 @@ export function SessionContent({ data, currentUserId }: Props) {
       {data.hasUserResponded && data.state === "open" && data.canReveal && !isRevealed && (
         <div className="space-y-3">
           <p className="text-base text-slate-700 sm:text-lg">Both of you have answered.</p>
-          {data.partnerGuessEnabled && (
-            <PreRevealGuess
-              sessionId={data.sessionId}
-              partnerName={data.partnerName ?? null}
-            />
-          )}
+          <PreRevealGuess
+            sessionId={data.sessionId}
+            partnerName={data.partnerName ?? null}
+          />
           <div className="flex flex-col gap-2">
             <button
               type="button"
@@ -637,12 +636,34 @@ export function SessionContent({ data, currentUserId }: Props) {
                       First time you&apos;ve heard this
                     </p>
                   )}
-                  {!resp.isMe && savedGuess && (
-                    <p className="px-3 text-sm italic text-slate-500 sm:text-base">
-                      <span className="font-medium not-italic text-slate-600">You guessed: </span>
-                      {savedGuess}
-                    </p>
-                  )}
+                  {!resp.isMe && savedGuess && (() => {
+                    const calledWords = resp.content ? detectCalledIt(savedGuess, resp.content) : [];
+                    if (calledWords.length > 0) {
+                      return (
+                        <p
+                          className="inline-flex flex-wrap items-center gap-1.5 rounded-full bg-dusk-50 px-2.5 py-1 text-xs font-medium text-dusk-800 ring-1 ring-dusk-200/70"
+                          role="note"
+                        >
+                          <span aria-hidden>🔮</span>
+                          Called it — you both said
+                          {calledWords.map((w) => (
+                            <span
+                              key={w}
+                              className="animate-word-pulse rounded-full bg-white px-2 py-0.5 font-semibold text-dusk-700"
+                            >
+                              {w}
+                            </span>
+                          ))}
+                        </p>
+                      );
+                    }
+                    return (
+                      <p className="px-3 text-sm italic text-slate-500 sm:text-base">
+                        <span className="font-medium not-italic text-slate-600">You called: </span>
+                        {savedGuess}
+                      </p>
+                    );
+                  })()}
                   {!resp.isMe && (partnerRevealed || data.state === "revealed") && (() => {
                     const partnerResp = data.allResponses?.find((r) => r.userId === resp.key);
                     if (!partnerResp?.id) return null;
@@ -736,9 +757,21 @@ export function SessionContent({ data, currentUserId }: Props) {
               <StreakBadge
                 currentCount={data.streak.currentCount}
                 longestCount={data.streak.longestCount}
+                graceDays={data.streak.graceDays}
                 variant="full"
               />
             </div>
+          )}
+
+          {data.streak?.graceJustUsed && (
+            <p className="text-center text-sm font-medium text-emerald-700">
+              Life happened yesterday. Your Grace Day held the streak. 🌿
+            </p>
+          )}
+          {data.streak?.graceJustEarned && !data.streak?.graceJustUsed && (
+            <p className="text-center text-sm font-medium text-emerald-700">
+              Grace Day banked 🌿 — if life gets in the way, your streak holds.
+            </p>
           )}
 
           {data.dedication && data.dedication.totalCheckIns > 0 && (

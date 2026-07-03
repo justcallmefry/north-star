@@ -50,12 +50,16 @@ export type WyrForTodayResult = {
   question: WyrQuestion;
   state: "open" | "revealed";
   myChoice: 0 | 1 | null;
+  /** My "call it" — the choice I predicted my partner made. */
+  myGuess: 0 | 1 | null;
   partnerSubmitted: boolean;
   partnerName: string | null;
   reveal?: {
     myChoice: 0 | 1;
     partnerChoice: 0 | 1;
     matched: boolean;
+    /** Whether my call on their pick was right; undefined when I didn't guess. */
+    calledIt?: boolean;
     partnerName: string | null;
   };
 };
@@ -103,11 +107,17 @@ export async function getWyrForToday(
   const question = WYR_QUESTIONS[wyrSession.questionIndex] ?? WYR_QUESTIONS[0]!;
   const isRevealed = wyrSession.state === "revealed";
 
+  const myGuess =
+    myParticipation?.guess === 0 || myParticipation?.guess === 1
+      ? (myParticipation.guess as 0 | 1)
+      : null;
+
   return {
     wyrSessionId: wyrSession.id,
     question,
     state: isRevealed ? "revealed" : "open",
     myChoice: myParticipation ? (myParticipation.choice as 0 | 1) : null,
+    myGuess,
     partnerSubmitted: !!partnerParticipation,
     partnerName: partner?.name ?? null,
     ...(isRevealed && myParticipation && partnerParticipation
@@ -116,6 +126,9 @@ export async function getWyrForToday(
             myChoice: myParticipation.choice as 0 | 1,
             partnerChoice: partnerParticipation.choice as 0 | 1,
             matched: myParticipation.choice === partnerParticipation.choice,
+            ...(myGuess != null
+              ? { calledIt: myGuess === partnerParticipation.choice }
+              : {}),
             partnerName: partner?.name ?? null,
           },
         }
@@ -155,5 +168,37 @@ export async function submitWyrChoice(wyrSessionId: string, choice: 0 | 1): Prom
   }
 
   revalidatePath("/app");
+  revalidatePath("/app/wyr");
+}
+
+/**
+ * "Call it" — record the user's prediction of their partner's choice.
+ * Only possible after picking your own answer and before the reveal, so
+ * in practice it's the first answerer's game while they wait.
+ */
+export async function submitWyrGuess(wyrSessionId: string, guess: 0 | 1): Promise<void> {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) throw new Error("Not signed in");
+
+  const wyrSession = await prisma.wyrSession.findUnique({
+    where: { id: wyrSessionId },
+    select: { id: true, relationshipId: true, state: true },
+  });
+  if (!wyrSession) throw new Error("Session not found");
+  await requireActiveMember(session.user.id, wyrSession.relationshipId);
+  if (wyrSession.state !== "open") throw new Error("Already revealed — no calling it after the fact.");
+
+  const userId = session.user.id;
+  const participation = await prisma.wyrParticipation.findUnique({
+    where: { wyrSessionId_userId: { wyrSessionId, userId } },
+    select: { id: true },
+  });
+  if (!participation) throw new Error("Pick your own answer first.");
+
+  await prisma.wyrParticipation.update({
+    where: { wyrSessionId_userId: { wyrSessionId, userId } },
+    data: { guess },
+  });
+
   revalidatePath("/app/wyr");
 }

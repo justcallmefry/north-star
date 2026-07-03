@@ -54,7 +54,7 @@ export function PreRevealGuess({ sessionId, partnerName }: Props) {
         onClick={() => setCollapsed(false)}
         className="w-full rounded-2xl border border-dashed border-slate-300 bg-white/70 px-4 py-3 text-left text-sm text-slate-600 transition hover:border-dusk-300 hover:bg-dusk-50/40 sm:text-base"
       >
-        <span className="font-medium text-slate-700">Want to guess first?</span>{" "}
+        <span className="font-medium text-slate-700">🔮 Call it before you reveal?</span>{" "}
         <span className="text-slate-500">
           (Just for you — {subject} won&apos;t see it.)
         </span>
@@ -68,13 +68,13 @@ export function PreRevealGuess({ sessionId, partnerName }: Props) {
         htmlFor="reveal-guess"
         className="block text-sm font-medium text-slate-700"
       >
-        If you had to guess, what&apos;s {subject} going to say?
+        Call it — guess a word or phrase {subject} used in their answer.
       </label>
       <textarea
         id="reveal-guess"
         value={value}
         onChange={(e) => handleChange(e.target.value)}
-        placeholder="Take a swing — only you'll see this."
+        placeholder="Take a swing — if you're right, you'll know."
         rows={2}
         className="mt-2 w-full resize-none rounded-lg border border-slate-200 bg-white px-3 py-2 text-base text-slate-900 placeholder:text-slate-400 focus:border-dusk-300 focus:outline-none focus:ring-2 focus:ring-dusk-200/60"
       />

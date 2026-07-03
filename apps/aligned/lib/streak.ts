@@ -3,6 +3,13 @@
 import { prisma } from "@/lib/prisma";
 import { getActiveMemberIds } from "@/lib/relationship-members";
 import { sendPushToUser } from "@/lib/push";
+import {
+  computeStreakUpdate,
+  computeStreakView,
+  toDateString,
+  type StreakRow,
+  type StreakView,
+} from "@/lib/streak-core";
 
 const MILESTONE_COPY: Record<number, { title: string; body: string }> = {
   7: {
@@ -37,120 +44,87 @@ async function pushMilestoneToUser(userId: string, count: number): Promise<void>
   }
 }
 
-/** Format a Date as YYYY-MM-DD (UTC date only). */
-function toDateString(d: Date): string {
-  return d.toISOString().slice(0, 10);
-}
+export type StreakInfo = StreakView;
 
-/** Get yesterday (UTC) relative to a given date string. */
-function yesterdayOf(dateStr: string): string {
-  const d = new Date(dateStr + "T12:00:00.000Z");
-  d.setUTCDate(d.getUTCDate() - 1);
-  return toDateString(d);
-}
-
-export type StreakInfo = {
+function toRow(row: {
   currentCount: number;
   longestCount: number;
-  /** True on the first day a previous streak is no longer current (for gentle reset copy). */
-  justReset?: boolean;
-};
+  lastCompletedDate: Date | null;
+  graceDays: number;
+  graceUsedDate: Date | null;
+}): StreakRow {
+  return {
+    currentCount: row.currentCount,
+    longestCount: row.longestCount,
+    lastCompletedDate: row.lastCompletedDate ? toDateString(row.lastCompletedDate) : null,
+    graceDays: row.graceDays,
+    graceUsedDate: row.graceUsedDate ? toDateString(row.graceUsedDate) : null,
+  };
+}
 
 export async function getStreak(relationshipId: string): Promise<StreakInfo | null> {
   const row = await prisma.streak.findUnique({
     where: { relationshipId },
-    select: { currentCount: true, longestCount: true, lastCompletedDate: true },
+    select: {
+      currentCount: true,
+      longestCount: true,
+      lastCompletedDate: true,
+      graceDays: true,
+      graceUsedDate: true,
+    },
   });
   if (!row) return null;
 
-  const today = new Date();
-  const todayStr = toDateString(today);
-  const lastStr = row.lastCompletedDate ? toDateString(row.lastCompletedDate) : null;
-
-  let isStillCurrent = false;
-  let justReset = false;
-
-  if (lastStr) {
-    const todayUTC = new Date(todayStr + "T00:00:00.000Z");
-    const lastUTC = new Date(lastStr + "T00:00:00.000Z");
-    const msPerDay = 24 * 60 * 60 * 1000;
-    const daysDiff = Math.round((todayUTC.getTime() - lastUTC.getTime()) / msPerDay);
-
-    // Streak is considered \"current\" for today and the day after last completion.
-    isStillCurrent = daysDiff === 0 || daysDiff === 1;
-    // Gentle reset: first day where the streak is no longer current.
-    justReset = daysDiff === 2 && row.currentCount > 0;
-  }
-
-  const currentCount = isStillCurrent ? row.currentCount : 0;
-
-  return {
-    currentCount,
-    longestCount: row.longestCount,
-    justReset,
-  };
+  return computeStreakView(toRow(row), toDateString(new Date()));
 }
 
 /**
  * Call when a daily session is revealed (both partners answered).
- * Updates the relationship's streak: +1 if consecutive day, else reset to 1.
+ * Updates the relationship's streak: +1 if consecutive day; a banked
+ * Grace Day bridges a single missed day; otherwise reset to 1.
  */
 export async function updateStreakOnReveal(
   relationshipId: string,
   sessionDate: Date
 ): Promise<void> {
   const completedStr = toDateString(sessionDate);
-  const yesterdayStr = yesterdayOf(completedStr);
 
   const existing = await prisma.streak.findUnique({
     where: { relationshipId },
-    select: { currentCount: true, longestCount: true, lastCompletedDate: true },
+    select: {
+      currentCount: true,
+      longestCount: true,
+      lastCompletedDate: true,
+      graceDays: true,
+      graceUsedDate: true,
+    },
   });
 
-  let newCurrent: number;
-  let newLongest: number;
+  const next = computeStreakUpdate(existing ? toRow(existing) : null, completedStr);
+  if (!next.changed) return;
 
-  if (!existing) {
-    newCurrent = 1;
-    newLongest = 1;
-  } else {
-    const lastStr = existing.lastCompletedDate
-      ? toDateString(existing.lastCompletedDate)
-      : null;
-    if (lastStr === completedStr) {
-      // Same day (e.g. double reveal) — no change
-      return;
-    }
-    if (lastStr === yesterdayStr) {
-      newCurrent = existing.currentCount + 1;
-      newLongest = Math.max(existing.longestCount, newCurrent);
-    } else {
-      newCurrent = 1;
-      newLongest = existing.longestCount;
-    }
-  }
+  const data = {
+    currentCount: next.currentCount,
+    longestCount: next.longestCount,
+    lastCompletedDate: new Date(completedStr + "T12:00:00.000Z"),
+    graceDays: next.graceDays,
+    graceUsedDate: next.graceUsedDate
+      ? new Date(next.graceUsedDate + "T12:00:00.000Z")
+      : null,
+  };
 
   await prisma.streak.upsert({
     where: { relationshipId },
-    create: {
-      relationshipId,
-      currentCount: newCurrent,
-      longestCount: newLongest,
-      lastCompletedDate: new Date(completedStr + "T12:00:00.000Z"),
-    },
-    update: {
-      currentCount: newCurrent,
-      longestCount: newLongest,
-      lastCompletedDate: new Date(completedStr + "T12:00:00.000Z"),
-    },
+    create: { relationshipId, ...data },
+    update: data,
   });
 
   // Milestone push fan-out — runs once per genuine day-crossing increment.
-  // The same-day guard above prevents double-fires on a second reveal.
-  if (isStreakMilestone(newCurrent)) {
+  // The same-day guard in computeStreakUpdate prevents double-fires.
+  if (isStreakMilestone(next.currentCount)) {
     try {
       const memberIds = await getActiveMemberIds(relationshipId);
-      await Promise.all(memberIds.map((uid) => pushMilestoneToUser(uid, newCurrent)));
+      await Promise.all(memberIds.map((uid) => pushMilestoneToUser(uid, next.currentCount)));
     } catch (err) {
       console.error("[streak-milestone] fan-out failed:", err);
     }

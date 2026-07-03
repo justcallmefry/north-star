@@ -294,7 +294,9 @@ exports.Prisma.StreakScalarFieldEnum = {
   relationshipId: 'relationshipId',
   currentCount: 'currentCount',
   longestCount: 'longestCount',
-  lastCompletedDate: 'lastCompletedDate'
+  lastCompletedDate: 'lastCompletedDate',
+  graceDays: 'graceDays',
+  graceUsedDate: 'graceUsedDate'
 };
 
 exports.Prisma.SubscriptionScalarFieldEnum = {
@@ -345,6 +347,7 @@ exports.Prisma.WyrParticipationScalarFieldEnum = {
   wyrSessionId: 'wyrSessionId',
   userId: 'userId',
   choice: 'choice',
+  guess: 'guess',
   createdAt: 'createdAt'
 };
 

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { submitWyrChoice } from "@/lib/wyr";
+import { submitWyrChoice, submitWyrGuess } from "@/lib/wyr";
 import type { WyrForTodayResult } from "@/lib/wyr";
 import { haptic } from "@/lib/haptics";
 
@@ -58,7 +58,24 @@ export function WyrClient({ initialData }: Props) {
     }
   }
 
-  const { question, myChoice, partnerSubmitted, partnerName, reveal } = data;
+  async function handleCallIt(guess: 0 | 1) {
+    if (loading) return;
+    setLoading(true);
+    const prevGuess = data.myGuess;
+    setData((prev) => ({ ...prev, myGuess: guess }));
+    try {
+      await submitWyrGuess(data.wyrSessionId, guess);
+      void haptic("tap");
+      router.refresh();
+    } catch (err) {
+      setData((prev) => ({ ...prev, myGuess: prevGuess }));
+      toast.error(err instanceof Error ? err.message : "Failed to save your call");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const { question, myChoice, myGuess, partnerSubmitted, partnerName, reveal } = data;
 
   return (
     <div className="animate-calm-fade-in space-y-6">
@@ -133,6 +150,33 @@ export function WyrClient({ initialData }: Props) {
         <div className="rounded-2xl border border-dusk-100 bg-gradient-to-br from-dusk-50 to-white p-5 text-center">
           <p className="text-base font-semibold text-slate-900">{partnerName ?? "Them"} hasn&apos;t picked yet.</p>
           <p className="mt-1 text-sm text-slate-600">Your choice is locked in. We&apos;ll reveal the match the moment they do.</p>
+
+          {myGuess == null ? (
+            <div className="mt-4 border-t border-dusk-100 pt-4">
+              <p className="text-sm font-semibold text-dusk-700">
+                While you wait — call it. Which way did {partnerName ?? "they"} go?
+              </p>
+              <div className="mt-2.5 flex flex-col gap-2 sm:flex-row">
+                {([question.optionA, question.optionB] as const).map((label, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    disabled={loading}
+                    onClick={() => handleCallIt(i as 0 | 1)}
+                    className="flex-1 rounded-xl border border-dusk-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:border-dusk-400 hover:bg-dusk-50 active:scale-[0.98]"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <p className="mt-2 text-xs text-slate-500">Optional — they&apos;ll never see your call.</p>
+            </div>
+          ) : (
+            <p className="mt-4 border-t border-dusk-100 pt-4 text-sm text-dusk-700">
+              <span className="font-semibold">Your call:</span>{" "}
+              {myGuess === 0 ? question.optionA : question.optionB}. Locked in — let&apos;s see.
+            </p>
+          )}
         </div>
       )}
 
@@ -156,6 +200,21 @@ export function WyrClient({ initialData }: Props) {
             <p className="text-xl font-semibold text-slate-800">You went different ways.</p>
             <p className="text-sm text-slate-600">Neither is wrong. This one&apos;s worth talking about tonight.</p>
           </div>
+        )
+      )}
+
+      {showReveal && reveal && reveal.calledIt != null && (
+        reveal.calledIt ? (
+          <div className="animate-wyr-match-burst mx-auto w-fit rounded-full border border-dusk-200 bg-gradient-to-r from-dusk-50 to-brand-50 px-4 py-2 text-center">
+            <p className="text-sm font-semibold text-dusk-800">
+              🔮 You called it — you knew they&apos;d pick{" "}
+              {reveal.partnerChoice === 0 ? question.optionA.toLowerCase() : question.optionB.toLowerCase()}.
+            </p>
+          </div>
+        ) : (
+          <p className="text-center text-sm text-slate-500">
+            You called it the other way — {partnerName ?? "they"} surprised you. Even better.
+          </p>
         )
       )}
     </div>

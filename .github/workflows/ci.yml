@@ -22,16 +22,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
         env:
-          # Prisma generate runs in postinstall; use dummy URL for CI
+          # Prisma generate runs in postinstall; use dummy URLs for CI
           DATABASE_URL: "postgresql://ci:ci@localhost:5432/ci"
+          DIRECT_URL: "postgresql://ci:ci@localhost:5432/ci"
 
       # Lint skipped: Next 16 removed "next lint"; migrate to ESLint flat config to re-enable.
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Build shared + aligned
-        run: npm run build
+      - name: Build shared
+        run: npm run build -w @north-star/shared
+
+      # Run next build directly — skip prisma migrate deploy (no live DB in CI)
+      - name: Build aligned
+        run: npx cross-env NEXT_PUBLIC_BUILD_PHASE=phase-production-build next build
+        working-directory: apps/aligned
         env:
           DATABASE_URL: "postgresql://ci:ci@localhost:5432/ci"
+          DIRECT_URL: "postgresql://ci:ci@localhost:5432/ci"
+          NEXT_PUBLIC_APP_URL: "https://alignedconnectingcouples.com"
           # Optional build-time env; use placeholder so build doesn't fail
           NEXT_PUBLIC_APP_URL: "https://alignedconnectingcouples.com"

@@ -17,7 +17,7 @@ export async function pickNextDare(
   });
   if (!next) return null;
 
-  const copy = getDareCopy(next.dareIndex);
+  const copy = await getDareCopy(next.dareIndex);
   if (!copy) return null;
 
   return {

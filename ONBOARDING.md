@@ -157,6 +157,14 @@ north-star/
 
 **Design doc:** `docs/superpowers/specs/2026-07-03-couple-constellation-design.md` (Phase 2.5 ideas: shareable sky card, weekly co-op quests, WYR shooting stars)
 
+### Game Layer Phase 3: Fun Feel + Quests + Content ✅ (shipped)
+**What:** Four features making the app feel physical, playful, and endless:
+
+1. **Fun-feel motion pass** — WYR options are draggable cards: tap to pick, or *flick away the one that's not you* (fly-off + the keeper springs forward). Reusable pointer-gesture hook `lib/use-flick.ts` (dependency-free, axis-locked so scrolling stays free). Spring motion vocabulary in `globals.css` (`--ease-spring`, `card-pop-in`, `option-pop`); Today-screen rows assemble with staggered spring entrances; quiz selections pulse + haptic.
+2. **Content expansion** — WYR 25 → 150 questions, dares 28 → 80, moved to `lib/content/` data modules. **Append-only** (sessions store indices by position); `check:game-layer` enforces prefix stability + uniqueness.
+3. **Weekly co-op quest** — `lib/quests.ts` derives it from existing activity: 5 reveals + the week's dare + an appreciation = a **golden week**. Quest card on Today (invitation framing, zero guilt); golden weeks gild that week's stars with gold rings in the constellation, retroactively for all history. Shared ISO-week helpers in `lib/week.ts`.
+4. **Shareable sky card** — "Share your sky" on the constellation page rasterizes the live SVG into a framed 1080×1350 PNG (native share sheet, download fallback). `app/app/constellation/share-sky-button.tsx`.
+
 ---
 
 ## Key Conventions

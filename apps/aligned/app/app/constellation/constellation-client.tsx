@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Sparkles } from "lucide-react";
+import { ShareSkyButton } from "./share-sky-button";
 import type { ConstellationData } from "@/lib/constellation";
 import {
   computeConstellationLayout,
@@ -31,6 +32,7 @@ export function ConstellationClient({ data }: Props) {
   const palette = getCouplePalette(data.relationshipId);
   const layout = useMemo(() => computeConstellationLayout(data.stars), [data.stars]);
   const [selected, setSelected] = useState<PositionedStar | null>(null);
+  const skyRef = useRef<SVGSVGElement | null>(null);
 
   const starFill = (star: PositionedStar): string => {
     if (star.tier === "milestone") return palette.primary;
@@ -97,6 +99,7 @@ export function ConstellationClient({ data }: Props) {
             aria-label={`Your constellation: ${data.totals.stars} stars, ${data.totals.aligned} aligned days, ${data.totals.kept} saved memories.`}
           >
             <svg
+              ref={skyRef}
               viewBox={`${layout.viewBox.minX} ${layout.viewBox.minY} ${layout.viewBox.width} ${layout.viewBox.height}`}
               className="block h-auto w-full"
               role="img"
@@ -211,6 +214,13 @@ export function ConstellationClient({ data }: Props) {
             Brighter stars are days your answers aligned. Twinkling ones are saved
             memories. Gold rings mark golden weeks. Tap any star to revisit that day.
           </p>
+
+          <ShareSkyButton
+            svgRef={skyRef}
+            starCount={data.totals.stars}
+            alignedCount={data.totals.aligned}
+            paletteLabel={palette.label}
+          />
         </>
       )}
     </div>

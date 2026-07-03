@@ -21,7 +21,15 @@ export default function AppSegmentLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden md:min-h-screen" style={{ backgroundColor: "#FAF6F0", overscrollBehaviorX: "none" }}>
+    <div
+      className="flex h-screen h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden md:min-h-screen"
+      style={{
+        /* Cream with a faint warm glow from the top corner — atmosphere, not flat paint. */
+        background:
+          "radial-gradient(1100px 700px at 88% -12%, #F6EBDB 0%, rgba(246,235,219,0) 55%), radial-gradient(900px 600px at -10% 108%, #F0EDE2 0%, rgba(240,237,226,0) 50%), #FAF6F0",
+        overscrollBehaviorX: "none",
+      }}
+    >
       <ScrollToTopOnNav />
       {/* Only this area scrolls so fixed bottom nav stays viewport-locked on mobile */}
       <div
@@ -38,7 +46,7 @@ export default function AppSegmentLayout({
       >
         <div className="mx-auto flex w-full min-w-0 max-w-6xl gap-6 px-4 pt-4 pb-16 sm:px-6 lg:px-8 md:pb-6 md:pt-6">
           {/* Left rail (desktop/tablet): branding + nav links + trust */}
-          <aside className="hidden w-64 flex-shrink-0 flex-col justify-between rounded-2xl border border-brand-200/60 p-5 shadow-lg md:flex" style={{ backgroundColor: "#e8f4f6" }}>
+          <aside className="hidden w-64 flex-shrink-0 flex-col justify-between rounded-2xl border border-brand-200/50 p-5 shadow-lg md:flex" style={{ background: "linear-gradient(180deg, #E9F1F1 0%, #F1EFE4 100%)" }}>
             <div className="space-y-6">
               <div>
                 <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white ring-1 ring-brand-200/80 shadow-sm">

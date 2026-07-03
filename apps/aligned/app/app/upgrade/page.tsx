@@ -52,25 +52,31 @@ export default async function UpgradePage({ searchParams }: UpgradePageProps) {
 
       {/* Price card */}
       <section className="rounded-2xl border border-brand-200 bg-gradient-to-br from-brand-50 via-white to-dusk-50 p-6 text-center space-y-2">
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
+          First 14 days free
+        </p>
         <p className="text-4xl font-bold text-slate-900">
-          $4.99
-          <span className="text-lg font-normal text-slate-500">/mo</span>
+          $29.99
+          <span className="text-lg font-normal text-slate-500">/year</span>
         </p>
         <p className="text-sm text-slate-500">
-          or $39/year — less than a cup of coffee together
+          That&apos;s $2.50 a month — one coffee, split between you.
         </p>
-        <p className="text-xs text-slate-400">Cancel anytime.</p>
+        <p className="text-xs text-slate-400">
+          Nothing charged until day 15. Cancel anytime.
+        </p>
       </section>
 
       {/* Features list */}
       <ul className="space-y-3">
         {[
           "Daily questions — the ritual that keeps you connected",
-          "Couple Insights — discover your relationship patterns",
-          "Date Night Dares — one new challenge every week",
-          "Partner Spotlight — tell them 3 things you love",
-          "Would You Rather — play together, daily",
-          "Weekly Recap — your shared story, one week at a time",
+          "Your sky — every day together becomes a star, forever",
+          "Your book — every answer, printable as a real keepsake",
+          "The Magazine — your week as an editorial issue, every Sunday",
+          "Would You Rather & Quiz — play and call each other's picks",
+          "Date Night Dares — one real-world challenge every week",
+          "Couple Insights — your couple type, alignment, mind-reading",
           "Unlimited Memories — save the moments that matter",
         ].map((feat) => (
           <li key={feat} className="flex items-start gap-3">
@@ -87,7 +93,8 @@ export default async function UpgradePage({ searchParams }: UpgradePageProps) {
       <UpgradeButton />
 
       <p className="text-center text-xs text-slate-400">
-        Secure payment via Stripe. You won&apos;t be charged until checkout.
+        Secure payment via Stripe. Card required to start the trial; nothing is
+        charged until your 14 days end.
       </p>
     </main>
   );

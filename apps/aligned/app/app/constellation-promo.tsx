@@ -45,7 +45,7 @@ export function ConstellationPromo({ relationshipId }: Props) {
   return (
     <Link
       href="/app/constellation"
-      className="animate-calm-fade-in flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-3 transition active:scale-[0.99] hover:border-dusk-300/70"
+      className="animate-calm-fade-in flex items-center gap-4 rounded-2xl border border-[#EDE5D4] bg-[#FFFDF8] p-3 transition active:scale-[0.99] hover:border-dusk-300/70"
     >
       <div
         className="flex-shrink-0 overflow-hidden rounded"

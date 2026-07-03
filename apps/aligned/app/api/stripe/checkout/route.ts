@@ -18,6 +18,11 @@ export async function POST() {
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [{ price: process.env.STRIPE_PRICE_ID, quantity: 1 }],
+      // 14 days free: long enough for two Sunday magazines and one full
+      // golden-week attempt — the couple should have a sky worth keeping
+      // before we ever ask for money.
+      subscription_data: { trial_period_days: 14 },
+      allow_promotion_codes: true,
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/app/upgrade?success=true`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/app/upgrade?canceled=true`,
       customer_email: session.user.email ?? undefined,

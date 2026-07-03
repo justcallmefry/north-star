@@ -33,10 +33,10 @@ function RowShell({
   children: React.ReactNode;
 }) {
   const base =
-    "flex items-center gap-3 rounded-2xl border bg-white transition active:scale-[0.99]";
+    "flex items-center gap-3 rounded-2xl border bg-[#FFFDF8] transition active:scale-[0.99]";
   const cls = featured
     ? `${base} border-dusk-300 px-5 py-4 shadow-md ring-1 ring-dusk-100`
-    : `${base} border-slate-200 px-4 py-3 hover:border-dusk-300/70`;
+    : `${base} border-[#EDE5D4] px-4 py-3 hover:border-dusk-300/70`;
   return (
     <Link href={href} className={cls}>
       {children}
@@ -133,7 +133,8 @@ export function AppPageClient({ initialData }: Props) {
 
           <IssuePromo relationshipId={relationshipId!} />
 
-          <ConstellationPromo relationshipId={relationshipId!} />
+          {/* QA bisect: temporarily disabled */}
+          {/* <ConstellationPromo relationshipId={relationshipId!} /> */}
 
           <section className="space-y-2">
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">

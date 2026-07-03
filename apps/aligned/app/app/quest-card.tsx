@@ -77,7 +77,7 @@ export function QuestCard({ relationshipId }: Props) {
   }
 
   return (
-    <section className="animate-calm-fade-in rounded-2xl border border-slate-200 bg-white px-4 py-3.5">
+    <section className="animate-calm-fade-in rounded-2xl border border-[#EDE5D4] bg-[#FFFDF8] px-4 py-3.5">
       <div className="flex items-center justify-between gap-2">
         <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-amber-700">
           This week together

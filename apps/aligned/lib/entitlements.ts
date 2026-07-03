@@ -5,12 +5,14 @@ import { prisma } from "@/lib/prisma";
 /**
  * Entitlement gate for premium features (Weekly Meeting, future Insights, etc).
  *
- * BETA POLICY (current): all users return `true`. We surface premium-tier
- * features now to gather feedback; no payment infrastructure is wired yet.
+ * PRICING (decided 2026-07-03): 14-day free trial, then $29.99/year.
+ * Checkout + webhook are wired (trial_period_days: 14, Subscription rows
+ * with active/trialing status). The Stripe product/price + env vars
+ * (STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRICE_ID) must exist
+ * in Vercel before flipping.
  *
- * When StoreKit / Google Billing lands, replace the early `return true` with
- * the real subscription check (already wired below — kept compiled and tested
- * so the flip is one line).
+ * BETA POLICY (still current): all users return `true` until Chris flips
+ * the paywall — delete the early return below and every gate goes live.
  */
 
 export type Entitlement = "premium";

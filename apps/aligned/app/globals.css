@@ -274,12 +274,18 @@ body {
 /* Visual anchor: card, buttons, spacing. Gradients, glowy blue shadows, optional accent. */
 @layer components {
   .ns-card {
-    @apply rounded-2xl border border-slate-100 bg-white p-5;
-    /* Warm-neutral shadow, not pink-tinted. Reads "premium" not "v1 SaaS". */
-    box-shadow: 0 1px 2px rgb(31 78 115 / 0.04), 0 8px 24px -8px rgb(31 78 115 / 0.08);
+    @apply rounded-2xl border p-5;
+    /* Warm paper, not clinical white — the cream page should feel continued
+       inside the surface, like good stationery. */
+    background: #FFFDF8;
+    border-color: #F0E8D9;
+    box-shadow: 0 1px 2px rgb(120 84 45 / 0.05), 0 8px 24px -8px rgb(31 78 115 / 0.08);
   }
   .ns-card-inner {
-    @apply rounded-xl border border-slate-200 bg-slate-50 p-3;
+    @apply rounded-xl border p-3;
+    /* Cream tint instead of cool slate-50 — cool grays against cream read cold. */
+    background: #FAF5EB;
+    border-color: #EDE4D2;
   }
   .ns-btn-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-center text-base font-semibold uppercase tracking-wide text-white transition disabled:opacity-50 focus-visible:outline focus-visible:ring-2 focus-visible:ring-dusk-400 focus-visible:ring-offset-2;

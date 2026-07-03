@@ -146,6 +146,17 @@ north-star/
 
 **Design doc:** `docs/superpowers/specs/2026-07-03-game-layer-phase-1-design.md` (includes Phase 2 direction: Couple Constellation progression + weekly co-op quests feeding Magazine covers)
 
+### Game Layer Phase 2: Couple Constellation ✅ (shipped)
+**What:** The progression system, in Aligned's own language. Every revealed day places a star in the couple's shared night sky (`/app/constellation`), laid out on a golden-angle Fermat spiral growing outward from day one. Aligned answers = brighter palette-colored stars that link into little constellations; saved memories twinkle; the 7th/30th/100th/365th total check-in becomes a named giant star. Derived 100% from existing history — **no schema changes**, dedication-based (streak resets never shrink the sky).
+
+**Key files:**
+- `lib/constellation-core.ts` — pure layout math (spiral, links, viewBox) — unit-checked
+- `lib/constellation.ts` — server aggregation (revealed sessions + aligned detection + memories)
+- `app/app/constellation/` — page + SVG sky client (tap a star → revisit that day)
+- `app/app/constellation-promo.tsx` — Today-screen entry card; insights page links too
+
+**Design doc:** `docs/superpowers/specs/2026-07-03-couple-constellation-design.md` (Phase 2.5 ideas: shareable sky card, weekly co-op quests, WYR shooting stars)
+
 ---
 
 ## Key Conventions

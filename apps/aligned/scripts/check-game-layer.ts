@@ -9,6 +9,11 @@ import {
   type StreakRow,
 } from "../lib/streak-core";
 import { detectCalledIt } from "../lib/reveal/called-it";
+import {
+  computeConstellationLayout,
+  milestoneLabel,
+  type StarInput,
+} from "../lib/constellation-core";
 
 let failures = 0;
 function check(name: string, actual: unknown, expected: unknown) {
@@ -94,6 +99,67 @@ check("miss", detectCalledIt("mountains", "I dream about the ocean"), []);
 check("empty guess", detectCalledIt("", "anything"), []);
 check("empty answer", detectCalledIt("word", ""), []);
 check("dedup", detectCalledIt("home home home", "our home is my favorite place"), ["home"]);
+
+// --- constellation layout ---
+
+const mkStar = (i: number, o: Partial<StarInput> = {}): StarInput => ({
+  id: `s${i}`,
+  date: "2026-07-03",
+  aligned: "none",
+  saved: false,
+  milestone: null,
+  ...o,
+});
+
+check("milestone labels", [milestoneLabel(7), milestoneLabel(30), milestoneLabel(100), milestoneLabel(365), milestoneLabel(8)],
+  ["One week", "Thirty days", "One hundred", "A whole year", null]);
+
+// Empty sky
+let layout = computeConstellationLayout([]);
+check("empty sky", [layout.stars.length, layout.links.length], [0, 0]);
+check("empty sky has valid viewBox", layout.viewBox.width > 0, true);
+
+// First star sits at the center
+layout = computeConstellationLayout([mkStar(0)]);
+check("first star centered", [layout.stars[0]!.x, layout.stars[0]!.y], [0, 0]);
+
+// Determinism: same input → same layout
+const inputs = Array.from({ length: 40 }, (_, i) =>
+  mkStar(i, { aligned: i % 5 === 0 ? "aligned" : "none", saved: i % 7 === 0 })
+);
+const a1 = computeConstellationLayout(inputs);
+const a2 = computeConstellationLayout(inputs);
+check("deterministic layout", JSON.stringify(a1) === JSON.stringify(a2), true);
+
+// Sky grows with history
+const small = computeConstellationLayout(Array.from({ length: 10 }, (_, i) => mkStar(i)));
+const large = computeConstellationLayout(Array.from({ length: 200 }, (_, i) => mkStar(i)));
+check("sky grows", large.viewBox.width > small.viewBox.width, true);
+
+// All stars inside the viewBox
+const outOfBounds = large.stars.filter(
+  (s) =>
+    s.x - s.r < large.viewBox.minX ||
+    s.y - s.r < large.viewBox.minY ||
+    s.x + s.r > large.viewBox.minX + large.viewBox.width ||
+    s.y + s.r > large.viewBox.minY + large.viewBox.height
+);
+check("stars within viewBox", outOfBounds.length, 0);
+
+// Links only between close aligned stars
+const linked = computeConstellationLayout([
+  mkStar(0, { aligned: "aligned" }),
+  mkStar(1),
+  mkStar(2, { aligned: "deeplyAligned" }),  // gap 2 from star 0 → linked
+  ...Array.from({ length: 10 }, (_, i) => mkStar(3 + i)),
+  mkStar(13, { aligned: "aligned" }),        // gap 11 from star 2 → NOT linked
+]);
+check("close aligned stars link", linked.links.length, 1);
+check("link endpoints", [linked.links[0]!.fromId, linked.links[0]!.toId], ["s0", "s2"]);
+
+// Milestone stars get the largest tier regardless of alignment
+layout = computeConstellationLayout([mkStar(0, { milestone: "One week", aligned: "aligned" })]);
+check("milestone tier wins", layout.stars[0]!.tier, "milestone");
 
 if (failures > 0) {
   console.error(`\n${failures} failure(s)`);

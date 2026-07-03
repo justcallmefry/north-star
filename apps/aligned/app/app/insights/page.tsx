@@ -38,6 +38,22 @@ export default async function InsightsPage() {
         </p>
       </header>
 
+      {/* Your sky — the couple's living history */}
+      <Link
+        href="/app/constellation"
+        className="flex items-center gap-4 rounded-2xl p-4 text-white transition active:scale-[0.99] animate-calm-fade-in"
+        style={{ background: "linear-gradient(120deg, #0F2740 0%, #143452 55%, #0A1828 100%)" }}
+      >
+        <span className="text-2xl" aria-hidden>✦</span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-sm font-semibold">Your sky</span>
+          <span className="block text-xs text-slate-300">
+            Every day you both show up becomes a star. See your constellation.
+          </span>
+        </span>
+        <span className="text-slate-300" aria-hidden>→</span>
+      </Link>
+
       {!insights.ready ? (
         <>
           {/* Progress hero */}

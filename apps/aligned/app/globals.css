@@ -733,3 +733,17 @@ body {
     transition: none;
   }
 }
+
+/* Couple Constellation - saved-memory stars twinkle gently */
+@keyframes star-twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.animate-star-twinkle {
+  animation: star-twinkle 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-star-twinkle {
+    animation: none;
+  }
+}

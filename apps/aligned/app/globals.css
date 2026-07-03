@@ -747,3 +747,67 @@ body {
     animation: none;
   }
 }
+
+/* ============ Fun-feel motion vocabulary ============ */
+/* Springy overshoot easing used by all playful interactions. */
+:root {
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Card entrance with a small overshoot - use with inline animation-delay for stagger */
+@keyframes card-pop-in {
+  0% { opacity: 0; transform: translateY(14px) scale(0.97); }
+  65% { opacity: 1; transform: translateY(-3px) scale(1.012); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-card-pop-in {
+  animation: card-pop-in 0.5s var(--ease-spring) both;
+}
+
+/* Selected quiz/WYR option gives a little press-pulse */
+@keyframes option-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.045); }
+  100% { transform: scale(1); }
+}
+.animate-option-pop {
+  animation: option-pop 0.28s var(--ease-spring);
+}
+
+/* WYR flick-to-discard: the rejected card flies off... */
+@keyframes wyr-fly-off-left {
+  to { transform: translateX(-140%) rotate(-16deg); opacity: 0; }
+}
+@keyframes wyr-fly-off-right {
+  to { transform: translateX(140%) rotate(16deg); opacity: 0; }
+}
+.animate-wyr-fly-off-left {
+  animation: wyr-fly-off-left 0.38s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.animate-wyr-fly-off-right {
+  animation: wyr-fly-off-right 0.38s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+/* ...and the keeper springs forward to lock in */
+@keyframes wyr-victor {
+  0% { transform: scale(1) translateY(0); }
+  55% { transform: scale(1.05) translateY(-5px); }
+  100% { transform: scale(1.02) translateY(-3px); }
+}
+.animate-wyr-victor {
+  animation: wyr-victor 0.45s var(--ease-spring) forwards;
+}
+
+/* Springs a dragged card back to rest when released under the flick threshold */
+.wyr-spring-back {
+  transition: transform 0.45s var(--ease-spring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-card-pop-in { animation: none; opacity: 1; transform: none; }
+  .animate-option-pop { animation: none; }
+  .animate-wyr-fly-off-left,
+  .animate-wyr-fly-off-right { animation: none; opacity: 0; }
+  .animate-wyr-victor { animation: none; }
+  .wyr-spring-back { transition: none; }
+}

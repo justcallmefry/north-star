@@ -8,6 +8,7 @@ import { LoadingSpinner } from "@/components/loading-spinner";
 import { RevealStamp } from "@/components/reveal-stamp";
 import type { QuizForTodayResult, QuizQuestion } from "@/lib/quiz";
 import { getQuizForDate, submitQuiz } from "@/lib/quiz";
+import { haptic } from "@/lib/haptics";
 import { useFirstReveal } from "@/lib/use-first-reveal";
 import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
 
@@ -89,6 +90,7 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
       next[questionIndex] = optionIndex;
       setGuesses(next);
     }
+    void haptic("tap");
     setError(null);
     setExiting(true);
   }
@@ -480,8 +482,8 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
                   className={`min-h-[3.25rem] rounded-xl border-2 px-4 py-4 text-left text-base font-medium leading-snug transition-all disabled:opacity-70 sm:min-h-[3.5rem] sm:py-4 sm:text-lg ${
                     selected
                       ? isAnswerPhase
-                        ? "border-brand-500 bg-brand-50 text-brand-800 shadow-sm"
-                        : "border-brand-500 bg-green-50 text-green-800 shadow-sm"
+                        ? "animate-option-pop border-brand-500 bg-brand-50 text-brand-800 shadow-sm"
+                        : "animate-option-pop border-brand-500 bg-green-50 text-green-800 shadow-sm"
                       : "border-slate-200 bg-white text-slate-700 hover:border-brand-200 hover:bg-brand-50/50"
                   }`}
                 >

@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { submitWyrChoice, submitWyrGuess } from "@/lib/wyr";
 import type { WyrForTodayResult } from "@/lib/wyr";
 import { haptic } from "@/lib/haptics";
+import { useFlick } from "@/lib/use-flick";
 
 type Props = { initialData: WyrForTodayResult; relationshipId: string };
 
@@ -17,6 +18,8 @@ export function WyrClient({ initialData }: Props) {
   const [animPhase, setAnimPhase] = useState<"idle" | "breathe" | "drumroll" | "slam">(
     initialData.state === "revealed" ? "slam" : "idle"
   );
+  /** A card flicked away mid-pick: which one is leaving, and which way. */
+  const [flyOff, setFlyOff] = useState<{ idx: 0 | 1; dir: "left" | "right" } | null>(null);
 
   // When partner submits and data refreshes to "revealed", play drumroll first
   useEffect(() => {
@@ -52,10 +55,22 @@ export function WyrClient({ initialData }: Props) {
       router.refresh();
       setData((prev) => ({ ...prev, myChoice: choice }));
     } catch (err) {
+      setFlyOff(null);
       toast.error(err instanceof Error ? err.message : "Failed to submit");
     } finally {
       setLoading(false);
     }
+  }
+
+  /** Flick a card away = keep the other one. The physical version of picking. */
+  function handleFlickAway(idx: 0 | 1, dir: "left" | "right") {
+    if (loading || flyOff != null) return;
+    setFlyOff({ idx, dir });
+    void haptic("tap");
+    // Let the fly-off + victor animations play before committing the pick.
+    setTimeout(() => {
+      void handlePick((1 - idx) as 0 | 1);
+    }, 340);
   }
 
   async function handleCallIt(guess: 0 | 1) {
@@ -87,63 +102,75 @@ export function WyrClient({ initialData }: Props) {
       </div>
 
       <div className="space-y-3">
-        {([question.optionA, question.optionB] as const).map((label, i) => {
-          const idx = i as 0 | 1;
-          const isMine = myChoice === idx;
-          const isPartners = reveal?.partnerChoice === idx;
-          const isRevealed = showReveal && reveal != null;
+        {myChoice == null && data.state === "open" ? (
+          // Interactive: tap your pick, or physically flick away the other one.
+          ([question.optionA, question.optionB] as const).map((label, i) => {
+            const idx = i as 0 | 1;
+            return (
+              <FlickableOption
+                key={idx}
+                label={label}
+                disabled={loading || flyOff != null}
+                flyOffDir={flyOff?.idx === idx ? flyOff.dir : null}
+                victor={flyOff != null && flyOff.idx !== idx}
+                onPick={() => handlePick(idx)}
+                onFlickAway={(dir) => handleFlickAway(idx, dir)}
+              />
+            );
+          })
+        ) : (
+          ([question.optionA, question.optionB] as const).map((label, i) => {
+            const idx = i as 0 | 1;
+            const isMine = myChoice === idx;
+            const isPartners = reveal?.partnerChoice === idx;
+            const isRevealed = showReveal && reveal != null;
 
-          let cardClass =
-            "relative flex min-h-[88px] w-full items-center rounded-2xl border-2 px-5 py-4 text-left text-lg font-semibold leading-snug transition active:scale-[0.98] ";
+            let cardClass =
+              "relative flex min-h-[88px] w-full items-center rounded-2xl border-2 px-5 py-4 text-left text-lg font-semibold leading-snug transition ";
 
-          if (isRevealed) {
-            cardClass += isMine && isPartners
-              ? "border-brand-400 bg-brand-50 text-brand-900 animate-wyr-match-glow"
-              : isMine
-                ? "border-brand-300 bg-brand-50/60 text-slate-900"
-                : isPartners
-                  ? "border-violet-300 bg-violet-50/60 text-slate-900"
-                  : "border-slate-100 bg-white text-slate-400";
-            if (animPhase === "slam") cardClass += " animate-wyr-slam";
-          } else if (myChoice != null) {
-            cardClass += isMine
-              ? "border-brand-400 bg-brand-50 text-brand-900 -translate-y-1 shadow-md"
-              : "border-slate-100 bg-white text-slate-400";
-            if (animPhase === "breathe") cardClass += " animate-wyr-breathe";
-            if (animPhase === "drumroll") cardClass += " animate-wyr-drumroll";
-          } else {
-            cardClass += "border-slate-200 bg-white text-slate-900 hover:border-brand-300 hover:bg-brand-50/40 cursor-pointer";
-          }
+            if (isRevealed) {
+              cardClass += isMine && isPartners
+                ? "border-brand-400 bg-brand-50 text-brand-900 animate-wyr-match-glow"
+                : isMine
+                  ? "border-brand-300 bg-brand-50/60 text-slate-900"
+                  : isPartners
+                    ? "border-violet-300 bg-violet-50/60 text-slate-900"
+                    : "border-slate-100 bg-white text-slate-400";
+              if (animPhase === "slam") cardClass += " animate-wyr-slam";
+            } else {
+              cardClass += isMine
+                ? "border-brand-400 bg-brand-50 text-brand-900 -translate-y-1 shadow-md"
+                : "border-slate-100 bg-white text-slate-400";
+              if (animPhase === "breathe") cardClass += " animate-wyr-breathe";
+              if (animPhase === "drumroll") cardClass += " animate-wyr-drumroll";
+            }
 
-          return (
-            <button
-              key={idx}
-              type="button"
-              disabled={myChoice != null || loading || animPhase === "drumroll"}
-              onClick={() => handlePick(idx)}
-              className={cardClass}
-            >
-              <span className="flex-1">{label}</span>
-              {isRevealed && (
-                <span className="ml-3 flex shrink-0 flex-col items-end gap-1 text-xs font-medium">
-                  {isMine && (
-                    <span className="rounded-full bg-brand-100 px-2 py-0.5 text-brand-700">You</span>
-                  )}
-                  {isPartners && (
-                    <span className="rounded-full bg-violet-100 px-2 py-0.5 text-violet-700">
-                      {partnerName ?? "Them"}
-                    </span>
-                  )}
-                </span>
-              )}
-            </button>
-          );
-        })}
+            return (
+              <div key={idx} className={cardClass}>
+                <span className="flex-1">{label}</span>
+                {isRevealed && (
+                  <span className="ml-3 flex shrink-0 flex-col items-end gap-1 text-xs font-medium">
+                    {isMine && (
+                      <span className="rounded-full bg-brand-100 px-2 py-0.5 text-brand-700">You</span>
+                    )}
+                    {isPartners && (
+                      <span className="rounded-full bg-violet-100 px-2 py-0.5 text-violet-700">
+                        {partnerName ?? "Them"}
+                      </span>
+                    )}
+                  </span>
+                )}
+              </div>
+            );
+          })
+        )}
       </div>
 
       {/* States */}
       {myChoice == null && (
-        <p className="text-center text-sm text-slate-400">Tap to pick. Your choice stays hidden until they answer.</p>
+        <p className="text-center text-sm text-slate-400">
+          Tap your pick — or flick away the one that&apos;s not you. Your choice stays hidden until they answer.
+        </p>
       )}
 
       {myChoice != null && data.state === "open" && !partnerSubmitted && (
@@ -218,5 +245,72 @@ export function WyrClient({ initialData }: Props) {
         )
       )}
     </div>
+  );
+}
+
+/**
+ * A WYR option you can tap to pick — or grab and flick off-screen to discard,
+ * which picks the one you kept. Vertical scrolling stays free (touch-action).
+ */
+function FlickableOption({
+  label,
+  disabled,
+  flyOffDir,
+  victor,
+  onPick,
+  onFlickAway,
+}: {
+  label: string;
+  disabled: boolean;
+  /** Set when this card is the one being thrown away. */
+  flyOffDir: "left" | "right" | null;
+  /** True when the *other* card was thrown — this one springs forward. */
+  victor: boolean;
+  onPick: () => void;
+  onFlickAway: (dir: "left" | "right") => void;
+}) {
+  const flick = useFlick({
+    disabled: disabled || flyOffDir != null,
+    onFlick: onFlickAway,
+  });
+
+  const style: React.CSSProperties = { touchAction: "pan-y" };
+  if (flick.dragging) {
+    style.transform = `translateX(${flick.dx}px) rotate(${flick.dx * 0.045}deg)`;
+    style.opacity = Math.max(0.4, 1 - Math.abs(flick.dx) / 340);
+  }
+
+  let cls =
+    "relative flex min-h-[88px] w-full items-center rounded-2xl border-2 px-5 py-4 text-left text-lg font-semibold leading-snug select-none ";
+  if (flyOffDir) {
+    cls += flyOffDir === "left" ? "animate-wyr-fly-off-left " : "animate-wyr-fly-off-right ";
+    cls += "border-slate-200 bg-white text-slate-400";
+  } else if (victor) {
+    cls += "animate-wyr-victor border-brand-400 bg-brand-50 text-brand-900 shadow-md";
+  } else if (flick.dragging) {
+    cls += flick.pastThreshold
+      ? "border-slate-300 bg-slate-50 text-slate-400 shadow-xl cursor-grabbing"
+      : "border-brand-300 bg-white text-slate-900 shadow-xl cursor-grabbing";
+  } else {
+    cls +=
+      "wyr-spring-back border-slate-200 bg-white text-slate-900 cursor-grab hover:border-brand-300 hover:bg-brand-50/40";
+  }
+
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={onPick}
+      {...flick.handlers}
+      style={style}
+      className={cls}
+    >
+      <span className="flex-1">{label}</span>
+      {flick.dragging && flick.pastThreshold && (
+        <span className="ml-3 shrink-0 rounded-full bg-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600">
+          letting this one go
+        </span>
+      )}
+    </button>
   );
 }

@@ -316,7 +316,16 @@ export function AppPageClient({ initialData }: Props) {
                 return af - bf;
               });
 
-              return ordered.map((r) => <div key={r.key}>{r.node}</div>);
+              // Staggered spring entrance — the list assembles rather than appears.
+              return ordered.map((r, i) => (
+                <div
+                  key={r.key}
+                  className="animate-card-pop-in"
+                  style={{ animationDelay: `${90 + i * 70}ms` }}
+                >
+                  {r.node}
+                </div>
+              ));
             })()}
           </section>
         </div>

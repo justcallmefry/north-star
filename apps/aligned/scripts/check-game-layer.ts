@@ -14,6 +14,8 @@ import {
   milestoneLabel,
   type StarInput,
 } from "../lib/constellation-core";
+import { WYR_QUESTIONS } from "../lib/content/wyr-questions";
+import { DARES } from "../lib/content/dares";
 
 let failures = 0;
 function check(name: string, actual: unknown, expected: unknown) {
@@ -160,6 +162,23 @@ check("link endpoints", [linked.links[0]!.fromId, linked.links[0]!.toId], ["s0",
 // Milestone stars get the largest tier regardless of alignment
 layout = computeConstellationLayout([mkStar(0, { milestone: "One week", aligned: "aligned" })]);
 check("milestone tier wins", layout.stars[0]!.tier, "milestone");
+
+// --- content pools (append-only: sessions store indices by position) ---
+
+check("wyr pool grew", WYR_QUESTIONS.length >= 150, true);
+check("dare pool grew", DARES.length >= 80, true);
+
+// Spot-check the original prefix hasn't moved — index N must stay index N forever.
+check("wyr index 0 stable", WYR_QUESTIONS[0]!.optionA, "Spontaneous road trip with no plan");
+check("wyr index 24 stable", WYR_QUESTIONS[24]!.optionA, "Know your partner's every thought");
+check("dare index 0 stable", DARES[0]!.title, "Cook something neither of you has made before");
+check("dare index 27 stable", DARES[27]!.title, "Ask each other 5 questions you've never asked before");
+
+// No duplicates sneaking in
+const wyrKeys = new Set(WYR_QUESTIONS.map((q) => `${q.optionA}|${q.optionB}`));
+check("wyr no duplicates", wyrKeys.size, WYR_QUESTIONS.length);
+const dareKeys = new Set(DARES.map((d) => d.title));
+check("dare no duplicates", dareKeys.size, DARES.length);
 
 if (failures > 0) {
   console.error(`\n${failures} failure(s)`);

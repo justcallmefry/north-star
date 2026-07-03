@@ -29,6 +29,8 @@ export type StarInput = {
   saved: boolean;
   /** Milestone label for this check-in ("One week", …) or null. */
   milestone: string | null;
+  /** True when this star's week was a golden week (weekly quest complete). */
+  golden?: boolean;
 };
 
 export type PositionedStar = StarInput & {

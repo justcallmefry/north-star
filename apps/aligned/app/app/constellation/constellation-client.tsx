@@ -121,6 +121,17 @@ export function ConstellationClient({ data }: Props) {
                 const isSelected = selected?.id === star.id;
                 return (
                   <g key={star.id}>
+                    {star.golden && (
+                      <circle
+                        cx={star.x}
+                        cy={star.y}
+                        r={star.r + 2.5}
+                        fill="none"
+                        stroke="#E4B95B"
+                        strokeOpacity={0.85}
+                        strokeWidth={1}
+                      />
+                    )}
                     {star.tier !== "base" && (
                       <circle
                         cx={star.x}
@@ -182,6 +193,7 @@ export function ConstellationClient({ data }: Props) {
                     <p className="text-xs text-slate-600">
                       {TIER_LABEL[selected.tier]}
                       {selected.saved && " · Kept in memories"}
+                      {selected.golden && " · Golden week"}
                     </p>
                   </div>
                   <Link
@@ -197,7 +209,7 @@ export function ConstellationClient({ data }: Props) {
 
           <p className="text-center text-xs text-slate-500">
             Brighter stars are days your answers aligned. Twinkling ones are saved
-            memories. Tap any star to revisit that day.
+            memories. Gold rings mark golden weeks. Tap any star to revisit that day.
           </p>
         </>
       )}

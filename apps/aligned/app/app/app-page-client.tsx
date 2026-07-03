@@ -20,6 +20,7 @@ import { AnniversaryBanner, isAnniversaryToday } from "./anniversary-banner";
 import { MilestonePromptCard } from "./milestone-prompt-card";
 import { IssuePromo } from "@/components/issues/issue-promo";
 import { ConstellationPromo } from "./constellation-promo";
+import { QuestCard } from "./quest-card";
 import { PushPrompt } from "./push-prompt";
 
 function RowShell({
@@ -127,6 +128,7 @@ export function AppPageClient({ initialData }: Props) {
             />
           )}
           <TodaySection relationshipId={relationshipId!} />
+          <QuestCard relationshipId={relationshipId!} />
           <PushPrompt />
 
           <IssuePromo relationshipId={relationshipId!} />

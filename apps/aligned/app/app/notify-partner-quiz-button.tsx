@@ -3,26 +3,30 @@
 import { toast } from "sonner";
 import { requestPermissionAndSubscribe } from "@/lib/push-client";
 
-type Variant = "quiz" | "agreement";
+type Variant = "quiz" | "agreement" | "wyr";
 
 const MESSAGES: Record<Variant, string> = {
   quiz: "I finished the daily quiz. Whenever you get a chance.",
   agreement: "I filled out the alignment questions. Take a look when you're ready.",
+  wyr: "I made my pick on today's Would You Rather. Your turn — let's see if we match.",
 };
 
 const TITLES: Record<Variant, string> = {
   quiz: "Today's quiz is ready.",
   agreement: "Alignment check-in is ready.",
+  wyr: "They picked — your turn.",
 };
 
 const PATHS: Record<Variant, string> = {
   quiz: "/app/quiz",
   agreement: "/app/agreement",
+  wyr: "/app/wyr",
 };
 
 const LABELS: Record<Variant, string> = {
   quiz: "Notify partner",
   agreement: "Notify partner",
+  wyr: "Nudge them",
 };
 
 type Props = {

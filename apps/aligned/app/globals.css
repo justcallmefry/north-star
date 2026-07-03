@@ -811,3 +811,90 @@ body {
   .animate-wyr-victor { animation: none; }
   .wyr-spring-back { transition: none; }
 }
+
+/* ============ Keepsake: the printable "Our Story" book ============ */
+.keepsake-book {
+  font-family: Georgia, "Times New Roman", serif;
+  color: #2b2620;
+}
+.keepsake-cover {
+  text-align: center;
+  padding: 56px 16px 48px;
+  border-bottom: 1px solid #e3dccd;
+}
+.keepsake-eyebrow {
+  font-family: -apple-system, "Segoe UI", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #8a7f6d;
+}
+.keepsake-title {
+  font-size: 2.6rem;
+  font-weight: 600;
+  margin-top: 14px;
+  letter-spacing: -0.01em;
+}
+.keepsake-subtitle {
+  margin-top: 12px;
+  font-size: 1rem;
+  font-style: italic;
+  color: #6b6152;
+  line-height: 1.6;
+}
+.keepsake-entry {
+  padding: 34px 8px 6px;
+  border-bottom: 1px solid #efe9dc;
+  break-inside: avoid;
+}
+.keepsake-date {
+  font-family: -apple-system, "Segoe UI", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #a4977f;
+}
+.keepsake-kept { color: #b98b2e; }
+.keepsake-question {
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin-top: 6px;
+}
+.keepsake-answer { margin-top: 14px; padding-bottom: 12px; }
+.keepsake-name {
+  font-family: -apple-system, "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1f4e73;
+}
+.keepsake-answer:nth-of-type(odd) .keepsake-name { color: #b75b42; }
+.keepsake-text {
+  margin-top: 4px;
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+.keepsake-colophon {
+  text-align: center;
+  padding: 44px 0 24px;
+  color: #8a7f6d;
+  font-style: italic;
+}
+
+@media print {
+  /* Only the book prints - hide every piece of app chrome. */
+  aside, nav, .keepsake-chrome, [class*="bottom-nav"], button {
+    display: none !important;
+  }
+  body { background: #fff !important; }
+  main {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+  .keepsake-book { margin-top: 0; }
+  .keepsake-cover { padding-top: 30vh; min-height: 90vh; border-bottom: none; page-break-after: always; }
+  .keepsake-entry { page-break-inside: avoid; }
+}

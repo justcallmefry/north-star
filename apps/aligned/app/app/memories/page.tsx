@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { Bookmark } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
+import Link from "next/link";
 import { listMemoriesForRelationship } from "@/lib/memories";
 import { getPartnerUserId } from "@/lib/push";
 import { prisma } from "@/lib/prisma";
@@ -45,6 +46,21 @@ export default async function MemoriesPage() {
           Things you both said, the days that mattered. Tap save on any reveal to add it here.
         </p>
       </header>
+
+      {/* The keepsake — every answer, printable */}
+      <Link
+        href="/app/keepsake"
+        className="flex items-center gap-4 rounded-2xl border border-peach-300/50 bg-gradient-to-r from-peach-300/15 via-white to-white p-4 transition active:scale-[0.99] hover:border-peach-400/60"
+      >
+        <span className="text-2xl" aria-hidden>📖</span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-sm font-semibold text-slate-900">Your book</span>
+          <span className="block text-xs text-slate-500">
+            Every answer you&apos;ve shared, laid out to print or save as a PDF keepsake.
+          </span>
+        </span>
+        <span className="text-slate-400" aria-hidden>→</span>
+      </Link>
 
       <AppreciationComposer
         relationshipId={primary.id}

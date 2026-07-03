@@ -7,10 +7,11 @@ import { submitWyrChoice, submitWyrGuess } from "@/lib/wyr";
 import type { WyrForTodayResult } from "@/lib/wyr";
 import { haptic } from "@/lib/haptics";
 import { useFlick } from "@/lib/use-flick";
+import { NotifyPartnerQuizButton } from "../notify-partner-quiz-button";
 
 type Props = { initialData: WyrForTodayResult; relationshipId: string };
 
-export function WyrClient({ initialData }: Props) {
+export function WyrClient({ initialData, relationshipId }: Props) {
   const router = useRouter();
   const [data, setData] = useState(initialData);
   const [loading, setLoading] = useState(false);
@@ -204,6 +205,10 @@ export function WyrClient({ initialData }: Props) {
               {myGuess === 0 ? question.optionA : question.optionB}. Locked in — let&apos;s see.
             </p>
           )}
+
+          <div className="mt-4">
+            <NotifyPartnerQuizButton variant="wyr" relationshipId={relationshipId} size="sm" />
+          </div>
         </div>
       )}
 

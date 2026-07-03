@@ -165,6 +165,12 @@ north-star/
 3. **Weekly co-op quest** — `lib/quests.ts` derives it from existing activity: 5 reveals + the week's dare + an appreciation = a **golden week**. Quest card on Today (invitation framing, zero guilt); golden weeks gild that week's stars with gold rings in the constellation, retroactively for all history. Shared ISO-week helpers in `lib/week.ts`.
 4. **Shareable sky card** — "Share your sky" on the constellation page rasterizes the live SVG into a framed 1080×1350 PNG (native share sheet, download fallback). `app/app/constellation/share-sky-button.tsx`.
 
+### Keepsake + WYR nudge ✅ (shipped)
+- **"Your book"** (`/app/keepsake`, linked from Memories): every revealed day as a print-styled serif book — cover page ("Casey & Jordan · N days of showing up for each other"), one entry per day with both answers, kept-memory markers, print CSS that strips all app chrome (`lib/keepsake.ts` + `app/app/keepsake/`). Browser print → paper or PDF. This is the natural premium anchor once pricing lands.
+- **WYR partner nudge** — the waiting state now has "Nudge them" (push → share/SMS fallback) via a new `wyr` variant of `NotifyPartnerQuizButton`.
+
+**Pricing direction (decided in principle, not yet wired):** 14-day free trial, $29.99/year launch price (competitors charge $60–90/yr; never go as low as $14.99). Trial spans two Sunday magazines + one golden-week attempt. Entitlements gating via `lib/entitlements.ts` when implemented.
+
 ---
 
 ## Key Conventions

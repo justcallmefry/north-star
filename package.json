@@ -17,6 +17,11 @@
     "build:parent-teen": "npm run build -w parent-teen",
     "build:friends": "npm run build -w friends"
   },
+  "dependencies": {
+    "@capacitor/core": "^8.1.0",
+    "@capacitor/haptics": "^7.0.5",
+    "@capacitor/push-notifications": "^8.1.1"
+  },
   "devDependencies": {
     "husky": "^9.1.7"
   }

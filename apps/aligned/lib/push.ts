@@ -3,6 +3,7 @@
 import webPush from "web-push";
 import { prisma } from "@/lib/prisma";
 import { getActiveMemberIds } from "@/lib/relationship-members";
+import { sendApnsToDevice } from "@/lib/apns";
 
 /** Get the partner's user ID (the other active member in the relationship). Returns null if not exactly two members. */
 export async function getPartnerUserId(
@@ -20,8 +21,21 @@ export type NotifyPayload = {
   url: string;
 };
 
-/** Send a push notification to all of the user's registered devices. Returns number sent. */
+/**
+ * Send a push notification to all of the user's registered devices —
+ * both Web Push (browser/PWA) and native APNs (the Capacitor iOS app).
+ * The two are independent: a couple using the website and a couple using
+ * the App Store app both just work. Returns total number sent.
+ */
 export async function sendPushToUser(userId: string, payload: NotifyPayload): Promise<number> {
+  const [webSent, iosSent] = await Promise.all([
+    sendWebPushToUser(userId, payload),
+    sendApnsToUser(userId, payload),
+  ]);
+  return webSent + iosSent;
+}
+
+async function sendWebPushToUser(userId: string, payload: NotifyPayload): Promise<number> {
   const vapidPublic = process.env.VAPID_PUBLIC_KEY;
   const vapidPrivate = process.env.VAPID_PRIVATE_KEY;
   if (!vapidPublic || !vapidPrivate) return 0;
@@ -60,6 +74,30 @@ export async function sendPushToUser(userId: string, payload: NotifyPayload): Pr
         await prisma.pushSubscription.deleteMany({ where: { endpoint: sub.endpoint } });
       }
     }
+  }
+
+  return sent;
+}
+
+async function sendApnsToUser(userId: string, payload: NotifyPayload): Promise<number> {
+  if (!process.env.APNS_KEY_P8) return 0;
+
+  const tokens = await prisma.deviceToken.findMany({
+    where: { userId, platform: "ios" },
+    select: { token: true },
+  });
+
+  let sent = 0;
+  const stale: string[] = [];
+
+  for (const { token } of tokens) {
+    const result = await sendApnsToDevice(token, payload);
+    if (result.ok) sent++;
+    if (result.shouldRemove) stale.push(token);
+  }
+
+  if (stale.length > 0) {
+    await prisma.deviceToken.deleteMany({ where: { token: { in: stale } } });
   }
 
   return sent;

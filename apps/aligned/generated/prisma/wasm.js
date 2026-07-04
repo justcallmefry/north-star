@@ -144,6 +144,14 @@ exports.Prisma.PushSubscriptionScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.DeviceTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  platform: 'platform',
+  token: 'token',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.AccountScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -535,6 +543,7 @@ exports.IssueCadence = exports.$Enums.IssueCadence = {
 exports.Prisma.ModelName = {
   User: 'User',
   PushSubscription: 'PushSubscription',
+  DeviceToken: 'DeviceToken',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',

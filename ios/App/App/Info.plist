@@ -47,6 +47,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Aligned uses your microphone only when you tap "Speak answer" so you can dictate today's response. Audio is processed by your device and isn't stored.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>

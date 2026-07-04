@@ -1,5 +1,7 @@
 "use client";
 
+import { Capacitor } from "@capacitor/core";
+
 /** Base64url to Uint8Array for VAPID key. Uses ArrayBuffer so Push API accepts it. */
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -15,6 +17,51 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
 
 const SW_URL = "/push-sw.js";
 
+/**
+ * Native path — the Capacitor-wrapped iOS app runs in a WKWebView, which
+ * has no browser Push API at all, so it can't use the web path below.
+ * Dynamically imported: web builds never need this plugin's JS.
+ */
+async function registerNativeDeviceToken(): Promise<boolean> {
+  const { PushNotifications } = await import("@capacitor/push-notifications");
+
+  let status = await PushNotifications.checkPermissions();
+  if (status.receive === "prompt" || status.receive === "prompt-with-rationale") {
+    status = await PushNotifications.requestPermissions();
+  }
+  if (status.receive !== "granted") return false;
+
+  return new Promise((resolve) => {
+    let settled = false;
+    const finish = (ok: boolean) => {
+      if (settled) return;
+      settled = true;
+      resolve(ok);
+    };
+
+    PushNotifications.addListener("registration", (token) => {
+      fetch("/api/push/register-device-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: token.value, platform: Capacitor.getPlatform() }),
+      })
+        .then((res) => finish(res.ok))
+        .catch(() => finish(false));
+    });
+    PushNotifications.addListener("registrationError", () => finish(false));
+
+    void PushNotifications.register();
+    // Registration is near-instant on a real device; don't hang forever if it isn't.
+    setTimeout(() => finish(false), 8000);
+  });
+}
+
+async function hasNativeRegistration(): Promise<boolean> {
+  const { PushNotifications } = await import("@capacitor/push-notifications");
+  const status = await PushNotifications.checkPermissions();
+  return status.receive === "granted";
+}
+
 /** Register the push service worker. Returns the registration or null. */
 export async function registerPushSw(): Promise<ServiceWorkerRegistration | null> {
   if (typeof navigator === "undefined" || !("serviceWorker" in navigator)) return null;
@@ -29,6 +76,8 @@ export async function registerPushSw(): Promise<ServiceWorkerRegistration | null
 
 /** Request notification permission and subscribe to push. Posts subscription to API. Returns true if we have a valid subscription. */
 export async function requestPermissionAndSubscribe(): Promise<boolean> {
+  if (Capacitor.isNativePlatform()) return registerNativeDeviceToken();
+
   const vapidPublic = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
   if (!vapidPublic) return false;
 
@@ -70,6 +119,8 @@ export async function requestPermissionAndSubscribe(): Promise<boolean> {
 
 /** If we already have a push subscription (from a previous permission grant), return true. Does not prompt. */
 export async function hasPushSubscription(): Promise<boolean> {
+  if (Capacitor.isNativePlatform()) return hasNativeRegistration();
+
   const reg = await registerPushSw();
   if (!reg?.pushManager) return false;
   const sub = await reg.pushManager.getSubscription();

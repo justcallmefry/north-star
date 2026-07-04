@@ -83,6 +83,7 @@ model User {
   meetingEntries     MeetingEntry[]
   subscriptions      Subscription[]
   pushSubscriptions  PushSubscription[]
+  deviceTokens       DeviceToken[]
   memories           Memory[]
   appreciationsSent     Appreciation[] @relation("AppreciationSent")
   appreciationsReceived Appreciation[] @relation("AppreciationReceived")
@@ -107,6 +108,22 @@ model PushSubscription {
   p256dhKey String   @map("p256dh_key")
   authKey   String   @map("auth_key")
   userAgent String?  @map("user_agent")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+/// Native APNs device token — separate from PushSubscription (Web Push)
+/// because the Capacitor-wrapped iOS app runs in a WKWebView, which does
+/// not support the browser Push API at all. Registered via
+/// @capacitor/push-notifications; delivered via lib/apns.ts.
+model DeviceToken {
+  id        String   @id @default(cuid())
+  userId    String
+  /// "ios" today; "android" once an FCM path exists.
+  platform  String
+  token     String   @unique
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 

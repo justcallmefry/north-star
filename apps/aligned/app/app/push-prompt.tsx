@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Capacitor } from "@capacitor/core";
 import { Bell, X } from "lucide-react";
 import { requestPermissionAndSubscribe, hasPushSubscription } from "@/lib/push-client";
 
@@ -11,15 +12,20 @@ export function PushPrompt() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Don't show in unsupported environments or if already dismissed
     if (typeof window === "undefined") return;
-    if (!process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) return;
-    if (!("Notification" in window)) return;
-    if (Notification.permission === "granted") return;
-    if (Notification.permission === "denied") return;
     if (localStorage.getItem(DISMISSED_KEY)) return;
 
-    // Check if we already have a subscription
+    // The native app has no `window.Notification` at all (that's a browser
+    // API a WKWebView doesn't implement) — those checks only make sense
+    // on the web path; native gates on OS permission state instead, inside
+    // hasPushSubscription()/requestPermissionAndSubscribe().
+    if (!Capacitor.isNativePlatform()) {
+      if (!process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) return;
+      if (!("Notification" in window)) return;
+      if (Notification.permission === "granted") return;
+      if (Notification.permission === "denied") return;
+    }
+
     hasPushSubscription().then((has) => {
       if (!has) setShow(true);
     });

@@ -25,7 +25,16 @@ Run workflow**, wait ~15 min, open TestFlight on your phone.
 It's the 10-character code at [developer.apple.com/account](https://developer.apple.com/account)
 under Membership details (also the `APPLE_TEAM_ID` already in your Vercel env).
 
-### 4. Add four repo secrets
+### 4. Enable Push Notifications on the App ID
+1. [Certificates, IDs & Profiles → Identifiers](https://developer.apple.com/account/resources/identifiers/list) → click **`com.alignedconnectingcouples.app`**.
+2. Check the **Push Notifications** capability box → Save.
+   - This is separate from the APNs Auth Key (`APNS_KEY_ID`/`APNS_TEAM_ID`/`APNS_TOPIC`/`APNS_KEY_P8`,
+     already in Vercel) — that key authorizes *your server* to talk to APNs; this
+     checkbox authorizes *this specific app* to receive push at all. Both are needed.
+   - If this app already has notification-relevant entries from earlier setup, this
+     may already be checked — just confirm it before moving on.
+
+### 5. Add four repo secrets
 GitHub → the repo → **Settings → Secrets and variables → Actions → New repository secret**:
 
 | Secret | Value |
@@ -62,6 +71,31 @@ tweak** — almost always one of:
   that line to an available version (`ls /Applications | grep Xcode` in a runner step).
 
 Build logs upload as an artifact on failure — read those first.
+
+## Push notifications (native)
+The website's existing notifications used Web Push (VAPID), which **does not work
+inside the Capacitor app at all** — a WKWebView has no browser Push API. The native
+app instead uses a real APNs device token:
+
+- `@capacitor/push-notifications` registers the device and calls
+  `POST /api/push/register-device-token`, stored in the `DeviceToken` table.
+- `lib/apns.ts` sends via Apple's HTTP/2 API, signing its own short-lived ES256
+  provider JWT with Node's `crypto` (no extra dependency) from the `APNS_KEY_P8` /
+  `APNS_KEY_ID` / `APNS_TEAM_ID` / `APNS_TOPIC` env vars already in Vercel.
+- `lib/push.ts`'s `sendPushToUser()` fans out to both Web Push and APNs — a couple
+  can be mixed (one on the website, one in the app) transparently.
+- Uses **production** APNs (`api.push.apple.com`), matching TestFlight/App Store
+  distribution-signed builds. A debug build run directly from Xcode with a
+  development profile would need `api.sandbox.push.apple.com` instead — not a path
+  this project uses, since there's no local Mac in the loop.
+
+**Windows gotcha:** if you ever run `npx cap sync ios` on this Windows machine, it
+regenerates `ios/App/CapApp-SPM/Package.swift` with **backslash** paths
+(`..\..\..\node_modules\...`), which Swift interprets as escape sequences (`\n` →
+newline!) and won't compile. The CI workflow always re-runs `cap sync` fresh on the
+macOS runner before building, so this only bites if you commit a Windows-synced
+Package.swift without fixing the slashes first (or open the project directly in
+Xcode without syncing on a Mac first).
 
 ## Android (for later)
 No special hardware needed at all. `npm i @capacitor/android && npx cap add android`

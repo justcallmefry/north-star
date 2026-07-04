@@ -88,7 +88,7 @@ export default function AppSegmentLayout({
           </aside>
 
           {/* Main app surface */}
-          <main className="ns-card relative min-w-0 flex-1 border-slate-200 px-4 py-5 shadow-lg sm:px-6 md:py-6">
+          <main className="ns-card relative min-w-0 flex-1 px-4 py-5 shadow-lg sm:px-6 md:py-6">
             <RouteTransition>{children}</RouteTransition>
           </main>
         </div>

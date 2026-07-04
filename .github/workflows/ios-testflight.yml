@@ -1,0 +1,61 @@
+# Build Aligned for iOS and upload to TestFlight — no local Mac needed.
+# Trigger manually (Actions tab → "Run workflow") or by pushing an `ios-v*` tag.
+name: iOS TestFlight
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["ios-v*"]
+
+# Only one iOS build at a time so build numbers can't collide.
+concurrency:
+  group: ios-testflight
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: macos-14
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          # Prisma's postinstall needs a URL shape; never connects in CI.
+          DATABASE_URL: "postgresql://ci:ci@localhost:5432/ci"
+          DIRECT_URL: "postgresql://ci:ci@localhost:5432/ci"
+
+      - name: Sync Capacitor iOS project
+        # Writes capacitor.config.json + copies web assets into the native shell.
+        # The app loads the live site via server.url, so this is mostly config.
+        run: npx cap sync ios
+
+      - name: Select Xcode 15
+        run: sudo xcode-select -switch /Applications/Xcode_15.4.app
+
+      - name: Build & upload to TestFlight
+        run: fastlane beta # fastlane is preinstalled on GitHub macOS runners
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_CONTENT: ${{ secrets.ASC_KEY_CONTENT }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          BUILD_NUMBER: ${{ github.run_number }}
+
+      - name: Upload build logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build-logs
+          path: |
+            build/
+            ~/Library/Logs/gym/
+          if-no-files-found: ignore
+          retention-days: 5

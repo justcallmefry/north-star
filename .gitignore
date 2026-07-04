@@ -41,3 +41,11 @@ prisma/migrations/**/migration_lock.toml
 
 # Generated Prisma client (regenerate with npx prisma generate)
 /generated
+
+# iOS build output (fastlane/gym)
+/build/
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/test_output
+*.ipa
+*.dSYM.zip

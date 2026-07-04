@@ -1,0 +1,53 @@
+# Aligned — iOS TestFlight pipeline.
+# Runs entirely on GitHub's macOS runners; no local Mac required.
+# Signing uses the App Store Connect API key + Xcode-managed (automatic)
+# signing, so there's no certificates repo to maintain (no `match`).
+
+default_platform(:ios)
+
+WORKSPACE = "ios/App/App.xcworkspace"
+PROJECT   = "ios/App/App.xcodeproj"
+SCHEME    = "App"
+
+platform :ios do
+  desc "Build the app and upload it to TestFlight"
+  lane :beta do
+    api_key = app_store_connect_api_key(
+      key_id: ENV.fetch("ASC_KEY_ID"),
+      issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+      key_content: ENV.fetch("ASC_KEY_CONTENT"), # base64 of the .p8
+      is_key_content_base64: true
+    )
+
+    # Force Xcode-managed signing and stamp the team so the API key can
+    # create/download the distribution profile during the archive.
+    update_code_signing_settings(
+      path: PROJECT,
+      use_automatic_signing: true,
+      team_id: ENV.fetch("APPLE_TEAM_ID")
+    )
+
+    # Every upload needs a unique, increasing build number. CI run number
+    # is monotonic and needs no network round-trip.
+    increment_build_number(
+      xcodeproj: PROJECT,
+      build_number: ENV["BUILD_NUMBER"] || Time.now.strftime("%Y%m%d%H%M")
+    )
+
+    build_app(
+      workspace: WORKSPACE,
+      scheme: SCHEME,
+      export_method: "app-store",
+      # Let Xcode register devices / generate the profile via the API key.
+      xcargs: "-allowProvisioningUpdates",
+      output_directory: "build",
+      clean: true
+    )
+
+    upload_to_testflight(
+      api_key: api_key,
+      skip_waiting_for_build_processing: true, # don't burn runner minutes waiting on Apple
+      skip_submission: true                    # lands in TestFlight, not App Store review
+    )
+  end
+end

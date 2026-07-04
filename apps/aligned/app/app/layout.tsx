@@ -22,7 +22,7 @@ export default function AppSegmentLayout({
 }) {
   return (
     <div
-      className="flex h-screen h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden md:min-h-screen"
+      className="app-shell-bg flex h-screen h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden md:min-h-screen"
       style={{
         /* Cream with a faint warm glow from the top corner — atmosphere, not flat paint. */
         background:

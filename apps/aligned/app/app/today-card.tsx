@@ -78,8 +78,36 @@ export function TodayCard({ today }: Props) {
           />
         )}
       </div>
+
+      <span
+        className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-sm"
+        aria-hidden
+      >
+        {done ? (
+          <CheckCircle className="h-6 w-6 text-emerald-600" strokeWidth={2} aria-label="Done today" />
+        ) : (
+          <Circle className="h-6 w-6 text-slate-300" strokeWidth={2} aria-label="Not done today" />
+        )}
+      </span>
+
+      {/* The question is the reason this card exists — it leads, chrome follows. */}
+      <p className="mt-3 font-prompt text-2xl font-medium leading-snug text-slate-900 sm:text-3xl">
+        {promptText}
+      </p>
+
+      {momentText && (
+        <div className="ns-card-inner mt-3 px-3 py-2.5">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-600 sm:text-[13px]">
+            Optional moment
+          </p>
+          <p className="mt-1 text-lg leading-relaxed text-slate-700 sm:text-xl">
+            {momentText}
+          </p>
+        </div>
+      )}
+
       {metaParts.length > 0 && (
-        <p className="mt-2 text-xs text-slate-500 sm:text-sm">
+        <p className="mt-3 text-xs text-slate-500 sm:text-sm">
           {metaParts.map((p, i) => (
             <span key={p}>
               {i > 0 && <span className="mx-1.5 text-slate-300">·</span>}
@@ -106,30 +134,6 @@ export function TodayCard({ today }: Props) {
       <div className="mt-3">
         <ConnectionDots relationshipId={relationshipId} />
       </div>
-      <span
-        className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-sm"
-        aria-hidden
-      >
-        {done ? (
-          <CheckCircle className="h-6 w-6 text-emerald-600" strokeWidth={2} aria-label="Done today" />
-        ) : (
-          <Circle className="h-6 w-6 text-slate-300" strokeWidth={2} aria-label="Not done today" />
-        )}
-      </span>
-      <p className="mt-3 text-2xl font-bold leading-snug text-slate-900 sm:text-3xl">
-        {promptText}
-      </p>
-
-      {momentText && (
-        <div className="ns-card-inner mt-3 px-3 py-2.5">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-600 sm:text-[13px]">
-            Optional moment
-          </p>
-          <p className="mt-1 text-lg leading-relaxed text-slate-700 sm:text-xl">
-            {momentText}
-          </p>
-        </div>
-      )}
 
       <div className="mt-4 flex flex-wrap gap-3">
         {state === "revealed" && (

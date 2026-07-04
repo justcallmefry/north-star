@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display, Fraunces } from "next/font/google";
 import "./globals.css";
 import { getServerAuthSession } from "@/lib/auth";
 import { Providers } from "./providers";
@@ -18,6 +18,21 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
+});
+
+/**
+ * Fraunces is reserved for the couple's own words — the daily prompt and
+ * the revealed answers — never for the app's own chrome. Playfair stays
+ * the app's editorial voice (section headers, the Magazine); Fraunces is
+ * the couple's voice. Variable "soft" optical size + light weight reads
+ * warm and handwritten-adjacent without sacrificing legibility.
+ */
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-prompt",
+  display: "swap",
+  axes: ["opsz", "SOFT"],
+  style: ["normal", "italic"],
 });
 
 const appUrl =
@@ -66,7 +81,7 @@ export default async function RootLayout({
   const session = await getServerAuthSession();
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white text-slate-900 overflow-x-hidden max-w-[100vw]`}>
+      <body className={`${inter.variable} ${playfair.variable} ${fraunces.variable} font-sans antialiased bg-white text-slate-900 overflow-x-hidden max-w-[100vw]`}>
         <ApplePwaMeta />
         <Providers session={session}>{children}</Providers>
         <Analytics />

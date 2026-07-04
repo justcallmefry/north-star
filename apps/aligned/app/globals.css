@@ -904,3 +904,85 @@ body {
   .keepsake-cover { padding-top: 30vh; min-height: 90vh; border-bottom: none; page-break-after: always; }
   .keepsake-entry { page-break-inside: avoid; }
 }
+
+/* ============ Reveal stage: the daily payoff moment goes dark ============ */
+/* When answers unfold, the screen shifts to the night-sky dusk palette that
+   also anchors the constellation — the ritual gets a visible change of
+   state instead of blending into the rest of the cream app. */
+.reveal-stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  background: linear-gradient(165deg, #143452 0%, #0F2740 55%, #0A1F33 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1px 2px rgba(5, 10, 20, 0.4), 0 24px 56px -24px rgba(5, 12, 24, 0.65);
+  color: #E8EDF4;
+}
+@media (min-width: 640px) {
+  .reveal-stage { padding: 1.5rem; }
+}
+/* A handful of faint, fixed stars — cheap CSS, ties to the constellation
+   motif without pulling in the SVG layout engine. */
+.reveal-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 10% 15%, rgba(245, 239, 227, 0.55) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 85% 10%, rgba(245, 239, 227, 0.4) 50%, transparent 51%),
+    radial-gradient(1px 1px at 60% 78%, rgba(245, 239, 227, 0.45) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 28% 88%, rgba(245, 239, 227, 0.3) 50%, transparent 51%),
+    radial-gradient(1px 1px at 94% 55%, rgba(245, 239, 227, 0.4) 50%, transparent 51%),
+    radial-gradient(1px 1px at 48% 35%, rgba(245, 239, 227, 0.25) 50%, transparent 51%);
+  pointer-events: none;
+}
+.reveal-stage > * {
+  position: relative;
+  z-index: 1;
+}
+.reveal-stage-heading {
+  color: #E8EDF4;
+}
+/* The revealed answer itself — glass panel + Fraunces, the couple's own
+   words made to feel handwritten and worth keeping. */
+.reveal-answer-panel {
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #F5EFE3;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-stage::before { animation: reveal-stage-twinkle 6s ease-in-out infinite; }
+}
+@keyframes reveal-stage-twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-stage::before { animation: none; }
+}
+
+/* ============ Subtle paper grain — cream surfaces stop feeling flat ============ */
+/* ~3% opacity noise via SVG turbulence, tiled. Barely-there on purpose:
+   the point is tactile stationery, not a texture statement. */
+.ns-card,
+.app-shell-bg {
+  position: relative;
+}
+.ns-card::after,
+.app-shell-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  border-radius: inherit;
+}
+.ns-card > * {
+  position: relative;
+  z-index: 1;
+}

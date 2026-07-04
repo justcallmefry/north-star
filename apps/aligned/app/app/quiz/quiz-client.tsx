@@ -458,11 +458,11 @@ export function QuizClient({ relationshipId, initialData, localDateStr, onQuizUp
       {/* Single question card — one at a time, exit/enter for seamless feel */}
       <div
         key={step}
-        className={`flex flex-col rounded-2xl bg-white shadow-md ring-1 ring-slate-200/80 p-6 sm:p-7 ${
+        className={`ns-card flex flex-col p-6 sm:p-7 ${
           exiting ? "animate-quiz-card-exit" : "animate-quiz-card-enter"
         }`}
       >
-        <p className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl">
+        <p className="font-prompt text-xl font-medium leading-snug text-slate-900 sm:text-2xl">
           {currentQuestion.text}
         </p>
 

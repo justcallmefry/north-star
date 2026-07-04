@@ -328,7 +328,7 @@ export function SessionContent({ data, currentUserId }: Props) {
           key: "me",
           title: myTitle,
           icon: myIcon,
-          bubbleClass: "border-brand-200 bg-brand-50 text-slate-900",
+          bubbleClass: "border-white/20 bg-white/10 text-[#F5EFE3]",
           content: data.userResponse ?? null,
           isMe: true,
         },
@@ -336,7 +336,7 @@ export function SessionContent({ data, currentUserId }: Props) {
           key: "partner",
           title: partnerTitle,
           icon: partnerIcon,
-          bubbleClass: "border-violet-100 bg-violet-50 text-slate-900",
+          bubbleClass: "border-peach-300/40 bg-peach-500/15 text-peach-200",
           content: data.partnerResponse ?? null,
           isMe: false,
         },
@@ -373,8 +373,8 @@ export function SessionContent({ data, currentUserId }: Props) {
       const title = r.name ? `${r.name}'s response` : fallbackLabel;
       const icon = r.image || (isMe ? "💗" : index === 1 ? "💜" : "💛");
       const bubbleClass = isMe
-        ? "border-brand-200 bg-brand-50 text-slate-900"
-        : "border-violet-100 bg-violet-50 text-slate-900";
+        ? "border-white/20 bg-white/10 text-[#F5EFE3]"
+        : "border-peach-300/40 bg-peach-500/15 text-peach-200";
       return {
         key: r.userId,
         title,
@@ -412,12 +412,12 @@ export function SessionContent({ data, currentUserId }: Props) {
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
             Finish the sentence
           </p>
-          <p className="text-3xl font-semibold leading-relaxed text-slate-900 sm:text-4xl">
+          <p className="font-prompt text-3xl font-medium leading-relaxed text-slate-900 sm:text-4xl">
             {ftsPrefix}<span className="text-brand-300"> ___</span>{ftsSuffix}
           </p>
         </div>
       ) : (
-        <p className="text-center text-3xl font-semibold leading-relaxed text-slate-900 sm:text-4xl">
+        <p className="font-prompt text-center text-3xl font-medium leading-relaxed text-slate-900 sm:text-4xl">
           {data.promptText}
         </p>
       )}
@@ -558,13 +558,13 @@ export function SessionContent({ data, currentUserId }: Props) {
             />
           )}
 
-          <div className="animate-calm-fade-in ns-card ns-stack-tight" aria-live="polite">
+          <div className="animate-calm-fade-in reveal-stage ns-stack-tight" aria-live="polite">
           {data.isThrowback && data.throwbackThen && data.throwbackThen.length > 0 && (
             <section
-              className="rounded-2xl border border-peach-200 bg-peach-50/40 p-4"
+              className="rounded-2xl border border-peach-300/40 bg-peach-500/10 p-4"
               aria-label="Then and now"
             >
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-peach-700">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-peach-200">
                 {data.throwbackMonthsAgo
                   ? `${data.throwbackMonthsAgo} months ago`
                   : "Earlier"}
@@ -581,10 +581,10 @@ export function SessionContent({ data, currentUserId }: Props) {
                   </div>
                 ))}
               </div>
-              <p className="mt-3 text-xs text-slate-500">— and today —</p>
+              <p className="mt-3 text-xs text-white/50">— and today —</p>
             </section>
           )}
-          <h3 className="text-lg font-semibold text-slate-900 sm:text-xl">Answers</h3>
+          <h3 className="reveal-stage-heading text-lg font-semibold sm:text-xl">Answers</h3>
 
           <div className="space-y-2">
             {/* Two-step reveal: my answer first, then partner tap-to-reveal.
@@ -605,7 +605,7 @@ export function SessionContent({ data, currentUserId }: Props) {
                   className="space-y-1.5"
                 >
                   <div className="flex items-center gap-2">
-                    <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-base">
+                    <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/10 text-base">
                       {typeof resp.icon === "string" && resp.icon.trim().startsWith("http") ? (
                         <img src={resp.icon.trim()} alt="" className="absolute inset-0 h-full w-full object-cover" width={36} height={36} />
                       ) : (
@@ -616,7 +616,7 @@ export function SessionContent({ data, currentUserId }: Props) {
                       {resp.title}
                     </span>
                   </div>
-                  <p className="ns-card-inner px-3 py-3 text-2xl leading-relaxed text-slate-900 sm:text-3xl">
+                  <p className="reveal-answer-panel font-prompt px-4 py-3.5 text-2xl leading-relaxed sm:text-3xl">
                     {/* skip=true on page-reload (revealed=false); skip=false only on fresh in-session reveal */}
                     <StreamingText
                       text={streamText}
@@ -658,8 +658,8 @@ export function SessionContent({ data, currentUserId }: Props) {
                       );
                     }
                     return (
-                      <p className="px-3 text-sm italic text-slate-500 sm:text-base">
-                        <span className="font-medium not-italic text-slate-600">You called: </span>
+                      <p className="px-3 text-sm italic text-white/60 sm:text-base">
+                        <span className="font-medium not-italic text-white/75">You called: </span>
                         {savedGuess}
                       </p>
                     );
@@ -687,12 +687,12 @@ export function SessionContent({ data, currentUserId }: Props) {
               <button
                 type="button"
                 onClick={handleRevealPartner}
-                className="mt-2 w-full rounded-2xl border-2 border-dashed border-brand-200 bg-brand-50/60 px-4 py-5 text-center transition hover:bg-brand-50 active:scale-[0.98]"
+                className="mt-2 w-full rounded-2xl border-2 border-dashed border-white/25 bg-white/5 px-4 py-5 text-center transition hover:bg-white/10 active:scale-[0.98]"
               >
-                <p className="text-base font-semibold text-brand-700">
+                <p className="text-base font-semibold text-[#F5EFE3]">
                   Ready to see what {data.partnerName ?? "they"} wrote?
                 </p>
-                <p className="mt-1 text-sm text-slate-500">Tap to reveal</p>
+                <p className="mt-1 text-sm text-white/50">Tap to reveal</p>
               </button>
             )}
           </div>
@@ -717,13 +717,13 @@ export function SessionContent({ data, currentUserId }: Props) {
             return (
               <>
                 <div className="flex flex-wrap items-center justify-center gap-2 py-1">
-                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-white/45">
                     You both mentioned
                   </span>
                   {shared.map((w) => (
                     <span
                       key={w}
-                      className={`rounded-full bg-brand-100 px-3 py-1 text-sm font-semibold text-brand-700 ${pulseClass}`}
+                      className={`rounded-full bg-peach-300 px-3 py-1 text-sm font-semibold text-dusk-800 ${pulseClass}`}
                     >
                       {w}
                     </span>
@@ -735,7 +735,9 @@ export function SessionContent({ data, currentUserId }: Props) {
               </>
             );
           })()}
+          </div>
 
+          <div className="animate-calm-fade-in ns-card ns-stack-tight">
           <p className="text-center text-lg font-medium text-brand-700 sm:text-xl">
             {afterRevealLine}
           </p>

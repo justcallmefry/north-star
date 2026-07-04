@@ -12,6 +12,9 @@ const config: Config = {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         display: ["var(--font-display)", "serif"],
         montserrat: ["var(--font-montserrat)", "sans-serif"],
+        /* The couple's own words — prompts, revealed answers, the keepsake
+           book — never the app's own chrome. See app/layout.tsx. */
+        prompt: ["var(--font-prompt)", "Georgia", "serif"],
       },
       colors: {
         ns: {

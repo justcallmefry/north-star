@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChevronDown, Copy, Send } from "lucide-react";
+import { ChevronDown, Copy, PenLine, Send } from "lucide-react";
 import { createRelationship, claimInvite } from "@/lib/relationships";
 import { haptic } from "@/lib/haptics";
 
@@ -246,6 +247,32 @@ export function PairContent({ userFirstName }: Props) {
             {claimLoading ? "Pairing…" : "Pair now"}
           </button>
         </form>
+      </section>
+
+      {/* While you wait — turn the dead zone between "invited" and "they
+          joined" into the first daily action. Their sealed answer becomes
+          the thing waiting for the partner on arrival. */}
+      <section className="rounded-2xl border border-peach-300/50 bg-gradient-to-br from-peach-300/15 via-white to-white p-5 sm:p-6">
+        <div className="flex items-start gap-3">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-peach-300/40 text-peach-600">
+            <PenLine className="h-5 w-5" aria-hidden />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h2 className="font-display text-lg font-semibold text-slate-900 sm:text-xl">
+              While you wait — answer today&apos;s question
+            </h2>
+            <p className="mt-1 text-sm text-slate-600 sm:text-base">
+              Your answer stays sealed until they join. When they arrive, the
+              first thing they&apos;ll see is that you already showed up.
+            </p>
+            <Link
+              href="/app"
+              className="ns-btn-secondary mt-3 inline-flex items-center gap-2 !py-2.5 text-sm"
+            >
+              Write your first answer →
+            </Link>
+          </div>
+        </div>
       </section>
 
       {error && (

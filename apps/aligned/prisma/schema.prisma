@@ -582,6 +582,21 @@ model DateNightDare {
   @@index([relationshipId])
 }
 
+/// Minimal product-analytics event log — just enough to see the funnel
+/// (signup → paired → first reveal → checkout). Plain IDs, no FKs, so
+/// account deletion never has to care about it and events survive as
+/// anonymous aggregates.
+model AppEvent {
+  id             String   @id @default(cuid())
+  /// "signup" | "paired" | "first_reveal" | "checkout_started"
+  type           String
+  userId         String?
+  relationshipId String?
+  createdAt      DateTime @default(now())
+
+  @@index([type, createdAt])
+}
+
 model BetaSignup {
   id        String   @id @default(cuid())
   email     String   @unique

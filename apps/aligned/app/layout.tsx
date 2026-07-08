@@ -5,6 +5,7 @@ import { getServerAuthSession } from "@/lib/auth";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next";
 import { ApplePwaMeta } from "./apple-pwa-meta";
+import { NativeLinkHandler } from "@/components/native-link-handler";
 
 export const dynamic = "force-dynamic";
 
@@ -83,6 +84,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} ${fraunces.variable} font-sans antialiased bg-white text-slate-900 overflow-x-hidden max-w-[100vw]`}>
         <ApplePwaMeta />
+        <NativeLinkHandler />
         <Providers session={session}>{children}</Providers>
         <Analytics />
       </body>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Aligned</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #143452 0%, #0F2740 55%, #0A1F33 100%);
+      color: #E8EDF4;
+      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+      text-align: center;
+      padding: 32px 24px calc(32px + env(safe-area-inset-bottom));
+    }
+    .stars {
+      position: fixed; inset: 0; pointer-events: none;
+      background-image:
+        radial-gradient(1.5px 1.5px at 12% 18%, rgba(245,239,227,0.5) 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 82% 12%, rgba(245,239,227,0.35) 50%, transparent 51%),
+        radial-gradient(1px 1px at 60% 70%, rgba(245,239,227,0.4) 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 30% 85%, rgba(245,239,227,0.3) 50%, transparent 51%),
+        radial-gradient(1px 1px at 90% 50%, rgba(245,239,227,0.35) 50%, transparent 51%);
+    }
+    .wrap { max-width: 340px; position: relative; }
+    .moon { font-size: 44px; }
+    h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 26px; font-weight: 600; margin-top: 18px; line-height: 1.25;
+    }
+    p { margin-top: 10px; font-size: 15px; line-height: 1.55; color: rgba(232, 237, 244, 0.75); }
+    button {
+      margin-top: 26px;
+      background: #F8C3AB; color: #0F2740;
+      border: none; border-radius: 999px;
+      font-size: 15px; font-weight: 600;
+      padding: 13px 30px; cursor: pointer;
+    }
+    button:active { opacity: 0.85; }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="wrap">
+    <div class="moon">☾</div>
+    <h1>Your sky is still there.</h1>
+    <p>We just can&rsquo;t reach it right now &mdash; you seem to be offline. Today&rsquo;s question will be waiting the moment you&rsquo;re back.</p>
+    <button onclick="window.location.href='https://alignedconnectingcouples.com/app'">Try again</button>
+  </div>
+</body>
+</html>

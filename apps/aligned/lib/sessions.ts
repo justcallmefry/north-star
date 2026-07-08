@@ -5,6 +5,7 @@ import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getDedication } from "@/lib/dedication";
 import { getStreak, updateStreakOnReveal, type StreakInfo } from "@/lib/streak";
+import { trackEvent } from "@/lib/events";
 import { getActiveMemberIds, requireActiveMember, todayUTC } from "@/lib/relationship-members";
 import { pickPrompt } from "@/lib/prompt-scheduler";
 import { getThrowbackForToday } from "@/lib/throwback";
@@ -481,6 +482,17 @@ export async function revealSession(sessionId: string): Promise<RevealResult> {
   });
 
   await updateStreakOnReveal(base.relationshipId, base.sessionDate);
+
+  // Funnel: mark the couple's very first reveal (activation moment).
+  const revealedCount = await prisma.dailySession.count({
+    where: { relationshipId: base.relationshipId, state: "revealed" },
+  });
+  if (revealedCount === 1) {
+    void trackEvent("first_reveal", {
+      userId: session.user.id,
+      relationshipId: base.relationshipId,
+    });
+  }
 
   const updated = await prisma.dailySession.findUnique({
     where: { id: sessionId },

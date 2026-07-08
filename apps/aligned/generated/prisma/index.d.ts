@@ -138,6 +138,14 @@ export type PartnerSpotlight = $Result.DefaultSelection<Prisma.$PartnerSpotlight
  */
 export type DateNightDare = $Result.DefaultSelection<Prisma.$DateNightDarePayload>
 /**
+ * Model AppEvent
+ * Minimal product-analytics event log — just enough to see the funnel
+ * (signup → paired → first reveal → checkout). Plain IDs, no FKs, so
+ * account deletion never has to care about it and events survive as
+ * anonymous aggregates.
+ */
+export type AppEvent = $Result.DefaultSelection<Prisma.$AppEventPayload>
+/**
  * Model BetaSignup
  * 
  */
@@ -681,6 +689,16 @@ export class PrismaClient<
   get dateNightDare(): Prisma.DateNightDareDelegate<ExtArgs>;
 
   /**
+   * `prisma.appEvent`: Exposes CRUD operations for the **AppEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AppEvents
+    * const appEvents = await prisma.appEvent.findMany()
+    * ```
+    */
+  get appEvent(): Prisma.AppEventDelegate<ExtArgs>;
+
+  /**
    * `prisma.betaSignup`: Exposes CRUD operations for the **BetaSignup** model.
     * Example usage:
     * ```ts
@@ -1204,6 +1222,7 @@ export namespace Prisma {
     WyrParticipation: 'WyrParticipation',
     PartnerSpotlight: 'PartnerSpotlight',
     DateNightDare: 'DateNightDare',
+    AppEvent: 'AppEvent',
     BetaSignup: 'BetaSignup',
     QuizSession: 'QuizSession',
     QuizParticipation: 'QuizParticipation',
@@ -1225,7 +1244,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "pushSubscription" | "deviceToken" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "memory" | "appreciation" | "wyrSession" | "wyrParticipation" | "partnerSpotlight" | "dateNightDare" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation" | "issue"
+      modelProps: "user" | "pushSubscription" | "deviceToken" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "memory" | "appreciation" | "wyrSession" | "wyrParticipation" | "partnerSpotlight" | "dateNightDare" | "appEvent" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation" | "issue"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2906,6 +2925,76 @@ export namespace Prisma {
           count: {
             args: Prisma.DateNightDareCountArgs<ExtArgs>
             result: $Utils.Optional<DateNightDareCountAggregateOutputType> | number
+          }
+        }
+      }
+      AppEvent: {
+        payload: Prisma.$AppEventPayload<ExtArgs>
+        fields: Prisma.AppEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AppEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AppEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppEventPayload>
+          }
+          findFirst: {
+            args: Prisma.AppEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AppEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppEventPayload>
+          }
+          findMany: {
+            args: Prisma.AppEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppEventPayload>[]
+          }
+          create: {
+            args: Prisma.AppEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppEventPayload>
+          }
+          createMany: {
+            args: Prisma.AppEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AppEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppEventPayload>[]
+          }
+          delete: {
+            args: Prisma.AppEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppEventPayload>
+          }
+          update: {
+            args: Prisma.AppEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.AppEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AppEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.AppEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppEventPayload>
+          }
+          aggregate: {
+            args: Prisma.AppEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAppEvent>
+          }
+          groupBy: {
+            args: Prisma.AppEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AppEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AppEventCountArgs<ExtArgs>
+            result: $Utils.Optional<AppEventCountAggregateOutputType> | number
           }
         }
       }
@@ -28514,6 +28603,887 @@ export namespace Prisma {
 
 
   /**
+   * Model AppEvent
+   */
+
+  export type AggregateAppEvent = {
+    _count: AppEventCountAggregateOutputType | null
+    _min: AppEventMinAggregateOutputType | null
+    _max: AppEventMaxAggregateOutputType | null
+  }
+
+  export type AppEventMinAggregateOutputType = {
+    id: string | null
+    type: string | null
+    userId: string | null
+    relationshipId: string | null
+    createdAt: Date | null
+  }
+
+  export type AppEventMaxAggregateOutputType = {
+    id: string | null
+    type: string | null
+    userId: string | null
+    relationshipId: string | null
+    createdAt: Date | null
+  }
+
+  export type AppEventCountAggregateOutputType = {
+    id: number
+    type: number
+    userId: number
+    relationshipId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AppEventMinAggregateInputType = {
+    id?: true
+    type?: true
+    userId?: true
+    relationshipId?: true
+    createdAt?: true
+  }
+
+  export type AppEventMaxAggregateInputType = {
+    id?: true
+    type?: true
+    userId?: true
+    relationshipId?: true
+    createdAt?: true
+  }
+
+  export type AppEventCountAggregateInputType = {
+    id?: true
+    type?: true
+    userId?: true
+    relationshipId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AppEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AppEvent to aggregate.
+     */
+    where?: AppEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AppEvents to fetch.
+     */
+    orderBy?: AppEventOrderByWithRelationInput | AppEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AppEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AppEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AppEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AppEvents
+    **/
+    _count?: true | AppEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AppEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AppEventMaxAggregateInputType
+  }
+
+  export type GetAppEventAggregateType<T extends AppEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateAppEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAppEvent[P]>
+      : GetScalarType<T[P], AggregateAppEvent[P]>
+  }
+
+
+
+
+  export type AppEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AppEventWhereInput
+    orderBy?: AppEventOrderByWithAggregationInput | AppEventOrderByWithAggregationInput[]
+    by: AppEventScalarFieldEnum[] | AppEventScalarFieldEnum
+    having?: AppEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AppEventCountAggregateInputType | true
+    _min?: AppEventMinAggregateInputType
+    _max?: AppEventMaxAggregateInputType
+  }
+
+  export type AppEventGroupByOutputType = {
+    id: string
+    type: string
+    userId: string | null
+    relationshipId: string | null
+    createdAt: Date
+    _count: AppEventCountAggregateOutputType | null
+    _min: AppEventMinAggregateOutputType | null
+    _max: AppEventMaxAggregateOutputType | null
+  }
+
+  type GetAppEventGroupByPayload<T extends AppEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AppEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AppEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AppEventGroupByOutputType[P]>
+            : GetScalarType<T[P], AppEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AppEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    userId?: boolean
+    relationshipId?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["appEvent"]>
+
+  export type AppEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    userId?: boolean
+    relationshipId?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["appEvent"]>
+
+  export type AppEventSelectScalar = {
+    id?: boolean
+    type?: boolean
+    userId?: boolean
+    relationshipId?: boolean
+    createdAt?: boolean
+  }
+
+
+  export type $AppEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AppEvent"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      /**
+       * "signup" | "paired" | "first_reveal" | "checkout_started"
+       */
+      type: string
+      userId: string | null
+      relationshipId: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["appEvent"]>
+    composites: {}
+  }
+
+  type AppEventGetPayload<S extends boolean | null | undefined | AppEventDefaultArgs> = $Result.GetResult<Prisma.$AppEventPayload, S>
+
+  type AppEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<AppEventFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: AppEventCountAggregateInputType | true
+    }
+
+  export interface AppEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AppEvent'], meta: { name: 'AppEvent' } }
+    /**
+     * Find zero or one AppEvent that matches the filter.
+     * @param {AppEventFindUniqueArgs} args - Arguments to find a AppEvent
+     * @example
+     * // Get one AppEvent
+     * const appEvent = await prisma.appEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AppEventFindUniqueArgs>(args: SelectSubset<T, AppEventFindUniqueArgs<ExtArgs>>): Prisma__AppEventClient<$Result.GetResult<Prisma.$AppEventPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one AppEvent that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {AppEventFindUniqueOrThrowArgs} args - Arguments to find a AppEvent
+     * @example
+     * // Get one AppEvent
+     * const appEvent = await prisma.appEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AppEventFindUniqueOrThrowArgs>(args: SelectSubset<T, AppEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AppEventClient<$Result.GetResult<Prisma.$AppEventPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first AppEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppEventFindFirstArgs} args - Arguments to find a AppEvent
+     * @example
+     * // Get one AppEvent
+     * const appEvent = await prisma.appEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AppEventFindFirstArgs>(args?: SelectSubset<T, AppEventFindFirstArgs<ExtArgs>>): Prisma__AppEventClient<$Result.GetResult<Prisma.$AppEventPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first AppEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppEventFindFirstOrThrowArgs} args - Arguments to find a AppEvent
+     * @example
+     * // Get one AppEvent
+     * const appEvent = await prisma.appEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AppEventFindFirstOrThrowArgs>(args?: SelectSubset<T, AppEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__AppEventClient<$Result.GetResult<Prisma.$AppEventPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more AppEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AppEvents
+     * const appEvents = await prisma.appEvent.findMany()
+     * 
+     * // Get first 10 AppEvents
+     * const appEvents = await prisma.appEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const appEventWithIdOnly = await prisma.appEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AppEventFindManyArgs>(args?: SelectSubset<T, AppEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppEventPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a AppEvent.
+     * @param {AppEventCreateArgs} args - Arguments to create a AppEvent.
+     * @example
+     * // Create one AppEvent
+     * const AppEvent = await prisma.appEvent.create({
+     *   data: {
+     *     // ... data to create a AppEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends AppEventCreateArgs>(args: SelectSubset<T, AppEventCreateArgs<ExtArgs>>): Prisma__AppEventClient<$Result.GetResult<Prisma.$AppEventPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many AppEvents.
+     * @param {AppEventCreateManyArgs} args - Arguments to create many AppEvents.
+     * @example
+     * // Create many AppEvents
+     * const appEvent = await prisma.appEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AppEventCreateManyArgs>(args?: SelectSubset<T, AppEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AppEvents and returns the data saved in the database.
+     * @param {AppEventCreateManyAndReturnArgs} args - Arguments to create many AppEvents.
+     * @example
+     * // Create many AppEvents
+     * const appEvent = await prisma.appEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AppEvents and only return the `id`
+     * const appEventWithIdOnly = await prisma.appEvent.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AppEventCreateManyAndReturnArgs>(args?: SelectSubset<T, AppEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppEventPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a AppEvent.
+     * @param {AppEventDeleteArgs} args - Arguments to delete one AppEvent.
+     * @example
+     * // Delete one AppEvent
+     * const AppEvent = await prisma.appEvent.delete({
+     *   where: {
+     *     // ... filter to delete one AppEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AppEventDeleteArgs>(args: SelectSubset<T, AppEventDeleteArgs<ExtArgs>>): Prisma__AppEventClient<$Result.GetResult<Prisma.$AppEventPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one AppEvent.
+     * @param {AppEventUpdateArgs} args - Arguments to update one AppEvent.
+     * @example
+     * // Update one AppEvent
+     * const appEvent = await prisma.appEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AppEventUpdateArgs>(args: SelectSubset<T, AppEventUpdateArgs<ExtArgs>>): Prisma__AppEventClient<$Result.GetResult<Prisma.$AppEventPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more AppEvents.
+     * @param {AppEventDeleteManyArgs} args - Arguments to filter AppEvents to delete.
+     * @example
+     * // Delete a few AppEvents
+     * const { count } = await prisma.appEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AppEventDeleteManyArgs>(args?: SelectSubset<T, AppEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AppEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AppEvents
+     * const appEvent = await prisma.appEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AppEventUpdateManyArgs>(args: SelectSubset<T, AppEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one AppEvent.
+     * @param {AppEventUpsertArgs} args - Arguments to update or create a AppEvent.
+     * @example
+     * // Update or create a AppEvent
+     * const appEvent = await prisma.appEvent.upsert({
+     *   create: {
+     *     // ... data to create a AppEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AppEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AppEventUpsertArgs>(args: SelectSubset<T, AppEventUpsertArgs<ExtArgs>>): Prisma__AppEventClient<$Result.GetResult<Prisma.$AppEventPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of AppEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppEventCountArgs} args - Arguments to filter AppEvents to count.
+     * @example
+     * // Count the number of AppEvents
+     * const count = await prisma.appEvent.count({
+     *   where: {
+     *     // ... the filter for the AppEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends AppEventCountArgs>(
+      args?: Subset<T, AppEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AppEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AppEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AppEventAggregateArgs>(args: Subset<T, AppEventAggregateArgs>): Prisma.PrismaPromise<GetAppEventAggregateType<T>>
+
+    /**
+     * Group by AppEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AppEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AppEventGroupByArgs['orderBy'] }
+        : { orderBy?: AppEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AppEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAppEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AppEvent model
+   */
+  readonly fields: AppEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AppEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AppEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AppEvent model
+   */ 
+  interface AppEventFieldRefs {
+    readonly id: FieldRef<"AppEvent", 'String'>
+    readonly type: FieldRef<"AppEvent", 'String'>
+    readonly userId: FieldRef<"AppEvent", 'String'>
+    readonly relationshipId: FieldRef<"AppEvent", 'String'>
+    readonly createdAt: FieldRef<"AppEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AppEvent findUnique
+   */
+  export type AppEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppEvent
+     */
+    select?: AppEventSelect<ExtArgs> | null
+    /**
+     * Filter, which AppEvent to fetch.
+     */
+    where: AppEventWhereUniqueInput
+  }
+
+  /**
+   * AppEvent findUniqueOrThrow
+   */
+  export type AppEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppEvent
+     */
+    select?: AppEventSelect<ExtArgs> | null
+    /**
+     * Filter, which AppEvent to fetch.
+     */
+    where: AppEventWhereUniqueInput
+  }
+
+  /**
+   * AppEvent findFirst
+   */
+  export type AppEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppEvent
+     */
+    select?: AppEventSelect<ExtArgs> | null
+    /**
+     * Filter, which AppEvent to fetch.
+     */
+    where?: AppEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AppEvents to fetch.
+     */
+    orderBy?: AppEventOrderByWithRelationInput | AppEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AppEvents.
+     */
+    cursor?: AppEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AppEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AppEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AppEvents.
+     */
+    distinct?: AppEventScalarFieldEnum | AppEventScalarFieldEnum[]
+  }
+
+  /**
+   * AppEvent findFirstOrThrow
+   */
+  export type AppEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppEvent
+     */
+    select?: AppEventSelect<ExtArgs> | null
+    /**
+     * Filter, which AppEvent to fetch.
+     */
+    where?: AppEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AppEvents to fetch.
+     */
+    orderBy?: AppEventOrderByWithRelationInput | AppEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AppEvents.
+     */
+    cursor?: AppEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AppEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AppEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AppEvents.
+     */
+    distinct?: AppEventScalarFieldEnum | AppEventScalarFieldEnum[]
+  }
+
+  /**
+   * AppEvent findMany
+   */
+  export type AppEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppEvent
+     */
+    select?: AppEventSelect<ExtArgs> | null
+    /**
+     * Filter, which AppEvents to fetch.
+     */
+    where?: AppEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AppEvents to fetch.
+     */
+    orderBy?: AppEventOrderByWithRelationInput | AppEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AppEvents.
+     */
+    cursor?: AppEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AppEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AppEvents.
+     */
+    skip?: number
+    distinct?: AppEventScalarFieldEnum | AppEventScalarFieldEnum[]
+  }
+
+  /**
+   * AppEvent create
+   */
+  export type AppEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppEvent
+     */
+    select?: AppEventSelect<ExtArgs> | null
+    /**
+     * The data needed to create a AppEvent.
+     */
+    data: XOR<AppEventCreateInput, AppEventUncheckedCreateInput>
+  }
+
+  /**
+   * AppEvent createMany
+   */
+  export type AppEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AppEvents.
+     */
+    data: AppEventCreateManyInput | AppEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AppEvent createManyAndReturn
+   */
+  export type AppEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppEvent
+     */
+    select?: AppEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many AppEvents.
+     */
+    data: AppEventCreateManyInput | AppEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AppEvent update
+   */
+  export type AppEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppEvent
+     */
+    select?: AppEventSelect<ExtArgs> | null
+    /**
+     * The data needed to update a AppEvent.
+     */
+    data: XOR<AppEventUpdateInput, AppEventUncheckedUpdateInput>
+    /**
+     * Choose, which AppEvent to update.
+     */
+    where: AppEventWhereUniqueInput
+  }
+
+  /**
+   * AppEvent updateMany
+   */
+  export type AppEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AppEvents.
+     */
+    data: XOR<AppEventUpdateManyMutationInput, AppEventUncheckedUpdateManyInput>
+    /**
+     * Filter which AppEvents to update
+     */
+    where?: AppEventWhereInput
+  }
+
+  /**
+   * AppEvent upsert
+   */
+  export type AppEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppEvent
+     */
+    select?: AppEventSelect<ExtArgs> | null
+    /**
+     * The filter to search for the AppEvent to update in case it exists.
+     */
+    where: AppEventWhereUniqueInput
+    /**
+     * In case the AppEvent found by the `where` argument doesn't exist, create a new AppEvent with this data.
+     */
+    create: XOR<AppEventCreateInput, AppEventUncheckedCreateInput>
+    /**
+     * In case the AppEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AppEventUpdateInput, AppEventUncheckedUpdateInput>
+  }
+
+  /**
+   * AppEvent delete
+   */
+  export type AppEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppEvent
+     */
+    select?: AppEventSelect<ExtArgs> | null
+    /**
+     * Filter which AppEvent to delete.
+     */
+    where: AppEventWhereUniqueInput
+  }
+
+  /**
+   * AppEvent deleteMany
+   */
+  export type AppEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AppEvents to delete
+     */
+    where?: AppEventWhereInput
+  }
+
+  /**
+   * AppEvent without action
+   */
+  export type AppEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppEvent
+     */
+    select?: AppEventSelect<ExtArgs> | null
+  }
+
+
+  /**
    * Model BetaSignup
    */
 
@@ -34686,6 +35656,17 @@ export namespace Prisma {
   export type DateNightDareScalarFieldEnum = (typeof DateNightDareScalarFieldEnum)[keyof typeof DateNightDareScalarFieldEnum]
 
 
+  export const AppEventScalarFieldEnum: {
+    id: 'id',
+    type: 'type',
+    userId: 'userId',
+    relationshipId: 'relationshipId',
+    createdAt: 'createdAt'
+  };
+
+  export type AppEventScalarFieldEnum = (typeof AppEventScalarFieldEnum)[keyof typeof AppEventScalarFieldEnum]
+
+
   export const BetaSignupScalarFieldEnum: {
     id: 'id',
     email: 'email',
@@ -36869,6 +37850,58 @@ export namespace Prisma {
     completedAt?: DateTimeNullableWithAggregatesFilter<"DateNightDare"> | Date | string | null
     photoUrl?: StringNullableWithAggregatesFilter<"DateNightDare"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"DateNightDare"> | Date | string
+  }
+
+  export type AppEventWhereInput = {
+    AND?: AppEventWhereInput | AppEventWhereInput[]
+    OR?: AppEventWhereInput[]
+    NOT?: AppEventWhereInput | AppEventWhereInput[]
+    id?: StringFilter<"AppEvent"> | string
+    type?: StringFilter<"AppEvent"> | string
+    userId?: StringNullableFilter<"AppEvent"> | string | null
+    relationshipId?: StringNullableFilter<"AppEvent"> | string | null
+    createdAt?: DateTimeFilter<"AppEvent"> | Date | string
+  }
+
+  export type AppEventOrderByWithRelationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    relationshipId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AppEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AppEventWhereInput | AppEventWhereInput[]
+    OR?: AppEventWhereInput[]
+    NOT?: AppEventWhereInput | AppEventWhereInput[]
+    type?: StringFilter<"AppEvent"> | string
+    userId?: StringNullableFilter<"AppEvent"> | string | null
+    relationshipId?: StringNullableFilter<"AppEvent"> | string | null
+    createdAt?: DateTimeFilter<"AppEvent"> | Date | string
+  }, "id">
+
+  export type AppEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    relationshipId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: AppEventCountOrderByAggregateInput
+    _max?: AppEventMaxOrderByAggregateInput
+    _min?: AppEventMinOrderByAggregateInput
+  }
+
+  export type AppEventScalarWhereWithAggregatesInput = {
+    AND?: AppEventScalarWhereWithAggregatesInput | AppEventScalarWhereWithAggregatesInput[]
+    OR?: AppEventScalarWhereWithAggregatesInput[]
+    NOT?: AppEventScalarWhereWithAggregatesInput | AppEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AppEvent"> | string
+    type?: StringWithAggregatesFilter<"AppEvent"> | string
+    userId?: StringNullableWithAggregatesFilter<"AppEvent"> | string | null
+    relationshipId?: StringNullableWithAggregatesFilter<"AppEvent"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"AppEvent"> | Date | string
   }
 
   export type BetaSignupWhereInput = {
@@ -39225,6 +40258,62 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AppEventCreateInput = {
+    id?: string
+    type: string
+    userId?: string | null
+    relationshipId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AppEventUncheckedCreateInput = {
+    id?: string
+    type: string
+    userId?: string | null
+    relationshipId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AppEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    relationshipId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    relationshipId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppEventCreateManyInput = {
+    id?: string
+    type: string
+    userId?: string | null
+    relationshipId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AppEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    relationshipId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    relationshipId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type BetaSignupCreateInput = {
     id?: string
     email: string
@@ -41240,6 +42329,30 @@ export namespace Prisma {
 
   export type DateNightDareSumOrderByAggregateInput = {
     dareIndex?: SortOrder
+  }
+
+  export type AppEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    userId?: SortOrder
+    relationshipId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AppEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    userId?: SortOrder
+    relationshipId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AppEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    userId?: SortOrder
+    relationshipId?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type BetaSignupCountOrderByAggregateInput = {
@@ -52802,6 +53915,10 @@ export namespace Prisma {
      * @deprecated Use DateNightDareDefaultArgs instead
      */
     export type DateNightDareArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DateNightDareDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use AppEventDefaultArgs instead
+     */
+    export type AppEventArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AppEventDefaultArgs<ExtArgs>
     /**
      * @deprecated Use BetaSignupDefaultArgs instead
      */

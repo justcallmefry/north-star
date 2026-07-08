@@ -9,5 +9,15 @@ export default function nextConfig(phase) {
     outputFileTracingIncludes: {
       "/**": ["./generated/prisma/**", "./node_modules/.prisma/client/**"],
     },
+    async headers() {
+      return [
+        {
+          // Apple's CDN requires the AASA file (extensionless) to be served
+          // as application/json for Universal Links to validate.
+          source: "/.well-known/apple-app-site-association",
+          headers: [{ key: "Content-Type", value: "application/json" }],
+        },
+      ];
+    },
   };
 }

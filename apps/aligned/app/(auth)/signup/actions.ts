@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/password";
+import { trackEvent } from "@/lib/events";
 
 export type CreateAccountResult =
   | { ok: true }
@@ -44,13 +45,14 @@ export async function createAccount(
       return { ok: true };
     }
 
-    await prisma.user.create({
+    const created = await prisma.user.create({
       data: {
         email: normalized,
         name: trimmedName,
         password: hashed,
       },
     });
+    void trackEvent("signup", { userId: created.id });
     return { ok: true };
   } catch (e) {
     console.error("[signup] createAccount error:", e);

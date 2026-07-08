@@ -26,6 +26,7 @@ import { StreamingText } from "./streaming-text";
 import { AlignedStamp } from "./aligned-stamp";
 import { detectAligned } from "@/lib/reveal/aligned";
 import { detectCalledIt } from "@/lib/reveal/called-it";
+import { maybeRequestReview } from "@/lib/rate-app";
 import { saveSessionReveal } from "@/lib/memories";
 import { MilestonePromptCard } from "../../milestone-prompt-card";
 import type { MilestoneContext } from "@/lib/milestones";
@@ -390,6 +391,25 @@ export function SessionContent({ data, currentUserId }: Props) {
     if (!isRevealed) return null;
     return readGuess(data.sessionId);
   }, [isRevealed, data.sessionId]);
+
+  const revealAlignedLevel = useMemo(() => {
+    const my = responsesToShow.find((r) => r.isMe);
+    const partner = responsesToShow.find((r) => !r.isMe);
+    return my?.content && partner?.content
+      ? detectAligned(my.content, partner.content)
+      : "none";
+  }, [responsesToShow]);
+
+  // App Store rating ask — only at golden moments (✨ aligned or day 7),
+  // a beat after the reveal has landed. Native-only + 120-day throttle
+  // live inside maybeRequestReview, so this is a safe no-op on the web.
+  useEffect(() => {
+    if (!isRevealed || !afterRevealReady) return;
+    const golden = revealAlignedLevel !== "none" || data.streak?.currentCount === 7;
+    if (!golden) return;
+    const t = setTimeout(() => void maybeRequestReview(), 3000);
+    return () => clearTimeout(t);
+  }, [isRevealed, afterRevealReady, revealAlignedLevel, data.streak?.currentCount]);
   const reflectionsToShow = revealData?.reflections ?? data.reflections ?? [];
 
   const totalMembers = data.memberCount ?? 2;

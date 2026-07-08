@@ -1,0 +1,19 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": ["WTUR6568NY.com.alignedconnectingcouples.app"],
+        "components": [
+          { "/": "/join*", "comment": "Invite code redemption" },
+          { "/": "/invite*", "comment": "Invite landing" },
+          { "/": "/go*", "comment": "Short links" },
+          { "/": "/app*", "comment": "All in-app routes (session links in notifications, etc.)" }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["WTUR6568NY.com.alignedconnectingcouples.app"]
+  }
+}

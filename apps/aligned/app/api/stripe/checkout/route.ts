@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerAuthSession } from "@/lib/auth";
 import { stripe } from "@/lib/stripe";
+import { trackEvent } from "@/lib/events";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,8 @@ export async function POST() {
       customer_email: session.user.email ?? undefined,
       metadata: { userId: session.user.id },
     });
+
+    void trackEvent("checkout_started", { userId: session.user.id });
 
     return NextResponse.json({ url: checkoutSession.url });
   } catch (err) {

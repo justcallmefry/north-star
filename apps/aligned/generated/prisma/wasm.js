@@ -380,6 +380,14 @@ exports.Prisma.DateNightDareScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.AppEventScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  userId: 'userId',
+  relationshipId: 'relationshipId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.BetaSignupScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -565,6 +573,7 @@ exports.Prisma.ModelName = {
   WyrParticipation: 'WyrParticipation',
   PartnerSpotlight: 'PartnerSpotlight',
   DateNightDare: 'DateNightDare',
+  AppEvent: 'AppEvent',
   BetaSignup: 'BetaSignup',
   QuizSession: 'QuizSession',
   QuizParticipation: 'QuizParticipation',

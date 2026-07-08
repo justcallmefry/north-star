@@ -5,6 +5,7 @@ import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { requireActiveMember } from "@/lib/relationship-members";
 import { InviteStatus } from "@/generated/prisma";
+import { trackEvent } from "@/lib/events";
 import crypto from "crypto";
 
 const INVITE_EXPIRY_DAYS = 7;
@@ -121,6 +122,11 @@ export async function claimInvite(code: string) {
       },
     }),
   ]);
+
+  void trackEvent("paired", {
+    userId: session.user.id,
+    relationshipId: invite.relationshipId,
+  });
 
   revalidatePath("/join");
   revalidatePath("/app");

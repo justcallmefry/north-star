@@ -42,10 +42,17 @@ platform :ios do
 
     # Force Xcode-managed signing and stamp the team so the API key can
     # create/download the distribution profile during the archive.
+    # The project's build settings inherit CODE_SIGN_IDENTITY =
+    # "iPhone Developer", which makes Xcode ask Apple for a *development*
+    # profile even when archiving Release — and development profiles need
+    # a registered device, which no CI runner has. Override it for Release
+    # so automatic signing requests a distribution profile instead.
     update_code_signing_settings(
       path: PROJECT,
       use_automatic_signing: true,
-      team_id: ENV.fetch("APPLE_TEAM_ID")
+      team_id: ENV.fetch("APPLE_TEAM_ID"),
+      code_sign_identity: "Apple Distribution",
+      build_configurations: ["Release"]
     )
 
     # Every upload needs a unique, increasing build number. CI run number

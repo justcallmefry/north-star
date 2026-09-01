@@ -4,11 +4,12 @@
 # signing, so there's no certificates repo to maintain (no `match`).
 
 require "base64"
+require "shellwords"
 
 default_platform(:ios)
 
-PROJECT   = "ios/App/App.xcodeproj"
-SCHEME    = "App"
+PROJECT = "ios/App/App.xcodeproj"
+SCHEME  = "App"
 
 platform :ios do
   desc "Build the app and upload it to TestFlight"
@@ -19,18 +20,21 @@ platform :ios do
     # base64 flag makes fastlane decode an already-plain PEM into garbage.
     key_content = ENV.fetch("ASC_KEY_CONTENT").strip
     key_is_pem  = key_content.include?("BEGIN PRIVATE KEY")
-    decoded     = key_is_pem ? key_content : (Base64.decode64(key_content) rescue "")
+    key_pem     = key_is_pem ? key_content : (Base64.decode64(key_content) rescue "")
 
-    unless decoded.include?("BEGIN PRIVATE KEY")
+    unless key_pem.include?("BEGIN PRIVATE KEY")
       UI.user_error!(
         "ASC_KEY_CONTENT is neither a .p8 private key nor valid base64 of one. " +
         "Re-create the secret from the raw file; a correct value starts with LS0tLS1CRUdJTi"
       )
     end
 
+    key_id    = ENV.fetch("ASC_KEY_ID")
+    issuer_id = ENV.fetch("ASC_ISSUER_ID")
+
     api_key = app_store_connect_api_key(
-      key_id: ENV.fetch("ASC_KEY_ID"),
-      issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+      key_id: key_id,
+      issuer_id: issuer_id,
       key_content: key_content,
       is_key_content_base64: !key_is_pem
     )
@@ -50,17 +54,33 @@ platform :ios do
       build_number: ENV["BUILD_NUMBER"] || Time.now.strftime("%Y%m%d%H%M")
     )
 
-    build_app(
-      # Capacitor 8 uses Swift Package Manager, not CocoaPods, so no
-      # .xcworkspace is ever generated — the .xcodeproj is the build unit.
-      project: PROJECT,
-      scheme: SCHEME,
-      export_method: "app-store",
-      # Let Xcode register devices / generate the profile via the API key.
-      xcargs: "-allowProvisioningUpdates",
-      output_directory: "build",
-      clean: true
-    )
+    # xcodebuild is a separate process from fastlane and does not inherit
+    # the API key above — without credentials of its own it reports "No
+    # Accounts" and cannot mint a profile, even with
+    # -allowProvisioningUpdates. Hand it the key explicitly. Written to
+    # disk because the flag takes a path, and removed in the ensure below.
+    key_path = File.expand_path("fastlane/.asc_key.p8")
+    File.write(key_path, key_pem)
+
+    begin
+      build_app(
+        # Capacitor 8 uses Swift Package Manager, not CocoaPods, so no
+        # .xcworkspace is ever generated — the .xcodeproj is the build unit.
+        project: PROJECT,
+        scheme: SCHEME,
+        export_method: "app-store",
+        xcargs: [
+          "-allowProvisioningUpdates",
+          "-authenticationKeyPath #{key_path.shellescape}",
+          "-authenticationKeyID #{key_id.shellescape}",
+          "-authenticationKeyIssuerID #{issuer_id.shellescape}"
+        ].join(" "),
+        output_directory: "build",
+        clean: true
+      )
+    ensure
+      File.delete(key_path) if File.exist?(key_path)
+    end
 
     upload_to_testflight(
       api_key: api_key,

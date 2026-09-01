@@ -49,3 +49,6 @@ fastlane/Preview.html
 fastlane/test_output
 *.ipa
 *.dSYM.zip
+
+# Transient App Store Connect key written by the fastlane beta lane
+fastlane/.asc_key.p8

@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { requireActiveMember } from "@/lib/relationship-members";
 import { InviteStatus } from "@/generated/prisma";
 import { trackEvent } from "@/lib/events";
+import { notifyPartnerJoined } from "@/lib/partner-loop";
 import crypto from "crypto";
 
 const INVITE_EXPIRY_DAYS = 7;
@@ -127,6 +128,9 @@ export async function claimInvite(code: string) {
     userId: session.user.id,
     relationshipId: invite.relationshipId,
   });
+
+  // Tell whoever sent the invite that their partner actually arrived.
+  void notifyPartnerJoined(invite.relationshipId, session.user.id);
 
   revalidatePath("/join");
   revalidatePath("/app");

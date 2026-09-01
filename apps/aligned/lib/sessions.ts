@@ -9,6 +9,7 @@ import { trackEvent } from "@/lib/events";
 import { getActiveMemberIds, requireActiveMember, todayUTC } from "@/lib/relationship-members";
 import { pickPrompt } from "@/lib/prompt-scheduler";
 import { getThrowbackForToday } from "@/lib/throwback";
+import { notifyPartnerAnswered } from "@/lib/partner-loop";
 import { VALIDATION_ACK_MAX_LENGTH, VALIDATION_ALLOWED_EMOJIS } from "@north-star/shared";
 
 /** Verify user is active member of the session's relationship. Returns minimal session (no sensitive includes). */
@@ -432,6 +433,14 @@ export async function submitResponse(sessionId: string, text: string) {
 
   const dailySession = await requireSessionMembership(session.user.id, sessionId);
 
+  // Distinguish a first answer from an edit — only the first one is news
+  // worth pushing to the partner.
+  const existingResponse = await prisma.response.findUnique({
+    where: { sessionId_userId: { sessionId, userId: session.user.id } },
+    select: { id: true },
+  });
+  const isFirstSubmission = !existingResponse;
+
   await prisma.response.upsert({
     where: {
       sessionId_userId: { sessionId, userId: session.user.id },
@@ -443,6 +452,23 @@ export async function submitResponse(sessionId: string, text: string) {
     },
     update: { content: text },
   });
+
+  if (isFirstSubmission) {
+    const [memberIds, responders] = await Promise.all([
+      getActiveMemberIds(dailySession.relationshipId),
+      prisma.response.findMany({ where: { sessionId }, select: { userId: true } }),
+    ]);
+    const revealReady =
+      memberIds.length >= 2 &&
+      memberIds.every((id) => responders.some((r) => r.userId === id));
+
+    void notifyPartnerAnswered({
+      relationshipId: dailySession.relationshipId,
+      sessionId,
+      answeringUserId: session.user.id,
+      revealReady,
+    });
+  }
 
   revalidatePath("/app");
   revalidatePath(`/app/session/${sessionId}`);

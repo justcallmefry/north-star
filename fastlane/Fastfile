@@ -7,7 +7,6 @@ require "base64"
 
 default_platform(:ios)
 
-WORKSPACE = "ios/App/App.xcworkspace"
 PROJECT   = "ios/App/App.xcodeproj"
 SCHEME    = "App"
 
@@ -52,7 +51,9 @@ platform :ios do
     )
 
     build_app(
-      workspace: WORKSPACE,
+      # Capacitor 8 uses Swift Package Manager, not CocoaPods, so no
+      # .xcworkspace is ever generated — the .xcodeproj is the build unit.
+      project: PROJECT,
       scheme: SCHEME,
       export_method: "app-store",
       # Let Xcode register devices / generate the profile via the API key.

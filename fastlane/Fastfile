@@ -3,6 +3,8 @@
 # Signing uses the App Store Connect API key + Xcode-managed (automatic)
 # signing, so there's no certificates repo to maintain (no `match`).
 
+require "base64"
+
 default_platform(:ios)
 
 WORKSPACE = "ios/App/App.xcworkspace"
@@ -12,11 +14,26 @@ SCHEME    = "App"
 platform :ios do
   desc "Build the app and upload it to TestFlight"
   lane :beta do
+    # Accept the .p8 either as raw PEM or base64-encoded. Getting this
+    # wrong is the most common setup mistake, and the failure it produces
+    # (OpenSSL: "string contains null byte") names nothing useful — the
+    # base64 flag makes fastlane decode an already-plain PEM into garbage.
+    key_content = ENV.fetch("ASC_KEY_CONTENT").strip
+    key_is_pem  = key_content.include?("BEGIN PRIVATE KEY")
+    decoded     = key_is_pem ? key_content : (Base64.decode64(key_content) rescue "")
+
+    unless decoded.include?("BEGIN PRIVATE KEY")
+      UI.user_error!(
+        "ASC_KEY_CONTENT is neither a .p8 private key nor valid base64 of one. " +
+        "Re-create the secret from the raw file; a correct value starts with LS0tLS1CRUdJTi"
+      )
+    end
+
     api_key = app_store_connect_api_key(
       key_id: ENV.fetch("ASC_KEY_ID"),
       issuer_id: ENV.fetch("ASC_ISSUER_ID"),
-      key_content: ENV.fetch("ASC_KEY_CONTENT"), # base64 of the .p8
-      is_key_content_base64: true
+      key_content: key_content,
+      is_key_content_base64: !key_is_pem
     )
 
     # Force Xcode-managed signing and stamp the team so the API key can

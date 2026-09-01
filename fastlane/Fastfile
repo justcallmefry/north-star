@@ -1,16 +1,24 @@
 # Aligned — iOS TestFlight pipeline.
 # Runs entirely on GitHub's macOS runners; no local Mac required.
-# Signing uses the App Store Connect API key + Xcode-managed (automatic)
-# signing, so there's no certificates repo to maintain (no `match`).
+#
+# Signing is MANUAL, using an App Store distribution certificate and
+# provisioning profile fetched with the App Store Connect API key.
+#
+# Xcode's automatic signing was tried first and cannot work here: headless,
+# it still tries to establish a *development* identity for the machine
+# ("Revoke certificate: ... its private key is not installed in your
+# keychain") and then looks for a development provisioning profile, which
+# requires a registered device no CI runner has. That happens even with
+# -allowProvisioningUpdates, an authentication key, CODE_SIGN_IDENTITY
+# cleared, and -configuration Release — all verified in the build log.
 
 require "base64"
-require "shellwords"
-require "tmpdir"
 
 default_platform(:ios)
 
-PROJECT = "ios/App/App.xcodeproj"
-SCHEME  = "App"
+PROJECT   = "ios/App/App.xcodeproj"
+SCHEME    = "App"
+BUNDLE_ID = "com.alignedconnectingcouples.app"
 
 platform :ios do
   desc "Build the app and upload it to TestFlight"
@@ -30,23 +38,40 @@ platform :ios do
       )
     end
 
-    key_id    = ENV.fetch("ASC_KEY_ID")
-    issuer_id = ENV.fetch("ASC_ISSUER_ID")
-
     api_key = app_store_connect_api_key(
-      key_id: key_id,
-      issuer_id: issuer_id,
+      key_id: ENV.fetch("ASC_KEY_ID"),
+      issuer_id: ENV.fetch("ASC_ISSUER_ID"),
       key_content: key_content,
       is_key_content_base64: !key_is_pem
     )
 
-    # NOTE: the workflow strips CODE_SIGN_IDENTITY from project.pbxproj
-    # before this runs — see "Clear inherited signing identity" in
-    # .github/workflows/ios-testflight.yml for why.
+    # Temporary keychain for the certificate; a runner has no unlocked
+    # login keychain to import into.
+    setup_ci
+
+    # Distribution certificate. fastlane generates the keypair locally, so
+    # unlike Xcode's automatic flow the private key is actually present.
+    cert(
+      api_key: api_key,
+      development: false
+    )
+
+    # App Store provisioning profile for this bundle id. Needs no
+    # registered devices, which is the whole point.
+    sigh(
+      api_key: api_key,
+      app_identifier: BUNDLE_ID,
+      development: false
+    )
+    profile_name = lane_context[SharedValues::SIGH_NAME]
+
     update_code_signing_settings(
       path: PROJECT,
-      use_automatic_signing: true,
-      team_id: ENV.fetch("APPLE_TEAM_ID")
+      use_automatic_signing: false,
+      team_id: ENV.fetch("APPLE_TEAM_ID"),
+      code_sign_identity: "Apple Distribution",
+      profile_name: profile_name,
+      bundle_identifier: BUNDLE_ID
     )
 
     # Every upload needs a unique, increasing build number. CI run number
@@ -56,35 +81,19 @@ platform :ios do
       build_number: ENV["BUILD_NUMBER"] || Time.now.strftime("%Y%m%d%H%M")
     )
 
-    # xcodebuild is a separate process from fastlane and does not inherit
-    # the API key above — without credentials of its own it reports "No
-    # Accounts" and cannot mint a profile, even with
-    # -allowProvisioningUpdates. Hand it the key explicitly. Kept in
-    # tmpdir, not the repo: fastlane chdirs while running a lane, so a
-    # relative path resolves somewhere unpredictable.
-    key_path = File.join(Dir.tmpdir, "asc_key_#{Process.pid}.p8")
-    File.write(key_path, key_pem)
-
-    begin
-      build_app(
-        # Capacitor 8 uses Swift Package Manager, not CocoaPods, so no
-        # .xcworkspace is ever generated — the .xcodeproj is the build unit.
-        project: PROJECT,
-        scheme: SCHEME,
-        configuration: "Release",
-        export_method: "app-store",
-        xcargs: [
-          "-allowProvisioningUpdates",
-          "-authenticationKeyPath #{key_path.shellescape}",
-          "-authenticationKeyID #{key_id.shellescape}",
-          "-authenticationKeyIssuerID #{issuer_id.shellescape}"
-        ].join(" "),
-        output_directory: "build",
-        clean: true
-      )
-    ensure
-      File.delete(key_path) if File.exist?(key_path)
-    end
+    build_app(
+      # Capacitor 8 uses Swift Package Manager, not CocoaPods, so no
+      # .xcworkspace is ever generated — the .xcodeproj is the build unit.
+      project: PROJECT,
+      scheme: SCHEME,
+      configuration: "Release",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: { BUNDLE_ID => profile_name }
+      },
+      output_directory: "build",
+      clean: true
+    )
 
     upload_to_testflight(
       api_key: api_key,

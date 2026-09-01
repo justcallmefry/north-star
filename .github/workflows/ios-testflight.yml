@@ -37,6 +37,17 @@ jobs:
         # The app loads the live site via server.url, so this is mostly config.
         run: npx cap sync ios
 
+      - name: Clear inherited signing identity
+        # project.pbxproj pins CODE_SIGN_IDENTITY = "iPhone Developer" at the
+        # project level and the App target inherits it, so automatic signing
+        # hunts for a *development* provisioning profile when archiving —
+        # which requires a registered device that no CI runner has. Cleared
+        # here (deterministic cwd, unlike inside a fastlane lane) so Xcode
+        # selects a distribution identity on its own.
+        run: |
+          sed -i '' '/CODE_SIGN_IDENTITY/d' ios/App/App.xcodeproj/project.pbxproj
+          echo "remaining CODE_SIGN_IDENTITY lines: $(grep -c CODE_SIGN_IDENTITY ios/App/App.xcodeproj/project.pbxproj || true)"
+
       - name: Select Xcode 15
         run: sudo xcode-select -switch /Applications/Xcode_15.4.app
 

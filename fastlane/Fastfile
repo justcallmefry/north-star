@@ -40,24 +40,9 @@ platform :ios do
       is_key_content_base64: !key_is_pem
     )
 
-    # project.pbxproj pins CODE_SIGN_IDENTITY = "iPhone Developer" at the
-    # *project* level, which the App target inherits — so automatic signing
-    # hunted for a development profile even when archiving Release, and
-    # development profiles need a registered device that no CI runner has.
-    # Pinning "Apple Distribution" instead only trades that for a conflict
-    # ("automatically signed for development, but a conflicting identity
-    # has been manually specified"), since update_code_signing_settings
-    # rewrites targets and not the project.
-    #
-    # Strip the setting altogether and let automatic signing decide: given
-    # CODE_SIGN_STYLE=Automatic, a team, and an archive of the Release
-    # configuration, Xcode selects a distribution identity on its own.
-    pbxproj = File.join(PROJECT, "project.pbxproj")
-    pruned  = File.readlines(pbxproj).reject do |line|
-      line =~ /^\s*CODE_SIGN_IDENTITY(\[[^\]]*\])?\s*=/
-    end
-    File.write(pbxproj, pruned.join)
-
+    # NOTE: the workflow strips CODE_SIGN_IDENTITY from project.pbxproj
+    # before this runs — see "Clear inherited signing identity" in
+    # .github/workflows/ios-testflight.yml for why.
     update_code_signing_settings(
       path: PROJECT,
       use_automatic_signing: true,

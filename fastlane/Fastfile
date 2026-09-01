@@ -40,19 +40,28 @@ platform :ios do
       is_key_content_base64: !key_is_pem
     )
 
-    # Force Xcode-managed signing and stamp the team so the API key can
-    # create/download the distribution profile during the archive.
-    # The project's build settings inherit CODE_SIGN_IDENTITY =
-    # "iPhone Developer", which makes Xcode ask Apple for a *development*
-    # profile even when archiving Release — and development profiles need
-    # a registered device, which no CI runner has. Override it for Release
-    # so automatic signing requests a distribution profile instead.
+    # project.pbxproj pins CODE_SIGN_IDENTITY = "iPhone Developer" at the
+    # *project* level, which the App target inherits — so automatic signing
+    # hunted for a development profile even when archiving Release, and
+    # development profiles need a registered device that no CI runner has.
+    # Pinning "Apple Distribution" instead only trades that for a conflict
+    # ("automatically signed for development, but a conflicting identity
+    # has been manually specified"), since update_code_signing_settings
+    # rewrites targets and not the project.
+    #
+    # Strip the setting altogether and let automatic signing decide: given
+    # CODE_SIGN_STYLE=Automatic, a team, and an archive of the Release
+    # configuration, Xcode selects a distribution identity on its own.
+    pbxproj = File.join(PROJECT, "project.pbxproj")
+    pruned  = File.readlines(pbxproj).reject do |line|
+      line =~ /^\s*CODE_SIGN_IDENTITY(\[[^\]]*\])?\s*=/
+    end
+    File.write(pbxproj, pruned.join)
+
     update_code_signing_settings(
       path: PROJECT,
       use_automatic_signing: true,
-      team_id: ENV.fetch("APPLE_TEAM_ID"),
-      code_sign_identity: "Apple Distribution",
-      build_configurations: ["Release"]
+      team_id: ENV.fetch("APPLE_TEAM_ID")
     )
 
     # Every upload needs a unique, increasing build number. CI run number
@@ -65,10 +74,9 @@ platform :ios do
     # xcodebuild is a separate process from fastlane and does not inherit
     # the API key above — without credentials of its own it reports "No
     # Accounts" and cannot mint a profile, even with
-    # -allowProvisioningUpdates. Hand it the key explicitly. Written to
-    # disk because the flag takes a path, and removed in the ensure below.
-    # Kept in tmpdir, not the repo: fastlane chdirs while running a lane,
-    # so a relative path here resolves somewhere unpredictable.
+    # -allowProvisioningUpdates. Hand it the key explicitly. Kept in
+    # tmpdir, not the repo: fastlane chdirs while running a lane, so a
+    # relative path resolves somewhere unpredictable.
     key_path = File.join(Dir.tmpdir, "asc_key_#{Process.pid}.p8")
     File.write(key_path, key_pem)
 
@@ -78,6 +86,7 @@ platform :ios do
         # .xcworkspace is ever generated — the .xcodeproj is the build unit.
         project: PROJECT,
         scheme: SCHEME,
+        configuration: "Release",
         export_method: "app-store",
         xcargs: [
           "-allowProvisioningUpdates",

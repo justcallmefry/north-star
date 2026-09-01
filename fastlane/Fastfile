@@ -5,6 +5,7 @@
 
 require "base64"
 require "shellwords"
+require "tmpdir"
 
 default_platform(:ios)
 
@@ -59,7 +60,9 @@ platform :ios do
     # Accounts" and cannot mint a profile, even with
     # -allowProvisioningUpdates. Hand it the key explicitly. Written to
     # disk because the flag takes a path, and removed in the ensure below.
-    key_path = File.expand_path("fastlane/.asc_key.p8")
+    # Kept in tmpdir, not the repo: fastlane chdirs while running a lane,
+    # so a relative path here resolves somewhere unpredictable.
+    key_path = File.join(Dir.tmpdir, "asc_key_#{Process.pid}.p8")
     File.write(key_path, key_pem)
 
     begin

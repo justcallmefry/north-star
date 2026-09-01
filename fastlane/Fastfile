@@ -49,6 +49,19 @@ platform :ios do
     # login keychain to import into.
     setup_ci
 
+    # setup_ci's keychain is brand new and therefore contains none of
+    # Apple's intermediate certificates. Without the WWDR intermediate a
+    # freshly imported leaf can't be chained to a trusted root, and cert()
+    # fails its own install check with "Could not find the newly generated
+    # certificate installed".
+    wwdr_path = "/tmp/AppleWWDRCAG3.cer"
+    sh("curl -fsSL -o #{wwdr_path} https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer")
+    import_certificate(
+      certificate_path: wwdr_path,
+      keychain_name: ENV["MATCH_KEYCHAIN_NAME"] || "fastlane_tmp_keychain",
+      keychain_password: ENV["MATCH_KEYCHAIN_PASSWORD"] || ""
+    )
+
     # Distribution certificate. fastlane generates the keypair locally, so
     # unlike Xcode's automatic flow the private key is actually present.
     cert(

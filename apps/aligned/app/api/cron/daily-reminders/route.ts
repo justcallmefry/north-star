@@ -37,6 +37,7 @@ export async function GET(request: Request) {
     where: { status: "active" },
     select: {
       id: true,
+      createdAt: true,
       members: { where: { leftAt: null }, select: { userId: true } },
       dailySessions: {
         where: { sessionDate: today },
@@ -50,11 +51,41 @@ export async function GET(request: Request) {
 
   let pushed = 0;
   let emailed = 0;
+  let invitesNudged = 0;
 
   for (const rel of relationships) {
     const memberIds = rel.members.map((m) => m.userId);
-    // Solo users are still pairing — the invite flow nudges them, not this.
-    if (memberIds.length < 2) continue;
+
+    // Still waiting on a partner. These people are structurally unable to
+    // reach a reveal, so the daily question nudge is the wrong message —
+    // the invite is. Nudged on day 1 and day 3 only (invites expire at 7),
+    // then we stop: an unanswered invite is often a decision, not an
+    // oversight, and nagging someone about their own relationship is the
+    // fastest way to get deleted.
+    if (memberIds.length < 2) {
+      const soloId = memberIds[0];
+      if (!soloId) continue;
+
+      const daysWaiting = Math.floor(
+        (today.getTime() - rel.createdAt.getTime()) / (24 * 60 * 60 * 1000)
+      );
+      if (daysWaiting !== 1 && daysWaiting !== 3) continue;
+
+      const sealedAnswer = await prisma.response.count({
+        where: { session: { relationshipId: rel.id }, userId: soloId },
+      });
+
+      const sent = await sendPushToUser(soloId, {
+        title: sealedAnswer > 0 ? "Your answer is still sealed." : "Still just you here.",
+        body:
+          sealedAnswer > 0
+            ? "It opens the moment they join. Want to send the invite again?"
+            : "One tap sends your invite again.",
+        url: `${appUrl}/app/pair`,
+      });
+      if (sent > 0) invitesNudged++;
+      continue;
+    }
 
     const session = rel.dailySessions[0] ?? null;
     if (session?.state === "revealed") continue;
@@ -101,5 +132,5 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.json({ ok: true, pushed, emailed });
+  return NextResponse.json({ ok: true, pushed, emailed, invitesNudged });
 }

@@ -67,7 +67,10 @@ export async function GET(request: Request) {
 
   for (const rel of relationships) {
     const memberIds = rel.members.map((m) => m.userId);
-    if (memberIds.length === 0) continue;
+    // Teasing tomorrow's question at someone who has no partner yet is a
+    // promise the product can't keep — they can't reach a reveal at all.
+    // The daily-reminders cron nudges them about the invite instead.
+    if (memberIds.length < 2) continue;
 
     const recentRaw = await prisma.dailySession.findMany({
       where: { relationshipId: rel.id },

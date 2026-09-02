@@ -19,8 +19,30 @@
  * it. Safe to run against production; it touches only these two accounts.
  */
 
+import fs from "fs";
+import path from "path";
 import { PrismaClient } from "../generated/prisma";
 import { hashPassword } from "../lib/password";
+
+/**
+ * tsx does not load .env.local, and this project has no dotenv dependency,
+ * so read it here rather than failing on a missing DATABASE_URL. Existing
+ * values win, which is what lets CI or a shell override it.
+ */
+function loadEnvLocal(): void {
+  const envPath = path.join(__dirname, "..", ".env.local");
+  if (!fs.existsSync(envPath)) return;
+  for (const rawLine of fs.readFileSync(envPath, "utf8").split("\n")) {
+    const line = rawLine.replace("\r", "");
+    const match = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)$/);
+    if (!match) continue;
+    const key = match[1]!;
+    if (process.env[key] !== undefined) continue;
+    process.env[key] = match[2]!.trim().replace(/^["']|["']$/g, "");
+  }
+}
+
+loadEnvLocal();
 
 const prisma = new PrismaClient();
 

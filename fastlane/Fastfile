@@ -14,6 +14,7 @@
 
 require "base64"
 require "tmpdir"
+require "spaceship"
 
 default_platform(:ios)
 
@@ -70,12 +71,19 @@ platform :ios do
       keychain_password: keychain_password
     )
 
-    # Apple allows only two distribution certificates, and an ephemeral
-    # runner never holds the private key of an existing one — so calling
-    # cert() every build exhausts the quota after two runs, permanently.
-    # Prefer a certificate supplied as a secret; fall back to creating one.
-    p12_b64 = ENV["DIST_CERT_P12_BASE64"].to_s.strip
-    if p12_b64.empty?
+    # Apple allows only two distribution certificates and an ephemeral
+    # runner never holds the private key of an existing one, so calling
+    # cert() every build exhausts the quota after two runs. Prefer a
+    # credential supplied as a secret.
+    #
+    # Careful: what cert() writes as "<id>.p12" is NOT a PKCS#12 bundle —
+    # fastlane dumps the raw private key PEM into that filename. Importing
+    # it alone yields a key with no certificate, which macOS does not
+    # report as a signing identity at all ("0 valid identities found").
+    # So when the secret holds a bare key, fetch its certificate from
+    # Apple and assemble a real PKCS#12 from the pair.
+    stored = ENV["DIST_CERT_P12_BASE64"].to_s.strip
+    if stored.empty?
       UI.important("No DIST_CERT_P12_BASE64 secret — creating a new distribution certificate. " +
                    "This consumes one of Apple's two slots; see docs/ios-deploy.md.")
       cert(
@@ -83,20 +91,47 @@ platform :ios do
         development: false,
         keychain_path: keychain_path,
         keychain_password: keychain_password,
-        # Written out so the workflow can publish it once as an artifact;
-        # store it as DIST_CERT_P12_BASE64 and no run creates one again.
         output_path: "fastlane/certs"
       )
     else
-      p12_path = File.join(Dir.tmpdir, "dist_cert.p12")
-      File.write(p12_path, Base64.decode64(p12_b64))
+      decoded = Base64.decode64(stored)
+      is_bare_key = decoded.include?("PRIVATE KEY") && !decoded.include?("BEGIN CERTIFICATE")
+      UI.message("Stored credential looks like #{is_bare_key ? 'a private key (will pair it with the certificate from Apple)' : 'a PKCS#12 bundle'}")
+
+      import_path = File.join(Dir.tmpdir, "identity.p12")
+
+      if is_bare_key
+        Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.create(
+          key_id: key_id, issuer_id: issuer_id, key: key_pem
+        )
+        distribution = Spaceship::ConnectAPI::Certificate.all.find do |c|
+          c.certificate_type.to_s.include?("DISTRIBUTION")
+        end
+        UI.user_error!("The stored key has no distribution certificate on the account to pair with.") unless distribution
+        UI.message("Pairing stored key with certificate #{distribution.id}")
+
+        key_file = File.join(Dir.tmpdir, "dist_key.pem")
+        der_file = File.join(Dir.tmpdir, "dist_cert.der")
+        pem_file = File.join(Dir.tmpdir, "dist_cert.pem")
+        File.write(key_file, decoded)
+        File.write(der_file, Base64.decode64(distribution.certificate_content))
+        sh("openssl x509 -inform DER -in #{der_file} -out #{pem_file}")
+        # -legacy: macOS keychain cannot read OpenSSL 3's default PBES2 p12.
+        sh("openssl pkcs12 -export -legacy -inkey #{key_file} -in #{pem_file} -out #{import_path} -passout pass:")
+        [key_file, der_file, pem_file].each { |f| File.delete(f) if File.exist?(f) }
+        cert_password = ""
+      else
+        File.write(import_path, decoded)
+        cert_password = ENV["DIST_CERT_P12_PASSWORD"].to_s
+      end
+
       import_certificate(
-        certificate_path: p12_path,
-        certificate_password: ENV["DIST_CERT_P12_PASSWORD"].to_s,
+        certificate_path: import_path,
+        certificate_password: cert_password,
         keychain_name: keychain_name,
         keychain_password: keychain_password
       )
-      File.delete(p12_path)
+      File.delete(import_path) if File.exist?(import_path)
     end
 
     # An imported .p12 is not automatically a usable *signing identity*:

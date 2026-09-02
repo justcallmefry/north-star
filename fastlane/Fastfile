@@ -99,6 +99,18 @@ platform :ios do
       File.delete(p12_path)
     end
 
+    # An imported .p12 is not automatically a usable *signing identity*:
+    # the keychain has to be in the user search list, unlocked, and carry a
+    # partition list that lets codesign use the private key non-
+    # interactively. Without this the certificate is present but sigh
+    # reports it as "not available locally" and finds no AppStore identity.
+    sh("security list-keychains -d user -s \"#{keychain_path}\" login.keychain-db")
+    sh("security unlock-keychain -p \"#{keychain_password}\" \"#{keychain_path}\"")
+    sh("security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k \"#{keychain_password}\" \"#{keychain_path}\" > /dev/null 2>&1 || true")
+
+    # Diagnostic: prints the identities codesign can actually see.
+    sh("security find-identity -v -p codesigning \"#{keychain_path}\" || true")
+
     # App Store provisioning profile for this bundle id. Needs no
     # registered devices, which is the whole point.
     sigh(

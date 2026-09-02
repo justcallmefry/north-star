@@ -13,6 +13,7 @@
 # cleared, and -configuration Release — all verified in the build log.
 
 require "base64"
+require "tmpdir"
 
 default_platform(:ios)
 
@@ -49,25 +50,51 @@ platform :ios do
     # login keychain to import into.
     setup_ci
 
-    # setup_ci's keychain is brand new and therefore contains none of
-    # Apple's intermediate certificates. Without the WWDR intermediate a
-    # freshly imported leaf can't be chained to a trusted root, and cert()
-    # fails its own install check with "Could not find the newly generated
-    # certificate installed".
-    wwdr_path = "/tmp/AppleWWDRCAG3.cer"
+    # cert() defaults to the *login* keychain, but setup_ci built a
+    # separate temporary one — so without an explicit keychain_path the
+    # certificate and the WWDR intermediate land in different keychains
+    # and cert()'s own verification fails with "Could not find the newly
+    # generated certificate installed".
+    keychain_name     = ENV["MATCH_KEYCHAIN_NAME"] || "fastlane_tmp_keychain"
+    keychain_password = ENV["MATCH_KEYCHAIN_PASSWORD"] || ""
+    keychain_path     = File.expand_path("~/Library/Keychains/#{keychain_name}-db")
+
+    # A fresh keychain has none of Apple's intermediates, so a leaf
+    # certificate imported into it chains to nothing and is not reported
+    # as a usable signing identity.
+    wwdr_path = File.join(Dir.tmpdir, "AppleWWDRCAG3.cer")
     sh("curl -fsSL -o #{wwdr_path} https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer")
     import_certificate(
       certificate_path: wwdr_path,
-      keychain_name: ENV["MATCH_KEYCHAIN_NAME"] || "fastlane_tmp_keychain",
-      keychain_password: ENV["MATCH_KEYCHAIN_PASSWORD"] || ""
+      keychain_name: keychain_name,
+      keychain_password: keychain_password
     )
 
-    # Distribution certificate. fastlane generates the keypair locally, so
-    # unlike Xcode's automatic flow the private key is actually present.
-    cert(
-      api_key: api_key,
-      development: false
-    )
+    # Apple allows only two distribution certificates, and an ephemeral
+    # runner never holds the private key of an existing one — so calling
+    # cert() every build exhausts the quota after two runs, permanently.
+    # Prefer a certificate supplied as a secret; fall back to creating one.
+    p12_b64 = ENV["DIST_CERT_P12_BASE64"].to_s.strip
+    if p12_b64.empty?
+      UI.important("No DIST_CERT_P12_BASE64 secret — creating a new distribution certificate. " +
+                   "This consumes one of Apple's two slots; see docs/ios-deploy.md.")
+      cert(
+        api_key: api_key,
+        development: false,
+        keychain_path: keychain_path,
+        keychain_password: keychain_password
+      )
+    else
+      p12_path = File.join(Dir.tmpdir, "dist_cert.p12")
+      File.write(p12_path, Base64.decode64(p12_b64))
+      import_certificate(
+        certificate_path: p12_path,
+        certificate_password: ENV["DIST_CERT_P12_PASSWORD"].to_s,
+        keychain_name: keychain_name,
+        keychain_password: keychain_password
+      )
+      File.delete(p12_path)
+    end
 
     # App Store provisioning profile for this bundle id. Needs no
     # registered devices, which is the whole point.

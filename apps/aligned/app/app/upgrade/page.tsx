@@ -1,24 +1,33 @@
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { CheckCircle, Sparkles } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
+import { isNativeRequest } from "@/lib/native";
 import { UpgradeButton } from "./upgrade-button";
 
 export const dynamic = "force-dynamic";
 
 interface UpgradePageProps {
-  searchParams: { success?: string; canceled?: string };
+  // Next 16: searchParams is a Promise.
+  searchParams: Promise<{ success?: string; canceled?: string }>;
 }
 
 export default async function UpgradePage({ searchParams }: UpgradePageProps) {
+  // Not reachable from the native app: an external checkout for a digital
+  // subscription is an App Store Guideline 3.1.1 rejection. Web only until
+  // in-app purchase exists.
+  if (await isNativeRequest()) notFound();
+
   const session = await getServerAuthSession();
   if (!session?.user) {
     redirect("/login");
   }
 
+  const params = await searchParams;
+
   return (
     <main className="ns-stack max-w-lg mx-auto">
       {/* Success state */}
-      {searchParams.success && (
+      {params.success && (
         <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 text-center">
           <p className="font-semibold text-emerald-800">
             You&apos;re all set. Welcome to Aligned Premium.
@@ -27,7 +36,7 @@ export default async function UpgradePage({ searchParams }: UpgradePageProps) {
       )}
 
       {/* Canceled state */}
-      {searchParams.canceled && (
+      {params.canceled && (
         <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4 text-center">
           <p className="text-amber-800">No problem — you can upgrade anytime.</p>
         </div>

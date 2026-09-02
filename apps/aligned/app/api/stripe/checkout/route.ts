@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isNativeRequest } from "@/lib/native";
 import { getServerAuthSession } from "@/lib/auth";
 import { stripe } from "@/lib/stripe";
 import { trackEvent } from "@/lib/events";
@@ -6,6 +7,12 @@ import { trackEvent } from "@/lib/events";
 export const dynamic = "force-dynamic";
 
 export async function POST() {
+  // Refused for the native app: digital subscriptions there must use
+  // in-app purchase (App Store Guideline 3.1.1). The website is unaffected.
+  if (await isNativeRequest()) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
   const session = await getServerAuthSession();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

@@ -22,7 +22,8 @@
     "db:add-prompts-v3": "tsx prisma/add-daily-prompts-v3.ts",
     "db:add-fts-prompts": "tsx prisma/add-fts-prompts.ts",
     "content:generate-quiz-draft": "tsx scripts/generate-quiz-draft.ts",
-    "check:game-layer": "tsx scripts/check-game-layer.ts"
+    "check:game-layer": "tsx scripts/check-game-layer.ts",
+    "db:seed-demo": "tsx prisma/seed-demo-couple.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.2",

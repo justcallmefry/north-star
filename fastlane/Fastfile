@@ -82,7 +82,10 @@ platform :ios do
         api_key: api_key,
         development: false,
         keychain_path: keychain_path,
-        keychain_password: keychain_password
+        keychain_password: keychain_password,
+        # Written out so the workflow can publish it once as an artifact;
+        # store it as DIST_CERT_P12_BASE64 and no run creates one again.
+        output_path: "fastlane/certs"
       )
     else
       p12_path = File.join(Dir.tmpdir, "dist_cert.p12")

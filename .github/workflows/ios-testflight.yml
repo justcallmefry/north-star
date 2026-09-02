@@ -64,6 +64,19 @@ jobs:
           DIST_CERT_P12_PASSWORD: ${{ secrets.DIST_CERT_P12_PASSWORD }}
           BUILD_NUMBER: ${{ github.run_number }}
 
+      - name: Publish the distribution certificate for reuse
+        # Only produced when the lane had to create a certificate. Download
+        # it, base64 it, store it as the DIST_CERT_P12_BASE64 secret, then
+        # delete this artifact — after that every run reuses one identity
+        # and Apple's two-certificate limit stops being a problem.
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: distribution-certificate
+          path: fastlane/certs/*.p12
+          retention-days: 1
+          if-no-files-found: ignore
+
       - name: Upload build logs on failure
         if: failure()
         uses: actions/upload-artifact@v4

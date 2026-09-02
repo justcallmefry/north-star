@@ -15,6 +15,7 @@
 require "base64"
 require "tmpdir"
 require "spaceship"
+require "openssl"
 
 default_platform(:ios)
 
@@ -107,21 +108,41 @@ platform :ios do
         Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.create(
           key_id: key_id, issuer_id: issuer_id, key: key_pem
         )
-        distribution = Spaceship::ConnectAPI::Certificate.all.find do |c|
-          c.certificate_type.to_s.include?("DISTRIBUTION")
-        end
-        UI.user_error!("The stored key has no distribution certificate on the account to pair with.") unless distribution
-        UI.message("Pairing stored key with certificate #{distribution.id}")
 
-        key_file = File.join(Dir.tmpdir, "dist_key.pem")
-        der_file = File.join(Dir.tmpdir, "dist_cert.der")
-        pem_file = File.join(Dir.tmpdir, "dist_cert.pem")
-        File.write(key_file, decoded)
-        File.write(der_file, Base64.decode64(distribution.certificate_content))
-        sh("openssl x509 -inform DER -in #{der_file} -out #{pem_file}")
-        # -legacy: macOS keychain cannot read OpenSSL 3's default PBES2 p12.
-        sh("openssl pkcs12 -export -legacy -inkey #{key_file} -in #{pem_file} -out #{import_path} -passout pass:")
-        [key_file, der_file, pem_file].each { |f| File.delete(f) if File.exist?(f) }
+        # Match on the public key. Picking the first distribution
+        # certificate pairs the key with the wrong one whenever the account
+        # holds more than one, and openssl then refuses the export because
+        # the key does not correspond to the certificate.
+        private_key = OpenSSL::PKey::RSA.new(decoded)
+        matched_id  = nil
+        certificate = nil
+
+        Spaceship::ConnectAPI::Certificate.all.each do |remote|
+          next unless remote.certificate_type.to_s.include?("DISTRIBUTION")
+          candidate = OpenSSL::X509::Certificate.new(Base64.decode64(remote.certificate_content))
+          next unless candidate.public_key.to_der == private_key.public_key.to_der
+          matched_id  = remote.id
+          certificate = candidate
+          break
+        end
+
+        unless certificate
+          UI.user_error!(
+            "The stored private key does not match any distribution certificate on the account. " +
+            "It probably belongs to a certificate that has since been revoked — clear " +
+            "DIST_CERT_P12_BASE64 to let the lane create a fresh one, then store that."
+          )
+        end
+        UI.success("Stored key matches certificate #{matched_id}")
+
+        # Built in-process rather than via the openssl CLI so a failure
+        # surfaces as a real error instead of a bare exit status. 3DES
+        # because the keychain cannot read OpenSSL 3's default PBES2.
+        bundle = OpenSSL::PKCS12.create(
+          "", "Aligned distribution", private_key, certificate,
+          nil, "DES-EDE3-CBC", "DES-EDE3-CBC"
+        )
+        File.write(import_path, bundle.to_der)
         cert_password = ""
       else
         File.write(import_path, decoded)

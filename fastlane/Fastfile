@@ -136,17 +136,25 @@ platform :ios do
         end
         UI.success("Stored key matches certificate #{matched_id}")
 
-        # Built in-process rather than via the openssl CLI so a failure
-        # surfaces as a real error instead of a bare exit status. 3DES
-        # because the keychain cannot read OpenSSL 3's default PBES2.
-        # A real passphrase, not "": an empty one yields a bundle macOS
-        # imports without producing a usable identity.
+        # Ruby's OpenSSL 3 emits PBES2-encrypted PKCS#12 regardless of the
+        # cipher arguments, and the keychain rejects it outright
+        # ("SecKeychainItemImport: Unable to decode the provided data").
+        # Build it with the openssl CLI pinned to the SHA-1/3DES encoding
+        # macOS can read. These flags work under both LibreSSL, which is
+        # what /usr/bin/openssl is, and OpenSSL 3 — unlike -legacy, which
+        # LibreSSL does not accept at all.
         cert_password = SecureRandom.hex(16)
-        bundle = OpenSSL::PKCS12.create(
-          cert_password, "Aligned distribution", private_key, certificate,
-          nil, "DES-EDE3-CBC", "DES-EDE3-CBC"
-        )
-        File.write(import_path, bundle.to_der)
+        key_file  = File.join(Dir.tmpdir, "dist_key.pem")
+        cert_file = File.join(Dir.tmpdir, "dist_cert.pem")
+        File.write(key_file, decoded)
+        File.write(cert_file, certificate.to_pem)
+
+        sh("openssl version")
+        sh("openssl pkcs12 -export -inkey #{key_file} -in #{cert_file} " +
+           "-out #{import_path} -passout pass:#{cert_password} " +
+           "-macalg sha1 -keypbe PBE-SHA1-3DES -certpbe PBE-SHA1-3DES")
+
+        [key_file, cert_file].each { |f| File.delete(f) if File.exist?(f) }
       else
         File.write(import_path, decoded)
         cert_password = ENV["DIST_CERT_P12_PASSWORD"].to_s

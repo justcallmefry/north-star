@@ -16,6 +16,7 @@ require "base64"
 require "tmpdir"
 require "spaceship"
 require "openssl"
+require "securerandom"
 
 default_platform(:ios)
 
@@ -138,12 +139,14 @@ platform :ios do
         # Built in-process rather than via the openssl CLI so a failure
         # surfaces as a real error instead of a bare exit status. 3DES
         # because the keychain cannot read OpenSSL 3's default PBES2.
+        # A real passphrase, not "": an empty one yields a bundle macOS
+        # imports without producing a usable identity.
+        cert_password = SecureRandom.hex(16)
         bundle = OpenSSL::PKCS12.create(
-          "", "Aligned distribution", private_key, certificate,
+          cert_password, "Aligned distribution", private_key, certificate,
           nil, "DES-EDE3-CBC", "DES-EDE3-CBC"
         )
         File.write(import_path, bundle.to_der)
-        cert_password = ""
       else
         File.write(import_path, decoded)
         cert_password = ENV["DIST_CERT_P12_PASSWORD"].to_s
@@ -167,8 +170,14 @@ platform :ios do
     sh("security unlock-keychain -p \"#{keychain_password}\" \"#{keychain_path}\"")
     sh("security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k \"#{keychain_password}\" \"#{keychain_path}\" > /dev/null 2>&1 || true")
 
-    # Diagnostic: prints the identities codesign can actually see.
+    # Diagnostics: what the keychain holds, and which identities are
+    # usable versus merely present. "-v" lists only identities with a
+    # complete trust chain, so comparing the two answers tells us whether
+    # the import failed or the chain is incomplete.
+    sh("security find-identity -p codesigning \"#{keychain_path}\" || true")
     sh("security find-identity -v -p codesigning \"#{keychain_path}\" || true")
+    sh("security find-certificate -a \"#{keychain_path}\" | grep -E '\"labl\"|\"alis\"' || true")
+    sh("security list-keychains || true")
 
     # App Store provisioning profile for this bundle id. Needs no
     # registered devices, which is the whole point.

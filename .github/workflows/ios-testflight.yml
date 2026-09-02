@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: macos-14
+    runs-on: macos-15
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
@@ -48,8 +48,19 @@ jobs:
           sed -i '' '/CODE_SIGN_IDENTITY/d' ios/App/App.xcodeproj/project.pbxproj
           echo "remaining CODE_SIGN_IDENTITY lines: $(grep -c CODE_SIGN_IDENTITY ios/App/App.xcodeproj/project.pbxproj || true)"
 
-      - name: Select Xcode 15
-        run: sudo xcode-select -switch /Applications/Xcode_15.4.app
+      - name: Select the newest installed Xcode
+        # Capacitor 8 needs Xcode 16+. Pinned to 15.4, capacitor-swift-pm
+        # fails to build and every plugin then reports missing Capacitor
+        # symbols ("CAPPluginCall has no member reject") — cascade errors
+        # from a module that never compiled, not real API mismatches.
+        # Chosen dynamically so runner image updates can't re-pin us to a
+        # stale toolchain.
+        run: |
+          latest=$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)
+          echo "Selecting $latest"
+          sudo xcode-select -switch "$latest"
+          xcodebuild -version
+          swift --version
 
       - name: Build & upload to TestFlight
         run: fastlane beta # fastlane is preinstalled on GitHub macOS runners

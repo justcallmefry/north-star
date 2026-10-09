@@ -5,7 +5,9 @@ import Apple from "next-auth/providers/apple";
 import Credentials from "next-auth/providers/credentials";
 import Nodemailer from "next-auth/providers/nodemailer";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import type { Adapter } from "next-auth/adapters";
 import { prisma } from "@/lib/prisma";
+import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { verifyPassword } from "@/lib/password";
 import { sendVerificationRequest } from "@/lib/email";
 import { getEmailEnv } from "@/lib/email-env";
@@ -28,6 +30,65 @@ export type AuthHandlerOptions = {
   authUrl?: string;
   /** Pre-generated Sign in with Apple client secret (JWT). Pass from the route so the secret is built at request time with env vars. */
   appleClientSecret?: string | null;
+}
+
+/**
+ * The Prisma adapter, with one rule added: a password set before anyone
+ * proved they own the email is discarded the moment someone does.
+ *
+ * Password signup does not verify email, so without this an attacker could
+ * register a victim's address with a password of their choosing, wait for
+ * the victim to sign in by magic link or Sign in with Apple, and keep
+ * access to the account the victim then fills with private answers
+ * ("pre-hijacking"). Proof of ownership arrives two ways:
+ *   - a magic link: Auth.js calls updateUser({ emailVerified }) the first
+ *     time the token is redeemed;
+ *   - Sign in with Apple linking onto an existing email: linkAccount.
+ * In both, an unverified account's password is cleared. The real owner
+ * keeps signing in the way they just did.
+ */
+function hardenedAdapter(): Adapter {
+  const base = PrismaAdapter(prisma as Parameters<typeof PrismaAdapter>[0]);
+
+  async function dropUnverifiedPassword(userId: string, markVerified: boolean) {
+    const current = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { emailVerified: true, password: true },
+    });
+    if (current && !current.emailVerified && current.password) {
+      await prisma.user.update({
+        where: { id: userId },
+        data: { password: null, ...(markVerified ? { emailVerified: new Date() } : {}) },
+      });
+    }
+  }
+
+  return {
+    ...base,
+    async updateUser(data) {
+      if (data.id && data.emailVerified) await dropUnverifiedPassword(data.id, false);
+      return base.updateUser!(data);
+    },
+    async linkAccount(account) {
+      await dropUnverifiedPassword(account.userId, true);
+      await base.linkAccount!(account);
+    },
+  };
+}
+
+/** Magic-link emails are capped per address so the form can't be used to email-bomb someone. */
+function rateLimitedSender(
+  send: (params: VerificationRequestParams) => Promise<void>
+): (params: VerificationRequestParams) => Promise<void> {
+  return async (params) => {
+    const limited = await rateLimit(`magic-link:${params.identifier.toLowerCase()}`, 5, 60 * 60);
+    if (!limited.ok) {
+      // Silently skip: the requester learns nothing, the inbox gets nothing more.
+      console.warn("[auth] magic link rate-limited for an address");
+      return;
+    }
+    await send(params);
+  };
 }
 
 function createAuthInstance(
@@ -57,7 +118,7 @@ function createAuthInstance(
   const resolvedSecret = process.env.NODE_ENV === "development" ? (secret || devSecret) : secret;
   return NextAuth({
     secret: resolvedSecret,
-    adapter: PrismaAdapter(prisma as Parameters<typeof PrismaAdapter>[0]),
+    adapter: hardenedAdapter(),
     // Credentials provider only ever writes a JWT to the cookie (Auth.js has no DB session for credentials).
     // So we must use JWT strategy or session lookup fails and login appears broken.
     session: { strategy: "jwt", maxAge: 30 * 24 * 60 * 60, updateAge: 24 * 60 * 60 },
@@ -78,12 +139,22 @@ function createAuthInstance(
           email: { label: "Email", type: "email" },
           password: { label: "Password", type: "password" },
         },
-        async authorize(credentials) {
+        async authorize(credentials, request) {
           if (!credentials?.email || typeof credentials.email !== "string") return null;
           if (!credentials?.password || typeof credentials.password !== "string") return null;
+          if (credentials.password.length > 200) return null;
           const email = credentials.email.trim().toLowerCase();
+
+          // Slow down password guessing: per account and per source address.
+          const ip = request instanceof Request ? clientIp(request.headers) : "unknown";
+          const [byEmail, byIp] = await Promise.all([
+            rateLimit(`login:email:${email}`, 10, 15 * 60),
+            rateLimit(`login:ip:${ip}`, 30, 15 * 60),
+          ]);
+          if (!byEmail.ok || !byIp.ok) return null;
+
           const user = await prisma.user.findUnique({ where: { email } });
-          if (!user?.password) return null;
+          if (!user?.password || user.deletedAt) return null;
           if (!verifyPassword(credentials.password, user.password)) return null;
           return { id: user.id, email: user.email ?? undefined, name: user.name ?? undefined, image: user.image ?? undefined };
         },
@@ -93,7 +164,7 @@ function createAuthInstance(
             Nodemailer({
               server: process.env["EMAIL_SERVER"] ?? { host: "localhost", port: 1, secure: false },
               from,
-              sendVerificationRequest,
+              sendVerificationRequest: rateLimitedSender(sendVerificationRequest),
             }),
           ]
         : []),
@@ -122,8 +193,18 @@ function createAuthInstance(
           session.user.id = (token.sub as string) ?? session.user.id;
           // Prefer image from token (set at login); refresh from DB so profile updates show without re-login
           const dbUser = token.sub
-            ? await prisma.user.findUnique({ where: { id: token.sub }, select: { image: true } })
+            ? await prisma.user.findUnique({
+                where: { id: token.sub },
+                select: { image: true, deletedAt: true },
+              })
             : null;
+          // Sessions are stateless JWTs that live 30 days, so deleting an
+          // account does not by itself end the sessions it already has.
+          // Resolve those to no user at all: every route checks
+          // session.user.id, so the cookie stops granting anything.
+          if (!dbUser || dbUser.deletedAt) {
+            return { expires: new Date(0).toISOString() } as typeof session;
+          }
           (session.user as { image?: string | null }).image =
             dbUser?.image ?? (token.image as string | undefined) ?? null;
         }

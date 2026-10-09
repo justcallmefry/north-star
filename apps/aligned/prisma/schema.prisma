@@ -730,3 +730,15 @@ model Issue {
   @@unique([relationshipId, cadence, issueNumber])
   @@index([relationshipId, publishedAt])
 }
+
+/// Fixed-window request counter for abuse limits: sign-in attempts, signups,
+/// magic-link emails, invite claims, partner pushes. One row per key per
+/// window; old windows are pruned by the daily-reminders cron.
+model RateLimit {
+  key         String
+  windowStart DateTime
+  count       Int      @default(0)
+
+  @@id([key, windowStart])
+  @@index([windowStart])
+}

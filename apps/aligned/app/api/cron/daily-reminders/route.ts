@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { rejectUnlessCron } from "@/lib/cron-auth";
+import { pruneRateLimits } from "@/lib/rate-limit";
 import { prisma } from "@/lib/prisma";
 import { todayUTC } from "@/lib/relationship-members";
 import { sendPushToUser } from "@/lib/push";
@@ -19,11 +21,8 @@ import { Resend } from "resend";
  * ones who most need the nudge) would never be reminded.
  */
 export async function GET(request: Request) {
-  const authHeader = request.headers.get("authorization");
-  const secret = process.env.CRON_SECRET;
-  if (secret && authHeader !== `Bearer ${secret}`) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const denied = rejectUnlessCron(request);
+  if (denied) return denied;
 
   const appUrl =
     process.env.NEXT_PUBLIC_APP_URL ?? "https://alignedconnectingcouples.com";
@@ -132,5 +131,7 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.json({ ok: true, pushed, emailed, invitesNudged });
+  const rateLimitRowsPruned = await pruneRateLimits().catch(() => 0);
+
+  return NextResponse.json({ ok: true, pushed, emailed, invitesNudged, rateLimitRowsPruned });
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rejectUnlessCron } from "@/lib/cron-auth";
 import { Resend } from "resend";
 
 /**
@@ -7,11 +8,8 @@ import { Resend } from "resend";
  * Secured by CRON_SECRET. Set CONTENT_REVIEW_EMAIL to the address to notify.
  */
 export async function GET(request: Request) {
-  const authHeader = request.headers.get("authorization");
-  const secret = process.env.CRON_SECRET;
-  if (secret && authHeader !== `Bearer ${secret}`) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const denied = rejectUnlessCron(request);
+  if (denied) return denied;
 
   const to = process.env.CONTENT_REVIEW_EMAIL;
   if (!to?.includes("@")) {

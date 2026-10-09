@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rejectUnlessCron } from "@/lib/cron-auth";
 import { generateAllWeeklyIssues } from "@/lib/issues/generate";
 
 export const runtime = "nodejs";
@@ -12,11 +13,8 @@ export const maxDuration = 300;
  * Auth: Vercel Cron sends `Authorization: Bearer ${CRON_SECRET}`.
  */
 export async function GET(request: Request) {
-  const authHeader = request.headers.get("authorization");
-  const secret = process.env.CRON_SECRET;
-  if (secret && authHeader !== `Bearer ${secret}`) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const denied = rejectUnlessCron(request);
+  if (denied) return denied;
 
   const now = new Date();
   const weekly = await generateAllWeeklyIssues(now);

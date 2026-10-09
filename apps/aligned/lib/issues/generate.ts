@@ -12,21 +12,19 @@ export async function generateWeeklyIssueForRelationship(args: {
 
   const { start, end, weekKey } = weekWindowFor(now);
 
+  // One issue per couple per week. This used to look up issue number
+  // (count + 1), which by construction never exists yet, so every run made
+  // a new issue — and the cron was scheduled hourly on Sundays.
+  const existing = await prisma.issue.findFirst({
+    where: { relationshipId, cadence: "weekly", windowStart: start },
+    select: { id: true },
+  });
+  if (existing) return { created: false, skipped: true, reason: "exists" };
+
   const priorCount = await prisma.issue.count({
     where: { relationshipId, cadence: "weekly" },
   });
   const issueNumber = priorCount + 1;
-
-  const existing = await prisma.issue.findUnique({
-    where: {
-      relationshipId_cadence_issueNumber: {
-        relationshipId,
-        cadence: "weekly",
-        issueNumber,
-      },
-    },
-  });
-  if (existing) return { created: false, skipped: true, reason: "exists" };
 
   const built = await buildWeeklyIssue({ relationshipId, start, end, weekKey });
   if (!built) return { created: false, skipped: true, reason: "insufficient-data" };

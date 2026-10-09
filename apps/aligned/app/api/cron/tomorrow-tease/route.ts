@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rejectUnlessCron } from "@/lib/cron-auth";
 import { prisma } from "@/lib/prisma";
 import { todayUTC } from "@/lib/relationship-members";
 import { pickPrompt } from "@/lib/prompt-scheduler";
@@ -19,11 +20,8 @@ function toDateKey(d: Date): string {
 }
 
 export async function GET(request: Request) {
-  const authHeader = request.headers.get("authorization");
-  const secret = process.env.CRON_SECRET;
-  if (secret && authHeader !== `Bearer ${secret}`) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const denied = rejectUnlessCron(request);
+  if (denied) return denied;
 
   const today = todayUTC();
   const tomorrow = new Date(today);

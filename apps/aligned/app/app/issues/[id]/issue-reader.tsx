@@ -64,7 +64,7 @@ export function IssueReader({ issue, partnerNames }: Props) {
     <div ref={containerRef} className="magazine-frame" style={{ minHeight: "100vh" }}>
       <button
         type="button"
-        onClick={() => router.push("/app/issues")}
+        onClick={() => router.push("/app")}
         aria-label="Close issue"
         style={{
           position: "sticky",

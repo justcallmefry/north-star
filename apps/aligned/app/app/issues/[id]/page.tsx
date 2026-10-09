@@ -30,7 +30,7 @@ export default async function IssuePage({ params }: { params: Promise<{ id: stri
       savedAt: true,
     },
   });
-  if (!issue) redirect("/app/issues");
+  if (!issue) redirect("/app");
 
   await requireActiveMember(session.user.id, issue.relationshipId);
 

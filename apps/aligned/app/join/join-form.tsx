@@ -17,11 +17,15 @@ export function JoinForm({ initialCode }: Props) {
     setError(null);
     setLoading(true);
     try {
-      const { relationshipId } = await claimInvite(code);
+      const result = await claimInvite(code);
+      if (!result.ok) {
+        setError(result.error);
+        return;
+      }
       router.push("/app");
       router.refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Invalid or expired code");
+    } catch {
+      setError("Couldn't join just now. Try again in a moment.");
     } finally {
       setLoading(false);
     }

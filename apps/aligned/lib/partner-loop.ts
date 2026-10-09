@@ -1,4 +1,7 @@
-"use server";
+// Server-only module. Deliberately NOT "use server": that directive turns
+// every export into a publicly callable endpoint, and these functions take
+// a user or relationship id on trust. Call them only from server code that
+// has already authenticated the caller.
 
 import { prisma } from "@/lib/prisma";
 import { getActiveMemberIds } from "@/lib/relationship-members";

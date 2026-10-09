@@ -122,11 +122,15 @@ export function PairContent({ userFirstName }: Props) {
     setError(null);
     setClaimLoading(true);
     try {
-      await claimInvite(trimmed);
+      const result = await claimInvite(trimmed);
+      if (!result.ok) {
+        setError(result.error);
+        return;
+      }
       router.push("/app");
       router.refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Invalid or expired code");
+    } catch {
+      setError("Couldn't join just now. Try again in a moment.");
     } finally {
       setClaimLoading(false);
     }

@@ -4,15 +4,38 @@ import { revalidatePath } from "next/cache";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { requireActiveMember } from "@/lib/relationship-members";
-import { InviteStatus } from "@/generated/prisma";
+import { InviteStatus, Prisma } from "@/generated/prisma";
 import { trackEvent } from "@/lib/events";
 import { notifyPartnerJoined } from "@/lib/partner-loop";
+import { rateLimit } from "@/lib/rate-limit";
 import crypto from "crypto";
 
 const INVITE_EXPIRY_DAYS = 7;
 
+/**
+ * A relationship is a couple: exactly two active members. The schema used
+ * to allow three, and outstanding invite codes stayed valid after pairing,
+ * so anyone holding an old code could join an existing couple and read
+ * every answer, memory and magazine issue they had ever written.
+ */
+const MAX_MEMBERS = 2;
+
+/**
+ * Uppercase letters and digits minus look-alikes (0/O, 1/I/L), so a code
+ * read aloud or copied from a screenshot survives. 12 characters from 31
+ * symbols is about 59 bits.
+ *
+ * Base64url was used before, but its alphabet includes "-", and the pair
+ * screen formats codes as XXXX-XXXX-XXXX by stripping dashes first — so
+ * roughly one code in six was displayed wrongly. With no "-" in the
+ * alphabet, dashes on input are always formatting and safe to remove.
+ */
+const CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+
 function generateInviteCode(): string {
-  return crypto.randomBytes(8).toString("base64url").slice(0, 12);
+  let code = "";
+  for (let i = 0; i < 12; i++) code += CODE_ALPHABET[crypto.randomInt(CODE_ALPHABET.length)];
+  return code;
 }
 
 export async function createRelationship(name?: string) {
@@ -61,6 +84,11 @@ export async function createInvite(relationshipId: string) {
 
   await requireActiveMember(session.user.id, relationshipId);
 
+  const members = await prisma.relationshipMember.count({
+    where: { relationshipId, leftAt: null },
+  });
+  if (members >= MAX_MEMBERS) throw new Error("You're already paired.");
+
   const code = generateInviteCode();
   await prisma.invite.create({
     data: {
@@ -77,65 +105,99 @@ export async function createInvite(relationshipId: string) {
   return { code };
 }
 
-export async function claimInvite(code: string) {
-  const session = await getServerAuthSession();
-  if (!session?.user?.id) throw new Error("Not signed in");
+export type ClaimInviteResult =
+  | { ok: true; relationshipId: string }
+  | { ok: false; error: string };
 
-  const trimmed = code.trim();
+/**
+ * Join the couple an invite code belongs to.
+ *
+ * Returns a result rather than throwing: Next.js redacts thrown server-action
+ * messages in production, so "This invite has expired" reached people as a
+ * generic error.
+ */
+export async function claimInvite(code: string): Promise<ClaimInviteResult> {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) return { ok: false, error: "Sign in first, then open the invite again." };
+  const userId = session.user.id;
+
+  // Codes carry ~58 bits of entropy, but there is no reason to allow guessing.
+  const limited = await rateLimit(`invite-claim:${userId}`, 10, 60 * 60);
+  if (!limited.ok) return { ok: false, error: "Too many attempts. Try again in a little while." };
+
+  const trimmed = code.trim().replace(/[\s-]/g, "");
+  if (!trimmed) return { ok: false, error: "Enter the code from your partner's invite." };
+
   const invite = await prisma.invite.findFirst({
     where: { code: { equals: trimmed, mode: "insensitive" } },
     include: { relationship: true },
   });
 
-  if (!invite) throw new Error("Invalid or expired code");
-  if (invite.status !== "pending") throw new Error("This invite was already used");
-  if (invite.expiresAt && invite.expiresAt < new Date()) throw new Error("This invite has expired");
-
-  const activeMemberCount = await prisma.relationshipMember.count({
-    where: { relationshipId: invite.relationshipId, leftAt: null },
-  });
-  if (activeMemberCount >= 3) {
-    throw new Error("This space already has three people. Create a new one for anyone else.");
+  if (!invite) return { ok: false, error: "That code isn't valid. Check it and try again." };
+  if (invite.relationship.status !== "active") {
+    return { ok: false, error: "This invite is no longer active. Ask your partner for a new one." };
+  }
+  if (invite.status !== "pending") {
+    return { ok: false, error: "This invite has already been used. Ask your partner for a new one." };
+  }
+  if (invite.expiresAt && invite.expiresAt < new Date()) {
+    return { ok: false, error: "This invite has expired. Ask your partner for a new one." };
   }
 
   const existing = await prisma.relationshipMember.findUnique({
     where: {
-      relationshipId_userId: { relationshipId: invite.relationshipId, userId: session.user.id },
+      relationshipId_userId: { relationshipId: invite.relationshipId, userId },
     },
   });
-  if (existing?.leftAt) throw new Error("You left this relationship; re-join with a new invite.");
-  if (existing) return { relationshipId: invite.relationshipId }; // already a member
+  if (existing?.leftAt) {
+    return { ok: false, error: "You left this relationship. Ask your partner for a new invite." };
+  }
+  if (existing) return { ok: true, relationshipId: invite.relationshipId };
 
-  await prisma.$transaction([
-    prisma.relationshipMember.create({
-      data: {
-        relationshipId: invite.relationshipId,
-        userId: session.user.id,
-        role: "member",
-      },
-    }),
-    prisma.invite.update({
-      where: { id: invite.id },
-      data: {
-        status: InviteStatus.accepted,
-        claimedBy: session.user.id,
-        claimedAt: new Date(),
-      },
-    }),
-  ]);
+  try {
+    // Count and join inside one serializable transaction so two people
+    // redeeming codes at the same moment cannot both get in.
+    await prisma.$transaction(
+      async (tx) => {
+        const members = await tx.relationshipMember.count({
+          where: { relationshipId: invite.relationshipId, leftAt: null },
+        });
+        if (members >= MAX_MEMBERS) throw new CoupleCompleteError();
 
-  void trackEvent("paired", {
-    userId: session.user.id,
-    relationshipId: invite.relationshipId,
-  });
+        await tx.relationshipMember.create({
+          data: { relationshipId: invite.relationshipId, userId, role: "member" },
+        });
+        await tx.invite.update({
+          where: { id: invite.id },
+          data: { status: InviteStatus.accepted, claimedBy: userId, claimedAt: new Date() },
+        });
+        // Once the couple is complete, every other outstanding code is dead.
+        await tx.invite.updateMany({
+          where: { relationshipId: invite.relationshipId, status: InviteStatus.pending },
+          data: { status: InviteStatus.expired },
+        });
+      },
+      { isolationLevel: Prisma.TransactionIsolationLevel.Serializable }
+    );
+  } catch (err) {
+    if (err instanceof CoupleCompleteError) {
+      return { ok: false, error: "This couple is already complete. Ask for a new invite if you meant to start your own." };
+    }
+    console.error("[claimInvite] failed:", err);
+    return { ok: false, error: "Couldn't join just now. Try again in a moment." };
+  }
+
+  void trackEvent("paired", { userId, relationshipId: invite.relationshipId });
 
   // Tell whoever sent the invite that their partner actually arrived.
-  void notifyPartnerJoined(invite.relationshipId, session.user.id);
+  void notifyPartnerJoined(invite.relationshipId, userId);
 
   revalidatePath("/join");
   revalidatePath("/app");
-  return { relationshipId: invite.relationshipId };
+  return { ok: true, relationshipId: invite.relationshipId };
 }
+
+class CoupleCompleteError extends Error {}
 
 export async function leaveRelationship(relationshipId: string) {
   const session = await getServerAuthSession();
@@ -176,6 +238,11 @@ export async function archiveRelationship(relationshipId: string) {
 
 /** List relationships where the given user is an active member (for API/route handlers that already have userId). */
 export async function getActiveRelationshipsForUser(userId: string) {
+  // This module is "use server" (the client calls claimInvite and friends),
+  // so this export is a public endpoint. Only answer for the caller.
+  const session = await getServerAuthSession();
+  if (!session?.user?.id || session.user.id !== userId) return [];
+
   const members = await prisma.relationshipMember.findMany({
     where: { userId, leftAt: null },
     include: {

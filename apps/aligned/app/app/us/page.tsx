@@ -9,6 +9,8 @@ import { ProfileForm } from "./profile-form";
 import { PasswordForm } from "./password-form";
 import { SignOutButton } from "./sign-out-button";
 import { AccountDataSection } from "./account-data-section";
+import { ManageBilling } from "./manage-billing";
+import { isNativeRequest } from "@/lib/native";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +28,19 @@ export default async function UsPage() {
     select: { password: true },
   });
   const hasPassword = !!userRow?.password;
+
+  // Website (Stripe) subscribers get a self-serve way to cancel. App Store
+  // subscribers manage theirs in iOS Settings, so the card is web-only.
+  const hasWebSubscription =
+    !(await isNativeRequest()) &&
+    (await prisma.subscription.count({
+      where: {
+        userId: session.user.id,
+        provider: "stripe",
+        stripeCustomerId: { not: null },
+        status: { in: ["active", "trialing", "past_due"] },
+      },
+    })) > 0;
 
   const insights = primary
     ? await (async () => {
@@ -207,6 +222,8 @@ export default async function UsPage() {
             <SignOutButton />
           </div>
 
+          {hasWebSubscription && <ManageBilling />}
+
           {/* 6. Account data */}
           <AccountDataSection />
         </section>
@@ -262,6 +279,8 @@ export default async function UsPage() {
               <PasswordForm hasPassword={hasPassword} />
               <SignOutButton />
             </div>
+
+            {hasWebSubscription && <ManageBilling />}
 
             <AccountDataSection />
           </section>

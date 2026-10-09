@@ -3,15 +3,38 @@
 // a user or relationship id on trust. Call them only from server code that
 // has already authenticated the caller.
 
+import { del, list } from "@vercel/blob";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
+
+/**
+ * Delete every file this person uploaded: profile photos and dare photos.
+ * Both are stored under a prefix keyed by user id. Best effort, after the
+ * account is already closed: a storage hiccup must not block deletion.
+ */
+async function deleteUploadedFiles(userId: string): Promise<void> {
+  if (!process.env.BLOB_READ_WRITE_TOKEN) return;
+  for (const prefix of [`profile/${userId}/`, `dare-photos/${userId}/`]) {
+    try {
+      let cursor: string | undefined;
+      do {
+        const page = await list({ prefix, cursor, limit: 1000 });
+        if (page.blobs.length > 0) await del(page.blobs.map((b) => b.url));
+        cursor = page.hasMore ? page.cursor : undefined;
+      } while (cursor);
+    } catch (err) {
+      console.error(`[account] Could not delete uploads under ${prefix}:`, err);
+    }
+  }
+}
 
 /**
  * Soft-delete the current user. Anonymizes personal fields, hard-deletes
  * auth artifacts and devices, marks relationship memberships as left, and
  * cancels active subscriptions. Partner-visible content (responses,
  * reactions, meeting entries) stays attached to this row by id with no
- * personal info, so the partner's history isn't destroyed.
+ * personal info, so the partner's history isn't destroyed. Uploaded photos
+ * are deleted outright.
  *
  * App Store / GDPR-compliant: the personal data is removed; what remains
  * is jointly-authored content the other party also has rights to.
@@ -87,6 +110,10 @@ export async function deleteOwnAccount(userId: string): Promise<void> {
       },
     });
   });
+
+  // 6. Photos. The policy promises deletion removes them; until now the
+  //    files outlived the account at their public URLs.
+  await deleteUploadedFiles(userId);
 }
 
 export type ExportedData = {

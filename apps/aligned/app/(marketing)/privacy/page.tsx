@@ -1,4 +1,14 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy · Aligned",
+  description: "What Aligned collects, why, who processes it, and how to delete it.",
+};
+
+const CONTACT = "support@alignedconnectingcouples.com";
+
+const linkClass = "text-brand-600 hover:text-brand-700 underline underline-offset-2";
 
 export default function PrivacyPage() {
   return (
@@ -14,134 +24,194 @@ export default function PrivacyPage() {
         <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">
           Privacy Policy
         </h1>
-        <p className="mt-2 text-sm text-slate-500">
-          Last updated: April 2026
-        </p>
+        <p className="mt-2 text-sm text-slate-500">Last updated: October 9, 2026</p>
 
         <div className="mt-8 space-y-8 text-base leading-relaxed text-slate-700">
           <section>
-            <h2 className="text-lg font-semibold text-slate-900">1. Introduction</h2>
-            <p>
-              Aligned (“we,” “our,” or “Aligned”) is built to be private by design. This Privacy Policy explains what information we collect, how we use it, and your choices. We do not sell your personal information or use your content for advertising.
-            </p>
+            <h2 className="text-lg font-semibold text-slate-900">1. The short version</h2>
+            <ul className="mt-2 list-disc pl-5 space-y-1">
+              <li>What you write is for you and your partner. Your answer stays sealed until you&apos;ve both answered.</li>
+              <li>We don&apos;t sell your data, show ads, or use what you write to build advertising profiles.</li>
+              <li>We don&apos;t use what you write to train AI models.</li>
+              <li>You can download your data or delete your account at any time from <strong>You → Account &amp; data</strong>.</li>
+            </ul>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-slate-900">2. Information We Collect</h2>
-            <p className="font-medium text-slate-800">Account and profile</p>
+            <h2 className="text-lg font-semibold text-slate-900">2. What we collect</h2>
+
+            <p className="font-medium text-slate-800">Your account</p>
             <p>
-              When you sign up, we collect your email address (and, if you add it later, a display name or similar). We use magic-link sign-in, so we do not store a password unless you set one in a separate flow. We store your account and relationship data (e.g., that you are linked with a partner) as needed to run the Service.
-            </p>
-            <p className="mt-3 font-medium text-slate-800">Content you create</p>
-            <p>
-              We store the content you create in the app: daily answers, meeting notes, reflections, and any text or data you choose to save. This is used only to provide the Service (e.g., to show your partner after you choose to reveal) and to display your history to you.
-            </p>
-            <p className="mt-3 font-medium text-slate-800">Usage and device</p>
-            <p>
-              We may collect information about how you use the Service (e.g., pages or screens you open, actions you take) and basic device or browser data (e.g., type, language) to operate, secure, and improve the Service. We may use cookies or similar technologies for authentication and preferences.
+              Your email address and, if you add them, a display name and profile photo. If you sign up with a
+              password, we store only a salted one-way hash of it, never the password itself. If you sign in with
+              Apple, we receive the email address Apple shares with us (which may be a private relay address) and
+              an identifier for your Apple account.
             </p>
 
-            <p className="mt-3 font-medium text-slate-800">Microphone (voice answers)</p>
+            <p className="mt-3 font-medium text-slate-800">Your relationship</p>
             <p>
-              If you tap “Speak answer,” your device uses speech recognition to transcribe what you say into the text field. Audio is processed by your device or your operating system’s on-device recognizer when available; we do not record, transmit, or store the audio itself. You can always type your answer instead.
+              Who you&apos;re paired with, when you paired, and the invite codes used to pair you.
             </p>
 
-            <p className="mt-3 font-medium text-slate-800">Push notifications</p>
+            <p className="mt-3 font-medium text-slate-800">What you create</p>
             <p>
-              If you enable push notifications, we store a device-specific subscription token so we can send gentle reminders, partner nudges, and a category preview of tomorrow’s prompt. You can disable notifications at any time from your device settings, and we delete tokens for devices that unsubscribe.
+              Your daily answers, reactions, reflections, weekly check-in notes, and dare photos you choose to
+              take. These are shown to you and to your partner, and are used to produce features built from them,
+              such as your weekly magazine and streaks.
             </p>
 
             <p className="mt-3 font-medium text-slate-800">Photos</p>
             <p>
-              If you choose to set a profile picture, your device may ask for access to your photo library or camera. We only use the image you select; we do not browse your library.
+              When you set a profile photo or complete a photo dare, the image you pick or take is uploaded. We
+              never browse your photo library. Photos are stored at long, unguessable web addresses, so anyone who
+              is given a photo&apos;s address could open it; we never publish those addresses anywhere.
+            </p>
+
+            <p className="mt-3 font-medium text-slate-800">Voice answers</p>
+            <p>
+              If you tap &ldquo;Speak answer,&rdquo; your device&apos;s own speech recognition turns your words
+              into text. We receive only the text you choose to submit, never the audio.
+            </p>
+
+            <p className="mt-3 font-medium text-slate-800">Notifications</p>
+            <p>
+              If you allow notifications, we store a token for that device or browser so we can tell you when your
+              partner answers, when a reveal is ready, and when the day&apos;s question is waiting. Signing out
+              removes that device&apos;s token; turning notifications off in your device settings stops them.
+            </p>
+
+            <p className="mt-3 font-medium text-slate-800">Purchases</p>
+            <p>
+              If you subscribe, we keep a record of the subscription: its status, plan, and renewal dates. Apple or
+              Stripe processes the payment; we never see or store your card details.
+            </p>
+
+            <p className="mt-3 font-medium text-slate-800">Usage and security</p>
+            <p>
+              We record product events (for example &ldquo;answered today&apos;s question&rdquo; or &ldquo;paired
+              with a partner&rdquo;) tied to your account so we can understand what is working. We also use Vercel
+              Web Analytics, which counts page views without cookies and without identifying you. To stop abuse we
+              briefly keep your IP address and the email used in sign-in attempts, and delete those records within
+              a few days. A sign-in cookie keeps you signed in.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-slate-900">3. How We Use Your Information</h2>
-            <p>We use the information we collect to:</p>
+            <h2 className="text-lg font-semibold text-slate-900">3. How we use it</h2>
             <ul className="mt-2 list-disc pl-5 space-y-1">
-              <li>Provide, maintain, and improve the Service</li>
-              <li>Authenticate you and manage your account</li>
-              <li>Show your content to you and, when you choose, to your partner</li>
-              <li>Send you necessary service messages (e.g., sign-in links, important notices)</li>
-              <li>Protect against abuse, fraud, and security issues</li>
-              <li>Comply with law and enforce our Terms of Service</li>
+              <li>To run Aligned: sign you in, pair you with your partner, show each of you what the other shared, and send the reminders you&apos;ve allowed</li>
+              <li>To send emails you need, such as sign-in links</li>
+              <li>To manage your subscription</li>
+              <li>To understand and improve the product, using the events described above</li>
+              <li>To keep the service secure and prevent abuse</li>
+              <li>To meet legal obligations</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-semibold text-slate-900">4. Who else processes it</h2>
+            <p>
+              We share data only with your partner, as the product is designed to do, and with the providers below,
+              who process it on our behalf to run the service:
+            </p>
+            <ul className="mt-2 list-disc pl-5 space-y-1">
+              <li><strong>Vercel</strong>: hosting, photo storage, and cookieless page analytics</li>
+              <li><strong>Neon</strong>: our database</li>
+              <li><strong>Resend</strong>: sending email</li>
+              <li><strong>Apple</strong>: Sign in with Apple, push notifications on iPhone, and App Store purchases</li>
+              <li><strong>RevenueCat</strong>: keeping App Store subscription status in sync</li>
+              <li><strong>Stripe</strong>: payments made on our website</li>
             </ul>
             <p className="mt-3">
-              We do not use your content or personal information for advertising or to build advertising profiles.
+              We may also disclose information when required by law, or when we believe in good faith that it is
+              necessary to protect someone&apos;s safety. If Aligned is ever sold or merged, your information would
+              transfer under the protections of this policy, and we would tell you first.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-slate-900">4. Sharing of Information</h2>
+            <h2 className="text-lg font-semibold text-slate-900">5. Deleting your account</h2>
             <p>
-              We do not sell your personal information. We share data only in these limited cases:
+              Go to <strong>You → Account &amp; data → Delete my account</strong>. Deletion takes effect immediately:
             </p>
             <ul className="mt-2 list-disc pl-5 space-y-1">
-              <li><strong>With your partner:</strong> When you choose to reveal answers or share content, we show it to the partner(s) in your relationship as intended by the product.</li>
-              <li><strong>Service providers:</strong> We may use vendors (e.g., hosting, email delivery, databases) that process data on our behalf under strict confidentiality and only to operate the Service.</li>
-              <li><strong>Legal:</strong> We may disclose information if required by law, court order, or government request, or when we believe in good faith it is necessary to protect rights, safety, or property.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-semibold text-slate-900">5. Data Security and Retention</h2>
-            <p>
-              We use industry-standard measures to protect your data (e.g., encryption in transit, access controls). No system is completely secure; we will notify you if we become aware of a breach that affects your personal information where required by law.
-            </p>
-            <p className="mt-3">
-              We retain your account and content for as long as your account is active or as needed to provide the Service and comply with law. When you delete your account from Profile → Account &amp; data, we anonymize your account: your name, photo, and email are removed and your sign-in is permanently disabled. Content you co-created with your partner (such as shared answers and reactions) remains in your partner&apos;s history with no personal information attached, since they are also a participant in that content. Authentication sessions, device tokens, and active subscriptions are removed at deletion.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-semibold text-slate-900">6. Your Rights and Choices</h2>
-            <p>Depending on where you live, you may have the right to:</p>
-            <ul className="mt-2 list-disc pl-5 space-y-1">
-              <li>Access or receive a copy of the personal information we hold about you</li>
-              <li>Correct or update your information</li>
-              <li>Request deletion of your personal information or account</li>
-              <li>Object to or restrict certain processing</li>
-              <li>Data portability (e.g., a copy of your data in a usable format)</li>
+              <li>Your name, email, password, and sign-in connections are removed, and you&apos;re signed out on every device.</li>
+              <li>Your profile photo and dare photos are deleted.</li>
+              <li>Your notification tokens are deleted.</li>
+              <li>A subscription bought on our website is canceled.</li>
+              <li>
+                Answers you already shared with your partner stay in their history, with nothing identifying you
+                attached, because that history is theirs too.
+              </li>
             </ul>
             <p className="mt-3">
-              You can exercise the most common rights directly from the app: open <strong>Profile → Account &amp; data</strong> to download a JSON copy of your data or to delete your account. For anything else, contact us at the email below. If you are in the EEA or UK, you may also have the right to lodge a complaint with your local data protection authority.
+              Apple doesn&apos;t let apps cancel App Store subscriptions. If you subscribed through the App Store,
+              cancel in your iPhone&apos;s <strong>Settings → [your name] → Subscriptions</strong>.
+            </p>
+            <p className="mt-3">
+              Otherwise we keep your data while your account is open. Database backups held by our providers roll
+              off within 30 days.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-slate-900">7. Children</h2>
+            <h2 className="text-lg font-semibold text-slate-900">6. Your rights</h2>
             <p>
-              The Service is not directed at children under 13. We do not knowingly collect personal information from children under 13. If you learn that a child has provided us with personal information, please contact us and we will delete it.
+              You can download a copy of your data (as a JSON file) or delete your account yourself from{" "}
+              <strong>You → Account &amp; data</strong>. Depending on where you live, you may also have the right to
+              correct your data, restrict or object to how we use it, or appeal a decision we make about a request.
+              Email us at the address below and we&apos;ll respond within 30 days. If you&apos;re in the EEA or UK,
+              you can also complain to your local data protection authority. We don&apos;t sell or
+              &ldquo;share&rdquo; personal information as California law defines those terms.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-slate-900">8. International Transfers</h2>
+            <h2 className="text-lg font-semibold text-slate-900">7. Security</h2>
             <p>
-              Your information may be processed in the United States or other countries where our service providers operate. By using the Service, you consent to such transfer. We take steps to ensure your data receives an adequate level of protection where required by law.
+              Data is encrypted in transit, passwords are hashed, and access to production systems is restricted.
+              No system is perfectly secure; if a breach affects your personal information, we&apos;ll notify you as
+              the law requires.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-slate-900">9. Changes to This Policy</h2>
+            <h2 className="text-lg font-semibold text-slate-900">8. Age</h2>
             <p>
-              We may update this Privacy Policy from time to time. We will post the revised policy and update the “Last updated” date. If changes are significant, we may notify you by email or in the app. Continued use after changes constitutes acceptance.
+              Aligned is for adults. You must be 18 or older to use it, and we don&apos;t knowingly collect
+              information from anyone younger. If you believe someone under 18 has an account, tell us and
+              we&apos;ll delete it.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-semibold text-slate-900">9. Where your data is processed</h2>
+            <p>
+              Aligned runs in the United States. If you use it from elsewhere, your information is transferred to
+              and processed in the US.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-semibold text-slate-900">10. Changes</h2>
+            <p>
+              If we change this policy we&apos;ll update the date above, and for significant changes we&apos;ll tell
+              you in the app or by email before they take effect.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-slate-900">Contact</h2>
             <p>
-              For privacy questions, requests, or to exercise your rights, contact us at{" "}
-              <a
-                href="mailto:privacy@northstar.app"
-                className="text-brand-600 hover:text-brand-700 underline underline-offset-2"
-              >
-                privacy@northstar.app
+              Questions, requests, or concerns:{" "}
+              <a href={`mailto:${CONTACT}`} className={linkClass}>
+                {CONTACT}
               </a>
-              . (Replace with your actual privacy or support contact.)
+              . See also our{" "}
+              <Link href="/terms" className={linkClass}>
+                Terms of Service
+              </Link>
+              .
             </p>
           </section>
         </div>

@@ -316,6 +316,9 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   status: 'status',
   currentPeriodEnd: 'currentPeriodEnd',
   cancelAtPeriodEnd: 'cancelAtPeriodEnd',
+  provider: 'provider',
+  revenueCatUserId: 'revenueCatUserId',
+  productId: 'productId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -452,6 +455,12 @@ exports.Prisma.IssueScalarFieldEnum = {
   isPremium: 'isPremium'
 };
 
+exports.Prisma.RateLimitScalarFieldEnum = {
+  key: 'key',
+  windowStart: 'windowStart',
+  count: 'count'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -579,7 +588,8 @@ exports.Prisma.ModelName = {
   QuizParticipation: 'QuizParticipation',
   AgreementSession: 'AgreementSession',
   AgreementParticipation: 'AgreementParticipation',
-  Issue: 'Issue'
+  Issue: 'Issue',
+  RateLimit: 'RateLimit'
 };
 
 /**

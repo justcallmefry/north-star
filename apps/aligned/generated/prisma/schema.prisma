@@ -445,6 +445,16 @@ model Subscription {
   currentPeriodEnd     DateTime?
   cancelAtPeriodEnd    Boolean            @default(false)
 
+  /// "stripe" for web checkout, "apple" for App Store in-app purchase
+  /// relayed by RevenueCat. Apple requires IAP for subscriptions bought
+  /// inside the iOS app; the website keeps Stripe.
+  provider         String  @default("stripe")
+  /// RevenueCat's app_user_id — we set it to our own User.id at login so
+  /// webhook events map straight back to an account.
+  revenueCatUserId String?
+  /// Store product identifier, e.g. aligned_premium_yearly.
+  productId        String?
+
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   relationship Relationship? @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
 
@@ -719,4 +729,16 @@ model Issue {
 
   @@unique([relationshipId, cadence, issueNumber])
   @@index([relationshipId, publishedAt])
+}
+
+/// Fixed-window request counter for abuse limits: sign-in attempts, signups,
+/// magic-link emails, invite claims, partner pushes. One row per key per
+/// window; old windows are pruned by the daily-reminders cron.
+model RateLimit {
+  key         String
+  windowStart DateTime
+  count       Int      @default(0)
+
+  @@id([key, windowStart])
+  @@index([windowStart])
 }

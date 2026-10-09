@@ -12,7 +12,7 @@
  * appreciation — enough for the constellation to have a real shape and for
  * a magazine issue to generate.
  *
- * Usage:
+ * Usage (DEMO_PASSWORD must be set in apps/aligned/.env.local):
  *   npm run db:seed-demo -w aligned
  *
  * Idempotent: re-running resets the pair's history rather than duplicating
@@ -46,7 +46,14 @@ loadEnvLocal();
 
 const prisma = new PrismaClient();
 
-const DEMO_PASSWORD = process.env.DEMO_PASSWORD ?? "AlignedReview2026!";
+// Never hard-code this: the repository is public, and these accounts are
+// what App Review signs in with. Set DEMO_PASSWORD in .env.local (which is
+// gitignored) and paste the same value into App Store Connect review notes.
+const DEMO_PASSWORD = process.env.DEMO_PASSWORD ?? "";
+if (DEMO_PASSWORD.length < 12) {
+  console.error("Set DEMO_PASSWORD (12+ characters) in apps/aligned/.env.local first.");
+  process.exit(1);
+}
 const A = { email: "review-a@alignedconnectingcouples.com", name: "Casey" };
 const B = { email: "review-b@alignedconnectingcouples.com", name: "Jordan" };
 
@@ -228,7 +235,7 @@ async function main() {
   console.log("\nDemo couple ready for App Store review\n");
   console.log(`  Account A : ${userA.email}`);
   console.log(`  Account B : ${userB.email}`);
-  console.log(`  Password  : ${DEMO_PASSWORD}`);
+  console.log("  Password  : the DEMO_PASSWORD value in .env.local");
   console.log(`  History   : ${revealed} revealed days, ${memorable.length} saved memories, 1 appreciation`);
   console.log(`  Streak    : ${DAYS} days\n`);
   console.log("Today is deliberately left unanswered so a reviewer can walk");

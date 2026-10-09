@@ -4,6 +4,7 @@
 // has already authenticated the caller.
 
 import { prisma } from "@/lib/prisma";
+import { stripe } from "@/lib/stripe";
 
 /**
  * Soft-delete the current user. Anonymizes personal fields, hard-deletes
@@ -18,6 +19,29 @@ import { prisma } from "@/lib/prisma";
 export async function deleteOwnAccount(userId: string): Promise<void> {
   if (!userId) throw new Error("No user id");
 
+  // Stop web billing before the local rows are marked canceled. Done first
+  // and outside the transaction (it is a network call); a Stripe failure is
+  // logged rather than blocking deletion, which a person must always be
+  // able to complete.
+  if (stripe) {
+    const webSubs = await prisma.subscription.findMany({
+      where: {
+        userId,
+        provider: "stripe",
+        stripeSubscriptionId: { not: null },
+        status: { in: ["active", "trialing", "past_due"] },
+      },
+      select: { stripeSubscriptionId: true },
+    });
+    for (const sub of webSubs) {
+      try {
+        await stripe.subscriptions.cancel(sub.stripeSubscriptionId!);
+      } catch (err) {
+        console.error("[account] Stripe cancellation failed during deletion:", err);
+      }
+    }
+  }
+
   const now = new Date();
   // Tombstone email keeps the User.email unique constraint satisfied while
   // preventing any future sign-in attempt from matching the original address.
@@ -28,11 +52,15 @@ export async function deleteOwnAccount(userId: string): Promise<void> {
     await tx.session.deleteMany({ where: { userId } });
     await tx.account.deleteMany({ where: { userId } });
 
-    // 2. Devices — push subs are device-specific identifiers; remove them.
+    // 2. Devices — web push subscriptions AND native APNs tokens. The
+    //    tokens were missed before, so a deleted account's phone kept
+    //    receiving notifications, contrary to the privacy policy.
     await tx.pushSubscription.deleteMany({ where: { userId } });
+    await tx.deviceToken.deleteMany({ where: { userId } });
 
-    // 3. Subscriptions — mark canceled. (Stripe-side cancellation is a
-    //    follow-up once StoreKit/Billing is wired; this just stops UI access.)
+    // 3. Subscriptions — mark canceled locally. Web (Stripe) subscriptions
+    //    are also cancelled at Stripe below; Apple subscriptions cannot be
+    //    cancelled by a server and the UI tells the person how to do it.
     await tx.subscription.updateMany({
       where: { userId, status: { in: ["active", "trialing"] } },
       data: { status: "canceled", cancelAtPeriodEnd: true, updatedAt: now },

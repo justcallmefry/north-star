@@ -95,9 +95,13 @@ export function AccountDataSection() {
                 <p className="font-semibold">This is permanent.</p>
                 <ul className="mt-1.5 list-disc space-y-1 pl-5 text-red-800">
                   <li>Your name, email, and photo are removed from this account.</li>
-                  <li>You&apos;re signed out and can&apos;t sign back in.</li>
+                  <li>You&apos;re signed out, and this account is closed for good.</li>
                   <li>Your devices stop receiving push notifications.</li>
-                  <li>Active subscriptions are canceled.</li>
+                  <li>A subscription bought on our website is canceled.</li>
+                  <li>
+                    A subscription bought in the iPhone app can only be canceled by you, in
+                    Settings &rarr; your name &rarr; Subscriptions. Apple doesn&apos;t let apps do it.
+                  </li>
                   <li>
                     Shared answers and reactions stay with your partner&apos;s
                     history (without your name attached).

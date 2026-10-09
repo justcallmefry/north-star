@@ -63,9 +63,10 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-semibold text-slate-900">4. Subscriptions</h2>
             <p>
-              Aligned is free to start. Aligned Premium is an auto-renewing yearly subscription, currently $29.99
-              a year in the US (prices in other countries are shown before you buy). One subscription unlocks
-              Premium for both partners in your relationship.
+              Aligned is currently free, and nothing in it is for sale. If we introduce a paid subscription
+              (Aligned Premium), we&apos;ll tell you before it launches, show the price before you buy, and
+              the terms below will apply. One subscription would unlock Premium for both partners in your
+              relationship.
             </p>
             <ul className="mt-2 list-disc pl-5 space-y-1">
               <li>

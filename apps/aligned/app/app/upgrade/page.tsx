@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { CheckCircle, Sparkles } from "lucide-react";
 import { getServerAuthSession } from "@/lib/auth";
+import { SALES_OPEN } from "@/lib/billing";
 import { isNativeRequest } from "@/lib/native";
 import { UpgradeButton } from "./upgrade-button";
 
@@ -16,6 +17,8 @@ export default async function UpgradePage({ searchParams }: UpgradePageProps) {
   // subscription is an App Store Guideline 3.1.1 rejection. Web only until
   // in-app purchase exists.
   if (await isNativeRequest()) notFound();
+  // Closed everywhere until Premium unlocks something. See lib/billing.ts.
+  if (!SALES_OPEN) notFound();
 
   const session = await getServerAuthSession();
   if (!session?.user) {

@@ -183,16 +183,14 @@ export function Landing({
               What it costs
             </h2>
             <p className="mt-4 text-[16px] leading-relaxed text-[#5b5348]">
-              The daily question, the reveal and your streak are{" "}
-              <strong className="font-semibold text-[#2b2620]">free, always</strong>.
-              The Sunday magazine, your book and full history are{" "}
-              <strong className="font-semibold text-[#2b2620]">$29.99 a year</strong>{" "}
-              &mdash; one subscription, covering both of you. That&rsquo;s about
-              $2.50 a month, split between two people.
+              <strong className="font-semibold text-[#2b2620]">Nothing.</strong>{" "}
+              Everything in Aligned is free for both of you: the daily question,
+              the reveal, your streak, the Sunday magazine and your book. No
+              card, no trial.
             </p>
             <p className="mt-3 text-[14.5px] text-slate-500">
-              14-day free trial. We&rsquo;ll remind you before it ends, because
-              being surprised by a charge is the fastest way to lose someone.
+              If we ever add a paid tier, the daily question and the reveal stay
+              free, and we&rsquo;ll tell you before anything changes.
             </p>
           </div>
           <div>

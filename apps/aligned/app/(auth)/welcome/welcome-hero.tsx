@@ -41,7 +41,7 @@ export function WelcomeHero() {
       </div>
 
       <p className="mt-5 text-center text-sm text-slate-600">
-        Free to start. $29.99 a year when you&rsquo;re ready &mdash; covers both of you.
+        Free for both of you. No card, no trial.
       </p>
       <p className="mt-3 text-center text-xs font-medium text-brand-600">
         The most meaningful 3 minutes of your day.

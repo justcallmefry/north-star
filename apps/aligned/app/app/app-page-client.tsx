@@ -20,6 +20,7 @@ import { AnniversaryBanner, isAnniversaryToday } from "./anniversary-banner";
 import { MilestonePromptCard } from "./milestone-prompt-card";
 import { IssuePromo } from "@/components/issues/issue-promo";
 import { ConstellationPromo } from "./constellation-promo";
+import { RecapPromo } from "./recap-promo";
 import { QuestCard } from "./quest-card";
 import { PushPrompt } from "./push-prompt";
 
@@ -132,6 +133,7 @@ export function AppPageClient({ initialData }: Props) {
           <PushPrompt />
 
           <IssuePromo relationshipId={relationshipId!} />
+          <RecapPromo />
 
           {/* QA bisect: temporarily disabled */}
           {/* <ConstellationPromo relationshipId={relationshipId!} /> */}

@@ -22,7 +22,7 @@ import { QuickReactRow } from "./quick-react-row";
 import { PostRevealActionBar } from "./post-reveal-action-bar";
 import { SealReveal } from "./seal-reveal";
 import { UnfoldCard } from "./unfold-card";
-import { StreamingText } from "./streaming-text";
+import { KineticText } from "./kinetic-text";
 import { AlignedStamp } from "./aligned-stamp";
 import { detectAligned } from "@/lib/reveal/aligned";
 import { detectCalledIt } from "@/lib/reveal/called-it";
@@ -32,6 +32,28 @@ import { MilestonePromptCard } from "../../milestone-prompt-card";
 import type { MilestoneContext } from "@/lib/milestones";
 
 const AFTER_REVEAL_PAUSE_MS = 1400;
+
+// The reveal is a performance, and each partner should get it once. The
+// first person to tap Reveal flips the session to "revealed" for both, so
+// without this the second person opened a page with everything already
+// laid out. Tracked per device; recent sessions only, so browsing history
+// on a new phone doesn't replay old reveals.
+const REPLAY_WINDOW_MS = 2 * 24 * 60 * 60 * 1000;
+const revealSeenKey = (sessionId: string) => `aligned:reveal-seen:${sessionId}`;
+function hasSeenReveal(sessionId: string): boolean {
+  try {
+    return localStorage.getItem(revealSeenKey(sessionId)) === "1";
+  } catch {
+    return true; // no storage: never replay rather than replay forever
+  }
+}
+function markRevealSeen(sessionId: string): void {
+  try {
+    localStorage.setItem(revealSeenKey(sessionId), "1");
+  } catch {
+    // ignore
+  }
+}
 
 const FOLLOW_UP_PROMPTS: Record<string, string[]> = {
   gratitude: [
@@ -134,6 +156,12 @@ export function SessionContent({ data, currentUserId }: Props) {
   const [memorySaving, setMemorySaving] = useState(false);
   const [myStreamDone, setMyStreamDone] = useState(false);
   const [partnerStreamDone, setPartnerStreamDone] = useState(false);
+  // Until we know whether to replay, render neither the static answers nor
+  // the seal, so nothing flashes before the performance starts.
+  const [replayDecided, setReplayDecided] = useState(data.state !== "revealed");
+  // Shared words lit in my answer as they land in my partner's.
+  const [lit, setLit] = useState<Set<string>>(() => new Set());
+  const sharedBuzzes = useRef(0);
 
   async function handleSaveMemory() {
     if (memorySaved || memorySaving) return;
@@ -184,9 +212,12 @@ export function SessionContent({ data, currentUserId }: Props) {
     try {
       const result = await revealSession(data.sessionId);
       setRevealData(result);
+      markRevealSeen(data.sessionId);
       setRevealed(true);
       setMyStreamDone(false);
       setPartnerStreamDone(false);
+      setLit(new Set());
+      sharedBuzzes.current = 0;
       void haptic("reveal");
       router.refresh();
     } catch (err) {
@@ -289,11 +320,30 @@ export function SessionContent({ data, currentUserId }: Props) {
 
   const isRevealed = revealed || data.state === "revealed";
 
+  // Opened after my partner already revealed: give me the performance too.
   useEffect(() => {
-    if (!isRevealed) return;
+    if (data.state !== "revealed") return;
+    const recent = Date.now() - new Date(data.sessionDate).getTime() < REPLAY_WINDOW_MS;
+    if (recent && !hasSeenReveal(data.sessionId)) {
+      markRevealSeen(data.sessionId);
+      setRevealed(true);
+    }
+    setReplayDecided(true);
+    // Decided once per mount; a later refresh must not restart it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Live reveals open the seal first; revisits show the answers at once.
+  useEffect(() => {
+    if (!isRevealed || !replayDecided) return;
+    if (!revealed) {
+      setAfterRevealReady(true);
+      return;
+    }
+    setAfterRevealReady(false);
     const t = setTimeout(() => setAfterRevealReady(true), AFTER_REVEAL_PAUSE_MS);
     return () => clearTimeout(t);
-  }, [isRevealed]);
+  }, [isRevealed, revealed, replayDecided]);
 
   useEffect(() => {
     if (partnerRevealed && partnerAnswerRef.current) {
@@ -399,6 +449,30 @@ export function SessionContent({ data, currentUserId }: Props) {
       ? detectAligned(my.content, partner.content)
       : "none";
   }, [responsesToShow]);
+
+  // Every word both partners used (the pills below show only the top 3).
+  // Keyed on the answer text, not the array: the refresh after a reveal
+  // rebuilds responsesToShow, and a new Set would restart the word timers.
+  const answersKey = responsesToShow.map((r) => r.content ?? "").join("\u0000");
+  const sharedTokens = useMemo(() => {
+    const contents = answersKey.split("\u0000").filter(Boolean);
+    if (contents.length < 2) return new Set<string>();
+    const sets = contents.map(extractWords);
+    return new Set([...sets[0]!].filter((w) => sets.slice(1).every((set) => set.has(w))));
+  }, [answersKey]);
+
+  function handleSharedLand(token: string, animated: boolean) {
+    setLit((prev) => {
+      if (prev.has(token)) return prev;
+      const next = new Set(prev);
+      next.add(token);
+      return next;
+    });
+    if (animated && sharedBuzzes.current < 4) {
+      sharedBuzzes.current += 1;
+      void haptic("tap");
+    }
+  }
 
   // App Store rating ask — only at golden moments (✨ aligned or day 7),
   // a beat after the reveal has landed. Native-only + 120-day throttle
@@ -552,9 +626,9 @@ export function SessionContent({ data, currentUserId }: Props) {
         </div>
       )}
 
-      {isRevealed && !afterRevealReady && <SealReveal />}
+      {isRevealed && replayDecided && !afterRevealReady && <SealReveal />}
 
-      {isRevealed && afterRevealReady && (
+      {isRevealed && replayDecided && afterRevealReady && (
         <div className="ns-stack-tight">
           {isStreakMilestone(data.streak?.currentCount) ? (
             <>
@@ -608,10 +682,10 @@ export function SessionContent({ data, currentUserId }: Props) {
 
           <div className="space-y-2">
             {/* Two-step reveal: my answer first, then partner tap-to-reveal.
-                Skip two-step if already revealed on page load (data.state === "revealed"). */}
+                Two-step only while performing the reveal (revealed); revisits show both at once. */}
             {responsesToShow.map((resp) => {
               const isPartnerAnswer = !resp.isMe;
-              const needsTap = isPartnerAnswer && revealed && !partnerRevealed && data.state !== "revealed";
+              const needsTap = isPartnerAnswer && revealed && !partnerRevealed;
               if (needsTap) return null;
 
               const streamText = ftsPrefix && resp.content
@@ -637,10 +711,16 @@ export function SessionContent({ data, currentUserId }: Props) {
                     </span>
                   </div>
                   <p className="reveal-answer-panel font-prompt px-4 py-3.5 text-2xl leading-relaxed sm:text-3xl">
-                    {/* skip=true on page-reload (revealed=false); skip=false only on fresh in-session reveal */}
-                    <StreamingText
+                    {/* Animated only while performing the reveal; revisits render in place.
+                        Shared words land on their own beat in the partner's answer and
+                        light up the same word in mine. */}
+                    <KineticText
                       text={streamText}
                       skip={!revealed}
+                      shared={sharedTokens}
+                      accentShared={!resp.isMe}
+                      lit={resp.isMe ? (revealed ? lit : sharedTokens) : undefined}
+                      onSharedLand={resp.isMe ? undefined : handleSharedLand}
                       onComplete={() => {
                         if (resp.isMe) setMyStreamDone(true);
                         else setPartnerStreamDone(true);
@@ -684,7 +764,7 @@ export function SessionContent({ data, currentUserId }: Props) {
                       </p>
                     );
                   })()}
-                  {!resp.isMe && (partnerRevealed || data.state === "revealed") && (() => {
+                  {!resp.isMe && (partnerRevealed || !revealed) && (() => {
                     const partnerResp = data.allResponses?.find((r) => r.userId === resp.key);
                     if (!partnerResp?.id) return null;
                     return (
@@ -703,7 +783,7 @@ export function SessionContent({ data, currentUserId }: Props) {
               );
             })}
             {/* Partner reveal button — shown after my answer is visible, before partner is revealed */}
-            {revealed && !partnerRevealed && data.state !== "revealed" && responsesToShow.some((r) => !r.isMe) && (
+            {revealed && !partnerRevealed && responsesToShow.some((r) => !r.isMe) && (
               <button
                 type="button"
                 onClick={handleRevealPartner}
@@ -718,7 +798,7 @@ export function SessionContent({ data, currentUserId }: Props) {
           </div>
 
           {/* Shared-word highlight */}
-          {((partnerRevealed && myStreamDone && partnerStreamDone) || data.state === "revealed") && (() => {
+          {(revealed ? partnerRevealed && myStreamDone && partnerStreamDone : true) && (() => {
             const shared = findSharedWords(responsesToShow);
             if (shared.length === 0) return null;
             const myResp = responsesToShow.find((r) => r.isMe);
@@ -740,17 +820,26 @@ export function SessionContent({ data, currentUserId }: Props) {
                   <span className="text-xs font-semibold uppercase tracking-[0.16em] text-white/45">
                     You both mentioned
                   </span>
-                  {shared.map((w) => (
+                  {shared.map((w, i) => (
                     <span
                       key={w}
-                      className={`rounded-full bg-peach-300 px-3 py-1 text-sm font-semibold text-dusk-800 ${pulseClass}`}
+                      className={revealed ? "animate-pill-drop" : "inline-block"}
+                      style={revealed ? { animationDelay: `${i * 110}ms` } : undefined}
                     >
-                      {w}
+                      <span
+                        className={`inline-block rounded-full bg-peach-300 px-3 py-1 text-sm font-semibold text-dusk-800 ${pulseClass}`}
+                      >
+                        {w}
+                      </span>
                     </span>
                   ))}
                 </div>
                 {alignedLevel !== "none" && (
-                  <AlignedStamp level={alignedLevel} />
+                  <AlignedStamp
+                    level={alignedLevel}
+                    fresh={revealed}
+                    delayMs={shared.length * 110 + 300}
+                  />
                 )}
               </>
             );
@@ -763,7 +852,7 @@ export function SessionContent({ data, currentUserId }: Props) {
           </p>
 
           {/* Follow-up conversation prompt — bridges the app to a real conversation */}
-          {(partnerRevealed || data.state === "revealed") && (
+          {(partnerRevealed || !revealed) && (
             <div id="talk-about-it" className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3.5">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
                 Talk about it

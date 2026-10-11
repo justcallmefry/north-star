@@ -16,6 +16,8 @@ export function BottomNav() {
   const pathname = usePathname();
 
   if (!pathname.startsWith("/app")) return null;
+  // The weekly recap is a full-screen player; the nav would sit on top of it.
+  if (pathname.startsWith("/app/recap")) return null;
 
   return (
     <nav

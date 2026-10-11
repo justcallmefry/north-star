@@ -580,9 +580,13 @@ export function SessionContent({ data, currentUserId }: Props) {
                 {data.hasUserResponded ? "Update my answer →" : "Seal my answer →"}
               </button>
             )}
-            <p className="text-base text-slate-600 sm:text-lg">
-              {respondedCount} of {totalMembers} responses for today.
-            </p>
+            {/* Once you've answered, the line below the form says this; showing
+                it here too printed "2 of 2 responses for today." twice. */}
+            {!data.hasUserResponded && (
+              <p className="text-base text-slate-600 sm:text-lg">
+                {respondedCount} of {totalMembers} responses for today.
+              </p>
+            )}
           </div>
         </form>
       )}

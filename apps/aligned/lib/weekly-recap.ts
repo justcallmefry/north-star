@@ -35,18 +35,6 @@ export type WeeklyRecap = {
 
 const WEEKDAY = ["S", "M", "T", "W", "T", "F", "S"];
 
-/**
- * Words too bland to headline a story ("our word this week: without").
- * The shared stopword list is tuned for the magazine; this is stricter.
- */
-const FILLER = new Set([
-  "without", "still", "really", "always", "never", "maybe", "thing", "things",
-  "something", "anything", "everything", "nothing", "because", "would", "could",
-  "should", "every", "being", "doing", "going", "getting", "little", "other",
-  "their", "there", "these", "those", "where", "which", "while", "after",
-  "before", "through", "again", "though", "pretty", "around", "today", "think",
-  "feel", "felt", "know", "make", "made", "want", "like", "good", "time",
-]);
 
 function rangeLabel(start: Date, end: Date): string {
   const month = (d: Date) => d.toLocaleString("en-US", { month: "short", timeZone: "UTC" });
@@ -90,7 +78,6 @@ export async function getWeeklyRecap(relationshipId: string): Promise<WeeklyReca
     if (detectAligned(texts[0]!, texts[1]!) !== "none") alignedDays++;
     const sets = texts.map((t) => new Set(tokenize(t)));
     for (const w of sets[0]!) {
-      if (FILLER.has(w)) continue;
       if (sets.slice(1).every((set) => set.has(w))) wordDays.set(w, (wordDays.get(w) ?? 0) + 1);
     }
   }

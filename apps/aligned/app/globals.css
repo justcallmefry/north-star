@@ -1093,3 +1093,17 @@ body {
   position: relative;
   z-index: 1;
 }
+
+/* A You-tab number that went up since you last looked lands with a glow. */
+@keyframes count-rose {
+  0%   { text-shadow: 0 0 0 rgba(224, 122, 95, 0); transform: scale(1); }
+  35%  { text-shadow: 0 0 18px rgba(224, 122, 95, 0.55); transform: scale(1.12); color: #E07A5F; }
+  100% { text-shadow: 0 0 0 rgba(224, 122, 95, 0); transform: scale(1); }
+}
+.animate-count-rose {
+  display: inline-block;
+  animation: count-rose 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-count-rose { animation: none; }
+}

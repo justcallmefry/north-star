@@ -10,6 +10,7 @@ import { PasswordForm } from "./password-form";
 import { SignOutButton } from "./sign-out-button";
 import { AccountDataSection } from "./account-data-section";
 import { ManageBilling } from "./manage-billing";
+import { CountUp, StreakBar } from "./count-up";
 import { isNativeRequest } from "@/lib/native";
 
 export const dynamic = "force-dynamic";
@@ -113,18 +114,30 @@ export default async function UsPage() {
               </div>
               <div className="grid grid-cols-3 gap-3">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-slate-900">{insights.answeredCount}</p>
+                  <p className="text-2xl font-bold tabular-nums text-slate-900">
+                    <CountUp value={insights.answeredCount} storageKey={`${primary.id}:answered`} />
+                  </p>
                   <p className="text-xs text-slate-500 mt-0.5">questions</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-slate-900">{insights.longestStreak}</p>
+                  <p className="text-2xl font-bold tabular-nums text-slate-900">
+                    <CountUp value={insights.longestStreak} storageKey={`${primary.id}:best`} delayMs={120} />
+                  </p>
                   <p className="text-xs text-slate-500 mt-0.5">day best streak</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-slate-900">{insights.currentStreak}</p>
+                  <p className="text-2xl font-bold tabular-nums text-slate-900">
+                    <CountUp value={insights.currentStreak} storageKey={`${primary.id}:streak`} delayMs={240} />
+                  </p>
                   <p className="text-xs text-slate-500 mt-0.5">day streak now</p>
                 </div>
               </div>
+              <StreakBar
+                current={insights.currentStreak}
+                best={insights.longestStreak}
+                storageKey={`${primary.id}:streak-bar`}
+                delayMs={240}
+              />
               {insights.topCategory && (
                 <p className="text-sm text-slate-600">
                   You lean toward <span className="font-semibold text-slate-900">{insights.topCategory}</span> questions.

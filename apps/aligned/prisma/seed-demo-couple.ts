@@ -149,7 +149,7 @@ async function main() {
 
   const prompts = await prisma.prompt.findMany({
     where: { active: true },
-    select: { id: true },
+    select: { id: true, text: true, momentText: true },
     take: DAYS,
   });
   if (prompts.length === 0) throw new Error("No active prompts — run the prompt seeds first.");
@@ -157,7 +157,12 @@ async function main() {
   // Build DAYS of revealed history, oldest first, so the constellation
   // spiral grows in chronological order exactly as the app derives it.
   let revealed = 0;
-  const memorable: Array<{ sessionId: string; date: Date; text: [string, string] }> = [];
+  const memorable: Array<{
+    sessionId: string;
+    date: Date;
+    text: [string, string];
+    prompt: { text: string; momentText: string | null };
+  }> = [];
 
   for (let i = DAYS; i >= 1; i--) {
     const sessionDate = dayKey(i);
@@ -182,7 +187,7 @@ async function main() {
     revealed++;
 
     // Keep a handful as saved memories — these twinkle in the sky.
-    if (i % 9 === 0) memorable.push({ sessionId: session.id, date: sessionDate, text: exchange });
+    if (i % 9 === 0) memorable.push({ sessionId: session.id, date: sessionDate, text: exchange, prompt });
   }
 
   for (const m of memorable) {
@@ -192,11 +197,16 @@ async function main() {
         savedByUserId: userA.id,
         sourceType: "session_reveal",
         sourceId: m.sessionId,
+        // Must match SessionRevealSnapshot in lib/memories.ts, or the
+        // Memories tab can't render it (it silently showed nothing).
         snapshot: {
-          date: m.date.toISOString().slice(0, 10),
-          answers: [
-            { name: A.name, content: m.text[0] },
-            { name: B.name, content: m.text[1] },
+          kind: "session_reveal",
+          promptText: m.prompt.text,
+          momentText: m.prompt.momentText,
+          sessionDate: m.date.toISOString().slice(0, 10),
+          responses: [
+            { userId: userA.id, name: A.name, content: m.text[0] },
+            { userId: userB.id, name: B.name, content: m.text[1] },
           ],
         },
       },

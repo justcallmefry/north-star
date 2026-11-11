@@ -124,3 +124,38 @@ export async function getConstellation(
     },
   };
 }
+
+export type SkyDay = {
+  date: string;
+  promptText: string | null;
+  answers: Array<{ name: string | null; content: string | null; isMe: boolean }>;
+};
+
+/**
+ * One star's day, opened from the sky: the question and both answers.
+ * Only for revealed sessions in a relationship the caller belongs to.
+ */
+export async function getSkyDay(sessionId: string): Promise<SkyDay | null> {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) return null;
+  const ds = await prisma.dailySession.findUnique({
+    where: { id: sessionId },
+    select: {
+      relationshipId: true,
+      state: true,
+      sessionDate: true,
+      prompt: { select: { text: true } },
+      responses: { select: { userId: true, content: true, user: { select: { name: true } } } },
+    },
+  });
+  if (!ds || ds.state !== "revealed") return null;
+  await requireActiveMember(session.user.id, ds.relationshipId);
+  const me = session.user.id;
+  return {
+    date: ds.sessionDate.toISOString().slice(0, 10),
+    promptText: ds.prompt?.text ?? null,
+    answers: ds.responses
+      .map((r) => ({ name: r.user?.name ?? null, content: r.content, isMe: r.userId === me }))
+      .sort((a, b) => Number(b.isMe) - Number(a.isMe)),
+  };
+}

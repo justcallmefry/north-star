@@ -48,6 +48,7 @@
     "resend": "^4.0.0",
     "sonner": "^2.0.7",
     "stripe": "^17.4.0",
+    "three": "^0.170.0",
     "web-push": "^3.6.7",
     "zod": "^3.23.8"
   },
@@ -56,6 +57,7 @@
     "@types/nodemailer": "^6.4.16",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@types/three": "^0.170.0",
     "@types/web-push": "^3.6.4",
     "autoprefixer": "^10.4.20",
     "cross-env": "^7.0.3",

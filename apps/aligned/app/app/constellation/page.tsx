@@ -6,7 +6,9 @@ import { ConstellationClient } from "./constellation-client";
 
 export const dynamic = "force-dynamic";
 
-export default async function ConstellationPage() {
+type Props = { searchParams: Promise<{ born?: string }> };
+
+export default async function ConstellationPage({ searchParams }: Props) {
   const session = await getServerAuthSession();
   if (!session?.user) redirect("/login");
 
@@ -16,5 +18,7 @@ export default async function ConstellationPage() {
 
   const data = await getConstellation(primary.id);
 
-  return <ConstellationClient data={data} />;
+  const { born } = await searchParams;
+
+  return <ConstellationClient data={data} bornId={born ?? null} />;
 }

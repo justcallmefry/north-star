@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useState, useMemo, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AlertCircle, Mic } from "lucide-react";
@@ -854,6 +856,17 @@ export function SessionContent({ data, currentUserId }: Props) {
           <p className="text-center text-lg font-medium text-brand-700 sm:text-xl">
             {afterRevealLine}
           </p>
+
+          {/* Tonight's star: the daily ritual ends where the memories live. */}
+          {revealed && partnerRevealed && (
+            <Link
+              href={`/app/constellation?born=${data.sessionId}`}
+              className="group flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#14304D] to-[#0B1B2E] px-4 py-3.5 text-sm font-semibold text-[#F5EFE3] shadow-sm transition active:scale-[0.98]"
+            >
+              <span aria-hidden className="text-[#FFD9A8] transition group-hover:scale-125">✦</span>
+              Watch tonight&apos;s star appear
+            </Link>
+          )}
 
           {/* Follow-up conversation prompt — bridges the app to a real conversation */}
           {(partnerRevealed || !revealed) && (

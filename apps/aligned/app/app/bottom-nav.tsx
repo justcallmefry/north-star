@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, BookOpen, User, Sparkles, Bookmark } from "lucide-react";
+import { Home, User, Sparkles, Bookmark, MoonStar } from "lucide-react";
 
 const NAV_ITEMS: Array<{ href: string; label: string; icon: typeof Home; hidden?: boolean }> = [
   { href: "/app", label: "Today", icon: Home },
   { href: "/app/insights", label: "Us", icon: Sparkles },
   { href: "/app/memories", label: "Memories", icon: Bookmark },
-  { href: "/app/meeting", label: "Recap", icon: BookOpen },
+  { href: "/app/constellation", label: "Sky", icon: MoonStar },
   { href: "/app/us", label: "You", icon: User },
 ];
 

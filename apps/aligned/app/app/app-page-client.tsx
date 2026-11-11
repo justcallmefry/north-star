@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Circle, Flame, Heart, HelpCircle, Scale, Shuffle, Sparkles } from "lucide-react";
+import { ArrowRight, CalendarRange, CheckCircle, Circle, Flame, Heart, HelpCircle, Scale, Shuffle, Sparkles } from "lucide-react";
 import { EmptyTogetherIllustration } from "@/components/illustrations";
 import { getQuizForToday } from "@/lib/quiz";
 import { getAgreementForToday } from "@/lib/agreement";
@@ -19,7 +19,6 @@ import { TodaySection } from "./today-section";
 import { AnniversaryBanner, isAnniversaryToday } from "./anniversary-banner";
 import { MilestonePromptCard } from "./milestone-prompt-card";
 import { IssuePromo } from "@/components/issues/issue-promo";
-import { ConstellationPromo } from "./constellation-promo";
 import { RecapPromo } from "./recap-promo";
 import { QuestCard } from "./quest-card";
 import { PushPrompt } from "./push-prompt";
@@ -135,21 +134,20 @@ export function AppPageClient({ initialData }: Props) {
           <IssuePromo relationshipId={relationshipId!} />
           <RecapPromo />
 
-          {/* QA bisect: temporarily disabled */}
-          {/* <ConstellationPromo relationshipId={relationshipId!} /> */}
-
           <section className="space-y-2">
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
-              Also today
+              Today&apos;s bonus
             </p>
 
             {(() => {
-              type RowEntry = { key: string; featuredKey: string | null; node: React.ReactNode };
+              // urgent: something from your partner is waiting. done: nothing left to do today.
+              type RowEntry = { key: string; featuredKey: string | null; node: React.ReactNode; urgent?: boolean; done?: boolean };
               const rows: RowEntry[] = [];
 
               rows.push({
                 key: "dare",
                 featuredKey: "dare",
+                done: !!dareData?.completed,
                 node: (
                   <RowShell href="/app/dare" featured={featuredMode === "dare"}>
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-peach-50 text-peach-600">
@@ -180,6 +178,8 @@ export function AppPageClient({ initialData }: Props) {
                 rows.push({
                   key: "spotlight",
                   featuredKey: null,
+                  urgent: spotlightStatus.type === "received",
+                  done: spotlightStatus.type === "sent",
                   node: (
                     <RowShell href="/app/spotlight" featured={false}>
                       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600">
@@ -210,6 +210,7 @@ export function AppPageClient({ initialData }: Props) {
               rows.push({
                 key: "wyr",
                 featuredKey: null,
+                done: wyrData?.state === "revealed",
                 node: (
                   <RowShell href="/app/wyr" featured={false}>
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-dusk-50 text-dusk-600">
@@ -241,6 +242,7 @@ export function AppPageClient({ initialData }: Props) {
               rows.push({
                 key: "quiz",
                 featuredKey: "quiz",
+                done: quizDoneToday === true,
                 node: (
                   <RowShell href="/app/quiz" featured={featuredMode === "quiz"}>
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-dusk-50 text-dusk-600">
@@ -265,6 +267,8 @@ export function AppPageClient({ initialData }: Props) {
                 rows.push({
                   key: "appreciation",
                   featuredKey: "appreciation",
+                  urgent: appreciationStatus.type === "received",
+                  done: appreciationStatus.type === "sent",
                   node: (
                     <RowShell href="/app/appreciation" featured={featuredMode === "appreciation"}>
                       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600">
@@ -295,6 +299,7 @@ export function AppPageClient({ initialData }: Props) {
               rows.push({
                 key: "agreement",
                 featuredKey: null,
+                done: agreementDoneToday === true,
                 node: (
                   <RowShell href="/app/agreement" featured={false}>
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-dusk-50 text-dusk-600">
@@ -315,22 +320,62 @@ export function AppPageClient({ initialData }: Props) {
                 ),
               });
 
+              rows.push({
+                key: "meeting",
+                featuredKey: null,
+                node: (
+                  <RowShell href="/app/meeting" featured={false}>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-dusk-50 text-dusk-600">
+                      <CalendarRange className="h-5 w-5" strokeWidth={2} aria-hidden />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-slate-900">Weekly check-in</p>
+                      <p className="truncate text-sm text-slate-500">Wins, stressors, one ask. Whenever you want.</p>
+                    </div>
+                    <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                  </RowShell>
+                ),
+              });
+
               const ordered = rows.slice().sort((a, b) => {
                 const af = featuredMode && a.featuredKey === featuredMode ? -1 : 0;
                 const bf = featuredMode && b.featuredKey === featuredMode ? -1 : 0;
                 return af - bf;
               });
 
-              // Staggered spring entrance — the list assembles rather than appears.
-              return ordered.map((r, i) => (
-                <div
-                  key={r.key}
-                  className="animate-card-pop-in"
-                  style={{ animationDelay: `${90 + i * 70}ms` }}
-                >
-                  {r.node}
-                </div>
-              ));
+              // One thing a day. The daily question is the habit; everything
+              // else used to compete with it as a list of seven. Show a single
+              // bonus: whatever your partner left you, else today's featured
+              // activity, else a different undone one each day. The rest stay
+              // one tap away.
+              const dayIndex = Math.floor(Date.now() / 86_400_000);
+              const candidates = rows.filter((r) => !r.done && r.key !== "meeting");
+              const bonus =
+                rows.find((r) => r.urgent) ??
+                candidates.find((r) => featuredMode && r.featuredKey === featuredMode) ??
+                candidates[dayIndex % Math.max(candidates.length, 1)] ??
+                ordered[0]!;
+              const rest = ordered.filter((r) => r !== bonus);
+
+              return (
+                <>
+                  <div className="animate-card-pop-in" style={{ animationDelay: "90ms" }}>
+                    {bonus.node}
+                  </div>
+                  <details className="group pt-1">
+                    <summary className="flex cursor-pointer list-none items-center justify-center gap-1.5 rounded-xl py-2 text-sm font-medium text-slate-500 transition hover:text-slate-700 [&::-webkit-details-marker]:hidden">
+                      More to do together
+                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500">{rest.length}</span>
+                      <ArrowRight className="h-3.5 w-3.5 transition group-open:rotate-90" aria-hidden />
+                    </summary>
+                    <div className="mt-2 space-y-2">
+                      {rest.map((r) => (
+                        <div key={r.key}>{r.node}</div>
+                      ))}
+                    </div>
+                  </details>
+                </>
+              );
             })()}
           </section>
         </div>

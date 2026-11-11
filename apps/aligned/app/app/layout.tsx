@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Home, CalendarRange, User, Sparkles, Bookmark } from "lucide-react";
+import { Home, User, Sparkles, Bookmark, MoonStar } from "lucide-react";
 import { BottomNav } from "./bottom-nav";
 import { ScrollToTopOnNav } from "./scroll-to-top-on-nav";
 import { RouteTransition } from "./route-transition";
@@ -11,7 +11,7 @@ const SIDEBAR_NAV = [
   { href: "/app", label: "Today", icon: Home },
   { href: "/app/insights", label: "Us", icon: Sparkles },
   { href: "/app/memories", label: "Memories", icon: Bookmark },
-  { href: "/app/meeting", label: "Week", icon: CalendarRange },
+  { href: "/app/constellation", label: "Sky", icon: MoonStar },
   { href: "/app/us", label: "You", icon: User },
 ] as const;
 

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getServerAuthSession } from "@/lib/auth";
 import { getMyActiveRelationships } from "@/lib/relationships";
 import { getConstellation } from "@/lib/constellation";
+import { listCapsules } from "@/lib/time-capsules";
 import { ConstellationClient } from "./constellation-client";
 
 export const dynamic = "force-dynamic";
@@ -16,9 +17,16 @@ export default async function ConstellationPage({ searchParams }: Props) {
   const primary = relationships[0] ?? null;
   if (!primary) redirect("/app/pair");
 
-  const data = await getConstellation(primary.id);
+  const [data, capsules] = await Promise.all([getConstellation(primary.id), listCapsules()]);
 
   const { born } = await searchParams;
 
-  return <ConstellationClient data={data} bornId={born ?? null} />;
+  return (
+    <ConstellationClient
+      data={data}
+      bornId={born ?? null}
+      capsules={capsules}
+      anniversaryISO={primary.anniversaryDate ? primary.anniversaryDate.toISOString().slice(0, 10) : null}
+    />
+  );
 }

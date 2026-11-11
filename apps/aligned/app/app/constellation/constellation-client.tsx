@@ -14,11 +14,18 @@ import { computeSkyLayout, type SkyStar } from "@/lib/sky-layout";
 import { getCouplePalette } from "@/lib/couple-colors";
 import { haptic } from "@/lib/haptics";
 import type { Sky3DHandle } from "./sky-3d";
+import { Capsules, daysUntil } from "./capsules";
+import type { CapsuleView } from "@/lib/time-capsules";
 
 // three.js loads only here, and only when the 3D sky is shown.
 const Sky3D = dynamic(() => import("./sky-3d").then((m) => m.Sky3D), { ssr: false });
 
-type Props = { data: ConstellationData; bornId?: string | null };
+type Props = {
+  data: ConstellationData;
+  bornId?: string | null;
+  capsules: CapsuleView[];
+  anniversaryISO: string | null;
+};
 
 type StarLike = { id: string; date: string; aligned: string; saved: boolean; milestone: string | null; golden?: boolean };
 
@@ -46,7 +53,7 @@ function canDo3D(): boolean {
   }
 }
 
-export function ConstellationClient({ data, bornId }: Props) {
+export function ConstellationClient({ data, bornId, capsules, anniversaryISO }: Props) {
   const palette = getCouplePalette(data.relationshipId);
   const flat = useMemo(() => computeConstellationLayout(data.stars), [data.stars]);
   const sky = useMemo(() => computeSkyLayout(data.stars), [data.stars]);
@@ -55,6 +62,8 @@ export function ConstellationClient({ data, bornId }: Props) {
   const [day, setDay] = useState<SkyDay | null>(null);
   const [month, setMonth] = useState(0);
   const [bornLit, setBornLit] = useState(false);
+  const [comet, setComet] = useState<CapsuleView | null>(null);
+  const sealedCapsules = capsules.filter((c) => !c.open);
   const skyRef = useRef<SVGSVGElement | null>(null);
   const sky3d = useRef<Sky3DHandle | null>(null);
 
@@ -187,7 +196,12 @@ export function ConstellationClient({ data, bornId }: Props) {
                   layout={sky}
                   palette={palette}
                   bornId={bornStar ? bornId : null}
-                  onSelect={(s: SkyStar | null) => setSelected(s)}
+                  onSelect={(s: SkyStar | null) => {
+                    setSelected(s);
+                    if (s) setComet(null);
+                  }}
+                  comets={sealedCapsules.map((c) => ({ id: c.id, openOn: c.openOn }))}
+                  onSelectComet={(id) => setComet(capsules.find((c) => c.id === id) ?? null)}
                   onBorn={() => {
                     setBornLit(true);
                     void haptic("success");
@@ -215,6 +229,25 @@ export function ConstellationClient({ data, bornId }: Props) {
             ) : mode === "flat" ? (
               flatSvg
             ) : null}
+
+            {comet && !selected && (
+              <div className="absolute inset-x-3 bottom-3 rounded-xl bg-[#0B1B2E]/95 px-4 py-3 text-[#F5EFE3] shadow-lg ring-1 ring-white/10 backdrop-blur">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#FFD9A8]">Time capsule · sealed</p>
+                    <p className="mt-1 text-sm font-semibold">
+                      Opens {formatDate(comet.openOn)} · {daysUntil(comet.openOn).toLocaleString()} days to go
+                    </p>
+                    <p className="text-xs text-white/55">
+                      Sealed by {comet.byMe ? "you" : comet.authorName ?? "your partner"} on {formatDate(comet.createdAt.slice(0, 10))}
+                    </p>
+                  </div>
+                  <button type="button" aria-label="Close" onClick={() => setComet(null)} className="rounded-full p-1 text-white/50 hover:bg-white/10">
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            )}
 
             {selected && (
               <div className="absolute inset-x-3 bottom-3 max-h-[70%] overflow-y-auto rounded-xl bg-white/95 px-4 py-3 shadow-lg backdrop-blur">
@@ -319,6 +352,8 @@ export function ConstellationClient({ data, bornId }: Props) {
           />
         </>
       )}
+
+      <Capsules capsules={capsules} anniversaryISO={anniversaryISO} />
     </div>
   );
 }

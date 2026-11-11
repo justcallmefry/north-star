@@ -461,6 +461,16 @@ exports.Prisma.RateLimitScalarFieldEnum = {
   count: 'count'
 };
 
+exports.Prisma.TimeCapsuleScalarFieldEnum = {
+  id: 'id',
+  relationshipId: 'relationshipId',
+  authorId: 'authorId',
+  message: 'message',
+  openOn: 'openOn',
+  createdAt: 'createdAt',
+  openNotifiedAt: 'openNotifiedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -589,7 +599,8 @@ exports.Prisma.ModelName = {
   AgreementSession: 'AgreementSession',
   AgreementParticipation: 'AgreementParticipation',
   Issue: 'Issue',
-  RateLimit: 'RateLimit'
+  RateLimit: 'RateLimit',
+  TimeCapsule: 'TimeCapsule'
 };
 
 /**

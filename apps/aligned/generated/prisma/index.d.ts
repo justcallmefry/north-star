@@ -182,6 +182,13 @@ export type Issue = $Result.DefaultSelection<Prisma.$IssuePayload>
  * window; old windows are pruned by the daily-reminders cron.
  */
 export type RateLimit = $Result.DefaultSelection<Prisma.$RateLimitPayload>
+/**
+ * Model TimeCapsule
+ * A message sealed until a date the couple picks. Unreadable to both
+ * partners, the author included, until openOn; the server never returns
+ * `message` before then.
+ */
+export type TimeCapsule = $Result.DefaultSelection<Prisma.$TimeCapsulePayload>
 
 /**
  * Enums
@@ -774,6 +781,16 @@ export class PrismaClient<
     * ```
     */
   get rateLimit(): Prisma.RateLimitDelegate<ExtArgs>;
+
+  /**
+   * `prisma.timeCapsule`: Exposes CRUD operations for the **TimeCapsule** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TimeCapsules
+    * const timeCapsules = await prisma.timeCapsule.findMany()
+    * ```
+    */
+  get timeCapsule(): Prisma.TimeCapsuleDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -1246,7 +1263,8 @@ export namespace Prisma {
     AgreementSession: 'AgreementSession',
     AgreementParticipation: 'AgreementParticipation',
     Issue: 'Issue',
-    RateLimit: 'RateLimit'
+    RateLimit: 'RateLimit',
+    TimeCapsule: 'TimeCapsule'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1262,7 +1280,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "pushSubscription" | "deviceToken" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "memory" | "appreciation" | "wyrSession" | "wyrParticipation" | "partnerSpotlight" | "dateNightDare" | "appEvent" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation" | "issue" | "rateLimit"
+      modelProps: "user" | "pushSubscription" | "deviceToken" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "memory" | "appreciation" | "wyrSession" | "wyrParticipation" | "partnerSpotlight" | "dateNightDare" | "appEvent" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation" | "issue" | "rateLimit" | "timeCapsule"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3506,6 +3524,76 @@ export namespace Prisma {
           }
         }
       }
+      TimeCapsule: {
+        payload: Prisma.$TimeCapsulePayload<ExtArgs>
+        fields: Prisma.TimeCapsuleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TimeCapsuleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeCapsulePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TimeCapsuleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeCapsulePayload>
+          }
+          findFirst: {
+            args: Prisma.TimeCapsuleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeCapsulePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TimeCapsuleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeCapsulePayload>
+          }
+          findMany: {
+            args: Prisma.TimeCapsuleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeCapsulePayload>[]
+          }
+          create: {
+            args: Prisma.TimeCapsuleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeCapsulePayload>
+          }
+          createMany: {
+            args: Prisma.TimeCapsuleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TimeCapsuleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeCapsulePayload>[]
+          }
+          delete: {
+            args: Prisma.TimeCapsuleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeCapsulePayload>
+          }
+          update: {
+            args: Prisma.TimeCapsuleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeCapsulePayload>
+          }
+          deleteMany: {
+            args: Prisma.TimeCapsuleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TimeCapsuleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.TimeCapsuleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeCapsulePayload>
+          }
+          aggregate: {
+            args: Prisma.TimeCapsuleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTimeCapsule>
+          }
+          groupBy: {
+            args: Prisma.TimeCapsuleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TimeCapsuleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TimeCapsuleCountArgs<ExtArgs>
+            result: $Utils.Optional<TimeCapsuleCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3681,6 +3769,7 @@ export namespace Prisma {
     pushSubscriptions: number
     deviceTokens: number
     memories: number
+    timeCapsules: number
     appreciationsSent: number
     appreciationsReceived: number
     wyrParticipations: number
@@ -3703,6 +3792,7 @@ export namespace Prisma {
     pushSubscriptions?: boolean | UserCountOutputTypeCountPushSubscriptionsArgs
     deviceTokens?: boolean | UserCountOutputTypeCountDeviceTokensArgs
     memories?: boolean | UserCountOutputTypeCountMemoriesArgs
+    timeCapsules?: boolean | UserCountOutputTypeCountTimeCapsulesArgs
     appreciationsSent?: boolean | UserCountOutputTypeCountAppreciationsSentArgs
     appreciationsReceived?: boolean | UserCountOutputTypeCountAppreciationsReceivedArgs
     wyrParticipations?: boolean | UserCountOutputTypeCountWyrParticipationsArgs
@@ -3822,6 +3912,13 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountTimeCapsulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TimeCapsuleWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountAppreciationsSentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AppreciationWhereInput
   }
@@ -3869,6 +3966,7 @@ export namespace Prisma {
     subscriptions: number
     memories: number
     appreciations: number
+    timeCapsules: number
     wyrSessions: number
     spotlights: number
     dateNightDares: number
@@ -3885,6 +3983,7 @@ export namespace Prisma {
     subscriptions?: boolean | RelationshipCountOutputTypeCountSubscriptionsArgs
     memories?: boolean | RelationshipCountOutputTypeCountMemoriesArgs
     appreciations?: boolean | RelationshipCountOutputTypeCountAppreciationsArgs
+    timeCapsules?: boolean | RelationshipCountOutputTypeCountTimeCapsulesArgs
     wyrSessions?: boolean | RelationshipCountOutputTypeCountWyrSessionsArgs
     spotlights?: boolean | RelationshipCountOutputTypeCountSpotlightsArgs
     dateNightDares?: boolean | RelationshipCountOutputTypeCountDateNightDaresArgs
@@ -3963,6 +4062,13 @@ export namespace Prisma {
    */
   export type RelationshipCountOutputTypeCountAppreciationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AppreciationWhereInput
+  }
+
+  /**
+   * RelationshipCountOutputType without action
+   */
+  export type RelationshipCountOutputTypeCountTimeCapsulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TimeCapsuleWhereInput
   }
 
   /**
@@ -4434,6 +4540,7 @@ export namespace Prisma {
     pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
     deviceTokens?: boolean | User$deviceTokensArgs<ExtArgs>
     memories?: boolean | User$memoriesArgs<ExtArgs>
+    timeCapsules?: boolean | User$timeCapsulesArgs<ExtArgs>
     appreciationsSent?: boolean | User$appreciationsSentArgs<ExtArgs>
     appreciationsReceived?: boolean | User$appreciationsReceivedArgs<ExtArgs>
     wyrParticipations?: boolean | User$wyrParticipationsArgs<ExtArgs>
@@ -4481,6 +4588,7 @@ export namespace Prisma {
     pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
     deviceTokens?: boolean | User$deviceTokensArgs<ExtArgs>
     memories?: boolean | User$memoriesArgs<ExtArgs>
+    timeCapsules?: boolean | User$timeCapsulesArgs<ExtArgs>
     appreciationsSent?: boolean | User$appreciationsSentArgs<ExtArgs>
     appreciationsReceived?: boolean | User$appreciationsReceivedArgs<ExtArgs>
     wyrParticipations?: boolean | User$wyrParticipationsArgs<ExtArgs>
@@ -4507,6 +4615,7 @@ export namespace Prisma {
       pushSubscriptions: Prisma.$PushSubscriptionPayload<ExtArgs>[]
       deviceTokens: Prisma.$DeviceTokenPayload<ExtArgs>[]
       memories: Prisma.$MemoryPayload<ExtArgs>[]
+      timeCapsules: Prisma.$TimeCapsulePayload<ExtArgs>[]
       appreciationsSent: Prisma.$AppreciationPayload<ExtArgs>[]
       appreciationsReceived: Prisma.$AppreciationPayload<ExtArgs>[]
       wyrParticipations: Prisma.$WyrParticipationPayload<ExtArgs>[]
@@ -4901,6 +5010,7 @@ export namespace Prisma {
     pushSubscriptions<T extends User$pushSubscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$pushSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
     deviceTokens<T extends User$deviceTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$deviceTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeviceTokenPayload<ExtArgs>, T, "findMany"> | Null>
     memories<T extends User$memoriesArgs<ExtArgs> = {}>(args?: Subset<T, User$memoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany"> | Null>
+    timeCapsules<T extends User$timeCapsulesArgs<ExtArgs> = {}>(args?: Subset<T, User$timeCapsulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "findMany"> | Null>
     appreciationsSent<T extends User$appreciationsSentArgs<ExtArgs> = {}>(args?: Subset<T, User$appreciationsSentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "findMany"> | Null>
     appreciationsReceived<T extends User$appreciationsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$appreciationsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "findMany"> | Null>
     wyrParticipations<T extends User$wyrParticipationsArgs<ExtArgs> = {}>(args?: Subset<T, User$wyrParticipationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WyrParticipationPayload<ExtArgs>, T, "findMany"> | Null>
@@ -5535,6 +5645,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MemoryScalarFieldEnum | MemoryScalarFieldEnum[]
+  }
+
+  /**
+   * User.timeCapsules
+   */
+  export type User$timeCapsulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeCapsule
+     */
+    select?: TimeCapsuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeCapsuleInclude<ExtArgs> | null
+    where?: TimeCapsuleWhereInput
+    orderBy?: TimeCapsuleOrderByWithRelationInput | TimeCapsuleOrderByWithRelationInput[]
+    cursor?: TimeCapsuleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TimeCapsuleScalarFieldEnum | TimeCapsuleScalarFieldEnum[]
   }
 
   /**
@@ -10553,6 +10683,7 @@ export namespace Prisma {
     subscriptions?: boolean | Relationship$subscriptionsArgs<ExtArgs>
     memories?: boolean | Relationship$memoriesArgs<ExtArgs>
     appreciations?: boolean | Relationship$appreciationsArgs<ExtArgs>
+    timeCapsules?: boolean | Relationship$timeCapsulesArgs<ExtArgs>
     wyrSessions?: boolean | Relationship$wyrSessionsArgs<ExtArgs>
     spotlights?: boolean | Relationship$spotlightsArgs<ExtArgs>
     dateNightDares?: boolean | Relationship$dateNightDaresArgs<ExtArgs>
@@ -10589,6 +10720,7 @@ export namespace Prisma {
     subscriptions?: boolean | Relationship$subscriptionsArgs<ExtArgs>
     memories?: boolean | Relationship$memoriesArgs<ExtArgs>
     appreciations?: boolean | Relationship$appreciationsArgs<ExtArgs>
+    timeCapsules?: boolean | Relationship$timeCapsulesArgs<ExtArgs>
     wyrSessions?: boolean | Relationship$wyrSessionsArgs<ExtArgs>
     spotlights?: boolean | Relationship$spotlightsArgs<ExtArgs>
     dateNightDares?: boolean | Relationship$dateNightDaresArgs<ExtArgs>
@@ -10610,6 +10742,7 @@ export namespace Prisma {
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
       memories: Prisma.$MemoryPayload<ExtArgs>[]
       appreciations: Prisma.$AppreciationPayload<ExtArgs>[]
+      timeCapsules: Prisma.$TimeCapsulePayload<ExtArgs>[]
       wyrSessions: Prisma.$WyrSessionPayload<ExtArgs>[]
       spotlights: Prisma.$PartnerSpotlightPayload<ExtArgs>[]
       dateNightDares: Prisma.$DateNightDarePayload<ExtArgs>[]
@@ -11001,6 +11134,7 @@ export namespace Prisma {
     subscriptions<T extends Relationship$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
     memories<T extends Relationship$memoriesArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$memoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany"> | Null>
     appreciations<T extends Relationship$appreciationsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$appreciationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "findMany"> | Null>
+    timeCapsules<T extends Relationship$timeCapsulesArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$timeCapsulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "findMany"> | Null>
     wyrSessions<T extends Relationship$wyrSessionsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$wyrSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WyrSessionPayload<ExtArgs>, T, "findMany"> | Null>
     spotlights<T extends Relationship$spotlightsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$spotlightsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "findMany"> | Null>
     dateNightDares<T extends Relationship$dateNightDaresArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$dateNightDaresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DateNightDarePayload<ExtArgs>, T, "findMany"> | Null>
@@ -11546,6 +11680,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AppreciationScalarFieldEnum | AppreciationScalarFieldEnum[]
+  }
+
+  /**
+   * Relationship.timeCapsules
+   */
+  export type Relationship$timeCapsulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeCapsule
+     */
+    select?: TimeCapsuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeCapsuleInclude<ExtArgs> | null
+    where?: TimeCapsuleWhereInput
+    orderBy?: TimeCapsuleOrderByWithRelationInput | TimeCapsuleOrderByWithRelationInput[]
+    cursor?: TimeCapsuleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TimeCapsuleScalarFieldEnum | TimeCapsuleScalarFieldEnum[]
   }
 
   /**
@@ -36337,6 +36491,975 @@ export namespace Prisma {
 
 
   /**
+   * Model TimeCapsule
+   */
+
+  export type AggregateTimeCapsule = {
+    _count: TimeCapsuleCountAggregateOutputType | null
+    _min: TimeCapsuleMinAggregateOutputType | null
+    _max: TimeCapsuleMaxAggregateOutputType | null
+  }
+
+  export type TimeCapsuleMinAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    authorId: string | null
+    message: string | null
+    openOn: Date | null
+    createdAt: Date | null
+    openNotifiedAt: Date | null
+  }
+
+  export type TimeCapsuleMaxAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    authorId: string | null
+    message: string | null
+    openOn: Date | null
+    createdAt: Date | null
+    openNotifiedAt: Date | null
+  }
+
+  export type TimeCapsuleCountAggregateOutputType = {
+    id: number
+    relationshipId: number
+    authorId: number
+    message: number
+    openOn: number
+    createdAt: number
+    openNotifiedAt: number
+    _all: number
+  }
+
+
+  export type TimeCapsuleMinAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    authorId?: true
+    message?: true
+    openOn?: true
+    createdAt?: true
+    openNotifiedAt?: true
+  }
+
+  export type TimeCapsuleMaxAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    authorId?: true
+    message?: true
+    openOn?: true
+    createdAt?: true
+    openNotifiedAt?: true
+  }
+
+  export type TimeCapsuleCountAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    authorId?: true
+    message?: true
+    openOn?: true
+    createdAt?: true
+    openNotifiedAt?: true
+    _all?: true
+  }
+
+  export type TimeCapsuleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TimeCapsule to aggregate.
+     */
+    where?: TimeCapsuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimeCapsules to fetch.
+     */
+    orderBy?: TimeCapsuleOrderByWithRelationInput | TimeCapsuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TimeCapsuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimeCapsules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimeCapsules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TimeCapsules
+    **/
+    _count?: true | TimeCapsuleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TimeCapsuleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TimeCapsuleMaxAggregateInputType
+  }
+
+  export type GetTimeCapsuleAggregateType<T extends TimeCapsuleAggregateArgs> = {
+        [P in keyof T & keyof AggregateTimeCapsule]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTimeCapsule[P]>
+      : GetScalarType<T[P], AggregateTimeCapsule[P]>
+  }
+
+
+
+
+  export type TimeCapsuleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TimeCapsuleWhereInput
+    orderBy?: TimeCapsuleOrderByWithAggregationInput | TimeCapsuleOrderByWithAggregationInput[]
+    by: TimeCapsuleScalarFieldEnum[] | TimeCapsuleScalarFieldEnum
+    having?: TimeCapsuleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TimeCapsuleCountAggregateInputType | true
+    _min?: TimeCapsuleMinAggregateInputType
+    _max?: TimeCapsuleMaxAggregateInputType
+  }
+
+  export type TimeCapsuleGroupByOutputType = {
+    id: string
+    relationshipId: string
+    authorId: string
+    message: string
+    openOn: Date
+    createdAt: Date
+    openNotifiedAt: Date | null
+    _count: TimeCapsuleCountAggregateOutputType | null
+    _min: TimeCapsuleMinAggregateOutputType | null
+    _max: TimeCapsuleMaxAggregateOutputType | null
+  }
+
+  type GetTimeCapsuleGroupByPayload<T extends TimeCapsuleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TimeCapsuleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TimeCapsuleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TimeCapsuleGroupByOutputType[P]>
+            : GetScalarType<T[P], TimeCapsuleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TimeCapsuleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    authorId?: boolean
+    message?: boolean
+    openOn?: boolean
+    createdAt?: boolean
+    openNotifiedAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["timeCapsule"]>
+
+  export type TimeCapsuleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    authorId?: boolean
+    message?: boolean
+    openOn?: boolean
+    createdAt?: boolean
+    openNotifiedAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["timeCapsule"]>
+
+  export type TimeCapsuleSelectScalar = {
+    id?: boolean
+    relationshipId?: boolean
+    authorId?: boolean
+    message?: boolean
+    openOn?: boolean
+    createdAt?: boolean
+    openNotifiedAt?: boolean
+  }
+
+  export type TimeCapsuleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TimeCapsuleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $TimeCapsulePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TimeCapsule"
+    objects: {
+      relationship: Prisma.$RelationshipPayload<ExtArgs>
+      author: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      relationshipId: string
+      authorId: string
+      message: string
+      /**
+       * UTC calendar date the capsule opens.
+       */
+      openOn: Date
+      createdAt: Date
+      /**
+       * Set when the "it opened" push went out, so it's sent once.
+       */
+      openNotifiedAt: Date | null
+    }, ExtArgs["result"]["timeCapsule"]>
+    composites: {}
+  }
+
+  type TimeCapsuleGetPayload<S extends boolean | null | undefined | TimeCapsuleDefaultArgs> = $Result.GetResult<Prisma.$TimeCapsulePayload, S>
+
+  type TimeCapsuleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<TimeCapsuleFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: TimeCapsuleCountAggregateInputType | true
+    }
+
+  export interface TimeCapsuleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TimeCapsule'], meta: { name: 'TimeCapsule' } }
+    /**
+     * Find zero or one TimeCapsule that matches the filter.
+     * @param {TimeCapsuleFindUniqueArgs} args - Arguments to find a TimeCapsule
+     * @example
+     * // Get one TimeCapsule
+     * const timeCapsule = await prisma.timeCapsule.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TimeCapsuleFindUniqueArgs>(args: SelectSubset<T, TimeCapsuleFindUniqueArgs<ExtArgs>>): Prisma__TimeCapsuleClient<$Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one TimeCapsule that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {TimeCapsuleFindUniqueOrThrowArgs} args - Arguments to find a TimeCapsule
+     * @example
+     * // Get one TimeCapsule
+     * const timeCapsule = await prisma.timeCapsule.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TimeCapsuleFindUniqueOrThrowArgs>(args: SelectSubset<T, TimeCapsuleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TimeCapsuleClient<$Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first TimeCapsule that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeCapsuleFindFirstArgs} args - Arguments to find a TimeCapsule
+     * @example
+     * // Get one TimeCapsule
+     * const timeCapsule = await prisma.timeCapsule.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TimeCapsuleFindFirstArgs>(args?: SelectSubset<T, TimeCapsuleFindFirstArgs<ExtArgs>>): Prisma__TimeCapsuleClient<$Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first TimeCapsule that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeCapsuleFindFirstOrThrowArgs} args - Arguments to find a TimeCapsule
+     * @example
+     * // Get one TimeCapsule
+     * const timeCapsule = await prisma.timeCapsule.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TimeCapsuleFindFirstOrThrowArgs>(args?: SelectSubset<T, TimeCapsuleFindFirstOrThrowArgs<ExtArgs>>): Prisma__TimeCapsuleClient<$Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more TimeCapsules that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeCapsuleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TimeCapsules
+     * const timeCapsules = await prisma.timeCapsule.findMany()
+     * 
+     * // Get first 10 TimeCapsules
+     * const timeCapsules = await prisma.timeCapsule.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const timeCapsuleWithIdOnly = await prisma.timeCapsule.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TimeCapsuleFindManyArgs>(args?: SelectSubset<T, TimeCapsuleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a TimeCapsule.
+     * @param {TimeCapsuleCreateArgs} args - Arguments to create a TimeCapsule.
+     * @example
+     * // Create one TimeCapsule
+     * const TimeCapsule = await prisma.timeCapsule.create({
+     *   data: {
+     *     // ... data to create a TimeCapsule
+     *   }
+     * })
+     * 
+     */
+    create<T extends TimeCapsuleCreateArgs>(args: SelectSubset<T, TimeCapsuleCreateArgs<ExtArgs>>): Prisma__TimeCapsuleClient<$Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many TimeCapsules.
+     * @param {TimeCapsuleCreateManyArgs} args - Arguments to create many TimeCapsules.
+     * @example
+     * // Create many TimeCapsules
+     * const timeCapsule = await prisma.timeCapsule.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TimeCapsuleCreateManyArgs>(args?: SelectSubset<T, TimeCapsuleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TimeCapsules and returns the data saved in the database.
+     * @param {TimeCapsuleCreateManyAndReturnArgs} args - Arguments to create many TimeCapsules.
+     * @example
+     * // Create many TimeCapsules
+     * const timeCapsule = await prisma.timeCapsule.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TimeCapsules and only return the `id`
+     * const timeCapsuleWithIdOnly = await prisma.timeCapsule.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TimeCapsuleCreateManyAndReturnArgs>(args?: SelectSubset<T, TimeCapsuleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a TimeCapsule.
+     * @param {TimeCapsuleDeleteArgs} args - Arguments to delete one TimeCapsule.
+     * @example
+     * // Delete one TimeCapsule
+     * const TimeCapsule = await prisma.timeCapsule.delete({
+     *   where: {
+     *     // ... filter to delete one TimeCapsule
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TimeCapsuleDeleteArgs>(args: SelectSubset<T, TimeCapsuleDeleteArgs<ExtArgs>>): Prisma__TimeCapsuleClient<$Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one TimeCapsule.
+     * @param {TimeCapsuleUpdateArgs} args - Arguments to update one TimeCapsule.
+     * @example
+     * // Update one TimeCapsule
+     * const timeCapsule = await prisma.timeCapsule.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TimeCapsuleUpdateArgs>(args: SelectSubset<T, TimeCapsuleUpdateArgs<ExtArgs>>): Prisma__TimeCapsuleClient<$Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more TimeCapsules.
+     * @param {TimeCapsuleDeleteManyArgs} args - Arguments to filter TimeCapsules to delete.
+     * @example
+     * // Delete a few TimeCapsules
+     * const { count } = await prisma.timeCapsule.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TimeCapsuleDeleteManyArgs>(args?: SelectSubset<T, TimeCapsuleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TimeCapsules.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeCapsuleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TimeCapsules
+     * const timeCapsule = await prisma.timeCapsule.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TimeCapsuleUpdateManyArgs>(args: SelectSubset<T, TimeCapsuleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one TimeCapsule.
+     * @param {TimeCapsuleUpsertArgs} args - Arguments to update or create a TimeCapsule.
+     * @example
+     * // Update or create a TimeCapsule
+     * const timeCapsule = await prisma.timeCapsule.upsert({
+     *   create: {
+     *     // ... data to create a TimeCapsule
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TimeCapsule we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TimeCapsuleUpsertArgs>(args: SelectSubset<T, TimeCapsuleUpsertArgs<ExtArgs>>): Prisma__TimeCapsuleClient<$Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of TimeCapsules.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeCapsuleCountArgs} args - Arguments to filter TimeCapsules to count.
+     * @example
+     * // Count the number of TimeCapsules
+     * const count = await prisma.timeCapsule.count({
+     *   where: {
+     *     // ... the filter for the TimeCapsules we want to count
+     *   }
+     * })
+    **/
+    count<T extends TimeCapsuleCountArgs>(
+      args?: Subset<T, TimeCapsuleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TimeCapsuleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TimeCapsule.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeCapsuleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TimeCapsuleAggregateArgs>(args: Subset<T, TimeCapsuleAggregateArgs>): Prisma.PrismaPromise<GetTimeCapsuleAggregateType<T>>
+
+    /**
+     * Group by TimeCapsule.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeCapsuleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TimeCapsuleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TimeCapsuleGroupByArgs['orderBy'] }
+        : { orderBy?: TimeCapsuleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TimeCapsuleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTimeCapsuleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TimeCapsule model
+   */
+  readonly fields: TimeCapsuleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TimeCapsule.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TimeCapsuleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    relationship<T extends RelationshipDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RelationshipDefaultArgs<ExtArgs>>): Prisma__RelationshipClient<$Result.GetResult<Prisma.$RelationshipPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TimeCapsule model
+   */ 
+  interface TimeCapsuleFieldRefs {
+    readonly id: FieldRef<"TimeCapsule", 'String'>
+    readonly relationshipId: FieldRef<"TimeCapsule", 'String'>
+    readonly authorId: FieldRef<"TimeCapsule", 'String'>
+    readonly message: FieldRef<"TimeCapsule", 'String'>
+    readonly openOn: FieldRef<"TimeCapsule", 'DateTime'>
+    readonly createdAt: FieldRef<"TimeCapsule", 'DateTime'>
+    readonly openNotifiedAt: FieldRef<"TimeCapsule", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TimeCapsule findUnique
+   */
+  export type TimeCapsuleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeCapsule
+     */
+    select?: TimeCapsuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeCapsuleInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeCapsule to fetch.
+     */
+    where: TimeCapsuleWhereUniqueInput
+  }
+
+  /**
+   * TimeCapsule findUniqueOrThrow
+   */
+  export type TimeCapsuleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeCapsule
+     */
+    select?: TimeCapsuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeCapsuleInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeCapsule to fetch.
+     */
+    where: TimeCapsuleWhereUniqueInput
+  }
+
+  /**
+   * TimeCapsule findFirst
+   */
+  export type TimeCapsuleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeCapsule
+     */
+    select?: TimeCapsuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeCapsuleInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeCapsule to fetch.
+     */
+    where?: TimeCapsuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimeCapsules to fetch.
+     */
+    orderBy?: TimeCapsuleOrderByWithRelationInput | TimeCapsuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TimeCapsules.
+     */
+    cursor?: TimeCapsuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimeCapsules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimeCapsules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TimeCapsules.
+     */
+    distinct?: TimeCapsuleScalarFieldEnum | TimeCapsuleScalarFieldEnum[]
+  }
+
+  /**
+   * TimeCapsule findFirstOrThrow
+   */
+  export type TimeCapsuleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeCapsule
+     */
+    select?: TimeCapsuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeCapsuleInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeCapsule to fetch.
+     */
+    where?: TimeCapsuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimeCapsules to fetch.
+     */
+    orderBy?: TimeCapsuleOrderByWithRelationInput | TimeCapsuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TimeCapsules.
+     */
+    cursor?: TimeCapsuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimeCapsules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimeCapsules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TimeCapsules.
+     */
+    distinct?: TimeCapsuleScalarFieldEnum | TimeCapsuleScalarFieldEnum[]
+  }
+
+  /**
+   * TimeCapsule findMany
+   */
+  export type TimeCapsuleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeCapsule
+     */
+    select?: TimeCapsuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeCapsuleInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeCapsules to fetch.
+     */
+    where?: TimeCapsuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimeCapsules to fetch.
+     */
+    orderBy?: TimeCapsuleOrderByWithRelationInput | TimeCapsuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TimeCapsules.
+     */
+    cursor?: TimeCapsuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimeCapsules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimeCapsules.
+     */
+    skip?: number
+    distinct?: TimeCapsuleScalarFieldEnum | TimeCapsuleScalarFieldEnum[]
+  }
+
+  /**
+   * TimeCapsule create
+   */
+  export type TimeCapsuleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeCapsule
+     */
+    select?: TimeCapsuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeCapsuleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TimeCapsule.
+     */
+    data: XOR<TimeCapsuleCreateInput, TimeCapsuleUncheckedCreateInput>
+  }
+
+  /**
+   * TimeCapsule createMany
+   */
+  export type TimeCapsuleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TimeCapsules.
+     */
+    data: TimeCapsuleCreateManyInput | TimeCapsuleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TimeCapsule createManyAndReturn
+   */
+  export type TimeCapsuleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeCapsule
+     */
+    select?: TimeCapsuleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many TimeCapsules.
+     */
+    data: TimeCapsuleCreateManyInput | TimeCapsuleCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeCapsuleIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TimeCapsule update
+   */
+  export type TimeCapsuleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeCapsule
+     */
+    select?: TimeCapsuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeCapsuleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TimeCapsule.
+     */
+    data: XOR<TimeCapsuleUpdateInput, TimeCapsuleUncheckedUpdateInput>
+    /**
+     * Choose, which TimeCapsule to update.
+     */
+    where: TimeCapsuleWhereUniqueInput
+  }
+
+  /**
+   * TimeCapsule updateMany
+   */
+  export type TimeCapsuleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TimeCapsules.
+     */
+    data: XOR<TimeCapsuleUpdateManyMutationInput, TimeCapsuleUncheckedUpdateManyInput>
+    /**
+     * Filter which TimeCapsules to update
+     */
+    where?: TimeCapsuleWhereInput
+  }
+
+  /**
+   * TimeCapsule upsert
+   */
+  export type TimeCapsuleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeCapsule
+     */
+    select?: TimeCapsuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeCapsuleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TimeCapsule to update in case it exists.
+     */
+    where: TimeCapsuleWhereUniqueInput
+    /**
+     * In case the TimeCapsule found by the `where` argument doesn't exist, create a new TimeCapsule with this data.
+     */
+    create: XOR<TimeCapsuleCreateInput, TimeCapsuleUncheckedCreateInput>
+    /**
+     * In case the TimeCapsule was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TimeCapsuleUpdateInput, TimeCapsuleUncheckedUpdateInput>
+  }
+
+  /**
+   * TimeCapsule delete
+   */
+  export type TimeCapsuleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeCapsule
+     */
+    select?: TimeCapsuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeCapsuleInclude<ExtArgs> | null
+    /**
+     * Filter which TimeCapsule to delete.
+     */
+    where: TimeCapsuleWhereUniqueInput
+  }
+
+  /**
+   * TimeCapsule deleteMany
+   */
+  export type TimeCapsuleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TimeCapsules to delete
+     */
+    where?: TimeCapsuleWhereInput
+  }
+
+  /**
+   * TimeCapsule without action
+   */
+  export type TimeCapsuleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeCapsule
+     */
+    select?: TimeCapsuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeCapsuleInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -36785,6 +37908,19 @@ export namespace Prisma {
   export type RateLimitScalarFieldEnum = (typeof RateLimitScalarFieldEnum)[keyof typeof RateLimitScalarFieldEnum]
 
 
+  export const TimeCapsuleScalarFieldEnum: {
+    id: 'id',
+    relationshipId: 'relationshipId',
+    authorId: 'authorId',
+    message: 'message',
+    openOn: 'openOn',
+    createdAt: 'createdAt',
+    openNotifiedAt: 'openNotifiedAt'
+  };
+
+  export type TimeCapsuleScalarFieldEnum = (typeof TimeCapsuleScalarFieldEnum)[keyof typeof TimeCapsuleScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -37092,6 +38228,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionListRelationFilter
     deviceTokens?: DeviceTokenListRelationFilter
     memories?: MemoryListRelationFilter
+    timeCapsules?: TimeCapsuleListRelationFilter
     appreciationsSent?: AppreciationListRelationFilter
     appreciationsReceived?: AppreciationListRelationFilter
     wyrParticipations?: WyrParticipationListRelationFilter
@@ -37123,6 +38260,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionOrderByRelationAggregateInput
     deviceTokens?: DeviceTokenOrderByRelationAggregateInput
     memories?: MemoryOrderByRelationAggregateInput
+    timeCapsules?: TimeCapsuleOrderByRelationAggregateInput
     appreciationsSent?: AppreciationOrderByRelationAggregateInput
     appreciationsReceived?: AppreciationOrderByRelationAggregateInput
     wyrParticipations?: WyrParticipationOrderByRelationAggregateInput
@@ -37157,6 +38295,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionListRelationFilter
     deviceTokens?: DeviceTokenListRelationFilter
     memories?: MemoryListRelationFilter
+    timeCapsules?: TimeCapsuleListRelationFilter
     appreciationsSent?: AppreciationListRelationFilter
     appreciationsReceived?: AppreciationListRelationFilter
     wyrParticipations?: WyrParticipationListRelationFilter
@@ -37520,6 +38659,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionListRelationFilter
     memories?: MemoryListRelationFilter
     appreciations?: AppreciationListRelationFilter
+    timeCapsules?: TimeCapsuleListRelationFilter
     wyrSessions?: WyrSessionListRelationFilter
     spotlights?: PartnerSpotlightListRelationFilter
     dateNightDares?: DateNightDareListRelationFilter
@@ -37543,6 +38683,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionOrderByRelationAggregateInput
     memories?: MemoryOrderByRelationAggregateInput
     appreciations?: AppreciationOrderByRelationAggregateInput
+    timeCapsules?: TimeCapsuleOrderByRelationAggregateInput
     wyrSessions?: WyrSessionOrderByRelationAggregateInput
     spotlights?: PartnerSpotlightOrderByRelationAggregateInput
     dateNightDares?: DateNightDareOrderByRelationAggregateInput
@@ -37569,6 +38710,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionListRelationFilter
     memories?: MemoryListRelationFilter
     appreciations?: AppreciationListRelationFilter
+    timeCapsules?: TimeCapsuleListRelationFilter
     wyrSessions?: WyrSessionListRelationFilter
     spotlights?: PartnerSpotlightListRelationFilter
     dateNightDares?: DateNightDareListRelationFilter
@@ -39426,6 +40568,74 @@ export namespace Prisma {
     count?: IntWithAggregatesFilter<"RateLimit"> | number
   }
 
+  export type TimeCapsuleWhereInput = {
+    AND?: TimeCapsuleWhereInput | TimeCapsuleWhereInput[]
+    OR?: TimeCapsuleWhereInput[]
+    NOT?: TimeCapsuleWhereInput | TimeCapsuleWhereInput[]
+    id?: StringFilter<"TimeCapsule"> | string
+    relationshipId?: StringFilter<"TimeCapsule"> | string
+    authorId?: StringFilter<"TimeCapsule"> | string
+    message?: StringFilter<"TimeCapsule"> | string
+    openOn?: DateTimeFilter<"TimeCapsule"> | Date | string
+    createdAt?: DateTimeFilter<"TimeCapsule"> | Date | string
+    openNotifiedAt?: DateTimeNullableFilter<"TimeCapsule"> | Date | string | null
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+    author?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type TimeCapsuleOrderByWithRelationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    authorId?: SortOrder
+    message?: SortOrder
+    openOn?: SortOrder
+    createdAt?: SortOrder
+    openNotifiedAt?: SortOrderInput | SortOrder
+    relationship?: RelationshipOrderByWithRelationInput
+    author?: UserOrderByWithRelationInput
+  }
+
+  export type TimeCapsuleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TimeCapsuleWhereInput | TimeCapsuleWhereInput[]
+    OR?: TimeCapsuleWhereInput[]
+    NOT?: TimeCapsuleWhereInput | TimeCapsuleWhereInput[]
+    relationshipId?: StringFilter<"TimeCapsule"> | string
+    authorId?: StringFilter<"TimeCapsule"> | string
+    message?: StringFilter<"TimeCapsule"> | string
+    openOn?: DateTimeFilter<"TimeCapsule"> | Date | string
+    createdAt?: DateTimeFilter<"TimeCapsule"> | Date | string
+    openNotifiedAt?: DateTimeNullableFilter<"TimeCapsule"> | Date | string | null
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+    author?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type TimeCapsuleOrderByWithAggregationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    authorId?: SortOrder
+    message?: SortOrder
+    openOn?: SortOrder
+    createdAt?: SortOrder
+    openNotifiedAt?: SortOrderInput | SortOrder
+    _count?: TimeCapsuleCountOrderByAggregateInput
+    _max?: TimeCapsuleMaxOrderByAggregateInput
+    _min?: TimeCapsuleMinOrderByAggregateInput
+  }
+
+  export type TimeCapsuleScalarWhereWithAggregatesInput = {
+    AND?: TimeCapsuleScalarWhereWithAggregatesInput | TimeCapsuleScalarWhereWithAggregatesInput[]
+    OR?: TimeCapsuleScalarWhereWithAggregatesInput[]
+    NOT?: TimeCapsuleScalarWhereWithAggregatesInput | TimeCapsuleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TimeCapsule"> | string
+    relationshipId?: StringWithAggregatesFilter<"TimeCapsule"> | string
+    authorId?: StringWithAggregatesFilter<"TimeCapsule"> | string
+    message?: StringWithAggregatesFilter<"TimeCapsule"> | string
+    openOn?: DateTimeWithAggregatesFilter<"TimeCapsule"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"TimeCapsule"> | Date | string
+    openNotifiedAt?: DateTimeNullableWithAggregatesFilter<"TimeCapsule"> | Date | string | null
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -39450,6 +40660,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -39481,6 +40692,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -39512,6 +40724,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -39543,6 +40756,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -39921,6 +41135,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -39944,6 +41159,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -39967,6 +41183,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -39990,6 +41207,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -41922,6 +43140,74 @@ export namespace Prisma {
     count?: IntFieldUpdateOperationsInput | number
   }
 
+  export type TimeCapsuleCreateInput = {
+    id?: string
+    message: string
+    openOn: Date | string
+    createdAt?: Date | string
+    openNotifiedAt?: Date | string | null
+    relationship: RelationshipCreateNestedOneWithoutTimeCapsulesInput
+    author: UserCreateNestedOneWithoutTimeCapsulesInput
+  }
+
+  export type TimeCapsuleUncheckedCreateInput = {
+    id?: string
+    relationshipId: string
+    authorId: string
+    message: string
+    openOn: Date | string
+    createdAt?: Date | string
+    openNotifiedAt?: Date | string | null
+  }
+
+  export type TimeCapsuleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    openOn?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    openNotifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    relationship?: RelationshipUpdateOneRequiredWithoutTimeCapsulesNestedInput
+    author?: UserUpdateOneRequiredWithoutTimeCapsulesNestedInput
+  }
+
+  export type TimeCapsuleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    openOn?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    openNotifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TimeCapsuleCreateManyInput = {
+    id?: string
+    relationshipId: string
+    authorId: string
+    message: string
+    openOn: Date | string
+    createdAt?: Date | string
+    openNotifiedAt?: Date | string | null
+  }
+
+  export type TimeCapsuleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    openOn?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    openNotifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TimeCapsuleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    openOn?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    openNotifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -42058,6 +43344,12 @@ export namespace Prisma {
     none?: MemoryWhereInput
   }
 
+  export type TimeCapsuleListRelationFilter = {
+    every?: TimeCapsuleWhereInput
+    some?: TimeCapsuleWhereInput
+    none?: TimeCapsuleWhereInput
+  }
+
   export type AppreciationListRelationFilter = {
     every?: AppreciationWhereInput
     some?: AppreciationWhereInput
@@ -42134,6 +43426,10 @@ export namespace Prisma {
   }
 
   export type MemoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TimeCapsuleOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -43886,6 +45182,36 @@ export namespace Prisma {
     count?: SortOrder
   }
 
+  export type TimeCapsuleCountOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    authorId?: SortOrder
+    message?: SortOrder
+    openOn?: SortOrder
+    createdAt?: SortOrder
+    openNotifiedAt?: SortOrder
+  }
+
+  export type TimeCapsuleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    authorId?: SortOrder
+    message?: SortOrder
+    openOn?: SortOrder
+    createdAt?: SortOrder
+    openNotifiedAt?: SortOrder
+  }
+
+  export type TimeCapsuleMinOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    authorId?: SortOrder
+    message?: SortOrder
+    openOn?: SortOrder
+    createdAt?: SortOrder
+    openNotifiedAt?: SortOrder
+  }
+
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -43982,6 +45308,13 @@ export namespace Prisma {
     connectOrCreate?: MemoryCreateOrConnectWithoutSavedByUserInput | MemoryCreateOrConnectWithoutSavedByUserInput[]
     createMany?: MemoryCreateManySavedByUserInputEnvelope
     connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+  }
+
+  export type TimeCapsuleCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<TimeCapsuleCreateWithoutAuthorInput, TimeCapsuleUncheckedCreateWithoutAuthorInput> | TimeCapsuleCreateWithoutAuthorInput[] | TimeCapsuleUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: TimeCapsuleCreateOrConnectWithoutAuthorInput | TimeCapsuleCreateOrConnectWithoutAuthorInput[]
+    createMany?: TimeCapsuleCreateManyAuthorInputEnvelope
+    connect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
   }
 
   export type AppreciationCreateNestedManyWithoutFromUserInput = {
@@ -44115,6 +45448,13 @@ export namespace Prisma {
     connectOrCreate?: MemoryCreateOrConnectWithoutSavedByUserInput | MemoryCreateOrConnectWithoutSavedByUserInput[]
     createMany?: MemoryCreateManySavedByUserInputEnvelope
     connect?: MemoryWhereUniqueInput | MemoryWhereUniqueInput[]
+  }
+
+  export type TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<TimeCapsuleCreateWithoutAuthorInput, TimeCapsuleUncheckedCreateWithoutAuthorInput> | TimeCapsuleCreateWithoutAuthorInput[] | TimeCapsuleUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: TimeCapsuleCreateOrConnectWithoutAuthorInput | TimeCapsuleCreateOrConnectWithoutAuthorInput[]
+    createMany?: TimeCapsuleCreateManyAuthorInputEnvelope
+    connect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
   }
 
   export type AppreciationUncheckedCreateNestedManyWithoutFromUserInput = {
@@ -44362,6 +45702,20 @@ export namespace Prisma {
     update?: MemoryUpdateWithWhereUniqueWithoutSavedByUserInput | MemoryUpdateWithWhereUniqueWithoutSavedByUserInput[]
     updateMany?: MemoryUpdateManyWithWhereWithoutSavedByUserInput | MemoryUpdateManyWithWhereWithoutSavedByUserInput[]
     deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
+  }
+
+  export type TimeCapsuleUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<TimeCapsuleCreateWithoutAuthorInput, TimeCapsuleUncheckedCreateWithoutAuthorInput> | TimeCapsuleCreateWithoutAuthorInput[] | TimeCapsuleUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: TimeCapsuleCreateOrConnectWithoutAuthorInput | TimeCapsuleCreateOrConnectWithoutAuthorInput[]
+    upsert?: TimeCapsuleUpsertWithWhereUniqueWithoutAuthorInput | TimeCapsuleUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: TimeCapsuleCreateManyAuthorInputEnvelope
+    set?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    disconnect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    delete?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    connect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    update?: TimeCapsuleUpdateWithWhereUniqueWithoutAuthorInput | TimeCapsuleUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: TimeCapsuleUpdateManyWithWhereWithoutAuthorInput | TimeCapsuleUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: TimeCapsuleScalarWhereInput | TimeCapsuleScalarWhereInput[]
   }
 
   export type AppreciationUpdateManyWithoutFromUserNestedInput = {
@@ -44630,6 +45984,20 @@ export namespace Prisma {
     deleteMany?: MemoryScalarWhereInput | MemoryScalarWhereInput[]
   }
 
+  export type TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<TimeCapsuleCreateWithoutAuthorInput, TimeCapsuleUncheckedCreateWithoutAuthorInput> | TimeCapsuleCreateWithoutAuthorInput[] | TimeCapsuleUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: TimeCapsuleCreateOrConnectWithoutAuthorInput | TimeCapsuleCreateOrConnectWithoutAuthorInput[]
+    upsert?: TimeCapsuleUpsertWithWhereUniqueWithoutAuthorInput | TimeCapsuleUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: TimeCapsuleCreateManyAuthorInputEnvelope
+    set?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    disconnect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    delete?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    connect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    update?: TimeCapsuleUpdateWithWhereUniqueWithoutAuthorInput | TimeCapsuleUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: TimeCapsuleUpdateManyWithWhereWithoutAuthorInput | TimeCapsuleUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: TimeCapsuleScalarWhereInput | TimeCapsuleScalarWhereInput[]
+  }
+
   export type AppreciationUncheckedUpdateManyWithoutFromUserNestedInput = {
     create?: XOR<AppreciationCreateWithoutFromUserInput, AppreciationUncheckedCreateWithoutFromUserInput> | AppreciationCreateWithoutFromUserInput[] | AppreciationUncheckedCreateWithoutFromUserInput[]
     connectOrCreate?: AppreciationCreateOrConnectWithoutFromUserInput | AppreciationCreateOrConnectWithoutFromUserInput[]
@@ -44833,6 +46201,13 @@ export namespace Prisma {
     connect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
   }
 
+  export type TimeCapsuleCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<TimeCapsuleCreateWithoutRelationshipInput, TimeCapsuleUncheckedCreateWithoutRelationshipInput> | TimeCapsuleCreateWithoutRelationshipInput[] | TimeCapsuleUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: TimeCapsuleCreateOrConnectWithoutRelationshipInput | TimeCapsuleCreateOrConnectWithoutRelationshipInput[]
+    createMany?: TimeCapsuleCreateManyRelationshipInputEnvelope
+    connect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+  }
+
   export type WyrSessionCreateNestedManyWithoutRelationshipInput = {
     create?: XOR<WyrSessionCreateWithoutRelationshipInput, WyrSessionUncheckedCreateWithoutRelationshipInput> | WyrSessionCreateWithoutRelationshipInput[] | WyrSessionUncheckedCreateWithoutRelationshipInput[]
     connectOrCreate?: WyrSessionCreateOrConnectWithoutRelationshipInput | WyrSessionCreateOrConnectWithoutRelationshipInput[]
@@ -44928,6 +46303,13 @@ export namespace Prisma {
     connectOrCreate?: AppreciationCreateOrConnectWithoutRelationshipInput | AppreciationCreateOrConnectWithoutRelationshipInput[]
     createMany?: AppreciationCreateManyRelationshipInputEnvelope
     connect?: AppreciationWhereUniqueInput | AppreciationWhereUniqueInput[]
+  }
+
+  export type TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<TimeCapsuleCreateWithoutRelationshipInput, TimeCapsuleUncheckedCreateWithoutRelationshipInput> | TimeCapsuleCreateWithoutRelationshipInput[] | TimeCapsuleUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: TimeCapsuleCreateOrConnectWithoutRelationshipInput | TimeCapsuleCreateOrConnectWithoutRelationshipInput[]
+    createMany?: TimeCapsuleCreateManyRelationshipInputEnvelope
+    connect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
   }
 
   export type WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput = {
@@ -45096,6 +46478,20 @@ export namespace Prisma {
     update?: AppreciationUpdateWithWhereUniqueWithoutRelationshipInput | AppreciationUpdateWithWhereUniqueWithoutRelationshipInput[]
     updateMany?: AppreciationUpdateManyWithWhereWithoutRelationshipInput | AppreciationUpdateManyWithWhereWithoutRelationshipInput[]
     deleteMany?: AppreciationScalarWhereInput | AppreciationScalarWhereInput[]
+  }
+
+  export type TimeCapsuleUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<TimeCapsuleCreateWithoutRelationshipInput, TimeCapsuleUncheckedCreateWithoutRelationshipInput> | TimeCapsuleCreateWithoutRelationshipInput[] | TimeCapsuleUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: TimeCapsuleCreateOrConnectWithoutRelationshipInput | TimeCapsuleCreateOrConnectWithoutRelationshipInput[]
+    upsert?: TimeCapsuleUpsertWithWhereUniqueWithoutRelationshipInput | TimeCapsuleUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: TimeCapsuleCreateManyRelationshipInputEnvelope
+    set?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    disconnect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    delete?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    connect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    update?: TimeCapsuleUpdateWithWhereUniqueWithoutRelationshipInput | TimeCapsuleUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: TimeCapsuleUpdateManyWithWhereWithoutRelationshipInput | TimeCapsuleUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: TimeCapsuleScalarWhereInput | TimeCapsuleScalarWhereInput[]
   }
 
   export type WyrSessionUpdateManyWithoutRelationshipNestedInput = {
@@ -45288,6 +46684,20 @@ export namespace Prisma {
     update?: AppreciationUpdateWithWhereUniqueWithoutRelationshipInput | AppreciationUpdateWithWhereUniqueWithoutRelationshipInput[]
     updateMany?: AppreciationUpdateManyWithWhereWithoutRelationshipInput | AppreciationUpdateManyWithWhereWithoutRelationshipInput[]
     deleteMany?: AppreciationScalarWhereInput | AppreciationScalarWhereInput[]
+  }
+
+  export type TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<TimeCapsuleCreateWithoutRelationshipInput, TimeCapsuleUncheckedCreateWithoutRelationshipInput> | TimeCapsuleCreateWithoutRelationshipInput[] | TimeCapsuleUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: TimeCapsuleCreateOrConnectWithoutRelationshipInput | TimeCapsuleCreateOrConnectWithoutRelationshipInput[]
+    upsert?: TimeCapsuleUpsertWithWhereUniqueWithoutRelationshipInput | TimeCapsuleUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: TimeCapsuleCreateManyRelationshipInputEnvelope
+    set?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    disconnect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    delete?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    connect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+    update?: TimeCapsuleUpdateWithWhereUniqueWithoutRelationshipInput | TimeCapsuleUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: TimeCapsuleUpdateManyWithWhereWithoutRelationshipInput | TimeCapsuleUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: TimeCapsuleScalarWhereInput | TimeCapsuleScalarWhereInput[]
   }
 
   export type WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput = {
@@ -46265,6 +47675,34 @@ export namespace Prisma {
     update?: XOR<XOR<RelationshipUpdateToOneWithWhereWithoutIssuesInput, RelationshipUpdateWithoutIssuesInput>, RelationshipUncheckedUpdateWithoutIssuesInput>
   }
 
+  export type RelationshipCreateNestedOneWithoutTimeCapsulesInput = {
+    create?: XOR<RelationshipCreateWithoutTimeCapsulesInput, RelationshipUncheckedCreateWithoutTimeCapsulesInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutTimeCapsulesInput
+    connect?: RelationshipWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutTimeCapsulesInput = {
+    create?: XOR<UserCreateWithoutTimeCapsulesInput, UserUncheckedCreateWithoutTimeCapsulesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTimeCapsulesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type RelationshipUpdateOneRequiredWithoutTimeCapsulesNestedInput = {
+    create?: XOR<RelationshipCreateWithoutTimeCapsulesInput, RelationshipUncheckedCreateWithoutTimeCapsulesInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutTimeCapsulesInput
+    upsert?: RelationshipUpsertWithoutTimeCapsulesInput
+    connect?: RelationshipWhereUniqueInput
+    update?: XOR<XOR<RelationshipUpdateToOneWithWhereWithoutTimeCapsulesInput, RelationshipUpdateWithoutTimeCapsulesInput>, RelationshipUncheckedUpdateWithoutTimeCapsulesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutTimeCapsulesNestedInput = {
+    create?: XOR<UserCreateWithoutTimeCapsulesInput, UserUncheckedCreateWithoutTimeCapsulesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTimeCapsulesInput
+    upsert?: UserUpsertWithoutTimeCapsulesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTimeCapsulesInput, UserUpdateWithoutTimeCapsulesInput>, UserUncheckedUpdateWithoutTimeCapsulesInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -47113,6 +48551,34 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type TimeCapsuleCreateWithoutAuthorInput = {
+    id?: string
+    message: string
+    openOn: Date | string
+    createdAt?: Date | string
+    openNotifiedAt?: Date | string | null
+    relationship: RelationshipCreateNestedOneWithoutTimeCapsulesInput
+  }
+
+  export type TimeCapsuleUncheckedCreateWithoutAuthorInput = {
+    id?: string
+    relationshipId: string
+    message: string
+    openOn: Date | string
+    createdAt?: Date | string
+    openNotifiedAt?: Date | string | null
+  }
+
+  export type TimeCapsuleCreateOrConnectWithoutAuthorInput = {
+    where: TimeCapsuleWhereUniqueInput
+    create: XOR<TimeCapsuleCreateWithoutAuthorInput, TimeCapsuleUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type TimeCapsuleCreateManyAuthorInputEnvelope = {
+    data: TimeCapsuleCreateManyAuthorInput | TimeCapsuleCreateManyAuthorInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AppreciationCreateWithoutFromUserInput = {
     id?: string
     content: string
@@ -47668,6 +49134,35 @@ export namespace Prisma {
     savedAt?: DateTimeFilter<"Memory"> | Date | string
   }
 
+  export type TimeCapsuleUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: TimeCapsuleWhereUniqueInput
+    update: XOR<TimeCapsuleUpdateWithoutAuthorInput, TimeCapsuleUncheckedUpdateWithoutAuthorInput>
+    create: XOR<TimeCapsuleCreateWithoutAuthorInput, TimeCapsuleUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type TimeCapsuleUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: TimeCapsuleWhereUniqueInput
+    data: XOR<TimeCapsuleUpdateWithoutAuthorInput, TimeCapsuleUncheckedUpdateWithoutAuthorInput>
+  }
+
+  export type TimeCapsuleUpdateManyWithWhereWithoutAuthorInput = {
+    where: TimeCapsuleScalarWhereInput
+    data: XOR<TimeCapsuleUpdateManyMutationInput, TimeCapsuleUncheckedUpdateManyWithoutAuthorInput>
+  }
+
+  export type TimeCapsuleScalarWhereInput = {
+    AND?: TimeCapsuleScalarWhereInput | TimeCapsuleScalarWhereInput[]
+    OR?: TimeCapsuleScalarWhereInput[]
+    NOT?: TimeCapsuleScalarWhereInput | TimeCapsuleScalarWhereInput[]
+    id?: StringFilter<"TimeCapsule"> | string
+    relationshipId?: StringFilter<"TimeCapsule"> | string
+    authorId?: StringFilter<"TimeCapsule"> | string
+    message?: StringFilter<"TimeCapsule"> | string
+    openOn?: DateTimeFilter<"TimeCapsule"> | Date | string
+    createdAt?: DateTimeFilter<"TimeCapsule"> | Date | string
+    openNotifiedAt?: DateTimeNullableFilter<"TimeCapsule"> | Date | string | null
+  }
+
   export type AppreciationUpsertWithWhereUniqueWithoutFromUserInput = {
     where: AppreciationWhereUniqueInput
     update: XOR<AppreciationUpdateWithoutFromUserInput, AppreciationUncheckedUpdateWithoutFromUserInput>
@@ -47809,6 +49304,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -47839,6 +49335,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -47885,6 +49382,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -47915,6 +49413,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -47945,6 +49444,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -47975,6 +49475,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -48021,6 +49522,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -48051,6 +49553,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -48081,6 +49584,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -48111,6 +49615,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -48157,6 +49662,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -48187,6 +49693,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -48217,6 +49724,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -48247,6 +49755,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -48293,6 +49802,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -48323,6 +49833,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -48624,6 +50135,34 @@ export namespace Prisma {
 
   export type AppreciationCreateManyRelationshipInputEnvelope = {
     data: AppreciationCreateManyRelationshipInput | AppreciationCreateManyRelationshipInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TimeCapsuleCreateWithoutRelationshipInput = {
+    id?: string
+    message: string
+    openOn: Date | string
+    createdAt?: Date | string
+    openNotifiedAt?: Date | string | null
+    author: UserCreateNestedOneWithoutTimeCapsulesInput
+  }
+
+  export type TimeCapsuleUncheckedCreateWithoutRelationshipInput = {
+    id?: string
+    authorId: string
+    message: string
+    openOn: Date | string
+    createdAt?: Date | string
+    openNotifiedAt?: Date | string | null
+  }
+
+  export type TimeCapsuleCreateOrConnectWithoutRelationshipInput = {
+    where: TimeCapsuleWhereUniqueInput
+    create: XOR<TimeCapsuleCreateWithoutRelationshipInput, TimeCapsuleUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type TimeCapsuleCreateManyRelationshipInputEnvelope = {
+    data: TimeCapsuleCreateManyRelationshipInput | TimeCapsuleCreateManyRelationshipInput[]
     skipDuplicates?: boolean
   }
 
@@ -48982,6 +50521,22 @@ export namespace Prisma {
     data: XOR<AppreciationUpdateManyMutationInput, AppreciationUncheckedUpdateManyWithoutRelationshipInput>
   }
 
+  export type TimeCapsuleUpsertWithWhereUniqueWithoutRelationshipInput = {
+    where: TimeCapsuleWhereUniqueInput
+    update: XOR<TimeCapsuleUpdateWithoutRelationshipInput, TimeCapsuleUncheckedUpdateWithoutRelationshipInput>
+    create: XOR<TimeCapsuleCreateWithoutRelationshipInput, TimeCapsuleUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type TimeCapsuleUpdateWithWhereUniqueWithoutRelationshipInput = {
+    where: TimeCapsuleWhereUniqueInput
+    data: XOR<TimeCapsuleUpdateWithoutRelationshipInput, TimeCapsuleUncheckedUpdateWithoutRelationshipInput>
+  }
+
+  export type TimeCapsuleUpdateManyWithWhereWithoutRelationshipInput = {
+    where: TimeCapsuleScalarWhereInput
+    data: XOR<TimeCapsuleUpdateManyMutationInput, TimeCapsuleUncheckedUpdateManyWithoutRelationshipInput>
+  }
+
   export type WyrSessionUpsertWithWhereUniqueWithoutRelationshipInput = {
     where: WyrSessionWhereUniqueInput
     update: XOR<WyrSessionUpdateWithoutRelationshipInput, WyrSessionUncheckedUpdateWithoutRelationshipInput>
@@ -49112,6 +50667,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -49134,6 +50690,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -49168,6 +50725,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -49198,6 +50756,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -49237,6 +50796,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -49259,6 +50819,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -49299,6 +50860,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -49329,6 +50891,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -49352,6 +50915,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -49374,6 +50938,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -49408,6 +50973,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -49438,6 +51004,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -49477,6 +51044,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -49499,6 +51067,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -49539,6 +51108,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -49569,6 +51139,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -49640,6 +51211,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -49662,6 +51234,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -49813,6 +51386,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -49835,6 +51409,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -49986,6 +51561,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -50016,6 +51592,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -50119,6 +51696,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -50149,6 +51727,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -50218,6 +51797,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -50248,6 +51828,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -50323,6 +51904,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -50353,6 +51935,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -50410,6 +51993,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -50440,6 +52024,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -50519,6 +52104,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -50549,6 +52135,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -50572,6 +52159,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -50594,6 +52182,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -50666,6 +52255,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -50688,6 +52278,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -50754,6 +52345,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -50784,6 +52376,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -50857,6 +52450,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -50887,6 +52481,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -50910,6 +52505,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -50932,6 +52528,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -50970,6 +52567,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -50992,6 +52590,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -51021,6 +52620,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -51051,6 +52651,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -51079,6 +52680,7 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -51101,6 +52703,7 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -51146,6 +52749,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -51176,6 +52780,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -51210,6 +52815,7 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -51232,6 +52838,7 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -51254,6 +52861,7 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -51276,6 +52884,7 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -51310,6 +52919,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -51340,6 +52950,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -51379,6 +52990,7 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -51401,6 +53013,7 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -51441,6 +53054,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -51471,6 +53085,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -51494,6 +53109,7 @@ export namespace Prisma {
     streak?: StreakCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -51516,6 +53132,7 @@ export namespace Prisma {
     streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -51551,6 +53168,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
     spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
@@ -51581,6 +53199,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
     spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
@@ -51616,6 +53235,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
     spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
@@ -51646,6 +53266,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
     spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
@@ -51684,6 +53305,7 @@ export namespace Prisma {
     streak?: StreakUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -51706,6 +53328,7 @@ export namespace Prisma {
     streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -51747,6 +53370,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
     spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
@@ -51777,6 +53401,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
     spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
@@ -51818,6 +53443,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
     spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
@@ -51848,6 +53474,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
     spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
@@ -51871,6 +53498,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
     issues?: IssueCreateNestedManyWithoutRelationshipInput
@@ -51893,6 +53521,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
     issues?: IssueUncheckedCreateNestedManyWithoutRelationshipInput
@@ -51957,6 +53586,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
     issues?: IssueUpdateManyWithoutRelationshipNestedInput
@@ -51979,6 +53609,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
     issues?: IssueUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -52049,6 +53680,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
@@ -52079,6 +53711,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
@@ -52156,6 +53789,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
@@ -52186,6 +53820,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
@@ -52209,6 +53844,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
     issues?: IssueCreateNestedManyWithoutRelationshipInput
@@ -52231,6 +53867,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
     issues?: IssueUncheckedCreateNestedManyWithoutRelationshipInput
@@ -52265,6 +53902,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -52295,6 +53933,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -52330,6 +53969,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -52360,6 +54000,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -52399,6 +54040,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
     issues?: IssueUpdateManyWithoutRelationshipNestedInput
@@ -52421,6 +54063,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
     issues?: IssueUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -52461,6 +54104,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -52491,6 +54135,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -52532,6 +54177,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -52562,6 +54208,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -52585,6 +54232,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     issues?: IssueCreateNestedManyWithoutRelationshipInput
@@ -52607,6 +54255,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     issues?: IssueUncheckedCreateNestedManyWithoutRelationshipInput
@@ -52645,6 +54294,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     issues?: IssueUpdateManyWithoutRelationshipNestedInput
@@ -52667,6 +54317,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     issues?: IssueUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -52688,6 +54339,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -52710,6 +54362,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -52776,6 +54429,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -52798,6 +54452,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -52866,6 +54521,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -52896,6 +54552,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -52971,6 +54628,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -53001,6 +54659,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -53024,6 +54683,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -53046,6 +54706,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -53112,6 +54773,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -53134,6 +54796,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -53202,6 +54865,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -53232,6 +54896,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -53307,6 +54972,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -53337,6 +55003,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -53361,6 +55028,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -53383,6 +55051,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -53421,6 +55090,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -53443,9 +55113,258 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type RelationshipCreateWithoutTimeCapsulesInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
+    invites?: InviteCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingCreateNestedManyWithoutRelationshipInput
+    streak?: StreakCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
+    issues?: IssueCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipUncheckedCreateWithoutTimeCapsulesInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
+    invites?: InviteUncheckedCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionUncheckedCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
+    streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
+    issues?: IssueUncheckedCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipCreateOrConnectWithoutTimeCapsulesInput = {
+    where: RelationshipWhereUniqueInput
+    create: XOR<RelationshipCreateWithoutTimeCapsulesInput, RelationshipUncheckedCreateWithoutTimeCapsulesInput>
+  }
+
+  export type UserCreateWithoutTimeCapsulesInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberCreateNestedManyWithoutUserInput
+    invitesSent?: InviteCreateNestedManyWithoutSenderInput
+    responses?: ResponseCreateNestedManyWithoutUserInput
+    reflections?: ReflectionCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTimeCapsulesInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutSenderInput
+    responses?: ResponseUncheckedCreateNestedManyWithoutUserInput
+    reflections?: ReflectionUncheckedCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationUncheckedCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationUncheckedCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTimeCapsulesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTimeCapsulesInput, UserUncheckedCreateWithoutTimeCapsulesInput>
+  }
+
+  export type RelationshipUpsertWithoutTimeCapsulesInput = {
+    update: XOR<RelationshipUpdateWithoutTimeCapsulesInput, RelationshipUncheckedUpdateWithoutTimeCapsulesInput>
+    create: XOR<RelationshipCreateWithoutTimeCapsulesInput, RelationshipUncheckedCreateWithoutTimeCapsulesInput>
+    where?: RelationshipWhereInput
+  }
+
+  export type RelationshipUpdateToOneWithWhereWithoutTimeCapsulesInput = {
+    where?: RelationshipWhereInput
+    data: XOR<RelationshipUpdateWithoutTimeCapsulesInput, RelationshipUncheckedUpdateWithoutTimeCapsulesInput>
+  }
+
+  export type RelationshipUpdateWithoutTimeCapsulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
+    issues?: IssueUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type RelationshipUncheckedUpdateWithoutTimeCapsulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUncheckedUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
+    issues?: IssueUncheckedUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type UserUpsertWithoutTimeCapsulesInput = {
+    update: XOR<UserUpdateWithoutTimeCapsulesInput, UserUncheckedUpdateWithoutTimeCapsulesInput>
+    create: XOR<UserCreateWithoutTimeCapsulesInput, UserUncheckedCreateWithoutTimeCapsulesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTimeCapsulesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTimeCapsulesInput, UserUncheckedUpdateWithoutTimeCapsulesInput>
+  }
+
+  export type UserUpdateWithoutTimeCapsulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTimeCapsulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUncheckedUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUncheckedUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUncheckedUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUncheckedUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -53583,6 +55502,15 @@ export namespace Prisma {
     sourceId?: string | null
     snapshot: JsonNullValueInput | InputJsonValue
     savedAt?: Date | string
+  }
+
+  export type TimeCapsuleCreateManyAuthorInput = {
+    id?: string
+    relationshipId: string
+    message: string
+    openOn: Date | string
+    createdAt?: Date | string
+    openNotifiedAt?: Date | string | null
   }
 
   export type AppreciationCreateManyFromUserInput = {
@@ -54042,6 +55970,33 @@ export namespace Prisma {
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TimeCapsuleUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    openOn?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    openNotifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    relationship?: RelationshipUpdateOneRequiredWithoutTimeCapsulesNestedInput
+  }
+
+  export type TimeCapsuleUncheckedUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    openOn?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    openNotifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TimeCapsuleUncheckedUpdateManyWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    openOn?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    openNotifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type AppreciationUpdateWithoutFromUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
@@ -54260,6 +56215,15 @@ export namespace Prisma {
     content: string
     weekKey: string
     createdAt?: Date | string
+  }
+
+  export type TimeCapsuleCreateManyRelationshipInput = {
+    id?: string
+    authorId: string
+    message: string
+    openOn: Date | string
+    createdAt?: Date | string
+    openNotifiedAt?: Date | string | null
   }
 
   export type WyrSessionCreateManyRelationshipInput = {
@@ -54581,6 +56545,33 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     weekKey?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TimeCapsuleUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    openOn?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    openNotifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    author?: UserUpdateOneRequiredWithoutTimeCapsulesNestedInput
+  }
+
+  export type TimeCapsuleUncheckedUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    openOn?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    openNotifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TimeCapsuleUncheckedUpdateManyWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    openOn?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    openNotifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type WyrSessionUpdateWithoutRelationshipInput = {
@@ -55185,6 +57176,10 @@ export namespace Prisma {
      * @deprecated Use RateLimitDefaultArgs instead
      */
     export type RateLimitArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = RateLimitDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use TimeCapsuleDefaultArgs instead
+     */
+    export type TimeCapsuleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = TimeCapsuleDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

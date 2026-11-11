@@ -131,7 +131,31 @@ export async function GET(request: Request) {
     }
   }
 
+  // Time capsules whose day has come: tell both partners, once.
+  const opening = await prisma.timeCapsule.findMany({
+    where: { openOn: { lte: today }, openNotifiedAt: null },
+    select: {
+      id: true,
+      createdAt: true,
+      relationship: { select: { members: { where: { leftAt: null }, select: { userId: true } } } },
+    },
+    take: 500,
+  });
+  let capsulesOpened = 0;
+  for (const c of opening) {
+    const sealed = c.createdAt.toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
+    for (const m of c.relationship.members) {
+      await sendPushToUser(m.userId, {
+        title: "A time capsule just opened",
+        body: `Sealed in ${sealed}. Open it together.`,
+        url: "/app/constellation",
+      }).catch(() => 0);
+    }
+    await prisma.timeCapsule.update({ where: { id: c.id }, data: { openNotifiedAt: new Date() } });
+    capsulesOpened++;
+  }
+
   const rateLimitRowsPruned = await pruneRateLimits().catch(() => 0);
 
-  return NextResponse.json({ ok: true, pushed, emailed, invitesNudged, rateLimitRowsPruned });
+  return NextResponse.json({ ok: true, pushed, emailed, invitesNudged, capsulesOpened, rateLimitRowsPruned });
 }

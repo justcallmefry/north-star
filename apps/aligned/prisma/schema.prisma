@@ -85,6 +85,7 @@ model User {
   pushSubscriptions  PushSubscription[]
   deviceTokens       DeviceToken[]
   memories           Memory[]
+  timeCapsules       TimeCapsule[]
   appreciationsSent     Appreciation[] @relation("AppreciationSent")
   appreciationsReceived Appreciation[] @relation("AppreciationReceived")
   wyrParticipations     WyrParticipation[]
@@ -185,6 +186,7 @@ model Relationship {
   subscriptions Subscription[]
   memories     Memory[]
   appreciations     Appreciation[]
+  timeCapsules      TimeCapsule[]
   wyrSessions       WyrSession[]
   spotlights        PartnerSpotlight[]
   dateNightDares    DateNightDare[]
@@ -741,4 +743,25 @@ model RateLimit {
 
   @@id([key, windowStart])
   @@index([windowStart])
+}
+
+/// A message sealed until a date the couple picks. Unreadable to both
+/// partners, the author included, until openOn; the server never returns
+/// `message` before then.
+model TimeCapsule {
+  id             String    @id @default(cuid())
+  relationshipId String
+  authorId       String
+  message        String    @db.Text
+  /// UTC calendar date the capsule opens.
+  openOn         DateTime  @db.Date
+  createdAt      DateTime  @default(now())
+  /// Set when the "it opened" push went out, so it's sent once.
+  openNotifiedAt DateTime?
+
+  relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  author       User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([relationshipId])
+  @@index([openOn])
 }

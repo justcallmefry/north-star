@@ -17,8 +17,13 @@ export type Sky3DHandle = {
   flyOverview: () => void;
 };
 
+export type Comet = { id: string; openOn: string };
+
 type Props = {
   layout: SkyLayout;
+  /** Sealed time capsules, drawn as comets ahead of the newest month. */
+  comets?: Comet[];
+  onSelectComet?: (id: string) => void;
   palette: CouplePalette;
   /** Session id of a star to ignite on arrival (just revealed). */
   bornId?: string | null;
@@ -69,13 +74,13 @@ function hexToRgb(hex: string): [number, number, number] {
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 export const Sky3D = forwardRef<Sky3DHandle, Props>(function Sky3D(
-  { layout, palette, bornId, onSelect, onBorn, onUnsupported },
+  { layout, comets = [], onSelectComet, palette, bornId, onSelect, onBorn, onUnsupported },
   ref
 ) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const api = useRef<Sky3DHandle>({ flyToMonth: () => {}, flyOverview: () => {} });
-  const cb = useRef({ onSelect, onBorn, onUnsupported });
-  cb.current = { onSelect, onBorn, onUnsupported };
+  const cb = useRef({ onSelect, onBorn, onUnsupported, onSelectComet });
+  cb.current = { onSelect, onBorn, onUnsupported, onSelectComet };
 
   useImperativeHandle(ref, () => ({
     flyToMonth: (i) => api.current.flyToMonth(i),
@@ -250,6 +255,42 @@ export const Sky3D = forwardRef<Sky3DHandle, Props>(function Sky3D(
         labels.push(sprite);
       }
 
+      // Sealed time capsules: comets hanging just ahead of "now".
+      const front = layout.months[0]?.center ?? { x: 0, y: 0, z: 0 };
+      let cometPoints: import("three").Points | null = null;
+      if (comets.length) {
+        const cp = new Float32Array(comets.length * 3);
+        const tail = new Float32Array(comets.length * 6);
+        const tailCol = new Float32Array(comets.length * 6);
+        comets.forEach((c, k) => {
+          // Up and to the side of the newest month, inside the default view.
+          const x = front.x - 9 + ((k * 7) % 21);
+          const y = front.y + 12 + (k % 2) * 4;
+          const z = front.z + 4 - k * 3;
+          cp.set([x, y, z], k * 3);
+          tail.set([x, y, z, x + 9, y + 5, z - 12], k * 6);
+          tailCol.set([0.75, 0.85, 1, 0, 0, 0], k * 6);
+        });
+        const cg = new THREE.BufferGeometry();
+        cg.setAttribute("position", new THREE.BufferAttribute(cp, 3));
+        cg.setAttribute("aColor", new THREE.BufferAttribute(new Float32Array(comets.length * 3).fill(0.9), 3));
+        cg.setAttribute("aSize", new THREE.BufferAttribute(new Float32Array(comets.length).fill(10), 1));
+        cg.setAttribute("aTwinkle", new THREE.BufferAttribute(new Float32Array(comets.length).fill(1), 1));
+        cg.setAttribute("aScale", new THREE.BufferAttribute(new Float32Array(comets.length).fill(1), 1));
+        cg.setAttribute("aPhase", new THREE.BufferAttribute(new Float32Array(comets.length).map((_, i) => i * 1.7), 1));
+        cometPoints = new THREE.Points(cg, makeMaterial());
+        scene.add(cometPoints);
+        const tg = new THREE.BufferGeometry();
+        tg.setAttribute("position", new THREE.BufferAttribute(tail, 3));
+        tg.setAttribute("color", new THREE.BufferAttribute(tailCol, 3));
+        scene.add(
+          new THREE.LineSegments(
+            tg,
+            new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false })
+          )
+        );
+      }
+
       // ── camera choreography ──────────────────────────────────────
       const V = THREE.Vector3;
       const viewFor = (c: { x: number; y: number; z: number }, dist = 46) => ({
@@ -299,6 +340,14 @@ export const Sky3D = forwardRef<Sky3DHandle, Props>(function Sky3D(
         const r = renderer.domElement.getBoundingClientRect();
         ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
         raycaster.setFromCamera(ndc, camera);
+        if (cometPoints) {
+          const ch = raycaster.intersectObject(cometPoints);
+          if (ch.length) {
+            cb.current.onSelect(null);
+            cb.current.onSelectComet?.(comets[ch[0]!.index!]!.id);
+            return;
+          }
+        }
         const hits = raycaster.intersectObject(starPoints);
         if (!hits.length) {
           cb.current.onSelect(null);
@@ -384,7 +433,9 @@ export const Sky3D = forwardRef<Sky3DHandle, Props>(function Sky3D(
       disposed = true;
       cleanup();
     };
-  }, [layout, palette, bornId]);
+    // comets keyed by content so an equal re-render doesn't rebuild the scene.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [layout, palette, bornId, JSON.stringify(comets)]);
 
   return <div ref={hostRef} className="absolute inset-0" />;
 });

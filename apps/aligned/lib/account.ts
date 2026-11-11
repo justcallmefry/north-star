@@ -14,7 +14,7 @@ import { stripe } from "@/lib/stripe";
  */
 async function deleteUploadedFiles(userId: string): Promise<void> {
   if (!process.env.BLOB_READ_WRITE_TOKEN) return;
-  for (const prefix of [`profile/${userId}/`, `dare-photos/${userId}/`]) {
+  for (const prefix of [`profile/${userId}/`, `dare-photos/${userId}/`, `day-photos/${userId}/`]) {
     try {
       let cursor: string | undefined;
       do {

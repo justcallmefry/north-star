@@ -30,6 +30,8 @@ type Props = {
   palette: CouplePalette;
   /** Session id of a star to ignite on arrival (just revealed). */
   bornId?: string | null;
+  /** Session id of a star to fly to and open on arrival ("on this day"). */
+  focusId?: string | null;
   onSelect: (star: SkyStar | null) => void;
   onBorn?: () => void;
   /** Called if WebGL can't start, so the page can fall back to the flat sky. */
@@ -77,7 +79,7 @@ function hexToRgb(hex: string): [number, number, number] {
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 export const Sky3D = forwardRef<Sky3DHandle, Props>(function Sky3D(
-  { layout, comets = [], onSelectComet, names = {}, onSelectExtra, palette, bornId, onSelect, onBorn, onUnsupported },
+  { layout, comets = [], onSelectComet, names = {}, onSelectExtra, palette, bornId, focusId, onSelect, onBorn, onUnsupported },
   ref
 ) {
   const hostRef = useRef<HTMLDivElement | null>(null);
@@ -397,6 +399,12 @@ export const Sky3D = forwardRef<Sky3DHandle, Props>(function Sky3D(
       } else {
         camera.position.copy(home.position);
         controls.target.copy(home.target);
+        const focus = focusId ? layout.stars.find((s) => s.id === focusId) : null;
+        if (focus) {
+          // Travel back to that day, then open it.
+          fly({ target: new V(focus.x, focus.y, focus.z), position: new V(focus.x, focus.y + 3, focus.z + 22) }, 2000);
+          setTimeout(() => !disposed && cb.current.onSelect(focus), 2000);
+        }
       }
 
       // ── picking ──────────────────────────────────────────────────
@@ -526,7 +534,7 @@ export const Sky3D = forwardRef<Sky3DHandle, Props>(function Sky3D(
     };
     // comets keyed by content so an equal re-render doesn't rebuild the scene.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [layout, palette, bornId, JSON.stringify(comets), JSON.stringify(names)]);
+  }, [layout, palette, bornId, focusId, JSON.stringify(comets), JSON.stringify(names)]);
 
   return <div ref={hostRef} className="absolute inset-0" />;
 });

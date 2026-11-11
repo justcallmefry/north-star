@@ -24,7 +24,7 @@ export default function PrivacyPage() {
         <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">
           Privacy Policy
         </h1>
-        <p className="mt-2 text-sm text-slate-500">Last updated: October 9, 2026</p>
+        <p className="mt-2 text-sm text-slate-500">Last updated: November 11, 2026</p>
 
         <div className="mt-8 space-y-8 text-base leading-relaxed text-slate-700">
           <section>
@@ -55,14 +55,16 @@ export default function PrivacyPage() {
 
             <p className="mt-3 font-medium text-slate-800">What you create</p>
             <p>
-              Your daily answers, reactions, reflections, weekly check-in notes, and dare photos you choose to
-              take. These are shown to you and to your partner, and are used to produce features built from them,
-              such as your weekly magazine and streaks.
+              Your daily answers, reactions, reflections, weekly check-in notes, photos you add, time capsules,
+              and the names you give your constellations. These are shown to you and to your partner (a time
+              capsule only once its date arrives), and are used to produce features built from them, such as
+              your sky, your weekly magazine and streaks.
             </p>
 
             <p className="mt-3 font-medium text-slate-800">Photos</p>
             <p>
-              When you set a profile photo or complete a photo dare, the image you pick or take is uploaded. We
+              When you set a profile photo, complete a photo dare, or add a photo to a day, the image you pick or
+              take is uploaded. We
               never browse your photo library. Photos are stored at long, unguessable web addresses, so anyone who
               is given a photo&apos;s address could open it; we never publish those addresses anywhere.
             </p>
@@ -136,7 +138,7 @@ export default function PrivacyPage() {
             </p>
             <ul className="mt-2 list-disc pl-5 space-y-1">
               <li>Your name, email, password, and sign-in connections are removed, and you&apos;re signed out on every device.</li>
-              <li>Your profile photo and dare photos are deleted.</li>
+              <li>Your profile photo, dare photos and day photos are deleted.</li>
               <li>Your notification tokens are deleted.</li>
               <li>A subscription bought on our website is canceled.</li>
               <li>

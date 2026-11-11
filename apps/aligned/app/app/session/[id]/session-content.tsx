@@ -25,6 +25,7 @@ import { PostRevealActionBar } from "./post-reveal-action-bar";
 import { SealReveal } from "./seal-reveal";
 import { UnfoldCard } from "./unfold-card";
 import { KineticText } from "./kinetic-text";
+import { DayPhotos, type DayPhoto } from "./day-photos";
 import { AlignedStamp } from "./aligned-stamp";
 import { detectAligned } from "@/lib/reveal/aligned";
 import { detectCalledIt } from "@/lib/reveal/called-it";
@@ -142,9 +143,9 @@ const STREAK_MILESTONE_EYEBROW: Record<string, string> = {
   "streak-365": "One year milestone",
 };
 
-type Props = { data: GetSessionResult; currentUserId: string };
+type Props = { data: GetSessionResult; currentUserId: string; photos?: DayPhoto[] };
 
-export function SessionContent({ data, currentUserId }: Props) {
+export function SessionContent({ data, currentUserId, photos = [] }: Props) {
   const router = useRouter();
   const [text, setText] = useState(data.userResponse ?? "");
   const [reaction, setReaction] = useState<string>("");
@@ -869,6 +870,10 @@ export function SessionContent({ data, currentUserId }: Props) {
           )}
 
           {/* Follow-up conversation prompt — bridges the app to a real conversation */}
+          {(partnerRevealed || !revealed) && data.state === "revealed" && (
+            <DayPhotos sessionId={data.sessionId} photos={photos} />
+          )}
+
           {(partnerRevealed || !revealed) && (
             <div id="talk-about-it" className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3.5">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">

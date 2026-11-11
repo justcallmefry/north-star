@@ -86,6 +86,7 @@ model User {
   deviceTokens            DeviceToken[]
   memories                Memory[]
   timeCapsules            TimeCapsule[]
+  sessionPhotos           SessionPhoto[]
   appreciationsSent       Appreciation[]           @relation("AppreciationSent")
   appreciationsReceived   Appreciation[]           @relation("AppreciationReceived")
   wyrParticipations       WyrParticipation[]
@@ -320,10 +321,11 @@ model DailySession {
   promptId       String?
   state          SessionState @default(open)
 
-  relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
-  prompt       Prompt?      @relation(fields: [promptId], references: [id], onDelete: SetNull)
+  relationship Relationship   @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  prompt       Prompt?        @relation(fields: [promptId], references: [id], onDelete: SetNull)
   responses    Response[]
   reflections  Reflection[]
+  photos       SessionPhoto[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -779,4 +781,19 @@ model ConstellationName {
   relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
 
   @@unique([relationshipId, monthKey])
+}
+
+/// One photo per partner per day, so a day in the sky can carry a picture.
+model SessionPhoto {
+  id        String   @id @default(cuid())
+  sessionId String
+  userId    String
+  url       String
+  createdAt DateTime @default(now())
+
+  session DailySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, userId])
+  @@index([sessionId])
 }

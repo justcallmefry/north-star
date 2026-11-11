@@ -194,6 +194,11 @@ export type TimeCapsule = $Result.DefaultSelection<Prisma.$TimeCapsulePayload>
  * The name a couple gives a month's constellation once the month is over.
  */
 export type ConstellationName = $Result.DefaultSelection<Prisma.$ConstellationNamePayload>
+/**
+ * Model SessionPhoto
+ * One photo per partner per day, so a day in the sky can carry a picture.
+ */
+export type SessionPhoto = $Result.DefaultSelection<Prisma.$SessionPhotoPayload>
 
 /**
  * Enums
@@ -806,6 +811,16 @@ export class PrismaClient<
     * ```
     */
   get constellationName(): Prisma.ConstellationNameDelegate<ExtArgs>;
+
+  /**
+   * `prisma.sessionPhoto`: Exposes CRUD operations for the **SessionPhoto** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SessionPhotos
+    * const sessionPhotos = await prisma.sessionPhoto.findMany()
+    * ```
+    */
+  get sessionPhoto(): Prisma.SessionPhotoDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -1280,7 +1295,8 @@ export namespace Prisma {
     Issue: 'Issue',
     RateLimit: 'RateLimit',
     TimeCapsule: 'TimeCapsule',
-    ConstellationName: 'ConstellationName'
+    ConstellationName: 'ConstellationName',
+    SessionPhoto: 'SessionPhoto'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1296,7 +1312,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "pushSubscription" | "deviceToken" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "memory" | "appreciation" | "wyrSession" | "wyrParticipation" | "partnerSpotlight" | "dateNightDare" | "appEvent" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation" | "issue" | "rateLimit" | "timeCapsule" | "constellationName"
+      modelProps: "user" | "pushSubscription" | "deviceToken" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "memory" | "appreciation" | "wyrSession" | "wyrParticipation" | "partnerSpotlight" | "dateNightDare" | "appEvent" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation" | "issue" | "rateLimit" | "timeCapsule" | "constellationName" | "sessionPhoto"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3680,6 +3696,76 @@ export namespace Prisma {
           }
         }
       }
+      SessionPhoto: {
+        payload: Prisma.$SessionPhotoPayload<ExtArgs>
+        fields: Prisma.SessionPhotoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SessionPhotoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPhotoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SessionPhotoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPhotoPayload>
+          }
+          findFirst: {
+            args: Prisma.SessionPhotoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPhotoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SessionPhotoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPhotoPayload>
+          }
+          findMany: {
+            args: Prisma.SessionPhotoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPhotoPayload>[]
+          }
+          create: {
+            args: Prisma.SessionPhotoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPhotoPayload>
+          }
+          createMany: {
+            args: Prisma.SessionPhotoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SessionPhotoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPhotoPayload>[]
+          }
+          delete: {
+            args: Prisma.SessionPhotoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPhotoPayload>
+          }
+          update: {
+            args: Prisma.SessionPhotoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPhotoPayload>
+          }
+          deleteMany: {
+            args: Prisma.SessionPhotoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SessionPhotoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SessionPhotoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPhotoPayload>
+          }
+          aggregate: {
+            args: Prisma.SessionPhotoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSessionPhoto>
+          }
+          groupBy: {
+            args: Prisma.SessionPhotoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SessionPhotoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SessionPhotoCountArgs<ExtArgs>
+            result: $Utils.Optional<SessionPhotoCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3856,6 +3942,7 @@ export namespace Prisma {
     deviceTokens: number
     memories: number
     timeCapsules: number
+    sessionPhotos: number
     appreciationsSent: number
     appreciationsReceived: number
     wyrParticipations: number
@@ -3879,6 +3966,7 @@ export namespace Prisma {
     deviceTokens?: boolean | UserCountOutputTypeCountDeviceTokensArgs
     memories?: boolean | UserCountOutputTypeCountMemoriesArgs
     timeCapsules?: boolean | UserCountOutputTypeCountTimeCapsulesArgs
+    sessionPhotos?: boolean | UserCountOutputTypeCountSessionPhotosArgs
     appreciationsSent?: boolean | UserCountOutputTypeCountAppreciationsSentArgs
     appreciationsReceived?: boolean | UserCountOutputTypeCountAppreciationsReceivedArgs
     wyrParticipations?: boolean | UserCountOutputTypeCountWyrParticipationsArgs
@@ -4000,6 +4088,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountTimeCapsulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TimeCapsuleWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSessionPhotosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionPhotoWhereInput
   }
 
   /**
@@ -4233,11 +4328,13 @@ export namespace Prisma {
   export type DailySessionCountOutputType = {
     responses: number
     reflections: number
+    photos: number
   }
 
   export type DailySessionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     responses?: boolean | DailySessionCountOutputTypeCountResponsesArgs
     reflections?: boolean | DailySessionCountOutputTypeCountReflectionsArgs
+    photos?: boolean | DailySessionCountOutputTypeCountPhotosArgs
   }
 
   // Custom InputTypes
@@ -4263,6 +4360,13 @@ export namespace Prisma {
    */
   export type DailySessionCountOutputTypeCountReflectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ReflectionWhereInput
+  }
+
+  /**
+   * DailySessionCountOutputType without action
+   */
+  export type DailySessionCountOutputTypeCountPhotosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionPhotoWhereInput
   }
 
 
@@ -4636,6 +4740,7 @@ export namespace Prisma {
     deviceTokens?: boolean | User$deviceTokensArgs<ExtArgs>
     memories?: boolean | User$memoriesArgs<ExtArgs>
     timeCapsules?: boolean | User$timeCapsulesArgs<ExtArgs>
+    sessionPhotos?: boolean | User$sessionPhotosArgs<ExtArgs>
     appreciationsSent?: boolean | User$appreciationsSentArgs<ExtArgs>
     appreciationsReceived?: boolean | User$appreciationsReceivedArgs<ExtArgs>
     wyrParticipations?: boolean | User$wyrParticipationsArgs<ExtArgs>
@@ -4684,6 +4789,7 @@ export namespace Prisma {
     deviceTokens?: boolean | User$deviceTokensArgs<ExtArgs>
     memories?: boolean | User$memoriesArgs<ExtArgs>
     timeCapsules?: boolean | User$timeCapsulesArgs<ExtArgs>
+    sessionPhotos?: boolean | User$sessionPhotosArgs<ExtArgs>
     appreciationsSent?: boolean | User$appreciationsSentArgs<ExtArgs>
     appreciationsReceived?: boolean | User$appreciationsReceivedArgs<ExtArgs>
     wyrParticipations?: boolean | User$wyrParticipationsArgs<ExtArgs>
@@ -4711,6 +4817,7 @@ export namespace Prisma {
       deviceTokens: Prisma.$DeviceTokenPayload<ExtArgs>[]
       memories: Prisma.$MemoryPayload<ExtArgs>[]
       timeCapsules: Prisma.$TimeCapsulePayload<ExtArgs>[]
+      sessionPhotos: Prisma.$SessionPhotoPayload<ExtArgs>[]
       appreciationsSent: Prisma.$AppreciationPayload<ExtArgs>[]
       appreciationsReceived: Prisma.$AppreciationPayload<ExtArgs>[]
       wyrParticipations: Prisma.$WyrParticipationPayload<ExtArgs>[]
@@ -5106,6 +5213,7 @@ export namespace Prisma {
     deviceTokens<T extends User$deviceTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$deviceTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeviceTokenPayload<ExtArgs>, T, "findMany"> | Null>
     memories<T extends User$memoriesArgs<ExtArgs> = {}>(args?: Subset<T, User$memoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany"> | Null>
     timeCapsules<T extends User$timeCapsulesArgs<ExtArgs> = {}>(args?: Subset<T, User$timeCapsulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "findMany"> | Null>
+    sessionPhotos<T extends User$sessionPhotosArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionPhotosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPhotoPayload<ExtArgs>, T, "findMany"> | Null>
     appreciationsSent<T extends User$appreciationsSentArgs<ExtArgs> = {}>(args?: Subset<T, User$appreciationsSentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "findMany"> | Null>
     appreciationsReceived<T extends User$appreciationsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$appreciationsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "findMany"> | Null>
     wyrParticipations<T extends User$wyrParticipationsArgs<ExtArgs> = {}>(args?: Subset<T, User$wyrParticipationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WyrParticipationPayload<ExtArgs>, T, "findMany"> | Null>
@@ -5760,6 +5868,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TimeCapsuleScalarFieldEnum | TimeCapsuleScalarFieldEnum[]
+  }
+
+  /**
+   * User.sessionPhotos
+   */
+  export type User$sessionPhotosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionPhoto
+     */
+    select?: SessionPhotoSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionPhotoInclude<ExtArgs> | null
+    where?: SessionPhotoWhereInput
+    orderBy?: SessionPhotoOrderByWithRelationInput | SessionPhotoOrderByWithRelationInput[]
+    cursor?: SessionPhotoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionPhotoScalarFieldEnum | SessionPhotoScalarFieldEnum[]
   }
 
   /**
@@ -15352,6 +15480,7 @@ export namespace Prisma {
     prompt?: boolean | DailySession$promptArgs<ExtArgs>
     responses?: boolean | DailySession$responsesArgs<ExtArgs>
     reflections?: boolean | DailySession$reflectionsArgs<ExtArgs>
+    photos?: boolean | DailySession$photosArgs<ExtArgs>
     _count?: boolean | DailySessionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dailySession"]>
 
@@ -15382,6 +15511,7 @@ export namespace Prisma {
     prompt?: boolean | DailySession$promptArgs<ExtArgs>
     responses?: boolean | DailySession$responsesArgs<ExtArgs>
     reflections?: boolean | DailySession$reflectionsArgs<ExtArgs>
+    photos?: boolean | DailySession$photosArgs<ExtArgs>
     _count?: boolean | DailySessionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DailySessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15396,6 +15526,7 @@ export namespace Prisma {
       prompt: Prisma.$PromptPayload<ExtArgs> | null
       responses: Prisma.$ResponsePayload<ExtArgs>[]
       reflections: Prisma.$ReflectionPayload<ExtArgs>[]
+      photos: Prisma.$SessionPhotoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -15773,6 +15904,7 @@ export namespace Prisma {
     prompt<T extends DailySession$promptArgs<ExtArgs> = {}>(args?: Subset<T, DailySession$promptArgs<ExtArgs>>): Prisma__PromptClient<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     responses<T extends DailySession$responsesArgs<ExtArgs> = {}>(args?: Subset<T, DailySession$responsesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResponsePayload<ExtArgs>, T, "findMany"> | Null>
     reflections<T extends DailySession$reflectionsArgs<ExtArgs> = {}>(args?: Subset<T, DailySession$reflectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReflectionPayload<ExtArgs>, T, "findMany"> | Null>
+    photos<T extends DailySession$photosArgs<ExtArgs> = {}>(args?: Subset<T, DailySession$photosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPhotoPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -16179,6 +16311,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ReflectionScalarFieldEnum | ReflectionScalarFieldEnum[]
+  }
+
+  /**
+   * DailySession.photos
+   */
+  export type DailySession$photosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionPhoto
+     */
+    select?: SessionPhotoSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionPhotoInclude<ExtArgs> | null
+    where?: SessionPhotoWhereInput
+    orderBy?: SessionPhotoOrderByWithRelationInput | SessionPhotoOrderByWithRelationInput[]
+    cursor?: SessionPhotoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionPhotoScalarFieldEnum | SessionPhotoScalarFieldEnum[]
   }
 
   /**
@@ -38524,6 +38676,945 @@ export namespace Prisma {
 
 
   /**
+   * Model SessionPhoto
+   */
+
+  export type AggregateSessionPhoto = {
+    _count: SessionPhotoCountAggregateOutputType | null
+    _min: SessionPhotoMinAggregateOutputType | null
+    _max: SessionPhotoMaxAggregateOutputType | null
+  }
+
+  export type SessionPhotoMinAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    userId: string | null
+    url: string | null
+    createdAt: Date | null
+  }
+
+  export type SessionPhotoMaxAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    userId: string | null
+    url: string | null
+    createdAt: Date | null
+  }
+
+  export type SessionPhotoCountAggregateOutputType = {
+    id: number
+    sessionId: number
+    userId: number
+    url: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SessionPhotoMinAggregateInputType = {
+    id?: true
+    sessionId?: true
+    userId?: true
+    url?: true
+    createdAt?: true
+  }
+
+  export type SessionPhotoMaxAggregateInputType = {
+    id?: true
+    sessionId?: true
+    userId?: true
+    url?: true
+    createdAt?: true
+  }
+
+  export type SessionPhotoCountAggregateInputType = {
+    id?: true
+    sessionId?: true
+    userId?: true
+    url?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SessionPhotoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SessionPhoto to aggregate.
+     */
+    where?: SessionPhotoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessionPhotos to fetch.
+     */
+    orderBy?: SessionPhotoOrderByWithRelationInput | SessionPhotoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SessionPhotoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessionPhotos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessionPhotos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SessionPhotos
+    **/
+    _count?: true | SessionPhotoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SessionPhotoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SessionPhotoMaxAggregateInputType
+  }
+
+  export type GetSessionPhotoAggregateType<T extends SessionPhotoAggregateArgs> = {
+        [P in keyof T & keyof AggregateSessionPhoto]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSessionPhoto[P]>
+      : GetScalarType<T[P], AggregateSessionPhoto[P]>
+  }
+
+
+
+
+  export type SessionPhotoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionPhotoWhereInput
+    orderBy?: SessionPhotoOrderByWithAggregationInput | SessionPhotoOrderByWithAggregationInput[]
+    by: SessionPhotoScalarFieldEnum[] | SessionPhotoScalarFieldEnum
+    having?: SessionPhotoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SessionPhotoCountAggregateInputType | true
+    _min?: SessionPhotoMinAggregateInputType
+    _max?: SessionPhotoMaxAggregateInputType
+  }
+
+  export type SessionPhotoGroupByOutputType = {
+    id: string
+    sessionId: string
+    userId: string
+    url: string
+    createdAt: Date
+    _count: SessionPhotoCountAggregateOutputType | null
+    _min: SessionPhotoMinAggregateOutputType | null
+    _max: SessionPhotoMaxAggregateOutputType | null
+  }
+
+  type GetSessionPhotoGroupByPayload<T extends SessionPhotoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SessionPhotoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SessionPhotoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SessionPhotoGroupByOutputType[P]>
+            : GetScalarType<T[P], SessionPhotoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SessionPhotoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    userId?: boolean
+    url?: boolean
+    createdAt?: boolean
+    session?: boolean | DailySessionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sessionPhoto"]>
+
+  export type SessionPhotoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    userId?: boolean
+    url?: boolean
+    createdAt?: boolean
+    session?: boolean | DailySessionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sessionPhoto"]>
+
+  export type SessionPhotoSelectScalar = {
+    id?: boolean
+    sessionId?: boolean
+    userId?: boolean
+    url?: boolean
+    createdAt?: boolean
+  }
+
+  export type SessionPhotoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | DailySessionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SessionPhotoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | DailySessionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SessionPhotoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SessionPhoto"
+    objects: {
+      session: Prisma.$DailySessionPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      sessionId: string
+      userId: string
+      url: string
+      createdAt: Date
+    }, ExtArgs["result"]["sessionPhoto"]>
+    composites: {}
+  }
+
+  type SessionPhotoGetPayload<S extends boolean | null | undefined | SessionPhotoDefaultArgs> = $Result.GetResult<Prisma.$SessionPhotoPayload, S>
+
+  type SessionPhotoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<SessionPhotoFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: SessionPhotoCountAggregateInputType | true
+    }
+
+  export interface SessionPhotoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SessionPhoto'], meta: { name: 'SessionPhoto' } }
+    /**
+     * Find zero or one SessionPhoto that matches the filter.
+     * @param {SessionPhotoFindUniqueArgs} args - Arguments to find a SessionPhoto
+     * @example
+     * // Get one SessionPhoto
+     * const sessionPhoto = await prisma.sessionPhoto.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SessionPhotoFindUniqueArgs>(args: SelectSubset<T, SessionPhotoFindUniqueArgs<ExtArgs>>): Prisma__SessionPhotoClient<$Result.GetResult<Prisma.$SessionPhotoPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one SessionPhoto that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {SessionPhotoFindUniqueOrThrowArgs} args - Arguments to find a SessionPhoto
+     * @example
+     * // Get one SessionPhoto
+     * const sessionPhoto = await prisma.sessionPhoto.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SessionPhotoFindUniqueOrThrowArgs>(args: SelectSubset<T, SessionPhotoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SessionPhotoClient<$Result.GetResult<Prisma.$SessionPhotoPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first SessionPhoto that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionPhotoFindFirstArgs} args - Arguments to find a SessionPhoto
+     * @example
+     * // Get one SessionPhoto
+     * const sessionPhoto = await prisma.sessionPhoto.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SessionPhotoFindFirstArgs>(args?: SelectSubset<T, SessionPhotoFindFirstArgs<ExtArgs>>): Prisma__SessionPhotoClient<$Result.GetResult<Prisma.$SessionPhotoPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first SessionPhoto that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionPhotoFindFirstOrThrowArgs} args - Arguments to find a SessionPhoto
+     * @example
+     * // Get one SessionPhoto
+     * const sessionPhoto = await prisma.sessionPhoto.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SessionPhotoFindFirstOrThrowArgs>(args?: SelectSubset<T, SessionPhotoFindFirstOrThrowArgs<ExtArgs>>): Prisma__SessionPhotoClient<$Result.GetResult<Prisma.$SessionPhotoPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more SessionPhotos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionPhotoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SessionPhotos
+     * const sessionPhotos = await prisma.sessionPhoto.findMany()
+     * 
+     * // Get first 10 SessionPhotos
+     * const sessionPhotos = await prisma.sessionPhoto.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sessionPhotoWithIdOnly = await prisma.sessionPhoto.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SessionPhotoFindManyArgs>(args?: SelectSubset<T, SessionPhotoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPhotoPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a SessionPhoto.
+     * @param {SessionPhotoCreateArgs} args - Arguments to create a SessionPhoto.
+     * @example
+     * // Create one SessionPhoto
+     * const SessionPhoto = await prisma.sessionPhoto.create({
+     *   data: {
+     *     // ... data to create a SessionPhoto
+     *   }
+     * })
+     * 
+     */
+    create<T extends SessionPhotoCreateArgs>(args: SelectSubset<T, SessionPhotoCreateArgs<ExtArgs>>): Prisma__SessionPhotoClient<$Result.GetResult<Prisma.$SessionPhotoPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many SessionPhotos.
+     * @param {SessionPhotoCreateManyArgs} args - Arguments to create many SessionPhotos.
+     * @example
+     * // Create many SessionPhotos
+     * const sessionPhoto = await prisma.sessionPhoto.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SessionPhotoCreateManyArgs>(args?: SelectSubset<T, SessionPhotoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SessionPhotos and returns the data saved in the database.
+     * @param {SessionPhotoCreateManyAndReturnArgs} args - Arguments to create many SessionPhotos.
+     * @example
+     * // Create many SessionPhotos
+     * const sessionPhoto = await prisma.sessionPhoto.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SessionPhotos and only return the `id`
+     * const sessionPhotoWithIdOnly = await prisma.sessionPhoto.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SessionPhotoCreateManyAndReturnArgs>(args?: SelectSubset<T, SessionPhotoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPhotoPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a SessionPhoto.
+     * @param {SessionPhotoDeleteArgs} args - Arguments to delete one SessionPhoto.
+     * @example
+     * // Delete one SessionPhoto
+     * const SessionPhoto = await prisma.sessionPhoto.delete({
+     *   where: {
+     *     // ... filter to delete one SessionPhoto
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SessionPhotoDeleteArgs>(args: SelectSubset<T, SessionPhotoDeleteArgs<ExtArgs>>): Prisma__SessionPhotoClient<$Result.GetResult<Prisma.$SessionPhotoPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one SessionPhoto.
+     * @param {SessionPhotoUpdateArgs} args - Arguments to update one SessionPhoto.
+     * @example
+     * // Update one SessionPhoto
+     * const sessionPhoto = await prisma.sessionPhoto.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SessionPhotoUpdateArgs>(args: SelectSubset<T, SessionPhotoUpdateArgs<ExtArgs>>): Prisma__SessionPhotoClient<$Result.GetResult<Prisma.$SessionPhotoPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more SessionPhotos.
+     * @param {SessionPhotoDeleteManyArgs} args - Arguments to filter SessionPhotos to delete.
+     * @example
+     * // Delete a few SessionPhotos
+     * const { count } = await prisma.sessionPhoto.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SessionPhotoDeleteManyArgs>(args?: SelectSubset<T, SessionPhotoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SessionPhotos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionPhotoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SessionPhotos
+     * const sessionPhoto = await prisma.sessionPhoto.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SessionPhotoUpdateManyArgs>(args: SelectSubset<T, SessionPhotoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SessionPhoto.
+     * @param {SessionPhotoUpsertArgs} args - Arguments to update or create a SessionPhoto.
+     * @example
+     * // Update or create a SessionPhoto
+     * const sessionPhoto = await prisma.sessionPhoto.upsert({
+     *   create: {
+     *     // ... data to create a SessionPhoto
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SessionPhoto we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SessionPhotoUpsertArgs>(args: SelectSubset<T, SessionPhotoUpsertArgs<ExtArgs>>): Prisma__SessionPhotoClient<$Result.GetResult<Prisma.$SessionPhotoPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of SessionPhotos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionPhotoCountArgs} args - Arguments to filter SessionPhotos to count.
+     * @example
+     * // Count the number of SessionPhotos
+     * const count = await prisma.sessionPhoto.count({
+     *   where: {
+     *     // ... the filter for the SessionPhotos we want to count
+     *   }
+     * })
+    **/
+    count<T extends SessionPhotoCountArgs>(
+      args?: Subset<T, SessionPhotoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SessionPhotoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SessionPhoto.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionPhotoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SessionPhotoAggregateArgs>(args: Subset<T, SessionPhotoAggregateArgs>): Prisma.PrismaPromise<GetSessionPhotoAggregateType<T>>
+
+    /**
+     * Group by SessionPhoto.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionPhotoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SessionPhotoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SessionPhotoGroupByArgs['orderBy'] }
+        : { orderBy?: SessionPhotoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SessionPhotoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSessionPhotoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SessionPhoto model
+   */
+  readonly fields: SessionPhotoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SessionPhoto.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SessionPhotoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    session<T extends DailySessionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DailySessionDefaultArgs<ExtArgs>>): Prisma__DailySessionClient<$Result.GetResult<Prisma.$DailySessionPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SessionPhoto model
+   */ 
+  interface SessionPhotoFieldRefs {
+    readonly id: FieldRef<"SessionPhoto", 'String'>
+    readonly sessionId: FieldRef<"SessionPhoto", 'String'>
+    readonly userId: FieldRef<"SessionPhoto", 'String'>
+    readonly url: FieldRef<"SessionPhoto", 'String'>
+    readonly createdAt: FieldRef<"SessionPhoto", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SessionPhoto findUnique
+   */
+  export type SessionPhotoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionPhoto
+     */
+    select?: SessionPhotoSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionPhotoInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionPhoto to fetch.
+     */
+    where: SessionPhotoWhereUniqueInput
+  }
+
+  /**
+   * SessionPhoto findUniqueOrThrow
+   */
+  export type SessionPhotoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionPhoto
+     */
+    select?: SessionPhotoSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionPhotoInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionPhoto to fetch.
+     */
+    where: SessionPhotoWhereUniqueInput
+  }
+
+  /**
+   * SessionPhoto findFirst
+   */
+  export type SessionPhotoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionPhoto
+     */
+    select?: SessionPhotoSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionPhotoInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionPhoto to fetch.
+     */
+    where?: SessionPhotoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessionPhotos to fetch.
+     */
+    orderBy?: SessionPhotoOrderByWithRelationInput | SessionPhotoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SessionPhotos.
+     */
+    cursor?: SessionPhotoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessionPhotos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessionPhotos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SessionPhotos.
+     */
+    distinct?: SessionPhotoScalarFieldEnum | SessionPhotoScalarFieldEnum[]
+  }
+
+  /**
+   * SessionPhoto findFirstOrThrow
+   */
+  export type SessionPhotoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionPhoto
+     */
+    select?: SessionPhotoSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionPhotoInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionPhoto to fetch.
+     */
+    where?: SessionPhotoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessionPhotos to fetch.
+     */
+    orderBy?: SessionPhotoOrderByWithRelationInput | SessionPhotoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SessionPhotos.
+     */
+    cursor?: SessionPhotoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessionPhotos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessionPhotos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SessionPhotos.
+     */
+    distinct?: SessionPhotoScalarFieldEnum | SessionPhotoScalarFieldEnum[]
+  }
+
+  /**
+   * SessionPhoto findMany
+   */
+  export type SessionPhotoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionPhoto
+     */
+    select?: SessionPhotoSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionPhotoInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionPhotos to fetch.
+     */
+    where?: SessionPhotoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessionPhotos to fetch.
+     */
+    orderBy?: SessionPhotoOrderByWithRelationInput | SessionPhotoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SessionPhotos.
+     */
+    cursor?: SessionPhotoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessionPhotos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessionPhotos.
+     */
+    skip?: number
+    distinct?: SessionPhotoScalarFieldEnum | SessionPhotoScalarFieldEnum[]
+  }
+
+  /**
+   * SessionPhoto create
+   */
+  export type SessionPhotoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionPhoto
+     */
+    select?: SessionPhotoSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionPhotoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SessionPhoto.
+     */
+    data: XOR<SessionPhotoCreateInput, SessionPhotoUncheckedCreateInput>
+  }
+
+  /**
+   * SessionPhoto createMany
+   */
+  export type SessionPhotoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SessionPhotos.
+     */
+    data: SessionPhotoCreateManyInput | SessionPhotoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SessionPhoto createManyAndReturn
+   */
+  export type SessionPhotoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionPhoto
+     */
+    select?: SessionPhotoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many SessionPhotos.
+     */
+    data: SessionPhotoCreateManyInput | SessionPhotoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionPhotoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SessionPhoto update
+   */
+  export type SessionPhotoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionPhoto
+     */
+    select?: SessionPhotoSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionPhotoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SessionPhoto.
+     */
+    data: XOR<SessionPhotoUpdateInput, SessionPhotoUncheckedUpdateInput>
+    /**
+     * Choose, which SessionPhoto to update.
+     */
+    where: SessionPhotoWhereUniqueInput
+  }
+
+  /**
+   * SessionPhoto updateMany
+   */
+  export type SessionPhotoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SessionPhotos.
+     */
+    data: XOR<SessionPhotoUpdateManyMutationInput, SessionPhotoUncheckedUpdateManyInput>
+    /**
+     * Filter which SessionPhotos to update
+     */
+    where?: SessionPhotoWhereInput
+  }
+
+  /**
+   * SessionPhoto upsert
+   */
+  export type SessionPhotoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionPhoto
+     */
+    select?: SessionPhotoSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionPhotoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SessionPhoto to update in case it exists.
+     */
+    where: SessionPhotoWhereUniqueInput
+    /**
+     * In case the SessionPhoto found by the `where` argument doesn't exist, create a new SessionPhoto with this data.
+     */
+    create: XOR<SessionPhotoCreateInput, SessionPhotoUncheckedCreateInput>
+    /**
+     * In case the SessionPhoto was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SessionPhotoUpdateInput, SessionPhotoUncheckedUpdateInput>
+  }
+
+  /**
+   * SessionPhoto delete
+   */
+  export type SessionPhotoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionPhoto
+     */
+    select?: SessionPhotoSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionPhotoInclude<ExtArgs> | null
+    /**
+     * Filter which SessionPhoto to delete.
+     */
+    where: SessionPhotoWhereUniqueInput
+  }
+
+  /**
+   * SessionPhoto deleteMany
+   */
+  export type SessionPhotoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SessionPhotos to delete
+     */
+    where?: SessionPhotoWhereInput
+  }
+
+  /**
+   * SessionPhoto without action
+   */
+  export type SessionPhotoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionPhoto
+     */
+    select?: SessionPhotoSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionPhotoInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -38997,6 +40088,17 @@ export namespace Prisma {
   export type ConstellationNameScalarFieldEnum = (typeof ConstellationNameScalarFieldEnum)[keyof typeof ConstellationNameScalarFieldEnum]
 
 
+  export const SessionPhotoScalarFieldEnum: {
+    id: 'id',
+    sessionId: 'sessionId',
+    userId: 'userId',
+    url: 'url',
+    createdAt: 'createdAt'
+  };
+
+  export type SessionPhotoScalarFieldEnum = (typeof SessionPhotoScalarFieldEnum)[keyof typeof SessionPhotoScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -39305,6 +40407,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenListRelationFilter
     memories?: MemoryListRelationFilter
     timeCapsules?: TimeCapsuleListRelationFilter
+    sessionPhotos?: SessionPhotoListRelationFilter
     appreciationsSent?: AppreciationListRelationFilter
     appreciationsReceived?: AppreciationListRelationFilter
     wyrParticipations?: WyrParticipationListRelationFilter
@@ -39337,6 +40440,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenOrderByRelationAggregateInput
     memories?: MemoryOrderByRelationAggregateInput
     timeCapsules?: TimeCapsuleOrderByRelationAggregateInput
+    sessionPhotos?: SessionPhotoOrderByRelationAggregateInput
     appreciationsSent?: AppreciationOrderByRelationAggregateInput
     appreciationsReceived?: AppreciationOrderByRelationAggregateInput
     wyrParticipations?: WyrParticipationOrderByRelationAggregateInput
@@ -39372,6 +40476,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenListRelationFilter
     memories?: MemoryListRelationFilter
     timeCapsules?: TimeCapsuleListRelationFilter
+    sessionPhotos?: SessionPhotoListRelationFilter
     appreciationsSent?: AppreciationListRelationFilter
     appreciationsReceived?: AppreciationListRelationFilter
     wyrParticipations?: WyrParticipationListRelationFilter
@@ -40144,6 +41249,7 @@ export namespace Prisma {
     prompt?: XOR<PromptNullableRelationFilter, PromptWhereInput> | null
     responses?: ResponseListRelationFilter
     reflections?: ReflectionListRelationFilter
+    photos?: SessionPhotoListRelationFilter
   }
 
   export type DailySessionOrderByWithRelationInput = {
@@ -40158,6 +41264,7 @@ export namespace Prisma {
     prompt?: PromptOrderByWithRelationInput
     responses?: ResponseOrderByRelationAggregateInput
     reflections?: ReflectionOrderByRelationAggregateInput
+    photos?: SessionPhotoOrderByRelationAggregateInput
   }
 
   export type DailySessionWhereUniqueInput = Prisma.AtLeast<{
@@ -40176,6 +41283,7 @@ export namespace Prisma {
     prompt?: XOR<PromptNullableRelationFilter, PromptWhereInput> | null
     responses?: ResponseListRelationFilter
     reflections?: ReflectionListRelationFilter
+    photos?: SessionPhotoListRelationFilter
   }, "id" | "relationshipId_sessionDate">
 
   export type DailySessionOrderByWithAggregationInput = {
@@ -41776,6 +42884,65 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ConstellationName"> | Date | string
   }
 
+  export type SessionPhotoWhereInput = {
+    AND?: SessionPhotoWhereInput | SessionPhotoWhereInput[]
+    OR?: SessionPhotoWhereInput[]
+    NOT?: SessionPhotoWhereInput | SessionPhotoWhereInput[]
+    id?: StringFilter<"SessionPhoto"> | string
+    sessionId?: StringFilter<"SessionPhoto"> | string
+    userId?: StringFilter<"SessionPhoto"> | string
+    url?: StringFilter<"SessionPhoto"> | string
+    createdAt?: DateTimeFilter<"SessionPhoto"> | Date | string
+    session?: XOR<DailySessionRelationFilter, DailySessionWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type SessionPhotoOrderByWithRelationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    userId?: SortOrder
+    url?: SortOrder
+    createdAt?: SortOrder
+    session?: DailySessionOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type SessionPhotoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    sessionId_userId?: SessionPhotoSessionIdUserIdCompoundUniqueInput
+    AND?: SessionPhotoWhereInput | SessionPhotoWhereInput[]
+    OR?: SessionPhotoWhereInput[]
+    NOT?: SessionPhotoWhereInput | SessionPhotoWhereInput[]
+    sessionId?: StringFilter<"SessionPhoto"> | string
+    userId?: StringFilter<"SessionPhoto"> | string
+    url?: StringFilter<"SessionPhoto"> | string
+    createdAt?: DateTimeFilter<"SessionPhoto"> | Date | string
+    session?: XOR<DailySessionRelationFilter, DailySessionWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id" | "sessionId_userId">
+
+  export type SessionPhotoOrderByWithAggregationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    userId?: SortOrder
+    url?: SortOrder
+    createdAt?: SortOrder
+    _count?: SessionPhotoCountOrderByAggregateInput
+    _max?: SessionPhotoMaxOrderByAggregateInput
+    _min?: SessionPhotoMinOrderByAggregateInput
+  }
+
+  export type SessionPhotoScalarWhereWithAggregatesInput = {
+    AND?: SessionPhotoScalarWhereWithAggregatesInput | SessionPhotoScalarWhereWithAggregatesInput[]
+    OR?: SessionPhotoScalarWhereWithAggregatesInput[]
+    NOT?: SessionPhotoScalarWhereWithAggregatesInput | SessionPhotoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SessionPhoto"> | string
+    sessionId?: StringWithAggregatesFilter<"SessionPhoto"> | string
+    userId?: StringWithAggregatesFilter<"SessionPhoto"> | string
+    url?: StringWithAggregatesFilter<"SessionPhoto"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"SessionPhoto"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -41801,6 +42968,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -41833,6 +43001,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -41865,6 +43034,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -41897,6 +43067,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -42752,6 +43923,7 @@ export namespace Prisma {
     prompt?: PromptCreateNestedOneWithoutDailySessionsInput
     responses?: ResponseCreateNestedManyWithoutSessionInput
     reflections?: ReflectionCreateNestedManyWithoutSessionInput
+    photos?: SessionPhotoCreateNestedManyWithoutSessionInput
   }
 
   export type DailySessionUncheckedCreateInput = {
@@ -42764,6 +43936,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     responses?: ResponseUncheckedCreateNestedManyWithoutSessionInput
     reflections?: ReflectionUncheckedCreateNestedManyWithoutSessionInput
+    photos?: SessionPhotoUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type DailySessionUpdateInput = {
@@ -42776,6 +43949,7 @@ export namespace Prisma {
     prompt?: PromptUpdateOneWithoutDailySessionsNestedInput
     responses?: ResponseUpdateManyWithoutSessionNestedInput
     reflections?: ReflectionUpdateManyWithoutSessionNestedInput
+    photos?: SessionPhotoUpdateManyWithoutSessionNestedInput
   }
 
   export type DailySessionUncheckedUpdateInput = {
@@ -42788,6 +43962,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     responses?: ResponseUncheckedUpdateManyWithoutSessionNestedInput
     reflections?: ReflectionUncheckedUpdateManyWithoutSessionNestedInput
+    photos?: SessionPhotoUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type DailySessionCreateManyInput = {
@@ -44414,6 +45589,60 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SessionPhotoCreateInput = {
+    id?: string
+    url: string
+    createdAt?: Date | string
+    session: DailySessionCreateNestedOneWithoutPhotosInput
+    user: UserCreateNestedOneWithoutSessionPhotosInput
+  }
+
+  export type SessionPhotoUncheckedCreateInput = {
+    id?: string
+    sessionId: string
+    userId: string
+    url: string
+    createdAt?: Date | string
+  }
+
+  export type SessionPhotoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: DailySessionUpdateOneRequiredWithoutPhotosNestedInput
+    user?: UserUpdateOneRequiredWithoutSessionPhotosNestedInput
+  }
+
+  export type SessionPhotoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionPhotoCreateManyInput = {
+    id?: string
+    sessionId: string
+    userId: string
+    url: string
+    createdAt?: Date | string
+  }
+
+  export type SessionPhotoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionPhotoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -44556,6 +45785,12 @@ export namespace Prisma {
     none?: TimeCapsuleWhereInput
   }
 
+  export type SessionPhotoListRelationFilter = {
+    every?: SessionPhotoWhereInput
+    some?: SessionPhotoWhereInput
+    none?: SessionPhotoWhereInput
+  }
+
   export type AppreciationListRelationFilter = {
     every?: AppreciationWhereInput
     some?: AppreciationWhereInput
@@ -44636,6 +45871,10 @@ export namespace Prisma {
   }
 
   export type TimeCapsuleOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SessionPhotoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -46460,6 +47699,35 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type SessionPhotoSessionIdUserIdCompoundUniqueInput = {
+    sessionId: string
+    userId: string
+  }
+
+  export type SessionPhotoCountOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    userId?: SortOrder
+    url?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SessionPhotoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    userId?: SortOrder
+    url?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SessionPhotoMinOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    userId?: SortOrder
+    url?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -46563,6 +47831,13 @@ export namespace Prisma {
     connectOrCreate?: TimeCapsuleCreateOrConnectWithoutAuthorInput | TimeCapsuleCreateOrConnectWithoutAuthorInput[]
     createMany?: TimeCapsuleCreateManyAuthorInputEnvelope
     connect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+  }
+
+  export type SessionPhotoCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionPhotoCreateWithoutUserInput, SessionPhotoUncheckedCreateWithoutUserInput> | SessionPhotoCreateWithoutUserInput[] | SessionPhotoUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionPhotoCreateOrConnectWithoutUserInput | SessionPhotoCreateOrConnectWithoutUserInput[]
+    createMany?: SessionPhotoCreateManyUserInputEnvelope
+    connect?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
   }
 
   export type AppreciationCreateNestedManyWithoutFromUserInput = {
@@ -46703,6 +47978,13 @@ export namespace Prisma {
     connectOrCreate?: TimeCapsuleCreateOrConnectWithoutAuthorInput | TimeCapsuleCreateOrConnectWithoutAuthorInput[]
     createMany?: TimeCapsuleCreateManyAuthorInputEnvelope
     connect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+  }
+
+  export type SessionPhotoUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionPhotoCreateWithoutUserInput, SessionPhotoUncheckedCreateWithoutUserInput> | SessionPhotoCreateWithoutUserInput[] | SessionPhotoUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionPhotoCreateOrConnectWithoutUserInput | SessionPhotoCreateOrConnectWithoutUserInput[]
+    createMany?: SessionPhotoCreateManyUserInputEnvelope
+    connect?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
   }
 
   export type AppreciationUncheckedCreateNestedManyWithoutFromUserInput = {
@@ -46964,6 +48246,20 @@ export namespace Prisma {
     update?: TimeCapsuleUpdateWithWhereUniqueWithoutAuthorInput | TimeCapsuleUpdateWithWhereUniqueWithoutAuthorInput[]
     updateMany?: TimeCapsuleUpdateManyWithWhereWithoutAuthorInput | TimeCapsuleUpdateManyWithWhereWithoutAuthorInput[]
     deleteMany?: TimeCapsuleScalarWhereInput | TimeCapsuleScalarWhereInput[]
+  }
+
+  export type SessionPhotoUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionPhotoCreateWithoutUserInput, SessionPhotoUncheckedCreateWithoutUserInput> | SessionPhotoCreateWithoutUserInput[] | SessionPhotoUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionPhotoCreateOrConnectWithoutUserInput | SessionPhotoCreateOrConnectWithoutUserInput[]
+    upsert?: SessionPhotoUpsertWithWhereUniqueWithoutUserInput | SessionPhotoUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionPhotoCreateManyUserInputEnvelope
+    set?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    disconnect?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    delete?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    connect?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    update?: SessionPhotoUpdateWithWhereUniqueWithoutUserInput | SessionPhotoUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionPhotoUpdateManyWithWhereWithoutUserInput | SessionPhotoUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionPhotoScalarWhereInput | SessionPhotoScalarWhereInput[]
   }
 
   export type AppreciationUpdateManyWithoutFromUserNestedInput = {
@@ -47244,6 +48540,20 @@ export namespace Prisma {
     update?: TimeCapsuleUpdateWithWhereUniqueWithoutAuthorInput | TimeCapsuleUpdateWithWhereUniqueWithoutAuthorInput[]
     updateMany?: TimeCapsuleUpdateManyWithWhereWithoutAuthorInput | TimeCapsuleUpdateManyWithWhereWithoutAuthorInput[]
     deleteMany?: TimeCapsuleScalarWhereInput | TimeCapsuleScalarWhereInput[]
+  }
+
+  export type SessionPhotoUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionPhotoCreateWithoutUserInput, SessionPhotoUncheckedCreateWithoutUserInput> | SessionPhotoCreateWithoutUserInput[] | SessionPhotoUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionPhotoCreateOrConnectWithoutUserInput | SessionPhotoCreateOrConnectWithoutUserInput[]
+    upsert?: SessionPhotoUpsertWithWhereUniqueWithoutUserInput | SessionPhotoUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionPhotoCreateManyUserInputEnvelope
+    set?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    disconnect?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    delete?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    connect?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    update?: SessionPhotoUpdateWithWhereUniqueWithoutUserInput | SessionPhotoUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionPhotoUpdateManyWithWhereWithoutUserInput | SessionPhotoUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionPhotoScalarWhereInput | SessionPhotoScalarWhereInput[]
   }
 
   export type AppreciationUncheckedUpdateManyWithoutFromUserNestedInput = {
@@ -48207,6 +49517,13 @@ export namespace Prisma {
     connect?: ReflectionWhereUniqueInput | ReflectionWhereUniqueInput[]
   }
 
+  export type SessionPhotoCreateNestedManyWithoutSessionInput = {
+    create?: XOR<SessionPhotoCreateWithoutSessionInput, SessionPhotoUncheckedCreateWithoutSessionInput> | SessionPhotoCreateWithoutSessionInput[] | SessionPhotoUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SessionPhotoCreateOrConnectWithoutSessionInput | SessionPhotoCreateOrConnectWithoutSessionInput[]
+    createMany?: SessionPhotoCreateManySessionInputEnvelope
+    connect?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+  }
+
   export type ResponseUncheckedCreateNestedManyWithoutSessionInput = {
     create?: XOR<ResponseCreateWithoutSessionInput, ResponseUncheckedCreateWithoutSessionInput> | ResponseCreateWithoutSessionInput[] | ResponseUncheckedCreateWithoutSessionInput[]
     connectOrCreate?: ResponseCreateOrConnectWithoutSessionInput | ResponseCreateOrConnectWithoutSessionInput[]
@@ -48219,6 +49536,13 @@ export namespace Prisma {
     connectOrCreate?: ReflectionCreateOrConnectWithoutSessionInput | ReflectionCreateOrConnectWithoutSessionInput[]
     createMany?: ReflectionCreateManySessionInputEnvelope
     connect?: ReflectionWhereUniqueInput | ReflectionWhereUniqueInput[]
+  }
+
+  export type SessionPhotoUncheckedCreateNestedManyWithoutSessionInput = {
+    create?: XOR<SessionPhotoCreateWithoutSessionInput, SessionPhotoUncheckedCreateWithoutSessionInput> | SessionPhotoCreateWithoutSessionInput[] | SessionPhotoUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SessionPhotoCreateOrConnectWithoutSessionInput | SessionPhotoCreateOrConnectWithoutSessionInput[]
+    createMany?: SessionPhotoCreateManySessionInputEnvelope
+    connect?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
   }
 
   export type EnumSessionStateFieldUpdateOperationsInput = {
@@ -48271,6 +49595,20 @@ export namespace Prisma {
     deleteMany?: ReflectionScalarWhereInput | ReflectionScalarWhereInput[]
   }
 
+  export type SessionPhotoUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<SessionPhotoCreateWithoutSessionInput, SessionPhotoUncheckedCreateWithoutSessionInput> | SessionPhotoCreateWithoutSessionInput[] | SessionPhotoUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SessionPhotoCreateOrConnectWithoutSessionInput | SessionPhotoCreateOrConnectWithoutSessionInput[]
+    upsert?: SessionPhotoUpsertWithWhereUniqueWithoutSessionInput | SessionPhotoUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: SessionPhotoCreateManySessionInputEnvelope
+    set?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    disconnect?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    delete?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    connect?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    update?: SessionPhotoUpdateWithWhereUniqueWithoutSessionInput | SessionPhotoUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: SessionPhotoUpdateManyWithWhereWithoutSessionInput | SessionPhotoUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: SessionPhotoScalarWhereInput | SessionPhotoScalarWhereInput[]
+  }
+
   export type ResponseUncheckedUpdateManyWithoutSessionNestedInput = {
     create?: XOR<ResponseCreateWithoutSessionInput, ResponseUncheckedCreateWithoutSessionInput> | ResponseCreateWithoutSessionInput[] | ResponseUncheckedCreateWithoutSessionInput[]
     connectOrCreate?: ResponseCreateOrConnectWithoutSessionInput | ResponseCreateOrConnectWithoutSessionInput[]
@@ -48297,6 +49635,20 @@ export namespace Prisma {
     update?: ReflectionUpdateWithWhereUniqueWithoutSessionInput | ReflectionUpdateWithWhereUniqueWithoutSessionInput[]
     updateMany?: ReflectionUpdateManyWithWhereWithoutSessionInput | ReflectionUpdateManyWithWhereWithoutSessionInput[]
     deleteMany?: ReflectionScalarWhereInput | ReflectionScalarWhereInput[]
+  }
+
+  export type SessionPhotoUncheckedUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<SessionPhotoCreateWithoutSessionInput, SessionPhotoUncheckedCreateWithoutSessionInput> | SessionPhotoCreateWithoutSessionInput[] | SessionPhotoUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SessionPhotoCreateOrConnectWithoutSessionInput | SessionPhotoCreateOrConnectWithoutSessionInput[]
+    upsert?: SessionPhotoUpsertWithWhereUniqueWithoutSessionInput | SessionPhotoUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: SessionPhotoCreateManySessionInputEnvelope
+    set?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    disconnect?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    delete?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    connect?: SessionPhotoWhereUniqueInput | SessionPhotoWhereUniqueInput[]
+    update?: SessionPhotoUpdateWithWhereUniqueWithoutSessionInput | SessionPhotoUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: SessionPhotoUpdateManyWithWhereWithoutSessionInput | SessionPhotoUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: SessionPhotoScalarWhereInput | SessionPhotoScalarWhereInput[]
   }
 
   export type DailySessionCreateNestedOneWithoutResponsesInput = {
@@ -49005,6 +50357,34 @@ export namespace Prisma {
     upsert?: RelationshipUpsertWithoutConstellationNamesInput
     connect?: RelationshipWhereUniqueInput
     update?: XOR<XOR<RelationshipUpdateToOneWithWhereWithoutConstellationNamesInput, RelationshipUpdateWithoutConstellationNamesInput>, RelationshipUncheckedUpdateWithoutConstellationNamesInput>
+  }
+
+  export type DailySessionCreateNestedOneWithoutPhotosInput = {
+    create?: XOR<DailySessionCreateWithoutPhotosInput, DailySessionUncheckedCreateWithoutPhotosInput>
+    connectOrCreate?: DailySessionCreateOrConnectWithoutPhotosInput
+    connect?: DailySessionWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutSessionPhotosInput = {
+    create?: XOR<UserCreateWithoutSessionPhotosInput, UserUncheckedCreateWithoutSessionPhotosInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSessionPhotosInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DailySessionUpdateOneRequiredWithoutPhotosNestedInput = {
+    create?: XOR<DailySessionCreateWithoutPhotosInput, DailySessionUncheckedCreateWithoutPhotosInput>
+    connectOrCreate?: DailySessionCreateOrConnectWithoutPhotosInput
+    upsert?: DailySessionUpsertWithoutPhotosInput
+    connect?: DailySessionWhereUniqueInput
+    update?: XOR<XOR<DailySessionUpdateToOneWithWhereWithoutPhotosInput, DailySessionUpdateWithoutPhotosInput>, DailySessionUncheckedUpdateWithoutPhotosInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutSessionPhotosNestedInput = {
+    create?: XOR<UserCreateWithoutSessionPhotosInput, UserUncheckedCreateWithoutSessionPhotosInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSessionPhotosInput
+    upsert?: UserUpsertWithoutSessionPhotosInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionPhotosInput, UserUpdateWithoutSessionPhotosInput>, UserUncheckedUpdateWithoutSessionPhotosInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -49883,6 +51263,30 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SessionPhotoCreateWithoutUserInput = {
+    id?: string
+    url: string
+    createdAt?: Date | string
+    session: DailySessionCreateNestedOneWithoutPhotosInput
+  }
+
+  export type SessionPhotoUncheckedCreateWithoutUserInput = {
+    id?: string
+    sessionId: string
+    url: string
+    createdAt?: Date | string
+  }
+
+  export type SessionPhotoCreateOrConnectWithoutUserInput = {
+    where: SessionPhotoWhereUniqueInput
+    create: XOR<SessionPhotoCreateWithoutUserInput, SessionPhotoUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionPhotoCreateManyUserInputEnvelope = {
+    data: SessionPhotoCreateManyUserInput | SessionPhotoCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AppreciationCreateWithoutFromUserInput = {
     id?: string
     content: string
@@ -50467,6 +51871,33 @@ export namespace Prisma {
     openNotifiedAt?: DateTimeNullableFilter<"TimeCapsule"> | Date | string | null
   }
 
+  export type SessionPhotoUpsertWithWhereUniqueWithoutUserInput = {
+    where: SessionPhotoWhereUniqueInput
+    update: XOR<SessionPhotoUpdateWithoutUserInput, SessionPhotoUncheckedUpdateWithoutUserInput>
+    create: XOR<SessionPhotoCreateWithoutUserInput, SessionPhotoUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionPhotoUpdateWithWhereUniqueWithoutUserInput = {
+    where: SessionPhotoWhereUniqueInput
+    data: XOR<SessionPhotoUpdateWithoutUserInput, SessionPhotoUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SessionPhotoUpdateManyWithWhereWithoutUserInput = {
+    where: SessionPhotoScalarWhereInput
+    data: XOR<SessionPhotoUpdateManyMutationInput, SessionPhotoUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SessionPhotoScalarWhereInput = {
+    AND?: SessionPhotoScalarWhereInput | SessionPhotoScalarWhereInput[]
+    OR?: SessionPhotoScalarWhereInput[]
+    NOT?: SessionPhotoScalarWhereInput | SessionPhotoScalarWhereInput[]
+    id?: StringFilter<"SessionPhoto"> | string
+    sessionId?: StringFilter<"SessionPhoto"> | string
+    userId?: StringFilter<"SessionPhoto"> | string
+    url?: StringFilter<"SessionPhoto"> | string
+    createdAt?: DateTimeFilter<"SessionPhoto"> | Date | string
+  }
+
   export type AppreciationUpsertWithWhereUniqueWithoutFromUserInput = {
     where: AppreciationWhereUniqueInput
     update: XOR<AppreciationUpdateWithoutFromUserInput, AppreciationUncheckedUpdateWithoutFromUserInput>
@@ -50609,6 +52040,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -50640,6 +52072,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -50687,6 +52120,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -50718,6 +52152,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -50749,6 +52184,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -50780,6 +52216,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -50827,6 +52264,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -50858,6 +52296,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -50889,6 +52328,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -50920,6 +52360,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -50967,6 +52408,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -50998,6 +52440,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -51029,6 +52472,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -51060,6 +52504,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -51107,6 +52552,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -51138,6 +52584,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -51220,6 +52667,7 @@ export namespace Prisma {
     prompt?: PromptCreateNestedOneWithoutDailySessionsInput
     responses?: ResponseCreateNestedManyWithoutSessionInput
     reflections?: ReflectionCreateNestedManyWithoutSessionInput
+    photos?: SessionPhotoCreateNestedManyWithoutSessionInput
   }
 
   export type DailySessionUncheckedCreateWithoutRelationshipInput = {
@@ -51231,6 +52679,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     responses?: ResponseUncheckedCreateNestedManyWithoutSessionInput
     reflections?: ReflectionUncheckedCreateNestedManyWithoutSessionInput
+    photos?: SessionPhotoUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type DailySessionCreateOrConnectWithoutRelationshipInput = {
@@ -52086,6 +53535,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -52117,6 +53567,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -52223,6 +53674,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -52254,6 +53706,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -52338,6 +53791,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -52369,6 +53823,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -52475,6 +53930,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -52506,6 +53962,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -52522,6 +53979,7 @@ export namespace Prisma {
     relationship: RelationshipCreateNestedOneWithoutDailySessionsInput
     responses?: ResponseCreateNestedManyWithoutSessionInput
     reflections?: ReflectionCreateNestedManyWithoutSessionInput
+    photos?: SessionPhotoCreateNestedManyWithoutSessionInput
   }
 
   export type DailySessionUncheckedCreateWithoutPromptInput = {
@@ -52533,6 +53991,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     responses?: ResponseUncheckedCreateNestedManyWithoutSessionInput
     reflections?: ReflectionUncheckedCreateNestedManyWithoutSessionInput
+    photos?: SessionPhotoUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type DailySessionCreateOrConnectWithoutPromptInput = {
@@ -52727,6 +54186,30 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SessionPhotoCreateWithoutSessionInput = {
+    id?: string
+    url: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutSessionPhotosInput
+  }
+
+  export type SessionPhotoUncheckedCreateWithoutSessionInput = {
+    id?: string
+    userId: string
+    url: string
+    createdAt?: Date | string
+  }
+
+  export type SessionPhotoCreateOrConnectWithoutSessionInput = {
+    where: SessionPhotoWhereUniqueInput
+    create: XOR<SessionPhotoCreateWithoutSessionInput, SessionPhotoUncheckedCreateWithoutSessionInput>
+  }
+
+  export type SessionPhotoCreateManySessionInputEnvelope = {
+    data: SessionPhotoCreateManySessionInput | SessionPhotoCreateManySessionInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RelationshipUpsertWithoutDailySessionsInput = {
     update: XOR<RelationshipUpdateWithoutDailySessionsInput, RelationshipUncheckedUpdateWithoutDailySessionsInput>
     create: XOR<RelationshipCreateWithoutDailySessionsInput, RelationshipUncheckedCreateWithoutDailySessionsInput>
@@ -52881,6 +54364,22 @@ export namespace Prisma {
     data: XOR<ReflectionUpdateManyMutationInput, ReflectionUncheckedUpdateManyWithoutSessionInput>
   }
 
+  export type SessionPhotoUpsertWithWhereUniqueWithoutSessionInput = {
+    where: SessionPhotoWhereUniqueInput
+    update: XOR<SessionPhotoUpdateWithoutSessionInput, SessionPhotoUncheckedUpdateWithoutSessionInput>
+    create: XOR<SessionPhotoCreateWithoutSessionInput, SessionPhotoUncheckedCreateWithoutSessionInput>
+  }
+
+  export type SessionPhotoUpdateWithWhereUniqueWithoutSessionInput = {
+    where: SessionPhotoWhereUniqueInput
+    data: XOR<SessionPhotoUpdateWithoutSessionInput, SessionPhotoUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type SessionPhotoUpdateManyWithWhereWithoutSessionInput = {
+    where: SessionPhotoScalarWhereInput
+    data: XOR<SessionPhotoUpdateManyMutationInput, SessionPhotoUncheckedUpdateManyWithoutSessionInput>
+  }
+
   export type DailySessionCreateWithoutResponsesInput = {
     id?: string
     sessionDate: Date | string
@@ -52890,6 +54389,7 @@ export namespace Prisma {
     relationship: RelationshipCreateNestedOneWithoutDailySessionsInput
     prompt?: PromptCreateNestedOneWithoutDailySessionsInput
     reflections?: ReflectionCreateNestedManyWithoutSessionInput
+    photos?: SessionPhotoCreateNestedManyWithoutSessionInput
   }
 
   export type DailySessionUncheckedCreateWithoutResponsesInput = {
@@ -52901,6 +54401,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reflections?: ReflectionUncheckedCreateNestedManyWithoutSessionInput
+    photos?: SessionPhotoUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type DailySessionCreateOrConnectWithoutResponsesInput = {
@@ -52932,6 +54433,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -52963,6 +54465,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -53019,6 +54522,7 @@ export namespace Prisma {
     relationship?: RelationshipUpdateOneRequiredWithoutDailySessionsNestedInput
     prompt?: PromptUpdateOneWithoutDailySessionsNestedInput
     reflections?: ReflectionUpdateManyWithoutSessionNestedInput
+    photos?: SessionPhotoUpdateManyWithoutSessionNestedInput
   }
 
   export type DailySessionUncheckedUpdateWithoutResponsesInput = {
@@ -53030,6 +54534,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reflections?: ReflectionUncheckedUpdateManyWithoutSessionNestedInput
+    photos?: SessionPhotoUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type UserUpsertWithoutResponsesInput = {
@@ -53067,6 +54572,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -53098,6 +54604,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -53168,6 +54675,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -53199,6 +54707,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -53275,6 +54784,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -53306,6 +54816,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -53322,6 +54833,7 @@ export namespace Prisma {
     relationship: RelationshipCreateNestedOneWithoutDailySessionsInput
     prompt?: PromptCreateNestedOneWithoutDailySessionsInput
     responses?: ResponseCreateNestedManyWithoutSessionInput
+    photos?: SessionPhotoCreateNestedManyWithoutSessionInput
   }
 
   export type DailySessionUncheckedCreateWithoutReflectionsInput = {
@@ -53333,6 +54845,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     responses?: ResponseUncheckedCreateNestedManyWithoutSessionInput
+    photos?: SessionPhotoUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type DailySessionCreateOrConnectWithoutReflectionsInput = {
@@ -53364,6 +54877,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -53395,6 +54909,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -53427,6 +54942,7 @@ export namespace Prisma {
     relationship?: RelationshipUpdateOneRequiredWithoutDailySessionsNestedInput
     prompt?: PromptUpdateOneWithoutDailySessionsNestedInput
     responses?: ResponseUpdateManyWithoutSessionNestedInput
+    photos?: SessionPhotoUpdateManyWithoutSessionNestedInput
   }
 
   export type DailySessionUncheckedUpdateWithoutReflectionsInput = {
@@ -53438,6 +54954,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     responses?: ResponseUncheckedUpdateManyWithoutSessionNestedInput
+    photos?: SessionPhotoUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type UserUpsertWithoutReflectionsInput = {
@@ -53475,6 +54992,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -53506,6 +55024,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -53720,6 +55239,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -53751,6 +55271,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -53825,6 +55346,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -53856,6 +55378,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -53999,6 +55522,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -54030,6 +55554,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -54130,6 +55655,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -54161,6 +55687,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -54304,6 +55831,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -54335,6 +55863,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -54441,6 +55970,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -54472,6 +56002,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -54557,6 +56088,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
     spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
@@ -54588,6 +56120,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
     spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
@@ -54624,6 +56157,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
     spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
@@ -54655,6 +56189,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
     spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
@@ -54761,6 +56296,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
     spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
@@ -54792,6 +56328,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
     spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
@@ -54834,6 +56371,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
     spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
@@ -54865,6 +56403,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
     spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
@@ -55075,6 +56614,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
@@ -55106,6 +56646,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
@@ -55184,6 +56725,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
@@ -55215,6 +56757,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
@@ -55299,6 +56842,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -55330,6 +56874,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -55366,6 +56911,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -55397,6 +56943,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -55503,6 +57050,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -55534,6 +57082,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -55576,6 +57125,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -55607,6 +57157,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -55928,6 +57479,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -55959,6 +57511,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -56035,6 +57588,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -56066,6 +57620,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -56276,6 +57831,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -56307,6 +57863,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -56383,6 +57940,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -56414,6 +57972,7 @@ export namespace Prisma {
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -56610,6 +58169,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    sessionPhotos?: SessionPhotoCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
@@ -56641,6 +58201,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    sessionPhotos?: SessionPhotoUncheckedCreateNestedManyWithoutUserInput
     appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
     appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
     wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
@@ -56747,6 +58308,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    sessionPhotos?: SessionPhotoUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
@@ -56778,6 +58340,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    sessionPhotos?: SessionPhotoUncheckedUpdateManyWithoutUserNestedInput
     appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
     appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
@@ -56895,6 +58458,214 @@ export namespace Prisma {
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
     issues?: IssueUncheckedUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type DailySessionCreateWithoutPhotosInput = {
+    id?: string
+    sessionDate: Date | string
+    state?: $Enums.SessionState
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutDailySessionsInput
+    prompt?: PromptCreateNestedOneWithoutDailySessionsInput
+    responses?: ResponseCreateNestedManyWithoutSessionInput
+    reflections?: ReflectionCreateNestedManyWithoutSessionInput
+  }
+
+  export type DailySessionUncheckedCreateWithoutPhotosInput = {
+    id?: string
+    relationshipId: string
+    sessionDate: Date | string
+    promptId?: string | null
+    state?: $Enums.SessionState
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    responses?: ResponseUncheckedCreateNestedManyWithoutSessionInput
+    reflections?: ReflectionUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type DailySessionCreateOrConnectWithoutPhotosInput = {
+    where: DailySessionWhereUniqueInput
+    create: XOR<DailySessionCreateWithoutPhotosInput, DailySessionUncheckedCreateWithoutPhotosInput>
+  }
+
+  export type UserCreateWithoutSessionPhotosInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberCreateNestedManyWithoutUserInput
+    invitesSent?: InviteCreateNestedManyWithoutSenderInput
+    responses?: ResponseCreateNestedManyWithoutUserInput
+    reflections?: ReflectionCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    deviceTokens?: DeviceTokenCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutAuthorInput
+    appreciationsSent?: AppreciationCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSessionPhotosInput = {
+    id?: string
+    email: string
+    emailVerified?: Date | string | null
+    name?: string | null
+    image?: string | null
+    password?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    relationshipMembers?: RelationshipMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutSenderInput
+    responses?: ResponseUncheckedCreateNestedManyWithoutUserInput
+    reflections?: ReflectionUncheckedCreateNestedManyWithoutUserInput
+    responseValidations?: ResponseValidationUncheckedCreateNestedManyWithoutUserInput
+    quizParticipations?: QuizParticipationUncheckedCreateNestedManyWithoutUserInput
+    agreementParticipations?: AgreementParticipationUncheckedCreateNestedManyWithoutUserInput
+    meetingEntries?: MeetingEntryUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    deviceTokens?: DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutSavedByUserInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutAuthorInput
+    appreciationsSent?: AppreciationUncheckedCreateNestedManyWithoutFromUserInput
+    appreciationsReceived?: AppreciationUncheckedCreateNestedManyWithoutToUserInput
+    wyrParticipations?: WyrParticipationUncheckedCreateNestedManyWithoutUserInput
+    spotlightsSent?: PartnerSpotlightUncheckedCreateNestedManyWithoutFromUserInput
+    spotlightsReceived?: PartnerSpotlightUncheckedCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSessionPhotosInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSessionPhotosInput, UserUncheckedCreateWithoutSessionPhotosInput>
+  }
+
+  export type DailySessionUpsertWithoutPhotosInput = {
+    update: XOR<DailySessionUpdateWithoutPhotosInput, DailySessionUncheckedUpdateWithoutPhotosInput>
+    create: XOR<DailySessionCreateWithoutPhotosInput, DailySessionUncheckedCreateWithoutPhotosInput>
+    where?: DailySessionWhereInput
+  }
+
+  export type DailySessionUpdateToOneWithWhereWithoutPhotosInput = {
+    where?: DailySessionWhereInput
+    data: XOR<DailySessionUpdateWithoutPhotosInput, DailySessionUncheckedUpdateWithoutPhotosInput>
+  }
+
+  export type DailySessionUpdateWithoutPhotosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    state?: EnumSessionStateFieldUpdateOperationsInput | $Enums.SessionState
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutDailySessionsNestedInput
+    prompt?: PromptUpdateOneWithoutDailySessionsNestedInput
+    responses?: ResponseUpdateManyWithoutSessionNestedInput
+    reflections?: ReflectionUpdateManyWithoutSessionNestedInput
+  }
+
+  export type DailySessionUncheckedUpdateWithoutPhotosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    sessionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    promptId?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: EnumSessionStateFieldUpdateOperationsInput | $Enums.SessionState
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    responses?: ResponseUncheckedUpdateManyWithoutSessionNestedInput
+    reflections?: ReflectionUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type UserUpsertWithoutSessionPhotosInput = {
+    update: XOR<UserUpdateWithoutSessionPhotosInput, UserUncheckedUpdateWithoutSessionPhotosInput>
+    create: XOR<UserCreateWithoutSessionPhotosInput, UserUncheckedCreateWithoutSessionPhotosInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSessionPhotosInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSessionPhotosInput, UserUncheckedUpdateWithoutSessionPhotosInput>
+  }
+
+  export type UserUpdateWithoutSessionPhotosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    deviceTokens?: DeviceTokenUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutAuthorNestedInput
+    appreciationsSent?: AppreciationUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUpdateManyWithoutToUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSessionPhotosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    relationshipMembers?: RelationshipMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutSenderNestedInput
+    responses?: ResponseUncheckedUpdateManyWithoutUserNestedInput
+    reflections?: ReflectionUncheckedUpdateManyWithoutUserNestedInput
+    responseValidations?: ResponseValidationUncheckedUpdateManyWithoutUserNestedInput
+    quizParticipations?: QuizParticipationUncheckedUpdateManyWithoutUserNestedInput
+    agreementParticipations?: AgreementParticipationUncheckedUpdateManyWithoutUserNestedInput
+    meetingEntries?: MeetingEntryUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    deviceTokens?: DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutSavedByUserNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutAuthorNestedInput
+    appreciationsSent?: AppreciationUncheckedUpdateManyWithoutFromUserNestedInput
+    appreciationsReceived?: AppreciationUncheckedUpdateManyWithoutToUserNestedInput
+    wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
+    spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
+    spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -57041,6 +58812,13 @@ export namespace Prisma {
     openOn: Date | string
     createdAt?: Date | string
     openNotifiedAt?: Date | string | null
+  }
+
+  export type SessionPhotoCreateManyUserInput = {
+    id?: string
+    sessionId: string
+    url: string
+    createdAt?: Date | string
   }
 
   export type AppreciationCreateManyFromUserInput = {
@@ -57527,6 +59305,27 @@ export namespace Prisma {
     openNotifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type SessionPhotoUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: DailySessionUpdateOneRequiredWithoutPhotosNestedInput
+  }
+
+  export type SessionPhotoUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionPhotoUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AppreciationUpdateWithoutFromUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
@@ -57889,6 +59688,7 @@ export namespace Prisma {
     prompt?: PromptUpdateOneWithoutDailySessionsNestedInput
     responses?: ResponseUpdateManyWithoutSessionNestedInput
     reflections?: ReflectionUpdateManyWithoutSessionNestedInput
+    photos?: SessionPhotoUpdateManyWithoutSessionNestedInput
   }
 
   export type DailySessionUncheckedUpdateWithoutRelationshipInput = {
@@ -57900,6 +59700,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     responses?: ResponseUncheckedUpdateManyWithoutSessionNestedInput
     reflections?: ReflectionUncheckedUpdateManyWithoutSessionNestedInput
+    photos?: SessionPhotoUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type DailySessionUncheckedUpdateManyWithoutRelationshipInput = {
@@ -58297,6 +60098,7 @@ export namespace Prisma {
     relationship?: RelationshipUpdateOneRequiredWithoutDailySessionsNestedInput
     responses?: ResponseUpdateManyWithoutSessionNestedInput
     reflections?: ReflectionUpdateManyWithoutSessionNestedInput
+    photos?: SessionPhotoUpdateManyWithoutSessionNestedInput
   }
 
   export type DailySessionUncheckedUpdateWithoutPromptInput = {
@@ -58308,6 +60110,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     responses?: ResponseUncheckedUpdateManyWithoutSessionNestedInput
     reflections?: ReflectionUncheckedUpdateManyWithoutSessionNestedInput
+    photos?: SessionPhotoUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type DailySessionUncheckedUpdateManyWithoutPromptInput = {
@@ -58334,6 +60137,13 @@ export namespace Prisma {
     reaction?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type SessionPhotoCreateManySessionInput = {
+    id?: string
+    userId: string
+    url: string
+    createdAt?: Date | string
   }
 
   export type ResponseUpdateWithoutSessionInput = {
@@ -58387,6 +60197,27 @@ export namespace Prisma {
     reaction?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionPhotoUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSessionPhotosNestedInput
+  }
+
+  export type SessionPhotoUncheckedUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionPhotoUncheckedUpdateManyWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ResponseValidationCreateManyResponseInput = {
@@ -58746,6 +60577,10 @@ export namespace Prisma {
      * @deprecated Use ConstellationNameDefaultArgs instead
      */
     export type ConstellationNameArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ConstellationNameDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use SessionPhotoDefaultArgs instead
+     */
+    export type SessionPhotoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = SessionPhotoDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

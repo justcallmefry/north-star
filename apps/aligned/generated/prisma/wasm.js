@@ -480,6 +480,14 @@ exports.Prisma.ConstellationNameScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SessionPhotoScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  userId: 'userId',
+  url: 'url',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -610,7 +618,8 @@ exports.Prisma.ModelName = {
   Issue: 'Issue',
   RateLimit: 'RateLimit',
   TimeCapsule: 'TimeCapsule',
-  ConstellationName: 'ConstellationName'
+  ConstellationName: 'ConstellationName',
+  SessionPhoto: 'SessionPhoto'
 };
 
 /**

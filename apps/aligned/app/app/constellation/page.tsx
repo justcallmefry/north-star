@@ -7,7 +7,7 @@ import { ConstellationClient } from "./constellation-client";
 
 export const dynamic = "force-dynamic";
 
-type Props = { searchParams: Promise<{ born?: string }> };
+type Props = { searchParams: Promise<{ born?: string; focus?: string }> };
 
 export default async function ConstellationPage({ searchParams }: Props) {
   const session = await getServerAuthSession();
@@ -19,12 +19,13 @@ export default async function ConstellationPage({ searchParams }: Props) {
 
   const [data, capsules] = await Promise.all([getConstellation(primary.id), listCapsules()]);
 
-  const { born } = await searchParams;
+  const { born, focus } = await searchParams;
 
   return (
     <ConstellationClient
       data={data}
       bornId={born ?? null}
+      focusId={focus ?? null}
       capsules={capsules}
       anniversaryISO={primary.anniversaryDate ? primary.anniversaryDate.toISOString().slice(0, 10) : null}
     />

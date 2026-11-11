@@ -20,6 +20,7 @@ import { AnniversaryBanner, isAnniversaryToday } from "./anniversary-banner";
 import { MilestonePromptCard } from "./milestone-prompt-card";
 import { IssuePromo } from "@/components/issues/issue-promo";
 import { RecapPromo } from "./recap-promo";
+import { OnThisDayCard } from "./on-this-day-card";
 import { QuestCard } from "./quest-card";
 import { PushPrompt } from "./push-prompt";
 
@@ -128,6 +129,7 @@ export function AppPageClient({ initialData }: Props) {
             />
           )}
           <TodaySection relationshipId={relationshipId!} />
+          <OnThisDayCard />
           <QuestCard relationshipId={relationshipId!} />
           <PushPrompt />
 

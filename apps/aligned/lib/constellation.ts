@@ -170,6 +170,7 @@ export type SkyDay = {
   date: string;
   promptText: string | null;
   answers: Array<{ name: string | null; content: string | null; isMe: boolean }>;
+  photos: Array<{ url: string; isMe: boolean }>;
 };
 
 /**
@@ -187,6 +188,7 @@ export async function getSkyDay(sessionId: string): Promise<SkyDay | null> {
       sessionDate: true,
       prompt: { select: { text: true } },
       responses: { select: { userId: true, content: true, user: { select: { name: true } } } },
+      photos: { select: { url: true, userId: true }, orderBy: { createdAt: "asc" } },
     },
   });
   if (!ds || ds.state !== "revealed") return null;
@@ -198,5 +200,6 @@ export async function getSkyDay(sessionId: string): Promise<SkyDay | null> {
     answers: ds.responses
       .map((r) => ({ name: r.user?.name ?? null, content: r.content, isMe: r.userId === me }))
       .sort((a, b) => Number(b.isMe) - Number(a.isMe)),
+    photos: ds.photos.map((p) => ({ url: p.url, isMe: p.userId === me })),
   };
 }

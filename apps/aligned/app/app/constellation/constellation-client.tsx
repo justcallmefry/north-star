@@ -26,6 +26,7 @@ const Sky3D = dynamic(() => import("./sky-3d").then((m) => m.Sky3D), { ssr: fals
 type Props = {
   data: ConstellationData;
   bornId?: string | null;
+  focusId?: string | null;
   capsules: CapsuleView[];
   anniversaryISO: string | null;
 };
@@ -56,7 +57,7 @@ function canDo3D(): boolean {
   }
 }
 
-export function ConstellationClient({ data, bornId, capsules, anniversaryISO }: Props) {
+export function ConstellationClient({ data, bornId, focusId, capsules, anniversaryISO }: Props) {
   const palette = getCouplePalette(data.relationshipId);
   const flat = useMemo(() => computeConstellationLayout(data.stars), [data.stars]);
   const sky = useMemo(() => computeSkyLayout(data.stars, data.extras), [data.stars, data.extras]);
@@ -203,6 +204,7 @@ export function ConstellationClient({ data, bornId, capsules, anniversaryISO }: 
                   layout={sky}
                   palette={palette}
                   bornId={bornStar ? bornId : null}
+                  focusId={bornStar ? null : focusId ?? null}
                   onSelect={(s: SkyStar | null) => {
                     setSelected(s);
                     if (s) {
@@ -314,6 +316,14 @@ export function ConstellationClient({ data, bornId, capsules, anniversaryISO }: 
                 </div>
                 {day ? (
                   <div className="mt-2 space-y-2">
+                    {day.photos.length > 0 && (
+                      <div className={`grid gap-1.5 ${day.photos.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
+                        {day.photos.map((p) => (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img key={p.url} src={p.url} alt="" className="max-h-44 w-full rounded-lg object-cover" />
+                        ))}
+                      </div>
+                    )}
                     {day.promptText && (
                       <p className="font-prompt text-base leading-snug text-slate-900">{day.promptText}</p>
                     )}

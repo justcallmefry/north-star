@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useImperativeHandle, useRef, forwardRef } from "react";
-import type { SkyLayout, SkyStar } from "@/lib/sky-layout";
+import type { PlacedExtra, SkyLayout, SkyStar } from "@/lib/sky-layout";
 import type { CouplePalette } from "@/lib/couple-colors";
 
 /**
@@ -24,6 +24,9 @@ type Props = {
   /** Sealed time capsules, drawn as comets ahead of the newest month. */
   comets?: Comet[];
   onSelectComet?: (id: string) => void;
+  /** Constellation names by month key. */
+  names?: Record<string, string>;
+  onSelectExtra?: (extra: PlacedExtra) => void;
   palette: CouplePalette;
   /** Session id of a star to ignite on arrival (just revealed). */
   bornId?: string | null;
@@ -74,13 +77,13 @@ function hexToRgb(hex: string): [number, number, number] {
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 export const Sky3D = forwardRef<Sky3DHandle, Props>(function Sky3D(
-  { layout, comets = [], onSelectComet, palette, bornId, onSelect, onBorn, onUnsupported },
+  { layout, comets = [], onSelectComet, names = {}, onSelectExtra, palette, bornId, onSelect, onBorn, onUnsupported },
   ref
 ) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const api = useRef<Sky3DHandle>({ flyToMonth: () => {}, flyOverview: () => {} });
-  const cb = useRef({ onSelect, onBorn, onUnsupported, onSelectComet });
-  cb.current = { onSelect, onBorn, onUnsupported, onSelectComet };
+  const cb = useRef({ onSelect, onBorn, onUnsupported, onSelectComet, onSelectExtra });
+  cb.current = { onSelect, onBorn, onUnsupported, onSelectComet, onSelectExtra };
 
   useImperativeHandle(ref, () => ({
     flyToMonth: (i) => api.current.flyToMonth(i),
@@ -240,10 +243,20 @@ export const Sky3D = forwardRef<Sky3DHandle, Props>(function Sky3D(
         c.width = 512;
         c.height = 96;
         const ctx = c.getContext("2d")!;
-        ctx.font = "600 40px Georgia, serif";
         ctx.textAlign = "center";
-        ctx.fillStyle = "rgba(245,239,227,0.82)";
-        ctx.fillText(m.label.toUpperCase().split("").join(String.fromCharCode(8202)), 256, 60);
+        const given = names[m.key];
+        if (given) {
+          ctx.font = "italic 600 42px Georgia, serif";
+          ctx.fillStyle = "rgba(255,217,168,0.95)";
+          ctx.fillText(given, 256, 46, 500);
+          ctx.font = "600 22px Georgia, serif";
+          ctx.fillStyle = "rgba(245,239,227,0.6)";
+          ctx.fillText(m.label.toUpperCase().split("").join(String.fromCharCode(8202)), 256, 84);
+        } else {
+          ctx.font = "600 40px Georgia, serif";
+          ctx.fillStyle = "rgba(245,239,227,0.82)";
+          ctx.fillText(m.label.toUpperCase().split("").join(String.fromCharCode(8202)), 256, 60);
+        }
         const tex = new THREE.CanvasTexture(c);
         tex.colorSpace = THREE.SRGBColorSpace;
         const sprite = new THREE.Sprite(
@@ -253,6 +266,63 @@ export const Sky3D = forwardRef<Sky3DHandle, Props>(function Sky3D(
         sprite.position.set(m.center.x, m.center.y + 19, m.center.z);
         scene.add(sprite);
         labels.push(sprite);
+      }
+
+      // Appreciations glow rose; completed dares are shooting stars.
+      const ex = layout.extras;
+      let extraPoints: import("three").Points | null = null;
+      const dareRuns: { from: import("three").Vector3; to: import("three").Vector3; offset: number }[] = [];
+      let dareHeads: import("three").BufferAttribute | null = null;
+      if (ex.length) {
+        const ep = new Float32Array(ex.length * 3);
+        const ec = new Float32Array(ex.length * 3);
+        const es = new Float32Array(ex.length);
+        const streak = new Float32Array(ex.length * 6);
+        const streakCol = new Float32Array(ex.length * 6);
+        ex.forEach((e, k) => {
+          ep.set([e.x, e.y, e.z], k * 3);
+          if (e.kind === "appreciation") {
+            ec.set([0.95, 0.55, 0.66], k * 3);
+            es[k] = 6.5;
+          } else {
+            ec.set([1, 0.92, 0.75], k * 3);
+            es[k] = 5.5;
+            const to = new THREE.Vector3(e.x - 10, e.y - 5, e.z + 3);
+            streak.set([e.x, e.y, e.z, to.x, to.y, to.z], k * 6);
+            streakCol.set([0.9, 0.82, 0.62, 0, 0, 0], k * 6);
+            dareRuns.push({ from: new THREE.Vector3(e.x + 10, e.y + 5, e.z - 3), to, offset: (k * 1.7) % 7 });
+          }
+        });
+        const eg = new THREE.BufferGeometry();
+        eg.setAttribute("position", new THREE.BufferAttribute(ep, 3));
+        eg.setAttribute("aColor", new THREE.BufferAttribute(ec, 3));
+        eg.setAttribute("aSize", new THREE.BufferAttribute(es, 1));
+        eg.setAttribute("aTwinkle", new THREE.BufferAttribute(new Float32Array(ex.length), 1));
+        eg.setAttribute("aScale", new THREE.BufferAttribute(new Float32Array(ex.length).fill(1), 1));
+        eg.setAttribute("aPhase", new THREE.BufferAttribute(new Float32Array(ex.length).map((_, i) => i * 2.1), 1));
+        extraPoints = new THREE.Points(eg, makeMaterial());
+        scene.add(extraPoints);
+        const sg = new THREE.BufferGeometry();
+        sg.setAttribute("position", new THREE.BufferAttribute(streak, 3));
+        sg.setAttribute("color", new THREE.BufferAttribute(streakCol, 3));
+        scene.add(
+          new THREE.LineSegments(
+            sg,
+            new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false })
+          )
+        );
+        if (dareRuns.length) {
+          // A bright head races along each dare's streak every few seconds.
+          const hg = new THREE.BufferGeometry();
+          dareHeads = new THREE.BufferAttribute(new Float32Array(dareRuns.length * 3), 3);
+          hg.setAttribute("position", dareHeads);
+          hg.setAttribute("aColor", new THREE.BufferAttribute(new Float32Array(dareRuns.length * 3).fill(1), 3));
+          hg.setAttribute("aSize", new THREE.BufferAttribute(new Float32Array(dareRuns.length).fill(7), 1));
+          hg.setAttribute("aTwinkle", new THREE.BufferAttribute(new Float32Array(dareRuns.length), 1));
+          hg.setAttribute("aScale", new THREE.BufferAttribute(new Float32Array(dareRuns.length).fill(1), 1));
+          hg.setAttribute("aPhase", new THREE.BufferAttribute(new Float32Array(dareRuns.length), 1));
+          scene.add(new THREE.Points(hg, makeMaterial()));
+        }
       }
 
       // Sealed time capsules: comets hanging just ahead of "now".
@@ -348,6 +418,17 @@ export const Sky3D = forwardRef<Sky3DHandle, Props>(function Sky3D(
             return;
           }
         }
+        if (extraPoints) {
+          const eh = raycaster.intersectObject(extraPoints);
+          if (eh.length) {
+            eh.sort((a, b) => (a.distanceToRay ?? 0) - (b.distanceToRay ?? 0));
+            const e = ex[eh[0]!.index!]!;
+            cb.current.onSelect(null);
+            cb.current.onSelectExtra?.(e);
+            fly({ target: new V(e.x, e.y, e.z), position: new V(e.x, e.y + 3, e.z + 22) }, 900);
+            return;
+          }
+        }
         const hits = raycaster.intersectObject(starPoints);
         if (!hits.length) {
           cb.current.onSelect(null);
@@ -398,6 +479,16 @@ export const Sky3D = forwardRef<Sky3DHandle, Props>(function Sky3D(
             cb.current.onBorn?.();
           }
         }
+        if (dareHeads) {
+          const t = (now - t0) / 1000;
+          dareRuns.forEach((r, i) => {
+            const p = ((t + r.offset) % 7) / 0.9; // a 0.9s dash every 7s
+            const v = p < 1 ? r.from.clone().lerp(r.to, p) : r.to;
+            const hidden = p >= 1 ? -9999 : 0;
+            dareHeads!.setXYZ(i, v.x, v.y + hidden, v.z);
+          });
+          dareHeads.needsUpdate = true;
+        }
         // Labels fade as you fly through them.
         for (const l of labels) {
           const d = camera.position.distanceTo(l.position);
@@ -435,7 +526,7 @@ export const Sky3D = forwardRef<Sky3DHandle, Props>(function Sky3D(
     };
     // comets keyed by content so an equal re-render doesn't rebuild the scene.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [layout, palette, bornId, JSON.stringify(comets)]);
+  }, [layout, palette, bornId, JSON.stringify(comets), JSON.stringify(names)]);
 
   return <div ref={hostRef} className="absolute inset-0" />;
 });

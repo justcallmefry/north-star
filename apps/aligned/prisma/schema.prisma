@@ -187,6 +187,7 @@ model Relationship {
   memories     Memory[]
   appreciations     Appreciation[]
   timeCapsules      TimeCapsule[]
+  constellationNames ConstellationName[]
   wyrSessions       WyrSession[]
   spotlights        PartnerSpotlight[]
   dateNightDares    DateNightDare[]
@@ -764,4 +765,18 @@ model TimeCapsule {
 
   @@index([relationshipId])
   @@index([openOn])
+}
+
+/// The name a couple gives a month's constellation once the month is over.
+model ConstellationName {
+  id             String   @id @default(cuid())
+  relationshipId String
+  monthKey       String // "YYYY-MM"
+  name           String
+  namedById      String
+  updatedAt      DateTime @updatedAt
+
+  relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+
+  @@unique([relationshipId, monthKey])
 }

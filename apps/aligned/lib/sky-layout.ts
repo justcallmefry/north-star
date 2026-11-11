@@ -1,4 +1,5 @@
 import type { StarInput } from "@/lib/constellation-core";
+import type { SkyExtra } from "@/lib/constellation";
 
 /**
  * 3D layout for the sky: every month is its own constellation, and months
@@ -26,8 +27,11 @@ export type SkyMonth = {
   starIds: string[];
 };
 
+export type PlacedExtra = SkyExtra & { x: number; y: number; z: number; month: number };
+
 export type SkyLayout = {
   stars: SkyStar[];
+  extras: PlacedExtra[];
   months: SkyMonth[];
   /** Consecutive days within a month, as index pairs into `stars`. */
   paths: Array<[number, number]>;
@@ -53,12 +57,17 @@ export function monthCenter(index: number) {
   };
 }
 
-export function computeSkyLayout(inputs: StarInput[]): SkyLayout {
+export function computeSkyLayout(inputs: StarInput[], extraInputs: SkyExtra[] = []): SkyLayout {
   const byMonth = new Map<string, StarInput[]>();
   for (const s of inputs) {
     const k = s.date.slice(0, 7);
     if (!byMonth.has(k)) byMonth.set(k, []);
     byMonth.get(k)!.push(s);
+  }
+  // A month with only a dare or an appreciation still gets a place.
+  for (const e of extraInputs) {
+    const k = e.date.slice(0, 7);
+    if (!byMonth.has(k)) byMonth.set(k, []);
   }
   const keys = [...byMonth.keys()].sort().reverse(); // newest first
 
@@ -101,5 +110,23 @@ export function computeSkyLayout(inputs: StarInput[]): SkyLayout {
     });
   });
 
-  return { stars, months, paths };
+  // Extras sit on an outer ring of their month, so they never hide a day.
+  const monthIndex = new Map(months.map((m) => [m.key, m]));
+  const extras: PlacedExtra[] = [];
+  for (const e of extraInputs) {
+    const m = monthIndex.get(e.date.slice(0, 7));
+    if (!m) continue;
+    const day = Number(e.date.slice(8, 10));
+    const angle = hash(e.id, 4) * Math.PI * 2 + day * 0.2;
+    const radius = 24 + hash(e.id, 5) * 6;
+    extras.push({
+      ...e,
+      x: m.center.x + Math.cos(angle) * radius,
+      y: m.center.y + Math.sin(angle) * radius * 0.6,
+      z: m.center.z + (hash(e.id, 6) - 0.5) * 12,
+      month: m.index,
+    });
+  }
+
+  return { stars, extras, months, paths };
 }

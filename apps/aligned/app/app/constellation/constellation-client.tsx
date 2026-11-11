@@ -10,7 +10,10 @@ import {
   computeConstellationLayout,
   type PositionedStar,
 } from "@/lib/constellation-core";
-import { computeSkyLayout, type SkyStar } from "@/lib/sky-layout";
+import { computeSkyLayout, type PlacedExtra, type SkyStar } from "@/lib/sky-layout";
+import { nameConstellation } from "@/lib/sky-names";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { getCouplePalette } from "@/lib/couple-colors";
 import { haptic } from "@/lib/haptics";
 import type { Sky3DHandle } from "./sky-3d";
@@ -56,7 +59,11 @@ function canDo3D(): boolean {
 export function ConstellationClient({ data, bornId, capsules, anniversaryISO }: Props) {
   const palette = getCouplePalette(data.relationshipId);
   const flat = useMemo(() => computeConstellationLayout(data.stars), [data.stars]);
-  const sky = useMemo(() => computeSkyLayout(data.stars), [data.stars]);
+  const sky = useMemo(() => computeSkyLayout(data.stars, data.extras), [data.stars, data.extras]);
+  const router = useRouter();
+  const [extra, setExtra] = useState<PlacedExtra | null>(null);
+  const [naming, setNaming] = useState("");
+  const [savingName, setSavingName] = useState(false);
   const [mode, setMode] = useState<"pending" | "3d" | "flat">("pending");
   const [selected, setSelected] = useState<StarLike | null>(null);
   const [day, setDay] = useState<SkyDay | null>(null);
@@ -198,7 +205,15 @@ export function ConstellationClient({ data, bornId, capsules, anniversaryISO }: 
                   bornId={bornStar ? bornId : null}
                   onSelect={(s: SkyStar | null) => {
                     setSelected(s);
-                    if (s) setComet(null);
+                    if (s) {
+                      setComet(null);
+                      setExtra(null);
+                    }
+                  }}
+                  names={data.names}
+                  onSelectExtra={(e) => {
+                    setExtra(e);
+                    setComet(null);
                   }}
                   comets={sealedCapsules.map((c) => ({ id: c.id, openOn: c.openOn }))}
                   onSelectComet={(id) => setComet(capsules.find((c) => c.id === id) ?? null)}
@@ -229,6 +244,31 @@ export function ConstellationClient({ data, bornId, capsules, anniversaryISO }: 
             ) : mode === "flat" ? (
               flatSvg
             ) : null}
+
+            {extra && !selected && !comet && (
+              <div className="absolute inset-x-3 bottom-3 max-h-[70%] overflow-y-auto rounded-xl bg-white/95 px-4 py-3 shadow-lg backdrop-blur">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#C0607A]">
+                    {extra.kind === "dare" ? "Date night dare · done" : `Appreciation from ${extra.fromMe ? "you" : extra.fromName ?? "them"}`}
+                    <span className="ml-1 font-normal normal-case tracking-normal text-slate-400">· {formatDate(extra.date)}</span>
+                  </p>
+                  <button type="button" aria-label="Close" onClick={() => setExtra(null)} className="-mr-1 rounded-full p-1 text-slate-400 hover:bg-slate-100">
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+                {extra.kind === "dare" ? (
+                  <>
+                    <p className="mt-1 font-prompt text-base text-slate-900">{extra.title}</p>
+                    {extra.photoUrl && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={extra.photoUrl} alt="" className="mt-2 max-h-48 w-full rounded-lg object-cover" />
+                    )}
+                  </>
+                ) : (
+                  <p className="mt-1 whitespace-pre-wrap font-prompt text-base leading-relaxed text-slate-900">{extra.content}</p>
+                )}
+              </div>
+            )}
 
             {comet && !selected && (
               <div className="absolute inset-x-3 bottom-3 rounded-xl bg-[#0B1B2E]/95 px-4 py-3 text-[#F5EFE3] shadow-lg ring-1 ring-white/10 backdrop-blur">
@@ -333,9 +373,54 @@ export function ConstellationClient({ data, bornId, capsules, anniversaryISO }: 
             </nav>
           )}
 
+          {mode === "3d" && month >= 0 && sky.months[month] && (() => {
+            const m = sky.months[month]!;
+            const done = m.key < new Date().toISOString().slice(0, 7);
+            const given = data.names[m.key];
+            if (!done) {
+              return (
+                <p className="text-center text-xs text-slate-500">
+                  When {m.label.split(" ")[0]} ends, you&apos;ll name its constellation together.
+                </p>
+              );
+            }
+            return (
+              <form
+                className="flex items-center gap-2 rounded-2xl bg-white p-2 ring-1 ring-slate-200"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setSavingName(true);
+                  const res = await nameConstellation(m.key, naming || given || "");
+                  setSavingName(false);
+                  if (!res.ok) return void toast.error(res.error);
+                  void haptic("success");
+                  toast.success(`${m.label.split(" ")[0]} is now "${res.name}".`);
+                  setNaming("");
+                  router.refresh();
+                }}
+              >
+                <input
+                  value={naming}
+                  onChange={(e) => setNaming(e.target.value)}
+                  maxLength={40}
+                  placeholder={given ? `"${given}" · rename it?` : `Name ${m.label.split(" ")[0]}'s constellation`}
+                  aria-label={`Name ${m.label}'s constellation`}
+                  className="min-w-0 flex-1 bg-transparent px-2 py-1.5 font-prompt text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  disabled={savingName || !naming.trim()}
+                  className="shrink-0 rounded-full bg-dusk-700 px-3.5 py-1.5 text-xs font-semibold text-white disabled:opacity-40"
+                >
+                  {given ? "Rename" : "Name it"}
+                </button>
+              </form>
+            );
+          })()}
+
           <p className="text-center text-xs text-slate-500">
-            Warm stars are days your answers aligned. Twinkling ones are saved memories. Gold halos mark
-            golden weeks.
+            Warm stars are days your answers aligned; twinkling ones are saved memories; gold halos are
+            golden weeks. Rose stars are appreciations, and shooting stars are dares you did.
           </p>
 
           {/* The share card is drawn from the flat sky, kept off-screen in 3D mode. */}

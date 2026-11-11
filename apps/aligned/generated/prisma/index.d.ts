@@ -189,6 +189,11 @@ export type RateLimit = $Result.DefaultSelection<Prisma.$RateLimitPayload>
  * `message` before then.
  */
 export type TimeCapsule = $Result.DefaultSelection<Prisma.$TimeCapsulePayload>
+/**
+ * Model ConstellationName
+ * The name a couple gives a month's constellation once the month is over.
+ */
+export type ConstellationName = $Result.DefaultSelection<Prisma.$ConstellationNamePayload>
 
 /**
  * Enums
@@ -791,6 +796,16 @@ export class PrismaClient<
     * ```
     */
   get timeCapsule(): Prisma.TimeCapsuleDelegate<ExtArgs>;
+
+  /**
+   * `prisma.constellationName`: Exposes CRUD operations for the **ConstellationName** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ConstellationNames
+    * const constellationNames = await prisma.constellationName.findMany()
+    * ```
+    */
+  get constellationName(): Prisma.ConstellationNameDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -1264,7 +1279,8 @@ export namespace Prisma {
     AgreementParticipation: 'AgreementParticipation',
     Issue: 'Issue',
     RateLimit: 'RateLimit',
-    TimeCapsule: 'TimeCapsule'
+    TimeCapsule: 'TimeCapsule',
+    ConstellationName: 'ConstellationName'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1280,7 +1296,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "pushSubscription" | "deviceToken" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "memory" | "appreciation" | "wyrSession" | "wyrParticipation" | "partnerSpotlight" | "dateNightDare" | "appEvent" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation" | "issue" | "rateLimit" | "timeCapsule"
+      modelProps: "user" | "pushSubscription" | "deviceToken" | "account" | "session" | "verificationToken" | "relationship" | "relationshipMember" | "invite" | "prompt" | "dailySession" | "response" | "responseValidation" | "reflection" | "meeting" | "meetingEntry" | "streak" | "subscription" | "memory" | "appreciation" | "wyrSession" | "wyrParticipation" | "partnerSpotlight" | "dateNightDare" | "appEvent" | "betaSignup" | "quizSession" | "quizParticipation" | "agreementSession" | "agreementParticipation" | "issue" | "rateLimit" | "timeCapsule" | "constellationName"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3594,6 +3610,76 @@ export namespace Prisma {
           }
         }
       }
+      ConstellationName: {
+        payload: Prisma.$ConstellationNamePayload<ExtArgs>
+        fields: Prisma.ConstellationNameFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ConstellationNameFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConstellationNamePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ConstellationNameFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConstellationNamePayload>
+          }
+          findFirst: {
+            args: Prisma.ConstellationNameFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConstellationNamePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ConstellationNameFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConstellationNamePayload>
+          }
+          findMany: {
+            args: Prisma.ConstellationNameFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConstellationNamePayload>[]
+          }
+          create: {
+            args: Prisma.ConstellationNameCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConstellationNamePayload>
+          }
+          createMany: {
+            args: Prisma.ConstellationNameCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ConstellationNameCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConstellationNamePayload>[]
+          }
+          delete: {
+            args: Prisma.ConstellationNameDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConstellationNamePayload>
+          }
+          update: {
+            args: Prisma.ConstellationNameUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConstellationNamePayload>
+          }
+          deleteMany: {
+            args: Prisma.ConstellationNameDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ConstellationNameUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.ConstellationNameUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConstellationNamePayload>
+          }
+          aggregate: {
+            args: Prisma.ConstellationNameAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateConstellationName>
+          }
+          groupBy: {
+            args: Prisma.ConstellationNameGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ConstellationNameGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ConstellationNameCountArgs<ExtArgs>
+            result: $Utils.Optional<ConstellationNameCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3967,6 +4053,7 @@ export namespace Prisma {
     memories: number
     appreciations: number
     timeCapsules: number
+    constellationNames: number
     wyrSessions: number
     spotlights: number
     dateNightDares: number
@@ -3984,6 +4071,7 @@ export namespace Prisma {
     memories?: boolean | RelationshipCountOutputTypeCountMemoriesArgs
     appreciations?: boolean | RelationshipCountOutputTypeCountAppreciationsArgs
     timeCapsules?: boolean | RelationshipCountOutputTypeCountTimeCapsulesArgs
+    constellationNames?: boolean | RelationshipCountOutputTypeCountConstellationNamesArgs
     wyrSessions?: boolean | RelationshipCountOutputTypeCountWyrSessionsArgs
     spotlights?: boolean | RelationshipCountOutputTypeCountSpotlightsArgs
     dateNightDares?: boolean | RelationshipCountOutputTypeCountDateNightDaresArgs
@@ -4069,6 +4157,13 @@ export namespace Prisma {
    */
   export type RelationshipCountOutputTypeCountTimeCapsulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TimeCapsuleWhereInput
+  }
+
+  /**
+   * RelationshipCountOutputType without action
+   */
+  export type RelationshipCountOutputTypeCountConstellationNamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConstellationNameWhereInput
   }
 
   /**
@@ -10684,6 +10779,7 @@ export namespace Prisma {
     memories?: boolean | Relationship$memoriesArgs<ExtArgs>
     appreciations?: boolean | Relationship$appreciationsArgs<ExtArgs>
     timeCapsules?: boolean | Relationship$timeCapsulesArgs<ExtArgs>
+    constellationNames?: boolean | Relationship$constellationNamesArgs<ExtArgs>
     wyrSessions?: boolean | Relationship$wyrSessionsArgs<ExtArgs>
     spotlights?: boolean | Relationship$spotlightsArgs<ExtArgs>
     dateNightDares?: boolean | Relationship$dateNightDaresArgs<ExtArgs>
@@ -10721,6 +10817,7 @@ export namespace Prisma {
     memories?: boolean | Relationship$memoriesArgs<ExtArgs>
     appreciations?: boolean | Relationship$appreciationsArgs<ExtArgs>
     timeCapsules?: boolean | Relationship$timeCapsulesArgs<ExtArgs>
+    constellationNames?: boolean | Relationship$constellationNamesArgs<ExtArgs>
     wyrSessions?: boolean | Relationship$wyrSessionsArgs<ExtArgs>
     spotlights?: boolean | Relationship$spotlightsArgs<ExtArgs>
     dateNightDares?: boolean | Relationship$dateNightDaresArgs<ExtArgs>
@@ -10743,6 +10840,7 @@ export namespace Prisma {
       memories: Prisma.$MemoryPayload<ExtArgs>[]
       appreciations: Prisma.$AppreciationPayload<ExtArgs>[]
       timeCapsules: Prisma.$TimeCapsulePayload<ExtArgs>[]
+      constellationNames: Prisma.$ConstellationNamePayload<ExtArgs>[]
       wyrSessions: Prisma.$WyrSessionPayload<ExtArgs>[]
       spotlights: Prisma.$PartnerSpotlightPayload<ExtArgs>[]
       dateNightDares: Prisma.$DateNightDarePayload<ExtArgs>[]
@@ -11135,6 +11233,7 @@ export namespace Prisma {
     memories<T extends Relationship$memoriesArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$memoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany"> | Null>
     appreciations<T extends Relationship$appreciationsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$appreciationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppreciationPayload<ExtArgs>, T, "findMany"> | Null>
     timeCapsules<T extends Relationship$timeCapsulesArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$timeCapsulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "findMany"> | Null>
+    constellationNames<T extends Relationship$constellationNamesArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$constellationNamesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConstellationNamePayload<ExtArgs>, T, "findMany"> | Null>
     wyrSessions<T extends Relationship$wyrSessionsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$wyrSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WyrSessionPayload<ExtArgs>, T, "findMany"> | Null>
     spotlights<T extends Relationship$spotlightsArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$spotlightsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartnerSpotlightPayload<ExtArgs>, T, "findMany"> | Null>
     dateNightDares<T extends Relationship$dateNightDaresArgs<ExtArgs> = {}>(args?: Subset<T, Relationship$dateNightDaresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DateNightDarePayload<ExtArgs>, T, "findMany"> | Null>
@@ -11700,6 +11799,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TimeCapsuleScalarFieldEnum | TimeCapsuleScalarFieldEnum[]
+  }
+
+  /**
+   * Relationship.constellationNames
+   */
+  export type Relationship$constellationNamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConstellationName
+     */
+    select?: ConstellationNameSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConstellationNameInclude<ExtArgs> | null
+    where?: ConstellationNameWhereInput
+    orderBy?: ConstellationNameOrderByWithRelationInput | ConstellationNameOrderByWithRelationInput[]
+    cursor?: ConstellationNameWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ConstellationNameScalarFieldEnum | ConstellationNameScalarFieldEnum[]
   }
 
   /**
@@ -37460,6 +37579,951 @@ export namespace Prisma {
 
 
   /**
+   * Model ConstellationName
+   */
+
+  export type AggregateConstellationName = {
+    _count: ConstellationNameCountAggregateOutputType | null
+    _min: ConstellationNameMinAggregateOutputType | null
+    _max: ConstellationNameMaxAggregateOutputType | null
+  }
+
+  export type ConstellationNameMinAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    monthKey: string | null
+    name: string | null
+    namedById: string | null
+    updatedAt: Date | null
+  }
+
+  export type ConstellationNameMaxAggregateOutputType = {
+    id: string | null
+    relationshipId: string | null
+    monthKey: string | null
+    name: string | null
+    namedById: string | null
+    updatedAt: Date | null
+  }
+
+  export type ConstellationNameCountAggregateOutputType = {
+    id: number
+    relationshipId: number
+    monthKey: number
+    name: number
+    namedById: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ConstellationNameMinAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    monthKey?: true
+    name?: true
+    namedById?: true
+    updatedAt?: true
+  }
+
+  export type ConstellationNameMaxAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    monthKey?: true
+    name?: true
+    namedById?: true
+    updatedAt?: true
+  }
+
+  export type ConstellationNameCountAggregateInputType = {
+    id?: true
+    relationshipId?: true
+    monthKey?: true
+    name?: true
+    namedById?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ConstellationNameAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConstellationName to aggregate.
+     */
+    where?: ConstellationNameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConstellationNames to fetch.
+     */
+    orderBy?: ConstellationNameOrderByWithRelationInput | ConstellationNameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ConstellationNameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConstellationNames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConstellationNames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ConstellationNames
+    **/
+    _count?: true | ConstellationNameCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConstellationNameMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConstellationNameMaxAggregateInputType
+  }
+
+  export type GetConstellationNameAggregateType<T extends ConstellationNameAggregateArgs> = {
+        [P in keyof T & keyof AggregateConstellationName]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConstellationName[P]>
+      : GetScalarType<T[P], AggregateConstellationName[P]>
+  }
+
+
+
+
+  export type ConstellationNameGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConstellationNameWhereInput
+    orderBy?: ConstellationNameOrderByWithAggregationInput | ConstellationNameOrderByWithAggregationInput[]
+    by: ConstellationNameScalarFieldEnum[] | ConstellationNameScalarFieldEnum
+    having?: ConstellationNameScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ConstellationNameCountAggregateInputType | true
+    _min?: ConstellationNameMinAggregateInputType
+    _max?: ConstellationNameMaxAggregateInputType
+  }
+
+  export type ConstellationNameGroupByOutputType = {
+    id: string
+    relationshipId: string
+    monthKey: string
+    name: string
+    namedById: string
+    updatedAt: Date
+    _count: ConstellationNameCountAggregateOutputType | null
+    _min: ConstellationNameMinAggregateOutputType | null
+    _max: ConstellationNameMaxAggregateOutputType | null
+  }
+
+  type GetConstellationNameGroupByPayload<T extends ConstellationNameGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ConstellationNameGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ConstellationNameGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConstellationNameGroupByOutputType[P]>
+            : GetScalarType<T[P], ConstellationNameGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ConstellationNameSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    monthKey?: boolean
+    name?: boolean
+    namedById?: boolean
+    updatedAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["constellationName"]>
+
+  export type ConstellationNameSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relationshipId?: boolean
+    monthKey?: boolean
+    name?: boolean
+    namedById?: boolean
+    updatedAt?: boolean
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["constellationName"]>
+
+  export type ConstellationNameSelectScalar = {
+    id?: boolean
+    relationshipId?: boolean
+    monthKey?: boolean
+    name?: boolean
+    namedById?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ConstellationNameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+  }
+  export type ConstellationNameIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    relationship?: boolean | RelationshipDefaultArgs<ExtArgs>
+  }
+
+  export type $ConstellationNamePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ConstellationName"
+    objects: {
+      relationship: Prisma.$RelationshipPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      relationshipId: string
+      monthKey: string
+      name: string
+      namedById: string
+      updatedAt: Date
+    }, ExtArgs["result"]["constellationName"]>
+    composites: {}
+  }
+
+  type ConstellationNameGetPayload<S extends boolean | null | undefined | ConstellationNameDefaultArgs> = $Result.GetResult<Prisma.$ConstellationNamePayload, S>
+
+  type ConstellationNameCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<ConstellationNameFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: ConstellationNameCountAggregateInputType | true
+    }
+
+  export interface ConstellationNameDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ConstellationName'], meta: { name: 'ConstellationName' } }
+    /**
+     * Find zero or one ConstellationName that matches the filter.
+     * @param {ConstellationNameFindUniqueArgs} args - Arguments to find a ConstellationName
+     * @example
+     * // Get one ConstellationName
+     * const constellationName = await prisma.constellationName.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ConstellationNameFindUniqueArgs>(args: SelectSubset<T, ConstellationNameFindUniqueArgs<ExtArgs>>): Prisma__ConstellationNameClient<$Result.GetResult<Prisma.$ConstellationNamePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one ConstellationName that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {ConstellationNameFindUniqueOrThrowArgs} args - Arguments to find a ConstellationName
+     * @example
+     * // Get one ConstellationName
+     * const constellationName = await prisma.constellationName.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ConstellationNameFindUniqueOrThrowArgs>(args: SelectSubset<T, ConstellationNameFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ConstellationNameClient<$Result.GetResult<Prisma.$ConstellationNamePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first ConstellationName that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConstellationNameFindFirstArgs} args - Arguments to find a ConstellationName
+     * @example
+     * // Get one ConstellationName
+     * const constellationName = await prisma.constellationName.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ConstellationNameFindFirstArgs>(args?: SelectSubset<T, ConstellationNameFindFirstArgs<ExtArgs>>): Prisma__ConstellationNameClient<$Result.GetResult<Prisma.$ConstellationNamePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first ConstellationName that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConstellationNameFindFirstOrThrowArgs} args - Arguments to find a ConstellationName
+     * @example
+     * // Get one ConstellationName
+     * const constellationName = await prisma.constellationName.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ConstellationNameFindFirstOrThrowArgs>(args?: SelectSubset<T, ConstellationNameFindFirstOrThrowArgs<ExtArgs>>): Prisma__ConstellationNameClient<$Result.GetResult<Prisma.$ConstellationNamePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more ConstellationNames that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConstellationNameFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ConstellationNames
+     * const constellationNames = await prisma.constellationName.findMany()
+     * 
+     * // Get first 10 ConstellationNames
+     * const constellationNames = await prisma.constellationName.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const constellationNameWithIdOnly = await prisma.constellationName.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ConstellationNameFindManyArgs>(args?: SelectSubset<T, ConstellationNameFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConstellationNamePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a ConstellationName.
+     * @param {ConstellationNameCreateArgs} args - Arguments to create a ConstellationName.
+     * @example
+     * // Create one ConstellationName
+     * const ConstellationName = await prisma.constellationName.create({
+     *   data: {
+     *     // ... data to create a ConstellationName
+     *   }
+     * })
+     * 
+     */
+    create<T extends ConstellationNameCreateArgs>(args: SelectSubset<T, ConstellationNameCreateArgs<ExtArgs>>): Prisma__ConstellationNameClient<$Result.GetResult<Prisma.$ConstellationNamePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many ConstellationNames.
+     * @param {ConstellationNameCreateManyArgs} args - Arguments to create many ConstellationNames.
+     * @example
+     * // Create many ConstellationNames
+     * const constellationName = await prisma.constellationName.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ConstellationNameCreateManyArgs>(args?: SelectSubset<T, ConstellationNameCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ConstellationNames and returns the data saved in the database.
+     * @param {ConstellationNameCreateManyAndReturnArgs} args - Arguments to create many ConstellationNames.
+     * @example
+     * // Create many ConstellationNames
+     * const constellationName = await prisma.constellationName.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ConstellationNames and only return the `id`
+     * const constellationNameWithIdOnly = await prisma.constellationName.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ConstellationNameCreateManyAndReturnArgs>(args?: SelectSubset<T, ConstellationNameCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConstellationNamePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a ConstellationName.
+     * @param {ConstellationNameDeleteArgs} args - Arguments to delete one ConstellationName.
+     * @example
+     * // Delete one ConstellationName
+     * const ConstellationName = await prisma.constellationName.delete({
+     *   where: {
+     *     // ... filter to delete one ConstellationName
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ConstellationNameDeleteArgs>(args: SelectSubset<T, ConstellationNameDeleteArgs<ExtArgs>>): Prisma__ConstellationNameClient<$Result.GetResult<Prisma.$ConstellationNamePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one ConstellationName.
+     * @param {ConstellationNameUpdateArgs} args - Arguments to update one ConstellationName.
+     * @example
+     * // Update one ConstellationName
+     * const constellationName = await prisma.constellationName.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ConstellationNameUpdateArgs>(args: SelectSubset<T, ConstellationNameUpdateArgs<ExtArgs>>): Prisma__ConstellationNameClient<$Result.GetResult<Prisma.$ConstellationNamePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more ConstellationNames.
+     * @param {ConstellationNameDeleteManyArgs} args - Arguments to filter ConstellationNames to delete.
+     * @example
+     * // Delete a few ConstellationNames
+     * const { count } = await prisma.constellationName.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ConstellationNameDeleteManyArgs>(args?: SelectSubset<T, ConstellationNameDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConstellationNames.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConstellationNameUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ConstellationNames
+     * const constellationName = await prisma.constellationName.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ConstellationNameUpdateManyArgs>(args: SelectSubset<T, ConstellationNameUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ConstellationName.
+     * @param {ConstellationNameUpsertArgs} args - Arguments to update or create a ConstellationName.
+     * @example
+     * // Update or create a ConstellationName
+     * const constellationName = await prisma.constellationName.upsert({
+     *   create: {
+     *     // ... data to create a ConstellationName
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ConstellationName we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ConstellationNameUpsertArgs>(args: SelectSubset<T, ConstellationNameUpsertArgs<ExtArgs>>): Prisma__ConstellationNameClient<$Result.GetResult<Prisma.$ConstellationNamePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of ConstellationNames.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConstellationNameCountArgs} args - Arguments to filter ConstellationNames to count.
+     * @example
+     * // Count the number of ConstellationNames
+     * const count = await prisma.constellationName.count({
+     *   where: {
+     *     // ... the filter for the ConstellationNames we want to count
+     *   }
+     * })
+    **/
+    count<T extends ConstellationNameCountArgs>(
+      args?: Subset<T, ConstellationNameCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConstellationNameCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ConstellationName.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConstellationNameAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConstellationNameAggregateArgs>(args: Subset<T, ConstellationNameAggregateArgs>): Prisma.PrismaPromise<GetConstellationNameAggregateType<T>>
+
+    /**
+     * Group by ConstellationName.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConstellationNameGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ConstellationNameGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ConstellationNameGroupByArgs['orderBy'] }
+        : { orderBy?: ConstellationNameGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ConstellationNameGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConstellationNameGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ConstellationName model
+   */
+  readonly fields: ConstellationNameFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ConstellationName.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ConstellationNameClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    relationship<T extends RelationshipDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RelationshipDefaultArgs<ExtArgs>>): Prisma__RelationshipClient<$Result.GetResult<Prisma.$RelationshipPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ConstellationName model
+   */ 
+  interface ConstellationNameFieldRefs {
+    readonly id: FieldRef<"ConstellationName", 'String'>
+    readonly relationshipId: FieldRef<"ConstellationName", 'String'>
+    readonly monthKey: FieldRef<"ConstellationName", 'String'>
+    readonly name: FieldRef<"ConstellationName", 'String'>
+    readonly namedById: FieldRef<"ConstellationName", 'String'>
+    readonly updatedAt: FieldRef<"ConstellationName", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ConstellationName findUnique
+   */
+  export type ConstellationNameFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConstellationName
+     */
+    select?: ConstellationNameSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConstellationNameInclude<ExtArgs> | null
+    /**
+     * Filter, which ConstellationName to fetch.
+     */
+    where: ConstellationNameWhereUniqueInput
+  }
+
+  /**
+   * ConstellationName findUniqueOrThrow
+   */
+  export type ConstellationNameFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConstellationName
+     */
+    select?: ConstellationNameSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConstellationNameInclude<ExtArgs> | null
+    /**
+     * Filter, which ConstellationName to fetch.
+     */
+    where: ConstellationNameWhereUniqueInput
+  }
+
+  /**
+   * ConstellationName findFirst
+   */
+  export type ConstellationNameFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConstellationName
+     */
+    select?: ConstellationNameSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConstellationNameInclude<ExtArgs> | null
+    /**
+     * Filter, which ConstellationName to fetch.
+     */
+    where?: ConstellationNameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConstellationNames to fetch.
+     */
+    orderBy?: ConstellationNameOrderByWithRelationInput | ConstellationNameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConstellationNames.
+     */
+    cursor?: ConstellationNameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConstellationNames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConstellationNames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConstellationNames.
+     */
+    distinct?: ConstellationNameScalarFieldEnum | ConstellationNameScalarFieldEnum[]
+  }
+
+  /**
+   * ConstellationName findFirstOrThrow
+   */
+  export type ConstellationNameFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConstellationName
+     */
+    select?: ConstellationNameSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConstellationNameInclude<ExtArgs> | null
+    /**
+     * Filter, which ConstellationName to fetch.
+     */
+    where?: ConstellationNameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConstellationNames to fetch.
+     */
+    orderBy?: ConstellationNameOrderByWithRelationInput | ConstellationNameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConstellationNames.
+     */
+    cursor?: ConstellationNameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConstellationNames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConstellationNames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConstellationNames.
+     */
+    distinct?: ConstellationNameScalarFieldEnum | ConstellationNameScalarFieldEnum[]
+  }
+
+  /**
+   * ConstellationName findMany
+   */
+  export type ConstellationNameFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConstellationName
+     */
+    select?: ConstellationNameSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConstellationNameInclude<ExtArgs> | null
+    /**
+     * Filter, which ConstellationNames to fetch.
+     */
+    where?: ConstellationNameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConstellationNames to fetch.
+     */
+    orderBy?: ConstellationNameOrderByWithRelationInput | ConstellationNameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ConstellationNames.
+     */
+    cursor?: ConstellationNameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConstellationNames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConstellationNames.
+     */
+    skip?: number
+    distinct?: ConstellationNameScalarFieldEnum | ConstellationNameScalarFieldEnum[]
+  }
+
+  /**
+   * ConstellationName create
+   */
+  export type ConstellationNameCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConstellationName
+     */
+    select?: ConstellationNameSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConstellationNameInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ConstellationName.
+     */
+    data: XOR<ConstellationNameCreateInput, ConstellationNameUncheckedCreateInput>
+  }
+
+  /**
+   * ConstellationName createMany
+   */
+  export type ConstellationNameCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ConstellationNames.
+     */
+    data: ConstellationNameCreateManyInput | ConstellationNameCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ConstellationName createManyAndReturn
+   */
+  export type ConstellationNameCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConstellationName
+     */
+    select?: ConstellationNameSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many ConstellationNames.
+     */
+    data: ConstellationNameCreateManyInput | ConstellationNameCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConstellationNameIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ConstellationName update
+   */
+  export type ConstellationNameUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConstellationName
+     */
+    select?: ConstellationNameSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConstellationNameInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ConstellationName.
+     */
+    data: XOR<ConstellationNameUpdateInput, ConstellationNameUncheckedUpdateInput>
+    /**
+     * Choose, which ConstellationName to update.
+     */
+    where: ConstellationNameWhereUniqueInput
+  }
+
+  /**
+   * ConstellationName updateMany
+   */
+  export type ConstellationNameUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ConstellationNames.
+     */
+    data: XOR<ConstellationNameUpdateManyMutationInput, ConstellationNameUncheckedUpdateManyInput>
+    /**
+     * Filter which ConstellationNames to update
+     */
+    where?: ConstellationNameWhereInput
+  }
+
+  /**
+   * ConstellationName upsert
+   */
+  export type ConstellationNameUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConstellationName
+     */
+    select?: ConstellationNameSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConstellationNameInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ConstellationName to update in case it exists.
+     */
+    where: ConstellationNameWhereUniqueInput
+    /**
+     * In case the ConstellationName found by the `where` argument doesn't exist, create a new ConstellationName with this data.
+     */
+    create: XOR<ConstellationNameCreateInput, ConstellationNameUncheckedCreateInput>
+    /**
+     * In case the ConstellationName was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ConstellationNameUpdateInput, ConstellationNameUncheckedUpdateInput>
+  }
+
+  /**
+   * ConstellationName delete
+   */
+  export type ConstellationNameDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConstellationName
+     */
+    select?: ConstellationNameSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConstellationNameInclude<ExtArgs> | null
+    /**
+     * Filter which ConstellationName to delete.
+     */
+    where: ConstellationNameWhereUniqueInput
+  }
+
+  /**
+   * ConstellationName deleteMany
+   */
+  export type ConstellationNameDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConstellationNames to delete
+     */
+    where?: ConstellationNameWhereInput
+  }
+
+  /**
+   * ConstellationName without action
+   */
+  export type ConstellationNameDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConstellationName
+     */
+    select?: ConstellationNameSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConstellationNameInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -37919,6 +38983,18 @@ export namespace Prisma {
   };
 
   export type TimeCapsuleScalarFieldEnum = (typeof TimeCapsuleScalarFieldEnum)[keyof typeof TimeCapsuleScalarFieldEnum]
+
+
+  export const ConstellationNameScalarFieldEnum: {
+    id: 'id',
+    relationshipId: 'relationshipId',
+    monthKey: 'monthKey',
+    name: 'name',
+    namedById: 'namedById',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ConstellationNameScalarFieldEnum = (typeof ConstellationNameScalarFieldEnum)[keyof typeof ConstellationNameScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -38660,6 +39736,7 @@ export namespace Prisma {
     memories?: MemoryListRelationFilter
     appreciations?: AppreciationListRelationFilter
     timeCapsules?: TimeCapsuleListRelationFilter
+    constellationNames?: ConstellationNameListRelationFilter
     wyrSessions?: WyrSessionListRelationFilter
     spotlights?: PartnerSpotlightListRelationFilter
     dateNightDares?: DateNightDareListRelationFilter
@@ -38684,6 +39761,7 @@ export namespace Prisma {
     memories?: MemoryOrderByRelationAggregateInput
     appreciations?: AppreciationOrderByRelationAggregateInput
     timeCapsules?: TimeCapsuleOrderByRelationAggregateInput
+    constellationNames?: ConstellationNameOrderByRelationAggregateInput
     wyrSessions?: WyrSessionOrderByRelationAggregateInput
     spotlights?: PartnerSpotlightOrderByRelationAggregateInput
     dateNightDares?: DateNightDareOrderByRelationAggregateInput
@@ -38711,6 +39789,7 @@ export namespace Prisma {
     memories?: MemoryListRelationFilter
     appreciations?: AppreciationListRelationFilter
     timeCapsules?: TimeCapsuleListRelationFilter
+    constellationNames?: ConstellationNameListRelationFilter
     wyrSessions?: WyrSessionListRelationFilter
     spotlights?: PartnerSpotlightListRelationFilter
     dateNightDares?: DateNightDareListRelationFilter
@@ -40636,6 +41715,67 @@ export namespace Prisma {
     openNotifiedAt?: DateTimeNullableWithAggregatesFilter<"TimeCapsule"> | Date | string | null
   }
 
+  export type ConstellationNameWhereInput = {
+    AND?: ConstellationNameWhereInput | ConstellationNameWhereInput[]
+    OR?: ConstellationNameWhereInput[]
+    NOT?: ConstellationNameWhereInput | ConstellationNameWhereInput[]
+    id?: StringFilter<"ConstellationName"> | string
+    relationshipId?: StringFilter<"ConstellationName"> | string
+    monthKey?: StringFilter<"ConstellationName"> | string
+    name?: StringFilter<"ConstellationName"> | string
+    namedById?: StringFilter<"ConstellationName"> | string
+    updatedAt?: DateTimeFilter<"ConstellationName"> | Date | string
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+  }
+
+  export type ConstellationNameOrderByWithRelationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    monthKey?: SortOrder
+    name?: SortOrder
+    namedById?: SortOrder
+    updatedAt?: SortOrder
+    relationship?: RelationshipOrderByWithRelationInput
+  }
+
+  export type ConstellationNameWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    relationshipId_monthKey?: ConstellationNameRelationshipIdMonthKeyCompoundUniqueInput
+    AND?: ConstellationNameWhereInput | ConstellationNameWhereInput[]
+    OR?: ConstellationNameWhereInput[]
+    NOT?: ConstellationNameWhereInput | ConstellationNameWhereInput[]
+    relationshipId?: StringFilter<"ConstellationName"> | string
+    monthKey?: StringFilter<"ConstellationName"> | string
+    name?: StringFilter<"ConstellationName"> | string
+    namedById?: StringFilter<"ConstellationName"> | string
+    updatedAt?: DateTimeFilter<"ConstellationName"> | Date | string
+    relationship?: XOR<RelationshipRelationFilter, RelationshipWhereInput>
+  }, "id" | "relationshipId_monthKey">
+
+  export type ConstellationNameOrderByWithAggregationInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    monthKey?: SortOrder
+    name?: SortOrder
+    namedById?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ConstellationNameCountOrderByAggregateInput
+    _max?: ConstellationNameMaxOrderByAggregateInput
+    _min?: ConstellationNameMinOrderByAggregateInput
+  }
+
+  export type ConstellationNameScalarWhereWithAggregatesInput = {
+    AND?: ConstellationNameScalarWhereWithAggregatesInput | ConstellationNameScalarWhereWithAggregatesInput[]
+    OR?: ConstellationNameScalarWhereWithAggregatesInput[]
+    NOT?: ConstellationNameScalarWhereWithAggregatesInput | ConstellationNameScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ConstellationName"> | string
+    relationshipId?: StringWithAggregatesFilter<"ConstellationName"> | string
+    monthKey?: StringWithAggregatesFilter<"ConstellationName"> | string
+    name?: StringWithAggregatesFilter<"ConstellationName"> | string
+    namedById?: StringWithAggregatesFilter<"ConstellationName"> | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ConstellationName"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -41136,6 +42276,7 @@ export namespace Prisma {
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -41160,6 +42301,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -41184,6 +42326,7 @@ export namespace Prisma {
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -41208,6 +42351,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -43208,6 +44352,68 @@ export namespace Prisma {
     openNotifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type ConstellationNameCreateInput = {
+    id?: string
+    monthKey: string
+    name: string
+    namedById: string
+    updatedAt?: Date | string
+    relationship: RelationshipCreateNestedOneWithoutConstellationNamesInput
+  }
+
+  export type ConstellationNameUncheckedCreateInput = {
+    id?: string
+    relationshipId: string
+    monthKey: string
+    name: string
+    namedById: string
+    updatedAt?: Date | string
+  }
+
+  export type ConstellationNameUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    monthKey?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    namedById?: StringFieldUpdateOperationsInput | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relationship?: RelationshipUpdateOneRequiredWithoutConstellationNamesNestedInput
+  }
+
+  export type ConstellationNameUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    monthKey?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    namedById?: StringFieldUpdateOperationsInput | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConstellationNameCreateManyInput = {
+    id?: string
+    relationshipId: string
+    monthKey: string
+    name: string
+    namedById: string
+    updatedAt?: Date | string
+  }
+
+  export type ConstellationNameUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    monthKey?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    namedById?: StringFieldUpdateOperationsInput | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConstellationNameUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relationshipId?: StringFieldUpdateOperationsInput | string
+    monthKey?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    namedById?: StringFieldUpdateOperationsInput | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -43769,6 +44975,12 @@ export namespace Prisma {
     isNot?: StreakWhereInput | null
   }
 
+  export type ConstellationNameListRelationFilter = {
+    every?: ConstellationNameWhereInput
+    some?: ConstellationNameWhereInput
+    none?: ConstellationNameWhereInput
+  }
+
   export type WyrSessionListRelationFilter = {
     every?: WyrSessionWhereInput
     some?: WyrSessionWhereInput
@@ -43800,6 +45012,10 @@ export namespace Prisma {
   }
 
   export type MeetingOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ConstellationNameOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -45212,6 +46428,38 @@ export namespace Prisma {
     openNotifiedAt?: SortOrder
   }
 
+  export type ConstellationNameRelationshipIdMonthKeyCompoundUniqueInput = {
+    relationshipId: string
+    monthKey: string
+  }
+
+  export type ConstellationNameCountOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    monthKey?: SortOrder
+    name?: SortOrder
+    namedById?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConstellationNameMaxOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    monthKey?: SortOrder
+    name?: SortOrder
+    namedById?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConstellationNameMinOrderByAggregateInput = {
+    id?: SortOrder
+    relationshipId?: SortOrder
+    monthKey?: SortOrder
+    name?: SortOrder
+    namedById?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -46208,6 +47456,13 @@ export namespace Prisma {
     connect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
   }
 
+  export type ConstellationNameCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<ConstellationNameCreateWithoutRelationshipInput, ConstellationNameUncheckedCreateWithoutRelationshipInput> | ConstellationNameCreateWithoutRelationshipInput[] | ConstellationNameUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: ConstellationNameCreateOrConnectWithoutRelationshipInput | ConstellationNameCreateOrConnectWithoutRelationshipInput[]
+    createMany?: ConstellationNameCreateManyRelationshipInputEnvelope
+    connect?: ConstellationNameWhereUniqueInput | ConstellationNameWhereUniqueInput[]
+  }
+
   export type WyrSessionCreateNestedManyWithoutRelationshipInput = {
     create?: XOR<WyrSessionCreateWithoutRelationshipInput, WyrSessionUncheckedCreateWithoutRelationshipInput> | WyrSessionCreateWithoutRelationshipInput[] | WyrSessionUncheckedCreateWithoutRelationshipInput[]
     connectOrCreate?: WyrSessionCreateOrConnectWithoutRelationshipInput | WyrSessionCreateOrConnectWithoutRelationshipInput[]
@@ -46310,6 +47565,13 @@ export namespace Prisma {
     connectOrCreate?: TimeCapsuleCreateOrConnectWithoutRelationshipInput | TimeCapsuleCreateOrConnectWithoutRelationshipInput[]
     createMany?: TimeCapsuleCreateManyRelationshipInputEnvelope
     connect?: TimeCapsuleWhereUniqueInput | TimeCapsuleWhereUniqueInput[]
+  }
+
+  export type ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput = {
+    create?: XOR<ConstellationNameCreateWithoutRelationshipInput, ConstellationNameUncheckedCreateWithoutRelationshipInput> | ConstellationNameCreateWithoutRelationshipInput[] | ConstellationNameUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: ConstellationNameCreateOrConnectWithoutRelationshipInput | ConstellationNameCreateOrConnectWithoutRelationshipInput[]
+    createMany?: ConstellationNameCreateManyRelationshipInputEnvelope
+    connect?: ConstellationNameWhereUniqueInput | ConstellationNameWhereUniqueInput[]
   }
 
   export type WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput = {
@@ -46492,6 +47754,20 @@ export namespace Prisma {
     update?: TimeCapsuleUpdateWithWhereUniqueWithoutRelationshipInput | TimeCapsuleUpdateWithWhereUniqueWithoutRelationshipInput[]
     updateMany?: TimeCapsuleUpdateManyWithWhereWithoutRelationshipInput | TimeCapsuleUpdateManyWithWhereWithoutRelationshipInput[]
     deleteMany?: TimeCapsuleScalarWhereInput | TimeCapsuleScalarWhereInput[]
+  }
+
+  export type ConstellationNameUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<ConstellationNameCreateWithoutRelationshipInput, ConstellationNameUncheckedCreateWithoutRelationshipInput> | ConstellationNameCreateWithoutRelationshipInput[] | ConstellationNameUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: ConstellationNameCreateOrConnectWithoutRelationshipInput | ConstellationNameCreateOrConnectWithoutRelationshipInput[]
+    upsert?: ConstellationNameUpsertWithWhereUniqueWithoutRelationshipInput | ConstellationNameUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: ConstellationNameCreateManyRelationshipInputEnvelope
+    set?: ConstellationNameWhereUniqueInput | ConstellationNameWhereUniqueInput[]
+    disconnect?: ConstellationNameWhereUniqueInput | ConstellationNameWhereUniqueInput[]
+    delete?: ConstellationNameWhereUniqueInput | ConstellationNameWhereUniqueInput[]
+    connect?: ConstellationNameWhereUniqueInput | ConstellationNameWhereUniqueInput[]
+    update?: ConstellationNameUpdateWithWhereUniqueWithoutRelationshipInput | ConstellationNameUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: ConstellationNameUpdateManyWithWhereWithoutRelationshipInput | ConstellationNameUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: ConstellationNameScalarWhereInput | ConstellationNameScalarWhereInput[]
   }
 
   export type WyrSessionUpdateManyWithoutRelationshipNestedInput = {
@@ -46698,6 +47974,20 @@ export namespace Prisma {
     update?: TimeCapsuleUpdateWithWhereUniqueWithoutRelationshipInput | TimeCapsuleUpdateWithWhereUniqueWithoutRelationshipInput[]
     updateMany?: TimeCapsuleUpdateManyWithWhereWithoutRelationshipInput | TimeCapsuleUpdateManyWithWhereWithoutRelationshipInput[]
     deleteMany?: TimeCapsuleScalarWhereInput | TimeCapsuleScalarWhereInput[]
+  }
+
+  export type ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput = {
+    create?: XOR<ConstellationNameCreateWithoutRelationshipInput, ConstellationNameUncheckedCreateWithoutRelationshipInput> | ConstellationNameCreateWithoutRelationshipInput[] | ConstellationNameUncheckedCreateWithoutRelationshipInput[]
+    connectOrCreate?: ConstellationNameCreateOrConnectWithoutRelationshipInput | ConstellationNameCreateOrConnectWithoutRelationshipInput[]
+    upsert?: ConstellationNameUpsertWithWhereUniqueWithoutRelationshipInput | ConstellationNameUpsertWithWhereUniqueWithoutRelationshipInput[]
+    createMany?: ConstellationNameCreateManyRelationshipInputEnvelope
+    set?: ConstellationNameWhereUniqueInput | ConstellationNameWhereUniqueInput[]
+    disconnect?: ConstellationNameWhereUniqueInput | ConstellationNameWhereUniqueInput[]
+    delete?: ConstellationNameWhereUniqueInput | ConstellationNameWhereUniqueInput[]
+    connect?: ConstellationNameWhereUniqueInput | ConstellationNameWhereUniqueInput[]
+    update?: ConstellationNameUpdateWithWhereUniqueWithoutRelationshipInput | ConstellationNameUpdateWithWhereUniqueWithoutRelationshipInput[]
+    updateMany?: ConstellationNameUpdateManyWithWhereWithoutRelationshipInput | ConstellationNameUpdateManyWithWhereWithoutRelationshipInput[]
+    deleteMany?: ConstellationNameScalarWhereInput | ConstellationNameScalarWhereInput[]
   }
 
   export type WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput = {
@@ -47701,6 +48991,20 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutTimeCapsulesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTimeCapsulesInput, UserUpdateWithoutTimeCapsulesInput>, UserUncheckedUpdateWithoutTimeCapsulesInput>
+  }
+
+  export type RelationshipCreateNestedOneWithoutConstellationNamesInput = {
+    create?: XOR<RelationshipCreateWithoutConstellationNamesInput, RelationshipUncheckedCreateWithoutConstellationNamesInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutConstellationNamesInput
+    connect?: RelationshipWhereUniqueInput
+  }
+
+  export type RelationshipUpdateOneRequiredWithoutConstellationNamesNestedInput = {
+    create?: XOR<RelationshipCreateWithoutConstellationNamesInput, RelationshipUncheckedCreateWithoutConstellationNamesInput>
+    connectOrCreate?: RelationshipCreateOrConnectWithoutConstellationNamesInput
+    upsert?: RelationshipUpsertWithoutConstellationNamesInput
+    connect?: RelationshipWhereUniqueInput
+    update?: XOR<XOR<RelationshipUpdateToOneWithWhereWithoutConstellationNamesInput, RelationshipUpdateWithoutConstellationNamesInput>, RelationshipUncheckedUpdateWithoutConstellationNamesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -50166,6 +51470,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ConstellationNameCreateWithoutRelationshipInput = {
+    id?: string
+    monthKey: string
+    name: string
+    namedById: string
+    updatedAt?: Date | string
+  }
+
+  export type ConstellationNameUncheckedCreateWithoutRelationshipInput = {
+    id?: string
+    monthKey: string
+    name: string
+    namedById: string
+    updatedAt?: Date | string
+  }
+
+  export type ConstellationNameCreateOrConnectWithoutRelationshipInput = {
+    where: ConstellationNameWhereUniqueInput
+    create: XOR<ConstellationNameCreateWithoutRelationshipInput, ConstellationNameUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type ConstellationNameCreateManyRelationshipInputEnvelope = {
+    data: ConstellationNameCreateManyRelationshipInput | ConstellationNameCreateManyRelationshipInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WyrSessionCreateWithoutRelationshipInput = {
     id?: string
     sessionDate: Date | string
@@ -50537,6 +51867,34 @@ export namespace Prisma {
     data: XOR<TimeCapsuleUpdateManyMutationInput, TimeCapsuleUncheckedUpdateManyWithoutRelationshipInput>
   }
 
+  export type ConstellationNameUpsertWithWhereUniqueWithoutRelationshipInput = {
+    where: ConstellationNameWhereUniqueInput
+    update: XOR<ConstellationNameUpdateWithoutRelationshipInput, ConstellationNameUncheckedUpdateWithoutRelationshipInput>
+    create: XOR<ConstellationNameCreateWithoutRelationshipInput, ConstellationNameUncheckedCreateWithoutRelationshipInput>
+  }
+
+  export type ConstellationNameUpdateWithWhereUniqueWithoutRelationshipInput = {
+    where: ConstellationNameWhereUniqueInput
+    data: XOR<ConstellationNameUpdateWithoutRelationshipInput, ConstellationNameUncheckedUpdateWithoutRelationshipInput>
+  }
+
+  export type ConstellationNameUpdateManyWithWhereWithoutRelationshipInput = {
+    where: ConstellationNameScalarWhereInput
+    data: XOR<ConstellationNameUpdateManyMutationInput, ConstellationNameUncheckedUpdateManyWithoutRelationshipInput>
+  }
+
+  export type ConstellationNameScalarWhereInput = {
+    AND?: ConstellationNameScalarWhereInput | ConstellationNameScalarWhereInput[]
+    OR?: ConstellationNameScalarWhereInput[]
+    NOT?: ConstellationNameScalarWhereInput | ConstellationNameScalarWhereInput[]
+    id?: StringFilter<"ConstellationName"> | string
+    relationshipId?: StringFilter<"ConstellationName"> | string
+    monthKey?: StringFilter<"ConstellationName"> | string
+    name?: StringFilter<"ConstellationName"> | string
+    namedById?: StringFilter<"ConstellationName"> | string
+    updatedAt?: DateTimeFilter<"ConstellationName"> | Date | string
+  }
+
   export type WyrSessionUpsertWithWhereUniqueWithoutRelationshipInput = {
     where: WyrSessionWhereUniqueInput
     update: XOR<WyrSessionUpdateWithoutRelationshipInput, WyrSessionUncheckedUpdateWithoutRelationshipInput>
@@ -50668,6 +52026,7 @@ export namespace Prisma {
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -50691,6 +52050,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -50797,6 +52157,7 @@ export namespace Prisma {
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -50820,6 +52181,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -50916,6 +52278,7 @@ export namespace Prisma {
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -50939,6 +52302,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -51045,6 +52409,7 @@ export namespace Prisma {
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -51068,6 +52433,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -51212,6 +52578,7 @@ export namespace Prisma {
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -51235,6 +52602,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -51387,6 +52755,7 @@ export namespace Prisma {
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -51410,6 +52779,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -52160,6 +53530,7 @@ export namespace Prisma {
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -52183,6 +53554,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -52256,6 +53628,7 @@ export namespace Prisma {
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -52279,6 +53652,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -52506,6 +53880,7 @@ export namespace Prisma {
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -52529,6 +53904,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -52568,6 +53944,7 @@ export namespace Prisma {
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -52591,6 +53968,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -52681,6 +54059,7 @@ export namespace Prisma {
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -52704,6 +54083,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -52816,6 +54196,7 @@ export namespace Prisma {
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -52839,6 +54220,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -52862,6 +54244,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -52885,6 +54268,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -52991,6 +54375,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -53014,6 +54399,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -53110,6 +54496,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -53133,6 +54520,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -53306,6 +54694,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -53329,6 +54718,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -53499,6 +54889,7 @@ export namespace Prisma {
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
     issues?: IssueCreateNestedManyWithoutRelationshipInput
@@ -53522,6 +54913,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
     issues?: IssueUncheckedCreateNestedManyWithoutRelationshipInput
@@ -53587,6 +54979,7 @@ export namespace Prisma {
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
     issues?: IssueUpdateManyWithoutRelationshipNestedInput
@@ -53610,6 +55003,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
     issues?: IssueUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -53845,6 +55239,7 @@ export namespace Prisma {
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
     issues?: IssueCreateNestedManyWithoutRelationshipInput
@@ -53868,6 +55263,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
     issues?: IssueUncheckedCreateNestedManyWithoutRelationshipInput
@@ -54041,6 +55437,7 @@ export namespace Prisma {
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
     issues?: IssueUpdateManyWithoutRelationshipNestedInput
@@ -54064,6 +55461,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
     issues?: IssueUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -54233,6 +55631,7 @@ export namespace Prisma {
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     issues?: IssueCreateNestedManyWithoutRelationshipInput
@@ -54256,6 +55655,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     issues?: IssueUncheckedCreateNestedManyWithoutRelationshipInput
@@ -54295,6 +55695,7 @@ export namespace Prisma {
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     issues?: IssueUpdateManyWithoutRelationshipNestedInput
@@ -54318,6 +55719,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     issues?: IssueUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -54340,6 +55742,7 @@ export namespace Prisma {
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -54363,6 +55766,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -54430,6 +55834,7 @@ export namespace Prisma {
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -54453,6 +55858,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -54684,6 +56090,7 @@ export namespace Prisma {
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -54707,6 +56114,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -54774,6 +56182,7 @@ export namespace Prisma {
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -54797,6 +56206,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -55029,6 +56439,7 @@ export namespace Prisma {
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -55052,6 +56463,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
     timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -55091,6 +56503,7 @@ export namespace Prisma {
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -55114,6 +56527,7 @@ export namespace Prisma {
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
     timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -55136,6 +56550,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
     memories?: MemoryCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
@@ -55159,6 +56574,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
     memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
     appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    constellationNames?: ConstellationNameUncheckedCreateNestedManyWithoutRelationshipInput
     wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
     spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
     dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
@@ -55265,6 +56681,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
@@ -55288,6 +56705,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
     appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    constellationNames?: ConstellationNameUncheckedUpdateManyWithoutRelationshipNestedInput
     wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
     spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
     dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
@@ -55365,6 +56783,118 @@ export namespace Prisma {
     wyrParticipations?: WyrParticipationUncheckedUpdateManyWithoutUserNestedInput
     spotlightsSent?: PartnerSpotlightUncheckedUpdateManyWithoutFromUserNestedInput
     spotlightsReceived?: PartnerSpotlightUncheckedUpdateManyWithoutToUserNestedInput
+  }
+
+  export type RelationshipCreateWithoutConstellationNamesInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberCreateNestedManyWithoutRelationshipInput
+    invites?: InviteCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingCreateNestedManyWithoutRelationshipInput
+    streak?: StreakCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareCreateNestedManyWithoutRelationshipInput
+    issues?: IssueCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipUncheckedCreateWithoutConstellationNamesInput = {
+    id?: string
+    name?: string | null
+    status?: $Enums.RelationshipStatus
+    anniversaryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RelationshipMemberUncheckedCreateNestedManyWithoutRelationshipInput
+    invites?: InviteUncheckedCreateNestedManyWithoutRelationshipInput
+    dailySessions?: DailySessionUncheckedCreateNestedManyWithoutRelationshipInput
+    quizSessions?: QuizSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    agreementSessions?: AgreementSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutRelationshipInput
+    streak?: StreakUncheckedCreateNestedOneWithoutRelationshipInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutRelationshipInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutRelationshipInput
+    appreciations?: AppreciationUncheckedCreateNestedManyWithoutRelationshipInput
+    timeCapsules?: TimeCapsuleUncheckedCreateNestedManyWithoutRelationshipInput
+    wyrSessions?: WyrSessionUncheckedCreateNestedManyWithoutRelationshipInput
+    spotlights?: PartnerSpotlightUncheckedCreateNestedManyWithoutRelationshipInput
+    dateNightDares?: DateNightDareUncheckedCreateNestedManyWithoutRelationshipInput
+    issues?: IssueUncheckedCreateNestedManyWithoutRelationshipInput
+  }
+
+  export type RelationshipCreateOrConnectWithoutConstellationNamesInput = {
+    where: RelationshipWhereUniqueInput
+    create: XOR<RelationshipCreateWithoutConstellationNamesInput, RelationshipUncheckedCreateWithoutConstellationNamesInput>
+  }
+
+  export type RelationshipUpsertWithoutConstellationNamesInput = {
+    update: XOR<RelationshipUpdateWithoutConstellationNamesInput, RelationshipUncheckedUpdateWithoutConstellationNamesInput>
+    create: XOR<RelationshipCreateWithoutConstellationNamesInput, RelationshipUncheckedCreateWithoutConstellationNamesInput>
+    where?: RelationshipWhereInput
+  }
+
+  export type RelationshipUpdateToOneWithWhereWithoutConstellationNamesInput = {
+    where?: RelationshipWhereInput
+    data: XOR<RelationshipUpdateWithoutConstellationNamesInput, RelationshipUncheckedUpdateWithoutConstellationNamesInput>
+  }
+
+  export type RelationshipUpdateWithoutConstellationNamesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUpdateManyWithoutRelationshipNestedInput
+    issues?: IssueUpdateManyWithoutRelationshipNestedInput
+  }
+
+  export type RelationshipUncheckedUpdateWithoutConstellationNamesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRelationshipStatusFieldUpdateOperationsInput | $Enums.RelationshipStatus
+    anniversaryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RelationshipMemberUncheckedUpdateManyWithoutRelationshipNestedInput
+    invites?: InviteUncheckedUpdateManyWithoutRelationshipNestedInput
+    dailySessions?: DailySessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    quizSessions?: QuizSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    agreementSessions?: AgreementSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutRelationshipNestedInput
+    streak?: StreakUncheckedUpdateOneWithoutRelationshipNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutRelationshipNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutRelationshipNestedInput
+    appreciations?: AppreciationUncheckedUpdateManyWithoutRelationshipNestedInput
+    timeCapsules?: TimeCapsuleUncheckedUpdateManyWithoutRelationshipNestedInput
+    wyrSessions?: WyrSessionUncheckedUpdateManyWithoutRelationshipNestedInput
+    spotlights?: PartnerSpotlightUncheckedUpdateManyWithoutRelationshipNestedInput
+    dateNightDares?: DateNightDareUncheckedUpdateManyWithoutRelationshipNestedInput
+    issues?: IssueUncheckedUpdateManyWithoutRelationshipNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -56226,6 +57756,14 @@ export namespace Prisma {
     openNotifiedAt?: Date | string | null
   }
 
+  export type ConstellationNameCreateManyRelationshipInput = {
+    id?: string
+    monthKey: string
+    name: string
+    namedById: string
+    updatedAt?: Date | string
+  }
+
   export type WyrSessionCreateManyRelationshipInput = {
     id?: string
     sessionDate: Date | string
@@ -56572,6 +58110,30 @@ export namespace Prisma {
     openOn?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     openNotifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ConstellationNameUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    monthKey?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    namedById?: StringFieldUpdateOperationsInput | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConstellationNameUncheckedUpdateWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    monthKey?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    namedById?: StringFieldUpdateOperationsInput | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConstellationNameUncheckedUpdateManyWithoutRelationshipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    monthKey?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    namedById?: StringFieldUpdateOperationsInput | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type WyrSessionUpdateWithoutRelationshipInput = {
@@ -57180,6 +58742,10 @@ export namespace Prisma {
      * @deprecated Use TimeCapsuleDefaultArgs instead
      */
     export type TimeCapsuleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = TimeCapsuleDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use ConstellationNameDefaultArgs instead
+     */
+    export type ConstellationNameArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ConstellationNameDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

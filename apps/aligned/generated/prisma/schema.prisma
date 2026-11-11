@@ -176,21 +176,22 @@ model Relationship {
   /// anniversary banner on the day-of-month.
   anniversaryDate DateTime?          @db.Date
 
-  members           RelationshipMember[]
-  invites           Invite[]
-  dailySessions     DailySession[]
-  quizSessions      QuizSession[]
-  agreementSessions AgreementSession[]
-  meetings          Meeting[]
-  streak            Streak?
-  subscriptions     Subscription[]
-  memories          Memory[]
-  appreciations     Appreciation[]
-  timeCapsules      TimeCapsule[]
-  wyrSessions       WyrSession[]
-  spotlights        PartnerSpotlight[]
-  dateNightDares    DateNightDare[]
-  issues            Issue[]
+  members            RelationshipMember[]
+  invites            Invite[]
+  dailySessions      DailySession[]
+  quizSessions       QuizSession[]
+  agreementSessions  AgreementSession[]
+  meetings           Meeting[]
+  streak             Streak?
+  subscriptions      Subscription[]
+  memories           Memory[]
+  appreciations      Appreciation[]
+  timeCapsules       TimeCapsule[]
+  constellationNames ConstellationName[]
+  wyrSessions        WyrSession[]
+  spotlights         PartnerSpotlight[]
+  dateNightDares     DateNightDare[]
+  issues             Issue[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -764,4 +765,18 @@ model TimeCapsule {
 
   @@index([relationshipId])
   @@index([openOn])
+}
+
+/// The name a couple gives a month's constellation once the month is over.
+model ConstellationName {
+  id             String   @id @default(cuid())
+  relationshipId String
+  monthKey       String // "YYYY-MM"
+  name           String
+  namedById      String
+  updatedAt      DateTime @updatedAt
+
+  relationship Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+
+  @@unique([relationshipId, monthKey])
 }

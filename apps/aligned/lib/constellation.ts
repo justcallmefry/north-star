@@ -6,6 +6,12 @@ import { requireActiveMember } from "@/lib/relationship-members";
 import { detectAligned } from "@/lib/reveal/aligned";
 import { milestoneLabel, type StarInput } from "@/lib/constellation-core";
 import { isoWeekKey, WEEKLY_REVEAL_TARGET } from "@/lib/week";
+import { DARES } from "@/lib/content/dares";
+
+/** Things you did together that also live in the sky, beside the days. */
+export type SkyExtra =
+  | { kind: "dare"; id: string; date: string; title: string; photoUrl: string | null }
+  | { kind: "appreciation"; id: string; date: string; fromName: string | null; fromMe: boolean; content: string };
 
 export type ConstellationSummary = {
   stars: number;
@@ -32,6 +38,9 @@ export async function getConstellationSummary(
 
 export type ConstellationData = {
   relationshipId: string;
+  extras: SkyExtra[];
+  /** Constellation names by month, "YYYY-MM" -> name. */
+  names: Record<string, string>;
   /** Chronological (oldest first) — feed straight into computeConstellationLayout. */
   stars: StarInput[];
   totals: {
@@ -68,13 +77,24 @@ export async function getConstellation(
     }),
     prisma.dateNightDare.findMany({
       where: { relationshipId, completedAt: { not: null } },
-      select: { weekKey: true },
+      select: { id: true, weekKey: true, completedAt: true, dareIndex: true, photoUrl: true },
     }),
     prisma.appreciation.findMany({
       where: { relationshipId },
-      select: { weekKey: true },
+      select: {
+        id: true,
+        weekKey: true,
+        createdAt: true,
+        content: true,
+        fromUserId: true,
+        fromUser: { select: { name: true } },
+      },
     }),
   ]);
+  const nameRows = await prisma.constellationName.findMany({
+    where: { relationshipId },
+    select: { monthKey: true, name: true },
+  });
 
   const savedIds = new Set(
     memories.map((m) => m.sourceId).filter((id): id is string => !!id)
@@ -114,8 +134,29 @@ export async function getConstellation(
     };
   });
 
+  const me = session.user.id;
+  const extras: SkyExtra[] = [
+    ...completedDares.map((d) => ({
+      kind: "dare" as const,
+      id: d.id,
+      date: d.completedAt!.toISOString().slice(0, 10),
+      title: (DARES[d.dareIndex] ?? DARES[0]!).title,
+      photoUrl: d.photoUrl,
+    })),
+    ...appreciations.map((a) => ({
+      kind: "appreciation" as const,
+      id: a.id,
+      date: a.createdAt.toISOString().slice(0, 10),
+      fromName: a.fromUser.name?.split(/\s+/)[0] ?? null,
+      fromMe: a.fromUserId === me,
+      content: a.content,
+    })),
+  ];
+
   return {
     relationshipId,
+    extras,
+    names: Object.fromEntries(nameRows.map((n) => [n.monthKey, n.name])),
     stars,
     totals: {
       stars: stars.length,

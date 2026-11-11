@@ -471,6 +471,15 @@ exports.Prisma.TimeCapsuleScalarFieldEnum = {
   openNotifiedAt: 'openNotifiedAt'
 };
 
+exports.Prisma.ConstellationNameScalarFieldEnum = {
+  id: 'id',
+  relationshipId: 'relationshipId',
+  monthKey: 'monthKey',
+  name: 'name',
+  namedById: 'namedById',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -600,7 +609,8 @@ exports.Prisma.ModelName = {
   AgreementParticipation: 'AgreementParticipation',
   Issue: 'Issue',
   RateLimit: 'RateLimit',
-  TimeCapsule: 'TimeCapsule'
+  TimeCapsule: 'TimeCapsule',
+  ConstellationName: 'ConstellationName'
 };
 
 /**

@@ -222,6 +222,8 @@ export function ConstellationClient({ data, bornId, focusId, capsules, anniversa
                   onBorn={() => {
                     setBornLit(true);
                     void haptic("success");
+                    // A moment, not a banner: let it go so the sky is yours again.
+                    setTimeout(() => setBornLit(false), 4500);
                   }}
                   onUnsupported={() => setMode("flat")}
                 />
